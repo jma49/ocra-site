@@ -60,7 +60,7 @@ export interface Copy {
 
 const en: Copy = {
   hero: {
-    status: "M2 shipped · CLI and GitHub Action · Apache-2.0",
+    status: "M1–M4 shipped · CLI and GitHub Action · Apache-2.0",
     title: "A code reviewer that reads before it comments.",
     subtitle:
       "ocra splits a change into focused review tasks. Each agent can only read your repository, has to quote the code it means, and must say what it checked. Most runs end with a handful of findings. Some end with none, and that is fine.",
@@ -203,16 +203,16 @@ const en: Copy = {
       {
         milestone: "M3",
         title: "GitHub",
-        body: "ocra review --pr and a GitHub Action: inline comments, one summary comment, incremental re-review. Resolving threads is next.",
-        state: "in progress",
-        done: false,
+        body: "ocra review --pr and a GitHub Action: inline comments, one summary comment, re-review that resolves fixed threads and respects dismissals.",
+        state: "shipped",
+        done: true,
       },
       {
         milestone: "M4",
         title: "Hardening",
-        body: "Circuit breakers, remote config, review memory, an --ultra mode for recall.",
-        state: "planned",
-        done: false,
+        body: "Circuit breakers per model, shared configuration over https, a review memory, and --ultra for recall.",
+        state: "shipped",
+        done: true,
       },
     ],
   },
@@ -233,7 +233,7 @@ const en: Copy = {
 
 const zh: Copy = {
   hero: {
-    status: "M2 已发布 · CLI 与 GitHub Action · Apache-2.0",
+    status: "M1–M4 已发布 · CLI 与 GitHub Action · Apache-2.0",
     title: "先读懂代码，\n再开口的代码审查。",
     subtitle:
       "ocra 把一次改动拆成几个聚焦的审查任务。每个 agent 只能读你的仓库，必须引用它说的那段代码，还要交代自己查过什么。多数时候你会收到几条意见，有时一条也没有，这也是正常结果。",
@@ -376,16 +376,16 @@ const zh: Copy = {
       {
         milestone: "M3",
         title: "GitHub",
-        body: "ocra review --pr 和 GitHub Action：行内评论、一条摘要评论、增量复审。下一步是自动关闭评论串。",
-        state: "进行中",
-        done: false,
+        body: "ocra review --pr 和 GitHub Action：行内评论、一条摘要评论，复审时自动关闭已修复的评论串，并尊重人工驳回。",
+        state: "已发布",
+        done: true,
       },
       {
         milestone: "M4",
         title: "加固",
-        body: "熔断器、远程配置、审查记忆，以及追求召回率的 --ultra 模式。",
-        state: "规划中",
-        done: false,
+        body: "每个模型的熔断器、通过 https 共享的配置、审查记忆，以及追求召回率的 --ultra 模式。",
+        state: "已发布",
+        done: true,
       },
     ],
   },
