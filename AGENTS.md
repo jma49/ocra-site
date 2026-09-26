@@ -35,7 +35,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 - The theme follows the system: light is Aqua (pinstripes, blue gel), dark is graphite; both must stay equally polished. Tokens are the `--aqua-*` variables in `app/global.css`.
 - Materials: the landing page is the `.desktop` (pinstripes); content sits in `Window` (`components/aqua/window.tsx`: title bar, decorative traffic lights, optional accessory), with `.inset` panes for white content and `.terminal` for terminals, which stay dark in both themes. Buttons are `.gel` (primary) and `.gel-plain`; selections use `.row-selected`; separators use `.groove`; milestones use `.progress` bars.
 - Typography: Lucida Grande and Monaco where installed, Inter and JetBrains Mono as loaded fallbacks.
-- Brand: the mark in `app/icon.svg` and `components/logo.tsx` (lines of code, one highlighted line running into a lens, in Aqua blue), wordmark `ocra` in lowercase bold with tight tracking. Inline SVGs must not rely on `id` references: the layout renders the logo more than once.
+- Brand: the mark in `app/icon.svg` and `components/logo.tsx` (a glossy Aqua-blue gel tile: lines of code, the highlighted one under a magnifier; the favicon uses gradients, the inline mark approximates them with solid layers), wordmark `ocra` in lowercase bold with tight tracking. Inline SVGs must not rely on `id` references: the layout renders the logo more than once.
 - Avoid the generic AI landing-page look: no pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy. Prefer left-aligned editorial layouts and concrete statements.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
 
