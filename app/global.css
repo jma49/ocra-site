@@ -2,39 +2,90 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
+/* The look follows JM/OS (majincheng.com): Mac OS X Aqua drawn in CSS only,
+   with no Apple or third-party assets. Fonts fall back to the web fonts
+   loaded in the layout where the Mac faces are not installed. */
 @theme {
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans:
+    "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "PingFang SC",
+    var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: Monaco, Menlo, var(--font-jetbrains), ui-monospace, monospace;
 }
 
 :root {
-  --color-fd-primary: oklch(0.52 0.11 180);
-  --color-fd-primary-foreground: oklch(0.99 0 0);
-  --color-fd-ring: oklch(0.52 0.11 180);
-  --model: oklch(0.55 0.15 285);
-  --field-a: oklch(0.86 0.07 185 / 0.55);
-  --field-b: oklch(0.86 0.06 280 / 0.45);
-  --glass-bg: oklch(1 0 0 / 0.55);
-  --glass-border: oklch(0.2 0.02 180 / 0.1);
-  --glass-highlight: oklch(1 0 0 / 0.8);
-  --glass-shadow: 0 30px 60px -40px oklch(0.2 0.03 200 / 0.35);
-  --grain-opacity: 0.035;
+  --aqua-accent: #3875d7;
+  --aqua-desktop: #e6e6e6;
+  --aqua-window: #ececec;
+  --aqua-content: #ffffff;
+  --aqua-ink: #1a1a1a;
+  --aqua-dim: #4d4d4d;
+  --aqua-line: #b9b9b9;
+  --aqua-title-top: #ebebeb;
+  --aqua-title-bottom: #c9c9c9;
+  --aqua-groove-dark: rgb(0 0 0 / 0.14);
+  --aqua-groove-light: rgb(255 255 255 / 0.85);
+  --aqua-shadow: 0 0 0 1px rgb(0 0 0 / 0.26), 0 16px 42px rgb(0 0 0 / 0.28);
+  --aqua-inset: 0 0 0 1px rgb(0 0 0 / 0.26), inset 0 1px 2px rgb(0 0 0 / 0.14);
+  /* 4px bands of white over the window grey. */
+  --aqua-pinstripe: repeating-linear-gradient(
+    0deg,
+    transparent 0 1.5px,
+    rgb(255 255 255 / 0.62) 1.5px 4px
+  );
+  --aqua-bar: linear-gradient(rgb(255 255 255 / 0.9), rgb(228 228 228 / 0.9));
+  --aqua-select: linear-gradient(
+    color-mix(in srgb, var(--aqua-accent) 70%, white),
+    var(--aqua-accent)
+  );
+  --aqua-gel: linear-gradient(
+    color-mix(in srgb, var(--aqua-accent) 30%, white),
+    color-mix(in srgb, var(--aqua-accent) 75%, white) 45%,
+    var(--aqua-accent) 50%,
+    color-mix(in srgb, var(--aqua-accent) 55%, white)
+  );
+  --aqua-gel-plain: linear-gradient(#ffffff, #f1f1f1 45%, #dcdcdc 50%, #f4f4f4);
+  --aqua-gel-ink: #0b1a33;
+  --aqua-gel-plain-ink: #1a1a1a;
+  --aqua-code-comment: #6a737d;
+  --aqua-code-keyword: #9b2393;
+  --aqua-code-string: #c41a16;
+
+  --color-fd-primary: #2f6bd0;
+  --color-fd-primary-foreground: #ffffff;
+  --color-fd-ring: #3875d7;
 }
 
 .dark {
-  --color-fd-background: oklch(0.155 0.008 200);
-  --color-fd-card: oklch(0.19 0.01 200);
-  --color-fd-primary: oklch(0.84 0.12 180);
-  --color-fd-primary-foreground: oklch(0.2 0.04 180);
-  --color-fd-ring: oklch(0.84 0.12 180);
-  --model: oklch(0.78 0.12 285);
-  --field-a: oklch(0.45 0.09 185 / 0.35);
-  --field-b: oklch(0.42 0.11 280 / 0.28);
-  --glass-bg: oklch(0.22 0.012 200 / 0.45);
-  --glass-border: oklch(1 0 0 / 0.09);
-  --glass-highlight: oklch(1 0 0 / 0.07);
-  --glass-shadow: 0 30px 70px -35px oklch(0 0 0 / 0.7);
-  --grain-opacity: 0.06;
+  --aqua-accent: #4a86e8;
+  --aqua-desktop: #262626;
+  --aqua-window: #353535;
+  --aqua-content: #1f1f1f;
+  --aqua-ink: #ececec;
+  --aqua-dim: #bdbdbd;
+  --aqua-line: #151515;
+  --aqua-title-top: #565656;
+  --aqua-title-bottom: #3a3a3a;
+  --aqua-groove-dark: rgb(0 0 0 / 0.5);
+  --aqua-groove-light: rgb(255 255 255 / 0.06);
+  --aqua-shadow: 0 0 0 1px rgb(0 0 0 / 0.7), 0 16px 42px rgb(0 0 0 / 0.55);
+  --aqua-inset: 0 0 0 1px rgb(0 0 0 / 0.7), inset 0 1px 2px rgb(0 0 0 / 0.4);
+  --aqua-pinstripe: repeating-linear-gradient(
+    0deg,
+    transparent 0 1.5px,
+    rgb(255 255 255 / 0.028) 1.5px 4px
+  );
+  --aqua-bar: linear-gradient(rgb(64 64 64 / 0.92), rgb(42 42 42 / 0.92));
+  --aqua-gel-plain: linear-gradient(#6a6a6a, #545454 45%, #474747 50%, #575757);
+  --aqua-gel-plain-ink: #f2f2f2;
+  --aqua-code-comment: #7f8c98;
+  --aqua-code-keyword: #fc5fa3;
+  --aqua-code-string: #fc6a5d;
+
+  --color-fd-background: #1c1c1c;
+  --color-fd-card: #242424;
+  --color-fd-primary: #6ea4f7;
+  --color-fd-primary-foreground: #0b1a33;
+  --color-fd-ring: #6ea4f7;
 }
 
 html {
@@ -49,74 +100,238 @@ html > body[data-scroll-locked] {
   --removed-body-scroll-bar-size: 0px !important;
 }
 
-/* A slow colour field behind the landing page gives the glass panels
-   something to blur; the grain keeps the gradients from banding. */
-.field {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
+/* The home navigation reads as the menu bar. */
+.desktop-layout #nd-nav {
+  background: var(--aqua-bar);
+  border-bottom: 1px solid var(--aqua-groove-dark);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+  backdrop-filter: blur(18px) saturate(1.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.6);
 }
 
-.field::before,
-.field::after {
-  content: "";
-  position: absolute;
-  width: 60vmax;
-  height: 60vmax;
-  border-radius: 9999px;
-  filter: blur(90px);
-  animation: drift 40s ease-in-out infinite alternate;
-}
+@layer components {
+  /* The landing page is the desktop: pinstriped grey, windows on top. */
+  .desktop {
+    color: var(--aqua-ink);
+    background: var(--aqua-pinstripe), var(--aqua-desktop);
+  }
 
-.field::before {
-  top: -25vmax;
-  left: -10vmax;
-  background: var(--field-a);
-}
+  .window {
+    display: flex;
+    flex-direction: column;
+    border-radius: 7px 7px 5px 5px;
+    background: var(--aqua-pinstripe), var(--aqua-window);
+    box-shadow: var(--aqua-shadow);
+    color: var(--aqua-ink);
+  }
 
-.field::after {
-  bottom: -30vmax;
-  right: -15vmax;
-  background: var(--field-b);
-  animation-duration: 55s;
-}
+  .window-titlebar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    padding: 3px 76px;
+    border-radius: 7px 7px 0 0;
+    border-bottom: 1px solid var(--aqua-groove-dark);
+    background: linear-gradient(
+      to bottom,
+      var(--aqua-title-top),
+      var(--aqua-title-bottom)
+    );
+    font-size: 13px;
+    line-height: 1.3;
+    text-align: center;
+    text-shadow: 0 1px 0 var(--aqua-groove-light);
+  }
 
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
+  .window-lights {
+    position: absolute;
+    top: 50%;
+    left: 9px;
+    display: flex;
+    gap: 7px;
+    transform: translateY(-50%);
+  }
 
-@keyframes drift {
-  to {
-    transform: translate3d(8vmax, 6vmax, 0) scale(1.1);
+  /* Glossy lights: a bright cap over a saturated base, ringed darker. */
+  .window-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background:
+      radial-gradient(
+        circle at 50% 22%,
+        rgb(255 255 255 / 0.95) 0 16%,
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 50% 80%,
+        color-mix(in srgb, var(--light) 60%, white) 0 30%,
+        var(--light) 70%
+      );
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--light) 55%, black),
+      0 1px 1px rgb(0 0 0 / 0.2);
+  }
+
+  .window-light[data-light="close"] {
+    --light: #e0443e;
+  }
+
+  .window-light[data-light="minimize"] {
+    --light: #dea123;
+  }
+
+  .window-light[data-light="zoom"] {
+    --light: #1aab29;
+  }
+
+  .window-accessory {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+  }
+
+  /* The white pane a window's content sits in. */
+  .inset {
+    border-radius: 4px;
+    background: var(--aqua-content);
+    box-shadow: var(--aqua-inset);
+  }
+
+  .terminal {
+    background: rgb(12 12 12 / 0.94);
+    color: rgb(255 255 255 / 0.88);
+  }
+
+  /* Etched separator: a dark line over a light one. */
+  .groove {
+    border-top: 1px solid var(--aqua-groove-dark);
+    box-shadow: inset 0 1px 0 var(--aqua-groove-light);
+  }
+
+  .gel,
+  .gel-plain {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.4rem 1.15rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: filter 0.15s ease;
+  }
+
+  .gel {
+    background: var(--aqua-gel);
+    color: var(--aqua-gel-ink);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--aqua-accent) 55%, black),
+      0 1px 2px
+      color-mix(
+        in srgb,
+        color-mix(in srgb, var(--aqua-accent) 45%, black) 45%,
+        transparent
+      );
+    text-shadow: 0 1px 0 rgb(255 255 255 / 0.35);
+  }
+
+  .gel-plain {
+    background: var(--aqua-gel-plain);
+    color: var(--aqua-gel-plain-ink);
+    box-shadow:
+      inset 0 0 0 1px rgb(0 0 0 / 0.35),
+      0 1px 2px rgb(0 0 0 / 0.18);
+  }
+
+  .gel:hover,
+  .gel-plain:hover {
+    filter: brightness(1.06);
+  }
+
+  .gel:active,
+  .gel-plain:active {
+    filter: brightness(0.92);
+  }
+
+  .gel-small {
+    padding: 0.1rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  /* A numbered marker in the accent's gel. */
+  .gel-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: var(--aqua-gel);
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 1px 1px rgb(0 0 0 / 0.5);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, var(--aqua-accent) 55%, black);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  /* A selected row in a source list. */
+  .row-selected {
+    background: var(--aqua-select);
+    color: #ffffff;
+  }
+
+  .progress {
+    position: relative;
+    height: 12px;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: linear-gradient(#cfcfcf, #f4f4f4 60%, #e3e3e3);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.28);
+  }
+
+  .dark .progress {
+    background: linear-gradient(#1c1c1c, #333333 60%, #2a2a2a);
+  }
+
+  .progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: inherit;
+    background: var(--aqua-gel);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in srgb, var(--aqua-accent) 55%, black);
+  }
+
+  /* The indeterminate "barber pole" of work in progress. */
+  .progress-busy {
+    width: 100%;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0 6px,
+        rgb(255 255 255 / 0.45) 6px 12px
+      ),
+      var(--aqua-gel);
+    background-size:
+      17px 100%,
+      100% 100%;
+    animation: barber 0.9s linear infinite;
   }
 }
 
-.glass {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    inset 0 1px 0 var(--glass-highlight),
-    var(--glass-shadow);
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-}
-
-/* Code and terminal panels stay dark in both themes, like a real terminal. */
-.glass-ink {
-  background: oklch(0.16 0.012 200 / 0.78);
-  border: 1px solid oklch(1 0 0 / 0.1);
-  box-shadow:
-    inset 0 1px 0 oklch(1 0 0 / 0.08),
-    var(--glass-shadow);
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
+@keyframes barber {
+  to {
+    background-position:
+      17px 0,
+      0 0;
+  }
 }
 
 @keyframes caret {
@@ -131,8 +346,7 @@ html > body[data-scroll-locked] {
 
 @media (prefers-reduced-motion: reduce) {
   .caret,
-  .field::before,
-  .field::after {
+  .progress-busy {
     animation: none;
   }
 }
