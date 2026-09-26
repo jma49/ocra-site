@@ -60,7 +60,7 @@ export interface Copy {
 
 const en: Copy = {
   hero: {
-    status: "M1 shipped · runs locally · Apache-2.0",
+    status: "M2 shipped · CLI and GitHub Action · Apache-2.0",
     title: "A code reviewer that reads before it comments.",
     subtitle:
       "ocra splits a change into focused review tasks. Each agent can only read your repository, has to quote the code it means, and must say what it checked. Most runs end with a handful of findings. Some end with none, and that is fine.",
@@ -96,9 +96,16 @@ const en: Copy = {
           "A cheap model groups files by index: an interface with its implementation, translations together. Bad answers are repaired or fall back to one file per task.",
       },
       {
+        name: "Matrix",
+        kind: "code",
+        summary: "Pick reviewers per group",
+        detail:
+          "Correctness always runs. Security and performance join from the lite tier and skip documentation and tests. Every skipped pair is listed in the report, so a cheaper plan never hides a gap.",
+      },
+      {
         name: "Review",
         kind: "model",
-        summary: "One isolated agent per group",
+        summary: "One isolated agent per group and reviewer",
         detail:
           "The agent reads the exact revision under review through three tools and reports each issue by quoting code. It has no shell, cannot write, and stops after 20 steps.",
       },
@@ -111,17 +118,17 @@ const en: Copy = {
       },
       {
         name: "Verify",
-        kind: "planned",
+        kind: "model",
         summary: "Check each finding against the diff",
         detail:
-          "Coming in M2. Only findings the diff proves wrong will be dropped.",
+          "A model rereads each file's findings next to its diff and the lines around them. A finding is dropped only when that code proves it wrong, and the reason is kept in the report.",
       },
       {
         name: "Judge",
-        kind: "planned",
+        kind: "model",
         summary: "Merge duplicates, settle severity",
         detail:
-          "Coming in M2. A stronger model reads all reviewers' findings together and decides the verdict.",
+          "A stronger model reads every reviewer's findings together, merges the same root cause, drops nitpicks and fixes severities. The verdict itself comes from a fixed rubric, so the same findings always get the same verdict.",
       },
     ],
   },
@@ -189,15 +196,15 @@ const en: Copy = {
       {
         milestone: "M2",
         title: "More reviewers",
-        body: "Security and performance reviewers, verification, a judge, risk-based routing.",
-        state: "next",
-        done: false,
+        body: "Security and performance reviewers, a review matrix, verification, a judge and a fixed verdict rubric.",
+        state: "shipped",
+        done: true,
       },
       {
         milestone: "M3",
         title: "GitHub",
-        body: "Inline comments on pull requests and incremental re-review.",
-        state: "planned",
+        body: "ocra review --pr and a GitHub Action: inline comments, one summary comment, incremental re-review. Resolving threads is next.",
+        state: "in progress",
         done: false,
       },
       {
@@ -211,7 +218,7 @@ const en: Copy = {
   },
   start: {
     title: "Try it on a repository you know",
-    body: "It runs against any Git repository on your machine. Your model provider sees the change under review and the files the agents open, nothing else.",
+    body: "It runs against any Git repository on your machine, or on pull requests through the GitHub Action. Your model provider sees the change under review and the files the agents open, nothing else.",
     copy: "Copy",
     copied: "Copied",
     docs: "Read the quickstart",
@@ -226,7 +233,7 @@ const en: Copy = {
 
 const zh: Copy = {
   hero: {
-    status: "M1 已发布 · 本地运行 · Apache-2.0",
+    status: "M2 已发布 · CLI 与 GitHub Action · Apache-2.0",
     title: "先读懂代码，\n再开口的代码审查。",
     subtitle:
       "ocra 把一次改动拆成几个聚焦的审查任务。每个 agent 只能读你的仓库，必须引用它说的那段代码，还要交代自己查过什么。多数时候你会收到几条意见，有时一条也没有，这也是正常结果。",
@@ -262,9 +269,16 @@ const zh: Copy = {
           "由便宜的模型按文件编号分组：接口和实现放一起，各语言的翻译文件放一起。答案不合格就修补，或者退回一个文件一个任务。",
       },
       {
+        name: "Matrix",
+        kind: "code",
+        summary: "为每组挑选审查员",
+        detail:
+          "correctness 总会运行。security 和 performance 从 lite 档开始加入，并跳过文档和测试。每个被跳过的组合都会写进报告，省下的钱不会掩盖覆盖上的缺口。",
+      },
+      {
         name: "Review",
         kind: "model",
-        summary: "每组一个隔离的 agent",
+        summary: "每组每个审查员一个隔离的 agent",
         detail:
           "agent 通过三个工具读取被审查的那个版本，用引用代码的方式报告问题。它没有 shell，不能写文件，最多执行 20 步。",
       },
@@ -277,15 +291,17 @@ const zh: Copy = {
       },
       {
         name: "Verify",
-        kind: "planned",
+        kind: "model",
         summary: "对照 diff 核查每条问题",
-        detail: "M2 实现。只会删掉能被 diff 证明是错的问题。",
+        detail:
+          "模型把每个文件的问题和它的 diff、问题附近的代码放在一起重读。只有当代码能证明某条问题是错的，它才会被删掉，原因会留在报告里。",
       },
       {
         name: "Judge",
-        kind: "planned",
+        kind: "model",
         summary: "合并重复，定下严重程度",
-        detail: "M2 实现。由更强的模型通读所有审查员的意见，给出最终结论。",
+        detail:
+          "由更强的模型通读所有审查员的意见：合并同一根因，去掉吹毛求疵，校准严重程度。结论本身由固定规则给出，相同的问题总会得到相同的结论。",
       },
     ],
   },
@@ -353,15 +369,15 @@ const zh: Copy = {
       {
         milestone: "M2",
         title: "更多审查员",
-        body: "安全与性能审查员、逐条核查、最终裁决、按风险分派。",
-        state: "下一步",
-        done: false,
+        body: "安全与性能审查员、审查矩阵、逐条核查、最终裁决，以及固定的结论规则。",
+        state: "已发布",
+        done: true,
       },
       {
         milestone: "M3",
         title: "GitHub",
-        body: "PR 行内评论和增量复审。",
-        state: "规划中",
+        body: "ocra review --pr 和 GitHub Action：行内评论、一条摘要评论、增量复审。下一步是自动关闭评论串。",
+        state: "进行中",
         done: false,
       },
       {
@@ -375,7 +391,7 @@ const zh: Copy = {
   },
   start: {
     title: "拿一个你熟悉的仓库试试",
-    body: "它可以在你本机的任何 Git 仓库上运行。模型供应商能看到的，只有被审查的改动和 agent 打开过的文件。",
+    body: "它可以在你本机的任何 Git 仓库上运行，也可以通过 GitHub Action 审查 PR。模型供应商能看到的，只有被审查的改动和 agent 打开过的文件。",
     copy: "复制",
     copied: "已复制",
     docs: "阅读快速上手",
