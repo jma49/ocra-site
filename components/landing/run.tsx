@@ -14,7 +14,12 @@ const dot: Record<StageKind, string> = {
 
 // A Finder-style window: stages in a source list, the chosen one on the right.
 export function Run({ copy }: { copy: Copy["run"] }) {
-  const [active, setActive] = useState(3);
+  const [active, setActive] = useState(() =>
+    Math.max(
+      0,
+      copy.stages.findIndex((s) => s.name === "Review"),
+    ),
+  );
   const stage = copy.stages[active] ?? copy.stages[0];
   if (!stage) return null;
 
@@ -88,12 +93,14 @@ export function Run({ copy }: { copy: Copy["run"] }) {
             {stage.detail}
           </p>
           <div className="groove mt-auto flex flex-wrap gap-5 pt-4 text-xs text-[var(--aqua-dim)]">
-            {(Object.keys(dot) as StageKind[]).map((kind) => (
-              <span key={kind} className="flex items-center gap-2">
-                <span className={cn("size-2 rounded-full", dot[kind])} />
-                {copy.legend[kind]}
-              </span>
-            ))}
+            {(Object.keys(dot) as StageKind[])
+              .filter((kind) => copy.stages.some((s) => s.kind === kind))
+              .map((kind) => (
+                <span key={kind} className="flex items-center gap-2">
+                  <span className={cn("size-2 rounded-full", dot[kind])} />
+                  {copy.legend[kind]}
+                </span>
+              ))}
           </div>
         </div>
       </Window>

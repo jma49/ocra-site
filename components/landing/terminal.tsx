@@ -3,15 +3,21 @@ import { Window } from "@/components/aqua/window";
 const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "$ ocra review --from main", tone: "cmd" },
   {
-    text: "[ocra] 4 file(s) selected, 1 excluded · risk tier: lite",
+    text: "[ocra] 4 file(s) selected, 1 excluded · risk tier: full",
     tone: "dim",
   },
-  { text: "[ocra] 2 review task(s) (grouped)", tone: "dim" },
+  { text: "[ocra] 2 bundle(s) (grouped)", tone: "dim" },
   {
-    text: "[ocra] correctness-1 gemini-3.5-flash: 5 tool calls, $0.0081",
+    text: "[ocra] 5 review task(s), 1 reviewer/bundle pair(s) skipped by scope",
     tone: "dim",
   },
-  { text: "[ocra] correctness-2 completed in 7.4s · 0 finding(s)", tone: "ok" },
+  { text: "[ocra] security-1 completed in 9.2s · 0 finding(s)", tone: "ok" },
+  { text: "[ocra] correctness-1 completed in 7.4s · 2 finding(s)", tone: "ok" },
+  {
+    text: "[ocra] Verified 2 finding(s), dropped 1 that the code disproves",
+    tone: "dim",
+  },
+  { text: "[ocra] Verdict: significant concerns", tone: "dim" },
   { text: "" },
   { text: "src/auth/session.ts" },
   {
@@ -23,7 +29,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "    Suggestion: return session.expiresAt * 1000 < Date.now();" },
   { text: "" },
   {
-    text: "1 finding(s) (1 critical) · 21,406 in / 402 out · $0.0143",
+    text: "1 finding(s) (1 critical) · 48,912 in / 1,106 out · $0.0412",
     tone: "dim",
   },
 ];
