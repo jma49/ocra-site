@@ -8,42 +8,36 @@ import { Terminal } from "./terminal";
 
 export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
   return (
-    <div className="mx-auto grid w-full max-w-6xl items-center gap-14 px-5 pt-20 pb-24 sm:px-8 md:pt-28 lg:grid-cols-[1fr_1.05fr]">
-      <div>
-        <p className="flex items-center gap-2 text-sm text-fd-muted-foreground">
-          <span className="size-1.5 rounded-full bg-fd-primary" />
+    <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pt-16 pb-20 sm:px-8 md:pt-24 lg:grid-cols-[1fr_1.1fr]">
+      <div className="min-w-0">
+        <p className="flex items-center gap-2 text-sm text-[var(--aqua-dim)]">
+          <span className="gel-dot size-2.5" />
           {copy.status}
         </p>
         <h1
           className={cn(
-            "mt-6 whitespace-pre-line text-balance font-semibold leading-[1.08] tracking-[-0.04em]",
+            "mt-6 whitespace-pre-line text-balance font-bold leading-[1.1] tracking-[-0.03em]",
             locale === "zh"
-              ? "text-[2.2rem] sm:text-[3.25rem]"
-              : "text-[2.6rem] sm:text-6xl",
+              ? "text-[2.1rem] sm:text-[3rem]"
+              : "text-[2.4rem] sm:text-[3.4rem]",
           )}
         >
           {copy.title}
         </h1>
-        <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-fd-muted-foreground">
+        <p className="mt-6 max-w-xl text-pretty text-[1.05rem] leading-relaxed text-[var(--aqua-dim)]">
           {copy.subtitle}
         </p>
-        <div className="mt-9 flex flex-wrap items-center gap-3">
-          <Link
-            href={localePath(locale, "/docs/quickstart")}
-            className="inline-flex items-center gap-2 rounded-full bg-fd-foreground px-5 py-2.5 text-sm font-medium text-fd-background transition hover:opacity-85"
-          >
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Link href={localePath(locale, "/docs/quickstart")} className="gel">
             {copy.start}
             <ArrowRight className="size-4" />
           </Link>
-          <a
-            href={repoUrl}
-            className="glass inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition hover:bg-fd-accent/60"
-          >
+          <a href={repoUrl} className="gel-plain">
             <GithubIcon className="size-4" />
             {copy.github}
           </a>
         </div>
-        <p className="mt-5 text-xs text-fd-muted-foreground">{copy.note}</p>
+        <p className="mt-5 text-xs text-[var(--aqua-dim)]">{copy.note}</p>
       </div>
       <Terminal label={locale === "zh" ? "示例输出" : "example output"} />
     </div>

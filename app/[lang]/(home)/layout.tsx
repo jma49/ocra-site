@@ -10,5 +10,9 @@ export default async function Layout({
   children: ReactNode;
 }) {
   const { lang } = await params;
-  return <HomeLayout {...baseOptions(lang)}>{children}</HomeLayout>;
+  return (
+    <HomeLayout {...baseOptions(lang)} className="desktop desktop-layout">
+      {children}
+    </HomeLayout>
+  );
 }

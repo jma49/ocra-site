@@ -8,8 +8,12 @@ import { i18n, isLocale } from "@/lib/i18n";
 import { translations } from "@/lib/layout.shared";
 import "../global.css";
 
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
+// Fallbacks for machines without Lucida Grande and Monaco (see global.css).
+const sans = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+});
 
 const meta = {
   en: {
@@ -68,7 +72,7 @@ export default async function RootLayout({
       <body className="flex min-h-screen flex-col font-sans">
         <RootProvider
           i18n={i18nProvider(translations, lang)}
-          theme={{ defaultTheme: "dark" }}
+          theme={{ defaultTheme: "system" }}
         >
           {children}
         </RootProvider>

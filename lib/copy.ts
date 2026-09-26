@@ -12,6 +12,7 @@ export interface Copy {
   run: {
     title: string;
     body: string;
+    window: string;
     legend: Record<StageKind, string>;
     stages: {
       name: string;
@@ -38,6 +39,7 @@ export interface Copy {
   plugins: { title: string; body: string; points: string[]; cta: string };
   status: {
     title: string;
+    window: string;
     items: {
       milestone: string;
       title: string;
@@ -68,6 +70,7 @@ const en: Copy = {
   },
   run: {
     title: "What happens when you run ocra review",
+    window: "ocra — pipeline",
     body: "The steps that must not go wrong are plain, tested code. Models are only asked for judgment.",
     legend: { code: "code", model: "model", planned: "planned" },
     stages: [
@@ -174,6 +177,7 @@ const en: Copy = {
   },
   status: {
     title: "Where it stands",
+    window: "ocra — roadmap",
     items: [
       {
         milestone: "M1",
@@ -232,6 +236,7 @@ const zh: Copy = {
   },
   run: {
     title: "运行 ocra review 时发生了什么",
+    window: "ocra — 流水线",
     body: "不能出错的步骤，都是普通的、有测试的代码。只有需要判断的地方才交给模型。",
     legend: { code: "代码", model: "模型", planned: "规划中" },
     stages: [
@@ -336,6 +341,7 @@ const zh: Copy = {
   },
   status: {
     title: "目前进展",
+    window: "ocra — 路线图",
     items: [
       {
         milestone: "M1",

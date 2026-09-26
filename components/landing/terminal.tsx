@@ -1,3 +1,5 @@
+import { Window } from "@/components/aqua/window";
+
 const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "$ ocra review --from main", tone: "cmd" },
   {
@@ -27,30 +29,24 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
 ];
 
 const tones = {
-  dim: "text-white/45",
+  dim: "text-white/50",
   ok: "text-emerald-300",
   warn: "text-amber-200",
-  cmd: "text-teal-200",
+  cmd: "text-sky-200",
 } as const;
 
 export function Terminal({ label }: { label: string }) {
   return (
-    <div className="glass-ink overflow-hidden rounded-2xl">
-      <div className="flex items-center gap-1.5 border-b border-white/10 bg-black/25 px-4 py-3">
-        <span className="size-2.5 rounded-full bg-white/15" />
-        <span className="size-2.5 rounded-full bg-white/15" />
-        <span className="size-2.5 rounded-full bg-white/15" />
-        <span className="ml-3 text-xs text-white/40">{label}</span>
-      </div>
-      <pre className="overflow-x-auto whitespace-pre-wrap p-4 font-mono text-[12.5px] leading-6 text-white/85">
+    <Window title={`Terminal — ocra review — ${label}`}>
+      <pre className="terminal m-0 overflow-x-auto whitespace-pre-wrap rounded-b-[5px] p-4 font-mono text-[12px] leading-[1.6]">
         {lines.map((line, i) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: static lines that never reorder
           <div key={i} className={line.tone ? tones[line.tone] : undefined}>
-            {line.text || " "}
+            {line.text || " "}
           </div>
         ))}
-        <span className="caret inline-block h-4 w-2 translate-y-0.5 bg-teal-200" />
+        <span className="caret inline-block h-3.5 w-[7px] translate-y-0.5 bg-white/80" />
       </pre>
-    </div>
+    </Window>
   );
 }

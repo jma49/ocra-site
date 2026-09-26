@@ -16,9 +16,7 @@ export default async function HomePage({
   const { lang } = await params;
   const copy = getCopy(lang);
   return (
-    <main className="relative flex flex-1 flex-col">
-      <div className="field" aria-hidden="true" />
-      <div className="grain" aria-hidden="true" />
+    <div className="relative flex flex-1 flex-col">
       <Hero copy={copy.hero} locale={lang} />
       <Run copy={copy.run} />
       <Decisions copy={copy.decisions} />
@@ -27,6 +25,6 @@ export default async function HomePage({
       <Status copy={copy.status} />
       <GetStarted copy={copy.start} locale={lang} />
       <Footer copy={copy.footer} locale={lang} />
-    </main>
+    </div>
   );
 }

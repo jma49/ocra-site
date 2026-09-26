@@ -1,16 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { Window } from "@/components/aqua/window";
 import { cn } from "@/lib/cn";
 import type { Copy, StageKind } from "@/lib/copy";
 import { Heading, Section } from "./section";
 
 const dot: Record<StageKind, string> = {
-  code: "bg-fd-primary",
-  model: "bg-[var(--model)]",
-  planned: "border border-fd-muted-foreground/60",
+  code: "bg-[var(--aqua-accent)]",
+  model: "bg-[#9b59d0]",
+  planned: "border border-current opacity-60",
 };
 
+// A Finder-style window: stages in a source list, the chosen one on the right.
 export function Run({ copy }: { copy: Copy["run"] }) {
   const [active, setActive] = useState(3);
   const stage = copy.stages[active] ?? copy.stages[0];
@@ -19,8 +21,11 @@ export function Run({ copy }: { copy: Copy["run"] }) {
   return (
     <Section id="how-it-works">
       <Heading title={copy.title} body={copy.body} />
-      <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-        <ol className="border-l border-fd-border">
+      <Window
+        title={copy.window}
+        bodyClassName="grid gap-2 p-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]"
+      >
+        <ol className="inset py-1 text-[13px]">
           {copy.stages.map((s, i) => {
             const selected = i === active;
             return (
@@ -30,32 +35,40 @@ export function Run({ copy }: { copy: Copy["run"] }) {
                   aria-pressed={selected}
                   onClick={() => setActive(i)}
                   className={cn(
-                    "-ml-px flex w-full items-baseline gap-4 border-l-2 py-3 pl-5 text-left transition",
-                    selected
-                      ? "border-fd-primary"
-                      : "border-transparent hover:border-fd-border",
+                    "flex w-full items-baseline gap-3 px-3 py-1.5 text-left",
+                    selected ? "row-selected" : "hover:bg-black/5",
                   )}
                 >
-                  <span className="w-6 font-mono text-xs text-fd-muted-foreground">
+                  <span
+                    className={cn(
+                      "w-5 font-mono text-[11px]",
+                      !selected && "text-[var(--aqua-dim)]",
+                    )}
+                  >
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="flex-1">
+                  <span className="min-w-0 flex-1">
                     <span
                       className={cn(
-                        "font-medium",
-                        s.kind === "planned" && "text-fd-muted-foreground",
+                        "font-bold",
+                        s.kind === "planned" && !selected && "opacity-60",
                       )}
                     >
                       {s.name}
                     </span>
-                    <span className="ml-3 text-sm text-fd-muted-foreground">
+                    <span
+                      className={cn(
+                        "ml-2",
+                        selected ? "text-white/85" : "text-[var(--aqua-dim)]",
+                      )}
+                    >
                       {s.summary}
                     </span>
                   </span>
                   <span
                     className={cn(
-                      "size-2 shrink-0 translate-y-[-2px] rounded-full",
-                      dot[s.kind],
+                      "size-2 shrink-0 translate-y-[-1px] rounded-full",
+                      selected ? "bg-white" : dot[s.kind],
                     )}
                   />
                 </button>
@@ -63,20 +76,18 @@ export function Run({ copy }: { copy: Copy["run"] }) {
             );
           })}
         </ol>
-        <div className="lg:sticky lg:top-24 lg:self-start">
-          <div className="glass rounded-2xl p-7">
-            <p className="flex items-center gap-2 text-xs text-fd-muted-foreground">
-              <span className={cn("size-2 rounded-full", dot[stage.kind])} />
-              {copy.legend[stage.kind]}
-            </p>
-            <p className="mt-4 text-2xl font-semibold tracking-[-0.02em]">
-              {stage.name}
-            </p>
-            <p className="mt-3 leading-relaxed text-fd-muted-foreground">
-              {stage.detail}
-            </p>
-          </div>
-          <div className="mt-4 flex gap-5 px-1 text-xs text-fd-muted-foreground">
+        <div className="inset flex flex-col p-6" aria-live="polite">
+          <p className="flex items-center gap-2 text-xs text-[var(--aqua-dim)]">
+            <span className={cn("size-2 rounded-full", dot[stage.kind])} />
+            {copy.legend[stage.kind]}
+          </p>
+          <p className="mt-3 text-2xl font-bold tracking-[-0.02em]">
+            {stage.name}
+          </p>
+          <p className="mt-3 leading-relaxed text-[var(--aqua-dim)]">
+            {stage.detail}
+          </p>
+          <div className="groove mt-auto flex flex-wrap gap-5 pt-4 text-xs text-[var(--aqua-dim)]">
             {(Object.keys(dot) as StageKind[]).map((kind) => (
               <span key={kind} className="flex items-center gap-2">
                 <span className={cn("size-2 rounded-full", dot[kind])} />
@@ -85,7 +96,7 @@ export function Run({ copy }: { copy: Copy["run"] }) {
             ))}
           </div>
         </div>
-      </div>
+      </Window>
     </Section>
   );
 }
