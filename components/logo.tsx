@@ -2,38 +2,61 @@
 // gradient ids would collide, leaving hidden copies to own the definitions.
 export function LogoMark({ className = "size-6" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <rect width="32" height="32" rx="8" fill="#121a19" />
+    <svg viewBox="0 0 64 64" aria-hidden="true" className={className}>
+      <rect x="3" y="3" width="58" height="58" rx="14" fill="#3479e4" />
+      <rect x="3" y="33" width="58" height="28" rx="14" fill="#5ea6ff" />
+      <rect x="3" y="30" width="58" height="8" fill="#2a6fdc" />
       <rect
-        x=".5"
-        y=".5"
-        width="31"
-        height="31"
-        rx="7.5"
+        x="3.75"
+        y="3.75"
+        width="56.5"
+        height="56.5"
+        rx="13.25"
         fill="none"
-        stroke="#fff"
-        strokeOpacity=".12"
+        stroke="#123f93"
+        strokeWidth="1.5"
       />
       <path
-        d="M7 10.5h7M7 21.5h9"
+        d="M13 21h14M13 43h18"
         stroke="#fff"
-        strokeOpacity=".28"
-        strokeWidth="2.4"
+        strokeOpacity=".55"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+      />
+      <path d="M13 32h20" stroke="#fff" strokeWidth="5" strokeLinecap="round" />
+      <path
+        d="M47.5 42.5 54 49"
+        stroke="#0e2f6e"
+        strokeWidth="7"
         strokeLinecap="round"
       />
       <path
-        d="M7 16h11"
-        stroke="#7cb8ff"
-        strokeWidth="2.6"
+        d="M47.5 42.5 54 49"
+        stroke="#e9eef5"
+        strokeWidth="4"
         strokeLinecap="round"
+      />
+      <circle cx="40" cy="32" r="10" fill="#fff" fillOpacity=".3" />
+      <circle
+        cx="40"
+        cy="32"
+        r="10"
+        fill="none"
+        stroke="#0e2f6e"
+        strokeWidth="6"
       />
       <circle
-        cx="21"
-        cy="16"
-        r="5.6"
+        cx="40"
+        cy="32"
+        r="10"
         fill="none"
-        stroke="#4a90f0"
-        strokeWidth="2.8"
+        stroke="#fff"
+        strokeWidth="3.5"
+      />
+      <path
+        d="M8 15a10 10 0 0 1 10-9h28a10 10 0 0 1 10 9c0 7-11 11-24 11S8 22 8 15Z"
+        fill="#fff"
+        fillOpacity=".45"
       />
     </svg>
   );
