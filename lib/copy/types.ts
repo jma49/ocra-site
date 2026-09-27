@@ -32,6 +32,8 @@ export interface Copy {
     title: string;
     body: string;
     items: { title: string; body: string }[];
+    // Words inside the small illustrations; code tokens stay untranslated.
+    visuals: { outOfScope: string[]; machine: string[]; located: string };
   };
   anatomy: {
     title: string;
