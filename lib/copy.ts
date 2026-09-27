@@ -2,7 +2,6 @@ export type StageKind = "code" | "model" | "planned";
 
 export interface Copy {
   hero: {
-    status: string;
     title: string;
     subtitle: string;
     start: string;
@@ -60,7 +59,6 @@ export interface Copy {
 
 const en: Copy = {
   hero: {
-    status: "M1–M4 shipped · CLI and GitHub Action · Apache-2.0",
     title: "A code reviewer that reads before it comments.",
     subtitle:
       "ocra splits a change into focused review tasks. Each agent can only read your repository, has to quote the code it means, and must say what it checked. Most runs end with a handful of findings. Some end with none, and that is fine.",
@@ -233,7 +231,6 @@ const en: Copy = {
 
 const zh: Copy = {
   hero: {
-    status: "M1–M4 已发布 · CLI 与 GitHub Action · Apache-2.0",
     title: "先读懂代码，\n再开口的代码审查。",
     subtitle:
       "ocra 把一次改动拆成几个聚焦的审查任务。每个 agent 只能读你的仓库，必须引用它说的那段代码，还要交代自己查过什么。多数时候你会收到几条意见，有时一条也没有，这也是正常结果。",
