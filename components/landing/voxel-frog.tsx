@@ -6,7 +6,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { LogoMark } from "@/components/logo";
 import { voxelFrog } from "@/lib/voxel-frog";
 
-const INTRO_FRAMES = 110;
+const INTRO_FRAMES = 100;
 const CAMERA_DISTANCE = 22;
 const START_ANGLE = 0.2 * Math.PI;
 const TARGET = new THREE.Vector3(0, 5, 0);
@@ -87,16 +87,14 @@ export function VoxelFrog() {
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.copy(TARGET);
-    controls.enableZoom = false;
-    controls.enablePan = false;
     controls.autoRotate = !reduced;
-    controls.autoRotateSpeed = 1.6;
+    controls.autoRotateSpeed = 2;
 
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
       const size = Math.max(1, Math.min(width, height));
       renderer.setSize(size, size);
-      const scale = 11;
+      const scale = 14;
       camera.left = -scale;
       camera.right = scale;
       camera.top = scale;
@@ -110,7 +108,7 @@ export function VoxelFrog() {
     let visible = true;
     const tick = () => {
       if (frame <= INTRO_FRAMES) {
-        const spin = -easeOutCirc(frame / (INTRO_FRAMES + 10)) * Math.PI * 12;
+        const spin = -easeOutCirc(frame / (INTRO_FRAMES + 20)) * Math.PI * 20;
         camera.position.set(
           start.x * Math.cos(spin) + start.z * Math.sin(spin),
           start.y,
@@ -154,7 +152,7 @@ export function VoxelFrog() {
     <div
       ref={ref}
       aria-hidden
-      className="relative mx-auto flex aspect-square w-[280px] cursor-grab items-center justify-center active:cursor-grabbing sm:w-[420px] md:w-[480px]"
+      className="relative mx-auto flex aspect-square w-[240px] cursor-grab items-center justify-center active:cursor-grabbing sm:w-[360px] md:w-[420px]"
     >
       {state === "loading" ? (
         <span className="absolute size-8 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
