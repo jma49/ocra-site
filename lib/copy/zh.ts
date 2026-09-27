@@ -130,12 +130,30 @@ export const zh: Copy = {
   },
   anatomy: {
     title: "一条意见长什么样",
-    body: "信息刚好够你在几秒内决定修还是忽略。",
+    body: "PR 上的一条行内评论，信息刚好够你在几秒内决定修还是忽略。之后怎么处理，取决于代码和审查者。",
+    example: "示例 PR",
     callouts: {
-      quote: "agent 引用的那一行",
-      lines: "ocra 定位到的位置",
-      evidence: "agent 用工具查证过的事实",
+      quote: "agent 引用的那一行，由 ocra 在 diff 里定位",
+      lines: "严重程度、是否经过核查确认，以及是哪个审查员发现的",
+      verified: "用平实的话说明错在哪里",
       suggestion: "有必要时，最小的修复",
+    },
+    states: {
+      reported: {
+        tab: "已报告",
+        text: "下一次 push 时，只要这段代码没变，这条问题就保持打开，即使没有审查员再报一次。同样的代码，结论不会变。",
+      },
+      fixed: {
+        tab: "已修复",
+        text: "问题指向的那一行在新提交里已经不存在，ocra 会自己关闭这个讨论串。这是它认定已修复的唯一依据。",
+        resolved: "github-actions 关闭了这个讨论",
+      },
+      dismissed: {
+        tab: "已驳回",
+        text: "维护者拒绝了这条问题。ocra 不再报告它，它也不再计入结论，除非它以更高的严重程度再次出现。PR 作者本人不能这样做。",
+        reply: "Won't fix：这个服务里的 expiresAt 存的是毫秒。",
+        resolved: "维护者关闭了这个讨论",
+      },
     },
   },
   plugins: {
