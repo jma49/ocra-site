@@ -127,6 +127,15 @@ export const en: Copy = {
         body: "Give each tier a list of models. Overloads move on to the next model, a model that keeps failing is paused for a while, short rate limits are waited out, and a model out of quota is dropped for the rest of the run.",
       },
     ],
+    visuals: {
+      outOfScope: ["style", "speculation", "missing tests", "untouched code"],
+      machine: [
+        "global OpenCode config",
+        "installed skills",
+        "instruction files",
+      ],
+      located: "located",
+    },
   },
   anatomy: {
     title: "What a finding looks like",
