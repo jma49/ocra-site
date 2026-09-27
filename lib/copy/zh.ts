@@ -211,6 +211,10 @@ export const zh: Copy = {
     copy: "复制",
     copied: "已复制",
     docs: "阅读快速上手",
+    tabs: { cli: "本地 CLI", action: "GitHub Action" },
+    actionNote:
+      "保存为 .github/workflows/ocra.yml，并把模型 key 存为仓库 secret。之后每个 PR 都会收到行内评论和一条摘要。",
+    actionDocs: "阅读 GitHub 指南",
   },
   footer: {
     tagline: "先读代码再下结论的开源代码审查。",
