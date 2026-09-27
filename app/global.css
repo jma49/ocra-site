@@ -33,7 +33,6 @@
   --code-comment: #737373;
   --code-keyword: #7c3aed;
   --code-string: #0b7a5c;
-  --grid-line: rgb(0 0 0 / 0.045);
 
   --color-fd-background: var(--bg);
   --color-fd-foreground: var(--fg);
@@ -71,7 +70,6 @@
   --code-comment: #71717a;
   --code-keyword: #c4b5fd;
   --code-string: var(--brand);
-  --grid-line: rgb(255 255 255 / 0.05);
 
   --color-fd-muted: #18181b;
   --color-fd-secondary: #18181b;
@@ -113,17 +111,23 @@ html > body[data-scroll-locked] {
     background: var(--bg);
   }
 
-  /* A faint grid behind the hero, fading out downwards. */
-  .hero-grid {
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(
-      ellipse 80% 70% at 50% 0%,
-      black 30%,
-      transparent 75%
-    );
+  /* The wave field fades out towards the text and the section's edges. */
+  .hero-field {
+    mask-image:
+      linear-gradient(
+        to bottom,
+        transparent 20%,
+        black 55%,
+        black 88%,
+        transparent
+      ),
+      linear-gradient(
+        to right,
+        transparent 8%,
+        rgb(0 0 0 / 0.25) 30%,
+        black 58%
+      );
+    mask-composite: intersect;
   }
 
   .hero-glow {

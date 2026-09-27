@@ -5,27 +5,21 @@ import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
 import { localePath, repoUrl } from "@/lib/shared";
 import { Terminal } from "./terminal";
+import { WaveField } from "./wave-field";
 
 export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
   return (
     <div className="relative overflow-hidden border-b border-[var(--border)]">
+      <WaveField className="hero-field pointer-events-none absolute inset-0 size-full" />
       <div
         aria-hidden
-        className="hero-grid pointer-events-none absolute inset-0"
-      />
-      <div
-        aria-hidden
-        className="hero-glow pointer-events-none absolute -top-40 right-[-10%] h-[520px] w-[640px] opacity-70"
+        className="hero-glow pointer-events-none absolute -top-40 right-[-5%] h-[460px] w-[560px] opacity-50"
       />
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 pt-20 pb-24 sm:px-8 md:pt-28 lg:grid-cols-[1fr_1.05fr]">
         <div className="min-w-0">
-          <p className="flex items-center gap-2 text-sm text-[var(--fg-muted)]">
-            <span className="size-1.5 rounded-full bg-[var(--accent)]" />
-            {copy.status}
-          </p>
           <h1
             className={cn(
-              "mt-6 whitespace-pre-line text-balance font-semibold tracking-[-0.045em]",
+              "whitespace-pre-line text-balance font-semibold tracking-[-0.045em]",
               locale === "zh"
                 ? "text-[2.3rem]/[1.15] sm:text-[3.3rem]/[1.15]"
                 : "text-[2.6rem]/[1.05] sm:text-[4rem]/[1.02]",
