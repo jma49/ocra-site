@@ -7,7 +7,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 - Next.js (App Router) + [Fumadocs](https://fumadocs.dev) + Tailwind CSS, deployed on Vercel.
 - Two languages: English at `/`, Chinese at `/zh`. Every page and every string exists in both.
 - `npm run lint` (Biome), `npx tsc --noEmit`, `npm run build`. CI runs all three.
-- **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Check changes on a local `next build && next start`; the maintainer deploys by hand with `gh workflow run site-deploy.yml` in the main repository (the Vercel deploy hook), or from the Vercel dashboard.
+- **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`; deploy only when the maintainer asks, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, through a logged-in Vercel CLI). Each deploy costs one build.
 
 | Path | Contents |
 |---|---|
@@ -47,6 +47,10 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 - The code is the documentation: no large comment blocks; comment only a non-obvious "why".
 - No source file over 500 lines.
 - Changes must work in light and dark mode and at phone width (390 px) without horizontal page scroll.
+
+## Handoff
+
+- The state of the project, the site included, is kept in the main repository's `docs/handoff.md`. Update it at the end of every task or batch of work, before reporting it done, without being asked.
 
 ## Git workflow
 
