@@ -4,18 +4,20 @@ import { GithubIcon } from "@/components/github-icon";
 import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
 import { localePath, repoUrl } from "@/lib/shared";
+import { FrogStage } from "./frog-stage";
 import { Terminal } from "./terminal";
-import { WaveField } from "./wave-field";
 
 export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
   return (
     <div className="relative overflow-hidden border-b border-[var(--border)]">
-      <WaveField className="hero-field pointer-events-none absolute inset-0 size-full" />
       <div
         aria-hidden
-        className="hero-glow pointer-events-none absolute -top-40 right-[-5%] h-[460px] w-[560px] opacity-50"
+        className="hero-glow pointer-events-none absolute top-0 left-1/2 h-[520px] w-[620px] -translate-x-1/2 opacity-60"
       />
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 pt-20 pb-24 sm:px-8 md:pt-28 lg:grid-cols-[1fr_1.05fr]">
+      <div className="relative -mb-6 pt-6 md:-mb-16 md:pt-8">
+        <FrogStage />
+      </div>
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-4 pb-24 sm:px-8 lg:grid-cols-[1fr_1.05fr]">
         <div className="min-w-0">
           <h1
             className={cn(
