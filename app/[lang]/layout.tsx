@@ -1,9 +1,9 @@
 import { i18nProvider } from "fumadocs-ui/i18n";
-import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
+import { Providers } from "@/components/providers";
 import { i18n, isLocale } from "@/lib/i18n";
 import { translations } from "@/lib/layout.shared";
 import "../global.css";
@@ -67,12 +67,12 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col font-sans antialiased">
-        <RootProvider
+        <Providers
           i18n={i18nProvider(translations, lang)}
           theme={{ defaultTheme: "system", disableTransitionOnChange: true }}
         >
           {children}
-        </RootProvider>
+        </Providers>
       </body>
     </html>
   );

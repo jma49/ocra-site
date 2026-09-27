@@ -2,7 +2,7 @@
 
 import { ArrowRight, Check, Copy as CopyIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Panel } from "@/components/ui/panel";
 import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
@@ -51,16 +51,20 @@ export function GetStarted({
   locale: string;
 }) {
   const [tab, setTab] = useState<Tab>("cli");
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
+  const reset = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(reset.current), []);
   const snippet = snippets[tab];
   const onCopy = async () => {
+    clearTimeout(reset.current);
     try {
       await navigator.clipboard.writeText(snippet.text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      setCopied("done");
     } catch {
-      setCopied(false);
+      // Clipboard access can be denied; say so instead of doing nothing.
+      setCopied("failed");
     }
+    reset.current = setTimeout(() => setCopied("idle"), 2000);
   };
 
   return (
@@ -81,7 +85,7 @@ export function GetStarted({
               aria-pressed={t === tab}
               onClick={() => {
                 setTab(t);
-                setCopied(false);
+                setCopied("idle");
               }}
               className={cn(
                 "focus-ring rounded-[4px] px-3 py-1.5 text-sm transition-colors",
@@ -124,14 +128,20 @@ export function GetStarted({
             <span className="relative size-3" aria-hidden>
               <CopyIcon
                 className="swap-icon absolute inset-0 size-3"
-                data-shown={!copied}
+                data-shown={copied !== "done"}
               />
               <Check
                 className="swap-icon absolute inset-0 size-3"
-                data-shown={copied}
+                data-shown={copied === "done"}
               />
             </span>
-            <span aria-live="polite">{copied ? copy.copied : copy.copy}</span>
+            <span aria-live="polite">
+              {copied === "done"
+                ? copy.copied
+                : copied === "failed"
+                  ? copy.copyFailed
+                  : copy.copy}
+            </span>
           </button>
         }
       >

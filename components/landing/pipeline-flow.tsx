@@ -79,9 +79,9 @@ function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-md px-1.5 py-px text-[11px]",
+        "inline-flex items-center gap-1 rounded-md px-1.5 py-px font-sans text-[11px]",
         tone === "drop" &&
-          "border border-[var(--border)] text-[var(--fg-subtle)]",
+          "border border-dashed border-[var(--border-strong)] text-[var(--fg-muted)]",
         tone === "ok" && "verified",
         tone === "info" &&
           "border border-[var(--border)] text-[var(--fg-muted)]",
@@ -164,16 +164,23 @@ function Findings({ step, copy }: { step: number; copy: Flow }) {
           <li
             key={f.title}
             className={cn(
-              "rounded-lg border px-3 py-2 transition-opacity duration-300",
-              report ? "border-[var(--accent)]" : "border-[var(--border)]",
-              gone && "opacity-55",
+              "rounded-lg border px-3 py-2",
+              report && "border-[var(--accent)]",
+              !report && !gone && "border-[var(--border)]",
+              gone &&
+                "border-dashed border-[var(--border-strong)] bg-[var(--bg-subtle)]",
             )}
           >
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
               <span className="font-mono text-xs text-[var(--fg-subtle)]">
                 #{i + 1}
               </span>
-              <span className={cn("font-medium", gone && "line-through")}>
+              <span
+                className={cn(
+                  "font-medium",
+                  gone && "text-[var(--fg-muted)] line-through",
+                )}
+              >
                 {f.title}
               </span>
               {step >= 5 ? (
@@ -219,11 +226,11 @@ export function PipelineFlow({
   stages: { name: string; kind: StageKind; detail: string }[];
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const strip = useRef<HTMLOListElement>(null);
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [inView, setInView] = useState(false);
   const labels = [...stages.map((s) => s.name), copy.report];
-  const stage = step < stages.length ? stages[step] : undefined;
 
   useEffect(() => {
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
@@ -244,6 +251,20 @@ export function PipelineFlow({
     return () => clearInterval(timer);
   }, [playing, inView]);
 
+  // On phones the stage list scrolls sideways; keep the current stage in it.
+  useEffect(() => {
+    const list = strip.current;
+    const item = list?.children[step] as HTMLElement | undefined;
+    if (!list || !item || list.scrollWidth <= list.clientWidth) return;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    list.scrollTo({
+      left: item.offsetLeft - (list.clientWidth - item.offsetWidth) / 2,
+      behavior: reduced ? "auto" : "smooth",
+    });
+  }, [step]);
+
   const go = (next: number) => {
     setPlaying(false);
     setStep((next + STEPS) % STEPS);
@@ -251,7 +272,10 @@ export function PipelineFlow({
 
   return (
     <div ref={ref} className="grid md:grid-cols-[13rem_1fr]">
-      <ol className="flex gap-1 overflow-x-auto border-b border-[var(--border)] p-2 md:flex-col md:overflow-visible md:border-r md:border-b-0">
+      <ol
+        ref={strip}
+        className="relative flex gap-1 overflow-x-auto border-b max-md:[mask-image:linear-gradient(to_right,black_80%,transparent)] border-[var(--border)] p-2 md:flex-col md:overflow-visible md:border-r md:border-b-0"
+      >
         {labels.map((label, i) => {
           const kind = stages[i]?.kind;
           return (
@@ -268,7 +292,7 @@ export function PipelineFlow({
                     "text-[var(--fg-subtle)] hover:bg-[var(--bg-subtle)]",
                 )}
               >
-                <span className="w-5 font-mono text-[11px] opacity-70">
+                <span className="w-5 font-mono text-[11px]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="flex-1">{label}</span>
@@ -283,9 +307,9 @@ export function PipelineFlow({
           );
         })}
       </ol>
-      <div className="flex min-w-0 flex-col p-5 md:min-h-[32rem] md:p-6">
+      <div className="flex min-w-0 flex-col p-5 md:p-6">
         <div className="flex items-center justify-between gap-3">
-          <p className="font-mono text-xs text-[var(--fg-subtle)]">
+          <p className="min-w-0 truncate font-mono text-xs text-[var(--fg-subtle)]">
             {copy.label} · {step < FILE_STEPS ? copy.files : copy.findings}
           </p>
           <div className="flex items-center gap-1">
@@ -319,24 +343,37 @@ export function PipelineFlow({
             </button>
           </div>
         </div>
-        <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em]">
-          {labels[step]}
-        </h3>
-        <p className="mt-1.5 text-sm leading-relaxed text-[var(--fg-muted)]">
-          {copy.captions[step]}
-        </p>
-        <div className="mt-5 min-h-[15rem]">
-          {step < FILE_STEPS ? (
-            <Files step={step} copy={copy} />
-          ) : (
-            <Findings step={step} copy={copy} />
-          )}
+        {/* Every step is laid out in the same cell and only the current one
+            is visible, so the panel is as tall as the tallest step and does
+            not jump while the run plays. */}
+        <div className="mt-4 grid flex-1 [&>*]:[grid-area:1/1]">
+          {labels.map((label, i) => (
+            <div
+              key={label}
+              aria-hidden={i !== step}
+              className={cn("flex flex-col", i !== step && "invisible")}
+            >
+              <h3 className="text-xl font-semibold tracking-[-0.02em]">
+                {label}
+              </h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-[var(--fg-muted)]">
+                {copy.captions[i]}
+              </p>
+              <div className="mt-5 pb-5">
+                {i < FILE_STEPS ? (
+                  <Files step={i} copy={copy} />
+                ) : (
+                  <Findings step={i} copy={copy} />
+                )}
+              </div>
+              {stages[i] ? (
+                <p className="mt-auto border-t border-[var(--border)] pt-4 text-xs leading-relaxed text-[var(--fg-subtle)]">
+                  {stages[i].detail}
+                </p>
+              ) : null}
+            </div>
+          ))}
         </div>
-        {stage ? (
-          <p className="mt-auto border-t border-[var(--border)] pt-4 text-xs leading-relaxed text-[var(--fg-subtle)]">
-            {stage.detail}
-          </p>
-        ) : null}
         <div
           aria-hidden
           className="mt-4 h-0.5 overflow-hidden rounded-full bg-[var(--border)]"
