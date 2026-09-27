@@ -249,38 +249,6 @@ html > body[data-scroll-locked] {
   }
 }
 
-/* The pipeline walk-through: the cluster of tokens glides between stages
-   and dropped tokens fall away. */
-.flow-token {
-  transition-property: background-color, border-color, color, opacity;
-  transition-duration: 0.3s;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .flow-cluster {
-    transition: left 0.7s cubic-bezier(0.2, 0, 0, 1);
-  }
-
-  .flow-token-leaving {
-    animation: token-leave 0.9s ease-out forwards;
-  }
-}
-
-.flow-token-leaving {
-  opacity: 0.3;
-}
-
-@keyframes token-leave {
-  from {
-    opacity: 1;
-    transform: none;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(10px) scale(0.6);
-  }
-}
-
 /* Sections fade in on first view (see Reveal); pending is only set once
    the script has run, so nothing is hidden without JavaScript. */
 [data-reveal="pending"] > * {

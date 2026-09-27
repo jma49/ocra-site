@@ -8,7 +8,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   },
   { text: "[ocra] 2 bundle(s) (grouped)", tone: "dim" },
   {
-    text: "[ocra] 5 review task(s), 1 reviewer/bundle pair(s) skipped by scope",
+    text: "[ocra] 4 review task(s), 2 reviewer/bundle pair(s) skipped by scope",
     tone: "dim",
   },
   { text: "[ocra] security-1 completed in 9.2s · 0 finding(s)", tone: "ok" },

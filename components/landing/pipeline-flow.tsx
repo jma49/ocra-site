@@ -1,78 +1,237 @@
 "use client";
 
-import { Check, Pause, Play } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Check, ChevronLeft, ChevronRight, Pause, Play, X } from "lucide-react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
-import type { Copy } from "@/lib/copy";
+import type { Copy, StageKind } from "@/lib/copy";
 
-type TokenState = "file" | "finding" | "anchored" | "confirmed" | "leaving";
+type Flow = Copy["run"]["flow"];
+type Reason = keyof Flow["reasons"];
 
-// What sits at each step of the example run, keyed by token id. A token
-// marked "leaving" fades out at that step and is gone from the next one.
-// Files flow until Matrix; findings appear at Review.
-const SCRIPT: Record<string, TokenState>[] = [
-  { a: "file", b: "file", c: "file", d: "file", lock: "leaving" },
-  { a: "file", b: "file", c: "file", d: "file" },
-  { a: "file", b: "file", c: "file", d: "file" },
-  { a: "file", b: "file", c: "file", d: "file" },
-  { f1: "finding", f2: "finding", f3: "finding", f4: "finding" },
-  { f1: "anchored", f2: "anchored", f3: "anchored", f4: "anchored" },
-  { f1: "anchored", f2: "anchored", f3: "anchored", f4: "leaving" },
-  { f1: "confirmed", f2: "confirmed", f3: "leaving" },
-  { f1: "confirmed", f2: "leaving" },
-  { f1: "confirmed" },
+// The example run, step by step: which files or findings are on screen and
+// what happened to each. Steps 0–3 are about files, 4–9 about findings.
+// Removed items stay visible, struck through, with the reason.
+const FILES = [
+  "src/auth/session.ts",
+  "src/auth/token.ts",
+  "src/api/login.ts",
+  "docs/auth.md",
+  "package-lock.json",
+] as const;
+const BUNDLES = [
+  {
+    files: [0, 1, 2],
+    reviewers: ["correctness", "security", "performance"],
+    skipped: false,
+  },
+  { files: [3], reviewers: ["correctness"], skipped: true },
 ];
-const STEP_MS = 1600;
-const END_PAUSE_MS = 3200;
+const FINDINGS = [
+  {
+    title: "Every session is treated as expired",
+    reviewer: "correctness",
+    severity: "critical",
+    at: "session.ts:42",
+  },
+  {
+    title: "Expiry compares seconds with milliseconds",
+    reviewer: "security",
+    severity: "warning",
+    at: "session.ts:42",
+  },
+  {
+    title: "Token stays valid after logout",
+    reviewer: "security",
+    severity: "warning",
+    at: "token.ts:31",
+  },
+  {
+    title: "user may be undefined",
+    reviewer: "correctness",
+    severity: "warning",
+    at: "login.ts:17",
+  },
+];
+// When each removed finding goes, and why.
+const DROPPED: Record<number, { step: number; reason: Reason }> = {
+  3: { step: 6, reason: "memory" },
+  2: { step: 7, reason: "disproved" },
+  1: { step: 8, reason: "merged" },
+};
+const VERIFY_STEP = 7;
+const FILE_STEPS = 4;
+const STEPS = 10;
+const STEP_MS = 3200;
 
-function Token({ id, state }: { id: string; state: TokenState }) {
-  const square = id === "lock" || /^[a-d]$/.test(id);
+const shape: Record<StageKind, string> = {
+  code: "rounded-[2px] bg-current",
+  model: "rounded-full border-[1.5px] border-current",
+  planned: "rounded-full border border-dashed border-current",
+};
+
+function Tag({
+  tone,
+  children,
+}: {
+  tone: "drop" | "ok" | "info";
+  children: ReactNode;
+}) {
   return (
     <span
       className={cn(
-        "flow-token flex size-[18px] items-center justify-center",
-        square ? "rounded-[3px]" : "rounded-full",
-        state === "file" && "bg-[var(--fg-muted)]",
-        state === "finding" && "border-[1.5px] border-[var(--fg)]",
-        state === "anchored" && "bg-[var(--fg)]",
-        state === "confirmed" && "bg-[var(--accent)] text-[var(--bg)]",
-        state === "leaving" &&
-          "flow-token-leaving border-[1.5px] border-[var(--fg-subtle)]",
+        "inline-flex items-center gap-1 rounded-md px-1.5 py-px text-[11px]",
+        tone === "drop" &&
+          "border border-[var(--border)] text-[var(--fg-subtle)]",
+        tone === "ok" && "verified",
+        tone === "info" &&
+          "border border-[var(--border)] text-[var(--fg-muted)]",
       )}
     >
-      {state === "confirmed" ? (
-        <Check strokeWidth={3} className="size-3" />
-      ) : null}
+      {tone === "drop" ? <X className="size-3" /> : null}
+      {tone === "ok" ? <Check className="size-3" /> : null}
+      {children}
     </span>
+  );
+}
+
+function Files({ step, copy }: { step: number; copy: Flow }) {
+  if (step >= 2) {
+    return (
+      <div className="grid gap-3 sm:grid-cols-2">
+        {BUNDLES.map((bundle, b) => (
+          <div
+            key={bundle.files.join()}
+            className="rounded-lg border border-[var(--border)] p-3"
+          >
+            <p className="font-mono text-[11px] text-[var(--fg-subtle)]">
+              {copy.bundle} {b + 1}
+            </p>
+            <ul className="mt-2 space-y-1 font-mono text-xs">
+              {bundle.files.map((f) => (
+                <li key={f}>{FILES[f]}</li>
+              ))}
+            </ul>
+            {step >= 3 ? (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {bundle.reviewers.map((r) => (
+                  <Tag key={r} tone="info">
+                    {r}
+                  </Tag>
+                ))}
+                {bundle.skipped ? (
+                  <Tag tone="drop">security, performance · {copy.skipped}</Tag>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return (
+    <ul className="space-y-1.5 font-mono text-xs">
+      {FILES.map((file) => {
+        const lock = file === "package-lock.json";
+        return (
+          <li key={file} className="flex flex-wrap items-center gap-2">
+            <span
+              className={cn(lock && "text-[var(--fg-subtle)] line-through")}
+            >
+              {file}
+            </span>
+            {lock ? <Tag tone="drop">{copy.reasons.lock}</Tag> : null}
+          </li>
+        );
+      })}
+      {step >= 1 ? (
+        <li className="pt-2">
+          <Tag tone="info">{copy.tier}</Tag>
+        </li>
+      ) : null}
+    </ul>
+  );
+}
+
+function Findings({ step, copy }: { step: number; copy: Flow }) {
+  const report = step === STEPS - 1;
+  return (
+    <ol className="space-y-2">
+      {FINDINGS.map((f, i) => {
+        const dropped = DROPPED[i];
+        const gone = dropped !== undefined && step >= dropped.step;
+        if (report && gone) return null;
+        return (
+          <li
+            key={f.title}
+            className={cn(
+              "rounded-lg border px-3 py-2 transition-opacity duration-300",
+              report ? "border-[var(--accent)]" : "border-[var(--border)]",
+              gone && "opacity-55",
+            )}
+          >
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+              <span className="font-mono text-xs text-[var(--fg-subtle)]">
+                #{i + 1}
+              </span>
+              <span className={cn("font-medium", gone && "line-through")}>
+                {f.title}
+              </span>
+              {step >= 5 ? (
+                <span className="font-mono text-xs text-[var(--fg-subtle)]">
+                  {f.at}
+                </span>
+              ) : null}
+            </div>
+            <div className="mt-1.5 flex flex-wrap gap-1.5">
+              <Tag tone="info">{f.reviewer}</Tag>
+              <span
+                className={cn(
+                  "rounded-md px-1.5 py-px text-[11px]",
+                  f.severity === "critical"
+                    ? "severity-critical"
+                    : "border border-[var(--border)] text-[var(--fg-muted)]",
+                )}
+              >
+                {f.severity}
+              </span>
+              {gone ? (
+                <Tag tone="drop">{copy.reasons[dropped.reason]}</Tag>
+              ) : null}
+              {!gone && step >= VERIFY_STEP ? (
+                <Tag tone="ok">{copy.reasons.verified}</Tag>
+              ) : null}
+            </div>
+          </li>
+        );
+      })}
+      {report ? (
+        <li className="pt-1 text-sm font-medium">{copy.verdict}</li>
+      ) : null}
+    </ol>
   );
 }
 
 export function PipelineFlow({
   copy,
   stages,
-  step,
-  onStep,
 }: {
-  copy: Copy["run"]["flow"];
-  stages: string[];
-  step: number;
-  onStep: (step: number, playing: boolean) => void;
+  copy: Flow;
+  stages: { name: string; kind: StageKind; detail: string }[];
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [inView, setInView] = useState(false);
-  const columns = stages.length + 1;
-  const tokens = SCRIPT[step] ?? {};
+  const labels = [...stages.map((s) => s.name), copy.report];
+  const stage = step < stages.length ? stages[step] : undefined;
 
   useEffect(() => {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (!reduced) setPlaying(true);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      setPlaying(true);
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(!!entry?.isIntersecting),
+      ([e]) => setInView(!!e?.isIntersecting),
       {
-        threshold: 0.4,
+        threshold: 0.35,
       },
     );
     if (ref.current) observer.observe(ref.current);
@@ -81,96 +240,113 @@ export function PipelineFlow({
 
   useEffect(() => {
     if (!playing || !inView) return;
-    const last = step >= SCRIPT.length - 1;
-    const timer = setTimeout(
-      () => onStep(last ? 0 : step + 1, true),
-      last ? END_PAUSE_MS : STEP_MS,
-    );
-    return () => clearTimeout(timer);
-  }, [playing, inView, step, onStep]);
+    const timer = setInterval(() => setStep((s) => (s + 1) % STEPS), STEP_MS);
+    return () => clearInterval(timer);
+  }, [playing, inView]);
 
-  const labels = [...stages, copy.report];
+  const go = (next: number) => {
+    setPlaying(false);
+    setStep((next + STEPS) % STEPS);
+  };
+
   return (
-    <div ref={ref} className="border-b border-[var(--border)]">
-      <div className="flex items-center justify-between gap-3 px-5 pt-4 text-xs text-[var(--fg-subtle)]">
-        <span className="font-mono">{copy.label}</span>
-        <button
-          type="button"
-          onClick={() => setPlaying((p) => !p)}
-          className="btn-outline btn-sm"
-          aria-label={playing ? copy.pause : copy.play}
-        >
-          {playing ? <Pause className="size-3" /> : <Play className="size-3" />}
-          {playing ? copy.pause : copy.play}
-        </button>
-      </div>
-      <div className="overflow-x-auto px-3 pb-5">
-        <div className="min-w-[720px]">
-          <div className="relative h-20" aria-hidden>
-            <div
-              className="flow-cluster absolute top-1/2 flex max-w-[6.5rem] -translate-x-1/2 -translate-y-1/2 flex-wrap justify-center gap-1.5"
-              style={{ left: `${((step + 0.5) / columns) * 100}%` }}
-            >
-              {Object.entries(tokens).map(([id, state]) => (
-                <Token key={id} id={id} state={state} />
-              ))}
-            </div>
-          </div>
-          <ol
-            className="grid"
-            style={{
-              gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-            }}
-          >
-            {labels.map((label, i) => (
-              <li key={label} className="flex flex-col items-center gap-2">
-                <span
-                  aria-hidden
-                  className="relative flex h-3 w-full items-center justify-center"
-                >
-                  <span
-                    className={cn(
-                      "absolute inset-x-0 h-px",
-                      i <= step
-                        ? "bg-[var(--fg)]"
-                        : "bg-[var(--border-strong)]",
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      "relative size-2.5 rounded-full border-[1.5px]",
-                      i < step && "border-[var(--fg)] bg-[var(--fg)]",
-                      i === step &&
-                        "border-[var(--accent)] bg-[var(--bg)] ring-4 ring-[var(--accent-soft)]",
-                      i > step &&
-                        "border-[var(--border-strong)] bg-[var(--bg)]",
-                    )}
-                  />
+    <div ref={ref} className="grid md:grid-cols-[13rem_1fr]">
+      <ol className="flex gap-1 overflow-x-auto border-b border-[var(--border)] p-2 md:flex-col md:overflow-visible md:border-r md:border-b-0">
+        {labels.map((label, i) => {
+          const kind = stages[i]?.kind;
+          return (
+            <li key={label} className="shrink-0">
+              <button
+                type="button"
+                aria-pressed={i === step}
+                onClick={() => go(i)}
+                className={cn(
+                  "focus-ring flex w-full items-center gap-2.5 rounded-[4px] px-2.5 py-1.5 text-left text-sm transition-colors",
+                  i === step && "bg-[var(--fg)] text-[var(--bg)]",
+                  i < step && "text-[var(--fg)] hover:bg-[var(--bg-subtle)]",
+                  i > step &&
+                    "text-[var(--fg-subtle)] hover:bg-[var(--bg-subtle)]",
+                )}
+              >
+                <span className="w-5 font-mono text-[11px] opacity-70">
+                  {String(i + 1).padStart(2, "0")}
                 </span>
-                <button
-                  type="button"
-                  aria-pressed={i === step}
-                  onClick={() => {
-                    setPlaying(false);
-                    onStep(i, false);
-                  }}
-                  className={cn(
-                    "focus-ring rounded-[6px] px-1.5 py-1 text-xs transition-colors",
-                    i === step
-                      ? "bg-[var(--fg)] text-[var(--bg)]"
-                      : "text-[var(--fg-muted)] hover:text-[var(--fg)]",
-                  )}
-                >
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ol>
+                <span className="flex-1">{label}</span>
+                {kind ? (
+                  <span
+                    aria-hidden
+                    className={cn("size-2 shrink-0", shape[kind])}
+                  />
+                ) : null}
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+      <div className="flex min-w-0 flex-col p-5 md:min-h-[32rem] md:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-mono text-xs text-[var(--fg-subtle)]">
+            {copy.label} · {step < FILE_STEPS ? copy.files : copy.findings}
+          </p>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => go(step - 1)}
+              className="btn-outline btn-sm"
+              aria-label={copy.previous}
+            >
+              <ChevronLeft className="size-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setPlaying((p) => !p)}
+              className="btn-outline btn-sm"
+              aria-label={playing ? copy.pause : copy.play}
+            >
+              {playing ? (
+                <Pause className="size-3" />
+              ) : (
+                <Play className="size-3" />
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => go(step + 1)}
+              className="btn-outline btn-sm"
+              aria-label={copy.next}
+            >
+              <ChevronRight className="size-3.5" />
+            </button>
+          </div>
+        </div>
+        <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em]">
+          {labels[step]}
+        </h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-[var(--fg-muted)]">
+          {copy.captions[step]}
+        </p>
+        <div className="mt-5 min-h-[15rem]">
+          {step < FILE_STEPS ? (
+            <Files step={step} copy={copy} />
+          ) : (
+            <Findings step={step} copy={copy} />
+          )}
+        </div>
+        {stage ? (
+          <p className="mt-auto border-t border-[var(--border)] pt-4 text-xs leading-relaxed text-[var(--fg-subtle)]">
+            {stage.detail}
+          </p>
+        ) : null}
+        <div
+          aria-hidden
+          className="mt-4 h-0.5 overflow-hidden rounded-full bg-[var(--border)]"
+        >
+          <div
+            className="h-full bg-[var(--accent)] transition-[width] duration-500"
+            style={{ width: `${((step + 1) / STEPS) * 100}%` }}
+          />
         </div>
       </div>
-      <p className="min-h-[3.5rem] px-5 pb-5 text-sm leading-relaxed text-[var(--fg-muted)]">
-        {copy.captions[step]}
-      </p>
     </div>
   );
 }
