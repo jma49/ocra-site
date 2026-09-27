@@ -36,11 +36,17 @@ export interface Copy {
   anatomy: {
     title: string;
     body: string;
+    example: string;
     callouts: {
       quote: string;
       lines: string;
-      evidence: string;
+      verified: string;
       suggestion: string;
+    };
+    states: {
+      reported: { tab: string; text: string };
+      fixed: { tab: string; text: string; resolved: string };
+      dismissed: { tab: string; text: string; reply: string; resolved: string };
     };
   };
   plugins: { title: string; body: string; points: string[]; cta: string };

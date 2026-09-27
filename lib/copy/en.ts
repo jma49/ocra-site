@@ -130,12 +130,31 @@ export const en: Copy = {
   },
   anatomy: {
     title: "What a finding looks like",
-    body: "Enough to decide in a few seconds whether to fix it or dismiss it.",
+    body: "An inline comment on the pull request, with enough to decide in a few seconds whether to fix it or dismiss it. What happens next is up to the code and the reviewers.",
+    example: "Example pull request",
     callouts: {
-      quote: "The line the agent quoted",
-      lines: "Where ocra located it",
-      evidence: "What the agent checked with its tools",
+      quote: "The line the agent quoted, found in the diff by ocra",
+      lines:
+        "Severity, whether the verifier confirmed it, and which reviewer found it",
+      verified: "Why it is wrong, in plain words",
       suggestion: "The smallest fix, when there is one",
+    },
+    states: {
+      reported: {
+        tab: "Reported",
+        text: "The finding stays open on the next push as long as its code is unchanged, even if no reviewer reports it again, so the same code keeps the same verdict.",
+      },
+      fixed: {
+        tab: "Fixed",
+        text: "The line the finding pointed at is gone from the new commit, so ocra resolves the thread itself. That is the only evidence it takes for a fix.",
+        resolved: "github-actions resolved this conversation",
+      },
+      dismissed: {
+        tab: "Dismissed",
+        text: "A maintainer declined it. ocra stops reporting it and it no longer counts towards the verdict, unless it comes back more severe. The pull request's own author cannot do this.",
+        reply: "Won't fix: this service stores expiresAt in milliseconds.",
+        resolved: "maintainer resolved this conversation",
+      },
     },
   },
   plugins: {
