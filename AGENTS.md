@@ -14,7 +14,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `app/[lang]/(home)` | Landing page |
 | `app/[lang]/docs` | Rendered user manual |
 | `components/landing/` | Landing page sections |
-| `lib/copy.ts` | All landing page copy, English and Chinese side by side |
+| `lib/copy/` | All landing page copy: `types.ts`, then `en.ts` and `zh.ts` with the same shape |
 | `scripts/sync-manual.mjs` | Copies the manual into `content/docs` before `dev` and `build` |
 
 ## The manual is not written here
