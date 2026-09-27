@@ -21,7 +21,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "" },
   { text: "src/auth/session.ts" },
   {
-    text: "  critical   L42       Every session is treated as expired [verified]",
+    text: "  critical   L42       Every session is treated as expired [verified] #a41c9e03",
     tone: "warn",
   },
   { text: "    isExpired() compares expiresAt in seconds with Date.now() in" },
@@ -29,7 +29,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "    Suggestion: return session.expiresAt * 1000 < Date.now();" },
   { text: "" },
   {
-    text: "1 finding(s) (1 critical) · 48,912 in / 1,106 out · $0.0412",
+    text: "1 finding(s) (1 critical, 0 warning, 0 suggestion) · tokens: 48912 in (31040 cached), 1106 out, 212 reasoning · $0.0412",
     tone: "dim",
   },
 ];

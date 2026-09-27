@@ -115,18 +115,25 @@ const en: Copy = {
           "The quote is matched in the changed hunks, then the whole file, then the other changed files. If nothing matches, the finding stays on the file instead of disappearing.",
       },
       {
+        name: "Filter",
+        kind: "code",
+        summary: "Drop what the team already settled",
+        detail:
+          "Findings the repository's memory accepts, and those a reviewer dismissed on the pull request, are removed before any model is paid to check them. On a pull request, earlier findings are compared too: one counts as fixed only when the code it pointed at is gone.",
+      },
+      {
         name: "Verify",
         kind: "model",
         summary: "Check each finding against the diff",
         detail:
-          "A model rereads each file's findings next to its diff and the lines around them. A finding is dropped only when that code proves it wrong, and the reason is kept in the report.",
+          "A model rereads each file's findings next to its diff and the lines around them. A finding is dropped only when that code proves it wrong, with the reason kept in the report; the rest are marked confirmed or unconfirmed.",
       },
       {
         name: "Judge",
         kind: "model",
         summary: "Merge duplicates, settle severity",
         detail:
-          "A stronger model reads every reviewer's findings together, merges the same root cause, drops nitpicks and fixes severities. The verdict itself comes from a fixed rubric, so the same findings always get the same verdict.",
+          "A stronger model reads every reviewer's findings together, merges the same root cause, drops nitpicks and fixes severities. The verdict itself comes from a fixed rubric, so the same findings always get the same verdict, and only a critical finding the verifier confirmed can block.",
       },
     ],
   },
@@ -156,7 +163,7 @@ const en: Copy = {
       },
       {
         title: "When a model falls over, the next one takes the task.",
-        body: "Give each tier a list of models. Overloads and quota errors move on; a model that keeps failing is skipped for the rest of the run.",
+        body: "Give each tier a list of models. Overloads move on to the next model, a model that keeps failing is paused for a while, short rate limits are waited out, and a model out of quota is dropped for the rest of the run.",
       },
     ],
   },
@@ -172,7 +179,7 @@ const en: Copy = {
   },
   plugins: {
     title: "Your team's rules, as a plugin",
-    body: "The Git adapter, the OpenCode runtime and the reviewer that ships today are plugins too. Yours get the same small contract: register rules, reviewers, tools or listeners, and receive your own settings.",
+    body: "The Git and GitHub adapters, the OpenCode runtime and the three reviewers that ship today are plugins too. Yours get the same small contract: register rules, reviewers, tools or listeners, and receive your own settings.",
     points: [
       "Three lifecycle hooks, run in a fixed order",
       "Settings validated per plugin",
@@ -201,7 +208,7 @@ const en: Copy = {
       {
         milestone: "M3",
         title: "GitHub",
-        body: "ocra review --pr and a GitHub Action: inline comments, one summary comment, re-review that resolves fixed threads and respects dismissals.",
+        body: "ocra review --pr and a GitHub Action: inline comments, one summary comment, and re-reviews of only what changed since the last push that resolve fixed threads and respect dismissals.",
         state: "shipped",
         done: true,
       },
@@ -287,18 +294,25 @@ const zh: Copy = {
           "引用的代码依次在改动过的代码段、整个文件、其他改动文件里匹配。都匹配不上，问题就挂在文件上，而不是消失。",
       },
       {
+        name: "Filter",
+        kind: "code",
+        summary: "去掉团队已经定过的问题",
+        detail:
+          "仓库记忆里已接受的问题、PR 上被审查者驳回的问题，会在花钱让模型核查之前就去掉。审查 PR 时还会和上一次的结果对比：只有问题指向的代码已经不在了，才算修复。",
+      },
+      {
         name: "Verify",
         kind: "model",
         summary: "对照 diff 核查每条问题",
         detail:
-          "模型把每个文件的问题和它的 diff、问题附近的代码放在一起重读。只有当代码能证明某条问题是错的，它才会被删掉，原因会留在报告里。",
+          "模型把每个文件的问题和它的 diff、问题附近的代码放在一起重读。只有当代码能证明某条问题是错的，它才会被删掉，原因会留在报告里；其余的标为已确认或未确认。",
       },
       {
         name: "Judge",
         kind: "model",
         summary: "合并重复，定下严重程度",
         detail:
-          "由更强的模型通读所有审查员的意见：合并同一根因，去掉吹毛求疵，校准严重程度。结论本身由固定规则给出，相同的问题总会得到相同的结论。",
+          "由更强的模型通读所有审查员的意见：合并同一根因，去掉吹毛求疵，校准严重程度。结论本身由固定规则给出，相同的问题总会得到相同的结论，而且只有经核查确认的 critical 才能拦下改动。",
       },
     ],
   },
@@ -328,7 +342,7 @@ const zh: Copy = {
       },
       {
         title: "一个模型倒下，下一个接手。",
-        body: "给每个层级配一串模型。遇到过载或额度用完就换下一个；反复失败的模型在本次运行里会被跳过。",
+        body: "给每个层级配一串模型。遇到过载就换下一个；反复失败的模型会暂停一段时间，短暂限流会等待后重试，额度用尽的模型在本次运行里不再使用。",
       },
     ],
   },
@@ -344,7 +358,7 @@ const zh: Copy = {
   },
   plugins: {
     title: "把团队规范写成插件",
-    body: "Git 适配器、OpenCode 运行时和目前唯一的审查员本身也是插件。你写的插件用的是同一套接口：注册规则、审查员、工具或事件监听，并拿到只属于自己的设置。",
+    body: "Git 和 GitHub 适配器、OpenCode 运行时，以及目前自带的三个审查员，本身也是插件。你写的插件用的是同一套接口：注册规则、审查员、工具或事件监听，并拿到只属于自己的设置。",
     points: [
       "三个生命周期钩子，按固定顺序执行",
       "每个插件的设置单独校验",
@@ -373,7 +387,7 @@ const zh: Copy = {
       {
         milestone: "M3",
         title: "GitHub",
-        body: "ocra review --pr 和 GitHub Action：行内评论、一条摘要评论，复审时自动关闭已修复的评论串，并尊重人工驳回。",
+        body: "ocra review --pr 和 GitHub Action：行内评论、一条摘要评论；之后的 push 只复审改动过的部分，自动关闭已修复的评论串，并尊重人工驳回。",
         state: "已发布",
         done: true,
       },
