@@ -1,7 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
+import {
+  AmbientLight,
+  BoxGeometry,
+  Color,
+  DirectionalLight,
+  InstancedMesh,
+  type Material,
+  Matrix4,
+  MeshLambertMaterial,
+  OrthographicCamera,
+  Scene,
+  SRGBColorSpace,
+  Vector3,
+  WebGLRenderer,
+} from "three";
 import { LogoMark } from "@/components/logo";
 import { voxelFrog } from "@/lib/voxel-frog";
 
@@ -13,11 +27,11 @@ const START_ANGLE = 0.2 * Math.PI;
 const RADIUS = 20;
 const HEIGHT = 8.8;
 const AUTO_ROTATE = ((2 * Math.PI) / 60 / 60) * 2;
-const TARGET = new THREE.Vector3(0, 5, 0);
+const TARGET = new Vector3(0, 5, 0);
 
 const easeOutCirc = (x: number) => Math.sqrt(1 - (x - 1) ** 4);
 
-function frogMesh(): THREE.InstancedMesh {
+function frogMesh(): InstancedMesh {
   const voxels = voxelFrog();
   const filled = new Set(voxels.map((v) => `${v.x},${v.y},${v.z}`));
   // Voxels enclosed on all six sides are never seen.
@@ -34,13 +48,13 @@ function frogMesh(): THREE.InstancedMesh {
         filled.has(`${v.x + dx},${v.y + dy},${v.z + dz}`),
       ),
   );
-  const mesh = new THREE.InstancedMesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshStandardMaterial({ roughness: 0.85, metalness: 0 }),
+  const mesh = new InstancedMesh(
+    new BoxGeometry(1, 1, 1),
+    new MeshLambertMaterial(),
     visible.length,
   );
-  const matrix = new THREE.Matrix4();
-  const color = new THREE.Color();
+  const matrix = new Matrix4();
+  const color = new Color();
   visible.forEach((v, i) => {
     matrix.makeTranslation(v.x, v.y, v.z);
     mesh.setMatrixAt(i, matrix);
@@ -58,9 +72,13 @@ export function VoxelFrog() {
   useEffect(() => {
     const container = ref.current;
     if (!container) return;
-    let renderer: THREE.WebGLRenderer;
+    let renderer: WebGLRenderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: "low-power",
+      });
     } catch {
       setState("fallback");
       return;
@@ -69,18 +87,18 @@ export function VoxelFrog() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.outputColorSpace = SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
-    const scene = new THREE.Scene();
+    const scene = new Scene();
     const mesh = frogMesh();
     scene.add(mesh);
-    scene.add(new THREE.AmbientLight(0xffffff, 1.6));
-    const sun = new THREE.DirectionalLight(0xffffff, 1.8);
+    scene.add(new AmbientLight(0xffffff, 1.6));
+    const sun = new DirectionalLight(0xffffff, 1.8);
     sun.position.set(6, 14, 10);
     scene.add(sun);
 
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
+    const camera = new OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
     const baseElevation = Math.atan2(HEIGHT, RADIUS);
     const view = {
       angle: START_ANGLE,
@@ -180,7 +198,7 @@ export function VoxelFrog() {
       canvas.removeEventListener("pointerleave", onLeave);
       canvas.removeEventListener("pointercancel", onLeave);
       mesh.geometry.dispose();
-      (mesh.material as THREE.Material).dispose();
+      (mesh.material as Material).dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
