@@ -111,25 +111,6 @@ html > body[data-scroll-locked] {
     background: var(--bg);
   }
 
-  /* The wave field fades out towards the text and the section's edges. */
-  .hero-field {
-    mask-image:
-      linear-gradient(
-        to bottom,
-        transparent 20%,
-        black 55%,
-        black 88%,
-        transparent
-      ),
-      linear-gradient(
-        to right,
-        transparent 8%,
-        rgb(0 0 0 / 0.25) 30%,
-        black 58%
-      );
-    mask-composite: intersect;
-  }
-
   .hero-glow {
     background: radial-gradient(
       closest-side,

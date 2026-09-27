@@ -1,4 +1,3 @@
-import { PeekingFrog } from "@/components/logo";
 import { Panel } from "@/components/ui/panel";
 
 const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
@@ -44,8 +43,7 @@ const tones = {
 
 export function Terminal({ label }: { label: string }) {
   return (
-    <div className="relative min-w-0 pt-10">
-      <PeekingFrog className="absolute top-0 right-10 z-10 w-24" />
+    <div className="relative min-w-0">
       <Panel label={`ocra review — ${label}`} dark>
         <pre className="terminal m-0 overflow-x-auto whitespace-pre-wrap p-5 font-mono text-[11.5px] leading-[1.7]">
           {lines.map((line, i) => (

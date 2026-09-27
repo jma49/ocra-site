@@ -59,15 +59,6 @@ export function LogoMark({ className = "size-7" }: { className?: string }) {
   );
 }
 
-// The frog looking over an edge, for the top of a panel.
-export function PeekingFrog({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 6 64 28" aria-hidden="true" className={className}>
-      <FrogHead />
-    </svg>
-  );
-}
-
 export function Logo() {
   return (
     <span className="inline-flex items-center gap-2">
