@@ -203,6 +203,27 @@ export const zh: Copy = {
         state: "已发布",
         done: true,
       },
+      {
+        milestone: "下一步",
+        title: "可度量的质量",
+        body: "用更强的模型在 AACR-Bench 上测出准确率和召回率的基线，再据此调优提示词和各个阶段。",
+        state: "规划中",
+        done: false,
+      },
+      {
+        milestone: "下一步",
+        title: "更深入的审查",
+        body: "文档和 AGENTS.md 审查员、--ultra 的计划阶段和调用方影响分析、难以定位的问题交给模型重新定位，以及由 Judge 重新评估“我不同意”的回复。",
+        state: "规划中",
+        done: false,
+      },
+      {
+        milestone: "下一步",
+        title: "发布到 npm",
+        body: "发布 @open-cr-agent 的各个包；目前 ocra 需要从源码安装。",
+        state: "规划中",
+        done: false,
+      },
     ],
   },
   start: {
