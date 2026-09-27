@@ -36,7 +36,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
 ];
 
 const tones = {
-  dim: "text-white/45",
+  dim: "text-white/55",
   ok: "text-[#7fffd4]",
   warn: "text-amber-300",
   cmd: "text-white",
