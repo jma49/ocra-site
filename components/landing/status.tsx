@@ -5,7 +5,7 @@ import { Heading, Section } from "./section";
 export function Status({ copy }: { copy: Copy["status"] }) {
   return (
     <Section>
-      <Heading title={copy.title} />
+      <Heading index={5} title={copy.title} />
       <ol className="panel divide-y divide-[var(--border)]">
         {copy.items.map((item) => (
           <li

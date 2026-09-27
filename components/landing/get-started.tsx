@@ -64,9 +64,14 @@ export function GetStarted({
   };
 
   return (
-    <Section className="grid items-start gap-10 lg:grid-cols-[1fr_1.2fr]">
+    <Section band className="grid items-start gap-10 lg:grid-cols-[1fr_1.2fr]">
       <div>
-        <Heading title={copy.title} body={copy.body} className="mb-8" />
+        <Heading
+          index={6}
+          title={copy.title}
+          body={copy.body}
+          className="mb-8"
+        />
         <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-[var(--border)] p-1">
           <legend className="sr-only">{copy.title}</legend>
           {(Object.keys(snippets) as Tab[]).map((t) => (

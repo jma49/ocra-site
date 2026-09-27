@@ -32,9 +32,14 @@ export function Plugins({
   locale: string;
 }) {
   return (
-    <Section className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
+    <Section band className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
       <div>
-        <Heading title={copy.title} body={copy.body} className="mb-8" />
+        <Heading
+          index={4}
+          title={copy.title}
+          body={copy.body}
+          className="mb-8"
+        />
         <ul className="space-y-3 text-[0.95rem]">
           {copy.points.map((point) => (
             <li key={point} className="flex gap-3">

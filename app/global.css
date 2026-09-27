@@ -281,6 +281,19 @@ html > body[data-scroll-locked] {
   }
 }
 
+/* Sections fade in on first view (see Reveal); pending is only set once
+   the script has run, so nothing is hidden without JavaScript. */
+[data-reveal="pending"] > * {
+  opacity: 0;
+  translate: 0 16px;
+}
+
+[data-reveal="visible"] > * {
+  transition-property: opacity, translate;
+  transition-duration: 0.7s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
 /* Icons swapped in place cross-fade instead of popping. */
 .swap-icon {
   transition-property: opacity, scale, filter;

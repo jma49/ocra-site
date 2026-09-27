@@ -96,7 +96,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
   const fixed = state === "fixed";
   return (
     <Section id="finding">
-      <Heading title={copy.title} body={copy.body} />
+      <Heading index={3} title={copy.title} body={copy.body} />
       <div className="grid items-start gap-12 lg:grid-cols-[1.45fr_1fr]">
         <figure className="panel m-0 min-w-0 overflow-hidden">
           <figcaption className="panel-bar">

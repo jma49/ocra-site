@@ -81,8 +81,8 @@ function visuals(v: Copy["decisions"]["visuals"]): ReactNode[] {
 export function Decisions({ copy }: { copy: Copy["decisions"] }) {
   const pictures = visuals(copy.visuals);
   return (
-    <Section>
-      <Heading title={copy.title} body={copy.body} />
+    <Section band>
+      <Heading index={2} title={copy.title} body={copy.body} />
       <ol className="grid gap-x-16 md:grid-cols-2">
         {copy.items.map((item, i) => (
           <li
