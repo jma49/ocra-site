@@ -2,13 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { LogoMark } from "@/components/logo";
 import { voxelFrog } from "@/lib/voxel-frog";
 
+// The camera follows craftz.dog's voxel dog: it starts at 0.2π around the
+// model, 20 out and 8.8 up, spins in over 100 frames with easeOutCirc, then
+// turns at OrbitControls' default auto-rotation speed.
 const INTRO_FRAMES = 100;
-const CAMERA_DISTANCE = 22;
 const START_ANGLE = 0.2 * Math.PI;
+const RADIUS = 20;
+const HEIGHT = 8.8;
+const AUTO_ROTATE = ((2 * Math.PI) / 60 / 60) * 2;
 const TARGET = new THREE.Vector3(0, 5, 0);
 
 const easeOutCirc = (x: number) => Math.sqrt(1 - (x - 1) ** 4);
@@ -77,18 +81,51 @@ export function VoxelFrog() {
     scene.add(sun);
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
-    const start = new THREE.Vector3(
-      CAMERA_DISTANCE * Math.sin(START_ANGLE),
-      12,
-      CAMERA_DISTANCE * Math.cos(START_ANGLE),
-    );
-    camera.position.copy(start);
-    camera.lookAt(TARGET);
+    const baseElevation = Math.atan2(HEIGHT, RADIUS);
+    const view = {
+      angle: START_ANGLE,
+      target: START_ANGLE,
+      elevation: baseElevation,
+      targetElevation: baseElevation,
+    };
+    const place = () => {
+      const flat = Math.hypot(RADIUS, HEIGHT) * Math.cos(view.elevation);
+      camera.position.set(
+        TARGET.x + flat * Math.sin(view.angle),
+        TARGET.y + Math.hypot(RADIUS, HEIGHT) * Math.sin(view.elevation),
+        TARGET.z + flat * Math.cos(view.angle),
+      );
+      camera.lookAt(TARGET);
+    };
+    place();
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.target.copy(TARGET);
-    controls.autoRotate = !reduced;
-    controls.autoRotateSpeed = 2;
+    // Hovering turns the frog with the pointer, no click needed: crossing
+    // the frame once is a full turn, and height tilts the view a little.
+    let hover: { x: number; angle: number } | undefined;
+    const canvas = renderer.domElement;
+    canvas.style.touchAction = "pan-y";
+    const onEnter = (event: PointerEvent) => {
+      hover = { x: event.clientX, angle: view.angle };
+    };
+    const onMove = (event: PointerEvent) => {
+      if (!hover) onEnter(event);
+      const rect = canvas.getBoundingClientRect();
+      const turn =
+        ((event.clientX - (hover?.x ?? event.clientX)) / rect.width) *
+        2 *
+        Math.PI;
+      view.target = (hover?.angle ?? view.angle) - turn;
+      const vertical = (event.clientY - rect.top) / rect.height - 0.5;
+      view.targetElevation = baseElevation + vertical * 0.6;
+    };
+    const onLeave = () => {
+      hover = undefined;
+      view.targetElevation = baseElevation;
+    };
+    canvas.addEventListener("pointerenter", onEnter);
+    canvas.addEventListener("pointermove", onMove);
+    canvas.addEventListener("pointerleave", onLeave);
+    canvas.addEventListener("pointercancel", onLeave);
 
     const resize = () => {
       const { width, height } = container.getBoundingClientRect();
@@ -108,17 +145,15 @@ export function VoxelFrog() {
     let visible = true;
     const tick = () => {
       if (frame <= INTRO_FRAMES) {
-        const spin = -easeOutCirc(frame / (INTRO_FRAMES + 20)) * Math.PI * 20;
-        camera.position.set(
-          start.x * Math.cos(spin) + start.z * Math.sin(spin),
-          start.y,
-          start.z * Math.cos(spin) - start.x * Math.sin(spin),
-        );
-        camera.lookAt(TARGET);
+        view.angle = START_ANGLE - easeOutCirc(frame / 120) * Math.PI * 20;
+        view.target = view.angle;
         frame += 1;
       } else {
-        controls.update();
+        if (!hover && !reduced) view.target -= AUTO_ROTATE;
+        view.angle += (view.target - view.angle) * 0.12;
+        view.elevation += (view.targetElevation - view.elevation) * 0.12;
       }
+      place();
       renderer.render(scene, camera);
       raf = visible ? requestAnimationFrame(tick) : 0;
     };
@@ -140,7 +175,10 @@ export function VoxelFrog() {
       cancelAnimationFrame(raf);
       observer.disconnect();
       sizeObserver.disconnect();
-      controls.dispose();
+      canvas.removeEventListener("pointerenter", onEnter);
+      canvas.removeEventListener("pointermove", onMove);
+      canvas.removeEventListener("pointerleave", onLeave);
+      canvas.removeEventListener("pointercancel", onLeave);
       mesh.geometry.dispose();
       (mesh.material as THREE.Material).dispose();
       renderer.dispose();
@@ -152,7 +190,7 @@ export function VoxelFrog() {
     <div
       ref={ref}
       aria-hidden
-      className="relative mx-auto flex aspect-square w-[240px] cursor-grab items-center justify-center active:cursor-grabbing sm:w-[360px] md:w-[420px]"
+      className="relative mx-auto flex aspect-square w-[240px] items-center justify-center overflow-hidden sm:w-[360px] md:w-[420px]"
     >
       {state === "loading" ? (
         <span className="absolute size-8 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
