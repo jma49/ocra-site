@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { cn } from "@/lib/cn";
 import type { Copy, StageKind } from "@/lib/copy";
+import { PipelineFlow } from "./pipeline-flow";
 import { Heading, Section } from "./section";
 
 // Shape, not colour, tells the kinds apart.
@@ -13,74 +14,48 @@ const dot: Record<StageKind, string> = {
 };
 
 export function Run({ copy }: { copy: Copy["run"] }) {
-  const [active, setActive] = useState(() =>
-    Math.max(
-      0,
-      copy.stages.findIndex((s) => s.name === "Review"),
-    ),
-  );
-  const stage = copy.stages[active] ?? copy.stages[0];
+  const [step, setStep] = useState(0);
+  const onStep = useCallback((next: number) => setStep(next), []);
+  const stage = copy.stages[Math.min(step, copy.stages.length - 1)];
   if (!stage) return null;
 
   return (
     <Section id="how-it-works">
       <Heading title={copy.title} body={copy.body} />
-      <div className="panel grid overflow-hidden md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-        <ol className="border-b border-[var(--border)] p-2 md:border-r md:border-b-0">
-          {copy.stages.map((s, i) => {
-            const selected = i === active;
-            return (
-              <li key={s.name}>
-                <button
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setActive(i)}
-                  className={cn(
-                    "focus-ring flex w-full items-center gap-3 rounded-[4px] px-3 py-2.5 text-left text-sm transition-colors",
-                    selected
-                      ? "bg-[var(--color-fd-muted)]"
-                      : "hover:bg-[var(--bg-subtle)]",
-                  )}
-                >
-                  <span className="w-6 font-mono text-[11px] text-[var(--fg-subtle)]">
-                    {String(i + 1).padStart(2, "0")}
+      <div className="panel overflow-hidden">
+        <PipelineFlow
+          copy={copy.flow}
+          stages={copy.stages.map((s) => s.name)}
+          step={step}
+          onStep={onStep}
+        />
+        <div className="grid gap-6 p-7 md:grid-cols-[14rem_1fr]">
+          <div>
+            <p className="flex items-center gap-2 font-mono text-xs text-[var(--fg-subtle)]">
+              <span aria-hidden className={cn("size-2", dot[stage.kind])} />
+              {copy.legend[stage.kind]}
+            </p>
+            <p className="mt-3 text-2xl font-semibold tracking-[-0.03em]">
+              {stage.name}
+            </p>
+            <p className="mt-1 text-sm text-[var(--fg-muted)]">
+              {stage.summary}
+            </p>
+          </div>
+          <div className="flex flex-col">
+            <p className="leading-relaxed text-[var(--fg-muted)]">
+              {stage.detail}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-5 text-xs text-[var(--fg-subtle)]">
+              {(Object.keys(dot) as StageKind[])
+                .filter((kind) => copy.stages.some((s) => s.kind === kind))
+                .map((kind) => (
+                  <span key={kind} className="flex items-center gap-2">
+                    <span aria-hidden className={cn("size-2", dot[kind])} />
+                    {copy.legend[kind]}
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="font-medium">{s.name}</span>
-                    <span className="ml-2 text-[var(--fg-muted)]">
-                      {s.summary}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden
-                    className={cn("size-2 shrink-0", dot[s.kind])}
-                  />
-                  <span className="sr-only">{copy.legend[s.kind]}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-        <div className="flex flex-col p-7" aria-live="polite">
-          <p className="flex items-center gap-2 font-mono text-xs text-[var(--fg-subtle)]">
-            <span aria-hidden className={cn("size-2", dot[stage.kind])} />
-            {copy.legend[stage.kind]}
-          </p>
-          <p className="mt-4 text-2xl font-semibold tracking-[-0.03em]">
-            {stage.name}
-          </p>
-          <p className="mt-3 leading-relaxed text-[var(--fg-muted)]">
-            {stage.detail}
-          </p>
-          <div className="mt-auto flex flex-wrap gap-5 border-t border-[var(--border)] pt-4 text-xs text-[var(--fg-subtle)] max-md:mt-8">
-            {(Object.keys(dot) as StageKind[])
-              .filter((kind) => copy.stages.some((s) => s.kind === kind))
-              .map((kind) => (
-                <span key={kind} className="flex items-center gap-2">
-                  <span aria-hidden className={cn("size-2", dot[kind])} />
-                  {copy.legend[kind]}
-                </span>
-              ))}
+                ))}
+            </div>
           </div>
         </div>
       </div>

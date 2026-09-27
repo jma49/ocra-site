@@ -14,7 +14,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "[ocra] security-1 completed in 9.2s · 0 finding(s)", tone: "ok" },
   { text: "[ocra] correctness-1 completed in 7.4s · 2 finding(s)", tone: "ok" },
   {
-    text: "[ocra] Verified 2 finding(s), dropped 1 that the code disproves",
+    text: "[ocra] Verified 3 finding(s), dropped 1 that the code disproves",
     tone: "dim",
   },
   { text: "[ocra] Verdict: significant concerns", tone: "dim" },
