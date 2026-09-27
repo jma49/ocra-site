@@ -208,6 +208,27 @@ export const en: Copy = {
         state: "shipped",
         done: true,
       },
+      {
+        milestone: "Next",
+        title: "Measured quality",
+        body: "A baseline of precision and recall on AACR-Bench with a stronger model, then tuning prompts and stages against it.",
+        state: "planned",
+        done: false,
+      },
+      {
+        milestone: "Next",
+        title: "Deeper reviews",
+        body: "Reviewers for docs and AGENTS.md, a planning phase and caller impact analysis for --ultra, model re-location of hard-to-anchor findings, and the judge reassessing disagreements.",
+        state: "planned",
+        done: false,
+      },
+      {
+        milestone: "Next",
+        title: "npm release",
+        body: "Publishing the @open-cr-agent packages; today ocra installs from source.",
+        state: "planned",
+        done: false,
+      },
     ],
   },
   start: {
