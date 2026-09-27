@@ -23,6 +23,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 - Locally the sync script reads `../Open-CR-Agent/docs/manual`, or `MANUAL_DIR`.
 - On Vercel it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository).
+- The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
 ## Content rules
 
