@@ -7,6 +7,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 - Next.js (App Router) + [Fumadocs](https://fumadocs.dev) + Tailwind CSS, deployed on Vercel.
 - Two languages: English at `/`, Chinese at `/zh`. Every page and every string exists in both.
 - `npm run lint` (Biome), `npx tsc --noEmit`, `npm run build`. CI runs all three.
+- Only `main` deploys (`vercel.json`): pull requests get no Vercel preview, because the Hobby plan rate-limits builds. Check changes on a local `next build && next start`.
 
 | Path | Contents |
 |---|---|
