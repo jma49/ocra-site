@@ -15,11 +15,26 @@ export interface Copy {
     legend: Record<StageKind, string>;
     // The animated walk-through: one caption per stage, then the report.
     flow: {
-      captions: string[];
+      label: string;
       report: string;
       play: string;
       pause: string;
-      label: string;
+      previous: string;
+      next: string;
+      files: string;
+      findings: string;
+      tier: string;
+      bundle: string;
+      skipped: string;
+      verdict: string;
+      reasons: {
+        lock: string;
+        memory: string;
+        disproved: string;
+        merged: string;
+        verified: string;
+      };
+      captions: string[];
     };
     stages: {
       name: string;
