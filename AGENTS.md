@@ -32,13 +32,14 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 ## Design
 
-- The look follows [JM/OS](https://github.com/jma49/jmos): Mac OS X Aqua, drawn in CSS only. No Apple, ryOS or other third-party assets (icons, fonts, wallpapers); JM/OS's own assets are AGPL and trademarked and must not be copied here.
-- The theme follows the system: light is Aqua (pinstripes, blue gel), dark is graphite; both must stay equally polished. Tokens are the `--aqua-*` variables in `app/global.css`.
-- Materials: the landing page is the `.desktop` (pinstripes); content sits in `Window` (`components/aqua/window.tsx`: title bar, decorative traffic lights, optional accessory), with `.inset` panes for white content and `.terminal` for terminals, which stay dark in both themes. Buttons are `.gel` (primary) and `.gel-plain`; selections use `.row-selected`; separators use `.groove`; milestones use `.progress` bars.
-- Typography: Lucida Grande and Monaco where installed, Inter and JetBrains Mono as loaded fallbacks.
-- Brand: the mark in `app/icon.svg` and `components/logo.tsx` (a glossy Aqua-blue gel tile: lines of code, the highlighted one under a magnifier; the favicon uses gradients, the inline mark approximates them with solid layers), wordmark `ocra` in lowercase bold with tight tracking. Inline SVGs must not rely on `id` references: the layout renders the logo more than once.
+- **Monochrome and typography-led**, in the manner of modern developer-tool sites, but original: neutral greys, generous whitespace, 1px borders, 8–12px radii, very soft shadows. No gradients, textures or skeuomorphism; the only background effects are the faint grid and the aquamarine glow behind the hero.
+- **Colour carries meaning only.** The brand is Aquamarine `#7fffd4` (`--brand`). In the light theme it is too pale for text, so links, focus rings and "verified" use `--accent` (the same hue, about 5:1 on white); in the dark theme `--accent` is the brand itself. Review severities (`--critical`, `--warning`) and diff lines are the only other colours.
+- **Tokens** live in `app/global.css` (`--bg`, `--fg`, `--fg-muted`, `--border`, `--accent`, …) and are mapped onto Fumadocs' `--color-fd-*`, so the landing page and the manual share one system. The theme follows the system; light and dark must be equally polished.
+- **Components:** `Panel` (`components/ui/panel.tsx`, an optional label bar for a file name or command; `dark` for terminals, which stay dark in both themes), `.btn` (primary, foreground-coloured) and `.btn-outline`, `.marker` numbered dots, `.severity-critical` and `.verified` tags.
+- **Typography:** Geist and Geist Mono (loaded with `next/font`), Chinese in the system faces (PingFang SC, Noto Sans SC). Headlines are semibold with tight tracking. Set a headline's line height with the `text-[size]/[leading]` form: `cn` (tailwind-merge) drops a separate `leading-*` next to an arbitrary text size.
+- **Mascot:** an original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`): round head, two raised eyes looking down at the code, dark teal outline, coral cheeks. It may take its spirit from friendly beverage mascots but must never copy one (no Jinro toad shapes, colours or poses). It appears as the logo mark, the favicon and the Apple icon (on a light tile), and once on the landing page, peeking over the hero terminal; nowhere else, so it stays special. Outlines are a thick dark stroke under the fills, and inline SVGs use no `id` references (the layout renders the logo more than once).
 - Avoid the generic AI landing-page look: no pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy. Prefer left-aligned editorial layouts and concrete statements.
-- Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
+- Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK. Chinese prose gets more leading (`:lang(zh) .prose`).
 
 ## Code style
 

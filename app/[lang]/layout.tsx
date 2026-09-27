@@ -1,19 +1,16 @@
 import { i18nProvider } from "fumadocs-ui/i18n";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { i18n, isLocale } from "@/lib/i18n";
 import { translations } from "@/lib/layout.shared";
 import "../global.css";
 
-// Fallbacks for machines without Lucida Grande and Monaco (see global.css).
-const sans = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const mono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-jetbrains",
-});
+// Latin faces; Chinese falls through to the system fonts in global.css.
+const sans = Geist({ subsets: ["latin"], variable: "--font-geist" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 const meta = {
   en: {

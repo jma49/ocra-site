@@ -11,8 +11,8 @@ export function Footer({
   locale: string;
 }) {
   return (
-    <footer className="groove">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 text-sm text-[var(--aqua-dim)] sm:px-8 md:flex-row md:items-center md:justify-between">
+    <footer className="border-t border-[var(--border)]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 text-sm text-[var(--fg-muted)] sm:px-8 md:flex-row md:items-center md:justify-between">
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
           <Logo />
           <span>{copy.tagline}</span>
@@ -20,16 +20,16 @@ export function Footer({
         <nav className="flex gap-6">
           <Link
             href={localePath(locale, "/docs")}
-            className="hover:text-[var(--aqua-ink)]"
+            className="hover:text-[var(--fg)]"
           >
             {copy.manual}
           </Link>
-          <a href={repoUrl} className="hover:text-[var(--aqua-ink)]">
+          <a href={repoUrl} className="hover:text-[var(--fg)]">
             {copy.github}
           </a>
           <a
             href={`${repoUrl}/blob/main/LICENSE`}
-            className="hover:text-[var(--aqua-ink)]"
+            className="hover:text-[var(--fg)]"
           >
             {copy.license}
           </a>

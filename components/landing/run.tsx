@@ -1,18 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Window } from "@/components/aqua/window";
 import { cn } from "@/lib/cn";
 import type { Copy, StageKind } from "@/lib/copy";
 import { Heading, Section } from "./section";
 
 const dot: Record<StageKind, string> = {
-  code: "bg-[var(--aqua-accent)]",
-  model: "bg-[#9b59d0]",
-  planned: "border border-current opacity-60",
+  code: "bg-[var(--fg)]",
+  model: "bg-[var(--accent)]",
+  planned: "border border-[var(--fg-subtle)]",
 };
 
-// A Finder-style window: stages in a source list, the chosen one on the right.
 export function Run({ copy }: { copy: Copy["run"] }) {
   const [active, setActive] = useState(() =>
     Math.max(
@@ -26,11 +24,8 @@ export function Run({ copy }: { copy: Copy["run"] }) {
   return (
     <Section id="how-it-works">
       <Heading title={copy.title} body={copy.body} />
-      <Window
-        title={copy.window}
-        bodyClassName="grid gap-2 p-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]"
-      >
-        <ol className="inset py-1 text-[13px]">
+      <div className="panel grid overflow-hidden md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+        <ol className="border-b border-[var(--border)] p-2 md:border-r md:border-b-0">
           {copy.stages.map((s, i) => {
             const selected = i === active;
             return (
@@ -40,59 +35,41 @@ export function Run({ copy }: { copy: Copy["run"] }) {
                   aria-pressed={selected}
                   onClick={() => setActive(i)}
                   className={cn(
-                    "flex w-full items-baseline gap-3 px-3 py-1.5 text-left",
-                    selected ? "row-selected" : "hover:bg-black/5",
+                    "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                    selected
+                      ? "bg-[var(--color-fd-muted)]"
+                      : "hover:bg-[var(--bg-subtle)]",
                   )}
                 >
-                  <span
-                    className={cn(
-                      "w-5 font-mono text-[11px]",
-                      !selected && "text-[var(--aqua-dim)]",
-                    )}
-                  >
+                  <span className="w-6 font-mono text-[11px] text-[var(--fg-subtle)]">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span
-                      className={cn(
-                        "font-bold",
-                        s.kind === "planned" && !selected && "opacity-60",
-                      )}
-                    >
-                      {s.name}
-                    </span>
-                    <span
-                      className={cn(
-                        "ml-2",
-                        selected ? "text-white/85" : "text-[var(--aqua-dim)]",
-                      )}
-                    >
+                    <span className="font-medium">{s.name}</span>
+                    <span className="ml-2 text-[var(--fg-muted)]">
                       {s.summary}
                     </span>
                   </span>
                   <span
-                    className={cn(
-                      "size-2 shrink-0 translate-y-[-1px] rounded-full",
-                      selected ? "bg-white" : dot[s.kind],
-                    )}
+                    className={cn("size-2 shrink-0 rounded-full", dot[s.kind])}
                   />
                 </button>
               </li>
             );
           })}
         </ol>
-        <div className="inset flex flex-col p-6" aria-live="polite">
-          <p className="flex items-center gap-2 text-xs text-[var(--aqua-dim)]">
+        <div className="flex flex-col p-7" aria-live="polite">
+          <p className="flex items-center gap-2 font-mono text-xs text-[var(--fg-subtle)]">
             <span className={cn("size-2 rounded-full", dot[stage.kind])} />
             {copy.legend[stage.kind]}
           </p>
-          <p className="mt-3 text-2xl font-bold tracking-[-0.02em]">
+          <p className="mt-4 text-2xl font-semibold tracking-[-0.03em]">
             {stage.name}
           </p>
-          <p className="mt-3 leading-relaxed text-[var(--aqua-dim)]">
+          <p className="mt-3 leading-relaxed text-[var(--fg-muted)]">
             {stage.detail}
           </p>
-          <div className="groove mt-auto flex flex-wrap gap-5 pt-4 text-xs text-[var(--aqua-dim)]">
+          <div className="mt-auto flex flex-wrap gap-5 border-t border-[var(--border)] pt-4 text-xs text-[var(--fg-subtle)] max-md:mt-8">
             {(Object.keys(dot) as StageKind[])
               .filter((kind) => copy.stages.some((s) => s.kind === kind))
               .map((kind) => (
@@ -103,7 +80,7 @@ export function Run({ copy }: { copy: Copy["run"] }) {
               ))}
           </div>
         </div>
-      </Window>
+      </div>
     </Section>
   );
 }

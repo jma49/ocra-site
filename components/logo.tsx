@@ -1,63 +1,69 @@
-// Solid fills on purpose: the layout renders the logo more than once, and
-// gradient ids would collide, leaving hidden copies to own the definitions.
-export function LogoMark({ className = "size-6" }: { className?: string }) {
+// The mascot: an aquamarine frog reading code. Original artwork; outlines are
+// drawn as a thick dark stroke under the fills, so overlapping shapes merge
+// into one silhouette without SVG ids (the layout renders the logo twice).
+const INK = "#0c3b30";
+const SKIN = "#7fffd4";
+
+function FrogHead() {
+  const shapes = (
+    <>
+      <ellipse cx="32" cy="39" rx="26" ry="19" />
+      <circle cx="19" cy="21" r="11" />
+      <circle cx="45" cy="21" r="11" />
+    </>
+  );
+  return (
+    <>
+      <g fill={INK} stroke={INK} strokeWidth="5">
+        {shapes}
+      </g>
+      <g fill={SKIN}>{shapes}</g>
+      <circle cx="19" cy="21" r="7" fill="#ffffff" />
+      <circle cx="45" cy="21" r="7" fill="#ffffff" />
+      <circle cx="20.5" cy="23" r="3.6" fill={INK} />
+      <circle cx="46.5" cy="23" r="3.6" fill={INK} />
+      <circle cx="21.6" cy="21.7" r="1.2" fill="#ffffff" />
+      <circle cx="47.6" cy="21.7" r="1.2" fill="#ffffff" />
+      <ellipse
+        cx="14"
+        cy="41"
+        rx="4.5"
+        ry="2.6"
+        fill="#ff8f8f"
+        fillOpacity=".55"
+      />
+      <ellipse
+        cx="50"
+        cy="41"
+        rx="4.5"
+        ry="2.6"
+        fill="#ff8f8f"
+        fillOpacity=".55"
+      />
+      <path
+        d="M24 41.5q8 6.5 16 0"
+        fill="none"
+        stroke={INK}
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+    </>
+  );
+}
+
+export function LogoMark({ className = "size-7" }: { className?: string }) {
   return (
     <svg viewBox="0 0 64 64" aria-hidden="true" className={className}>
-      <rect x="3" y="3" width="58" height="58" rx="14" fill="#3479e4" />
-      <rect x="3" y="33" width="58" height="28" rx="14" fill="#5ea6ff" />
-      <rect x="3" y="30" width="58" height="8" fill="#2a6fdc" />
-      <rect
-        x="3.75"
-        y="3.75"
-        width="56.5"
-        height="56.5"
-        rx="13.25"
-        fill="none"
-        stroke="#123f93"
-        strokeWidth="1.5"
-      />
-      <path
-        d="M13 21h14M13 43h18"
-        stroke="#fff"
-        strokeOpacity=".55"
-        strokeWidth="4.5"
-        strokeLinecap="round"
-      />
-      <path d="M13 32h20" stroke="#fff" strokeWidth="5" strokeLinecap="round" />
-      <path
-        d="M47.5 42.5 54 49"
-        stroke="#0e2f6e"
-        strokeWidth="7"
-        strokeLinecap="round"
-      />
-      <path
-        d="M47.5 42.5 54 49"
-        stroke="#e9eef5"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <circle cx="40" cy="32" r="10" fill="#fff" fillOpacity=".3" />
-      <circle
-        cx="40"
-        cy="32"
-        r="10"
-        fill="none"
-        stroke="#0e2f6e"
-        strokeWidth="6"
-      />
-      <circle
-        cx="40"
-        cy="32"
-        r="10"
-        fill="none"
-        stroke="#fff"
-        strokeWidth="3.5"
-      />
-      <path
-        d="M8 15a10 10 0 0 1 10-9h28a10 10 0 0 1 10 9c0 7-11 11-24 11S8 22 8 15Z"
-        fill="#fff"
-        fillOpacity=".45"
-      />
+      <FrogHead />
+    </svg>
+  );
+}
+
+// The frog looking over an edge, for the top of a panel.
+export function PeekingFrog({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 6 64 28" aria-hidden="true" className={className}>
+      <FrogHead />
     </svg>
   );
 }
@@ -66,7 +72,7 @@ export function Logo() {
   return (
     <span className="inline-flex items-center gap-2">
       <LogoMark />
-      <span className="text-[1.1rem] font-bold lowercase tracking-[-0.04em]">
+      <span className="text-[1.1rem] font-semibold lowercase tracking-[-0.04em]">
         ocra
       </span>
     </span>

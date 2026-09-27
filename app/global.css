@@ -2,94 +2,89 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 
-/* The look follows JM/OS (majincheng.com): Mac OS X Aqua drawn in CSS only,
-   with no Apple or third-party assets. Fonts fall back to the web fonts
-   loaded in the layout where the Mac faces are not installed. */
+/* Monochrome, typography-led design. Colour carries meaning only: the
+   aquamarine brand for links, focus and "verified", and the review
+   severities. CJK text uses the system faces after Geist. */
 @theme {
   --font-sans:
-    "Lucida Grande", "Lucida Sans Unicode", "Hiragino Sans GB", "PingFang SC",
-    var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: Monaco, Menlo, var(--font-jetbrains), ui-monospace, monospace;
+    var(--font-geist), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 :root {
-  --aqua-accent: #3875d7;
-  --aqua-desktop: #e6e6e6;
-  --aqua-window: #ececec;
-  --aqua-content: #ffffff;
-  --aqua-ink: #1a1a1a;
-  --aqua-dim: #4d4d4d;
-  --aqua-line: #b9b9b9;
-  --aqua-title-top: #ebebeb;
-  --aqua-title-bottom: #c9c9c9;
-  --aqua-groove-dark: rgb(0 0 0 / 0.14);
-  --aqua-groove-light: rgb(255 255 255 / 0.85);
-  --aqua-shadow: 0 0 0 1px rgb(0 0 0 / 0.26), 0 16px 42px rgb(0 0 0 / 0.28);
-  --aqua-inset: 0 0 0 1px rgb(0 0 0 / 0.26), inset 0 1px 2px rgb(0 0 0 / 0.14);
-  /* 4px bands of white over the window grey. */
-  --aqua-pinstripe: repeating-linear-gradient(
-    0deg,
-    transparent 0 1.5px,
-    rgb(255 255 255 / 0.62) 1.5px 4px
-  );
-  --aqua-bar: linear-gradient(rgb(255 255 255 / 0.9), rgb(228 228 228 / 0.9));
-  --aqua-select: linear-gradient(
-    color-mix(in srgb, var(--aqua-accent) 70%, white),
-    var(--aqua-accent)
-  );
-  --aqua-gel: linear-gradient(
-    color-mix(in srgb, var(--aqua-accent) 30%, white),
-    color-mix(in srgb, var(--aqua-accent) 75%, white) 45%,
-    var(--aqua-accent) 50%,
-    color-mix(in srgb, var(--aqua-accent) 55%, white)
-  );
-  --aqua-gel-plain: linear-gradient(#ffffff, #f1f1f1 45%, #dcdcdc 50%, #f4f4f4);
-  --aqua-gel-ink: #0b1a33;
-  --aqua-gel-plain-ink: #1a1a1a;
-  --aqua-code-comment: #6a737d;
-  --aqua-code-keyword: #9b2393;
-  --aqua-code-string: #c41a16;
+  --brand: #7fffd4;
+  /* Aquamarine is too light for text on white; the same hue, darkened to
+     about 5:1 contrast, carries it in the light theme. */
+  --accent: #0b7a5c;
+  --accent-soft: color-mix(in srgb, var(--brand) 32%, white);
+  --bg: #ffffff;
+  --bg-subtle: #fafafa;
+  --fg: #0a0a0a;
+  --fg-muted: #525252;
+  --fg-subtle: #737373;
+  --border: #e5e5e5;
+  --border-strong: #d4d4d4;
+  --panel: #ffffff;
+  --panel-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
+  --critical: #dc2626;
+  --warning: #d97706;
+  --code-comment: #737373;
+  --code-keyword: #7c3aed;
+  --code-string: #0b7a5c;
+  --grid-line: rgb(0 0 0 / 0.045);
 
-  --color-fd-primary: #2f6bd0;
+  --color-fd-background: var(--bg);
+  --color-fd-foreground: var(--fg);
+  --color-fd-muted: #f4f4f5;
+  --color-fd-muted-foreground: var(--fg-muted);
+  --color-fd-card: var(--bg-subtle);
+  --color-fd-card-foreground: var(--fg);
+  --color-fd-popover: var(--bg);
+  --color-fd-popover-foreground: var(--fg);
+  --color-fd-border: var(--border);
+  --color-fd-primary: var(--accent);
   --color-fd-primary-foreground: #ffffff;
-  --color-fd-ring: #3875d7;
+  --color-fd-secondary: #f4f4f5;
+  --color-fd-secondary-foreground: var(--fg);
+  --color-fd-accent: #f4f4f5;
+  --color-fd-accent-foreground: var(--fg);
+  --color-fd-ring: var(--accent);
 }
 
 .dark {
-  --aqua-accent: #4a86e8;
-  --aqua-desktop: #262626;
-  --aqua-window: #353535;
-  --aqua-content: #1f1f1f;
-  --aqua-ink: #ececec;
-  --aqua-dim: #bdbdbd;
-  --aqua-line: #151515;
-  --aqua-title-top: #565656;
-  --aqua-title-bottom: #3a3a3a;
-  --aqua-groove-dark: rgb(0 0 0 / 0.5);
-  --aqua-groove-light: rgb(255 255 255 / 0.06);
-  --aqua-shadow: 0 0 0 1px rgb(0 0 0 / 0.7), 0 16px 42px rgb(0 0 0 / 0.55);
-  --aqua-inset: 0 0 0 1px rgb(0 0 0 / 0.7), inset 0 1px 2px rgb(0 0 0 / 0.4);
-  --aqua-pinstripe: repeating-linear-gradient(
-    0deg,
-    transparent 0 1.5px,
-    rgb(255 255 255 / 0.028) 1.5px 4px
-  );
-  --aqua-bar: linear-gradient(rgb(64 64 64 / 0.92), rgb(42 42 42 / 0.92));
-  --aqua-gel-plain: linear-gradient(#6a6a6a, #545454 45%, #474747 50%, #575757);
-  --aqua-gel-plain-ink: #f2f2f2;
-  --aqua-code-comment: #7f8c98;
-  --aqua-code-keyword: #fc5fa3;
-  --aqua-code-string: #fc6a5d;
+  --accent: var(--brand);
+  --accent-soft: color-mix(in srgb, var(--brand) 14%, transparent);
+  --bg: #09090b;
+  --bg-subtle: #0f0f11;
+  --fg: #fafafa;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #71717a;
+  --border: #27272a;
+  --border-strong: #3f3f46;
+  --panel: #0f0f11;
+  --panel-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.02), 0 8px 32px rgb(0 0 0 / 0.5);
+  --critical: #f87171;
+  --warning: #fbbf24;
+  --code-comment: #71717a;
+  --code-keyword: #c4b5fd;
+  --code-string: var(--brand);
+  --grid-line: rgb(255 255 255 / 0.05);
 
-  --color-fd-background: #1c1c1c;
-  --color-fd-card: #242424;
-  --color-fd-primary: #6ea4f7;
-  --color-fd-primary-foreground: #0b1a33;
-  --color-fd-ring: #6ea4f7;
+  --color-fd-muted: #18181b;
+  --color-fd-secondary: #18181b;
+  --color-fd-accent: #18181b;
+  --color-fd-primary-foreground: #04110c;
 }
 
 html {
   scrollbar-gutter: stable;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 45%, transparent);
 }
 
 /* The scroll-lock library sets these inline, so only !important overrides them. */
@@ -100,237 +95,163 @@ html > body[data-scroll-locked] {
   --removed-body-scroll-bar-size: 0px !important;
 }
 
-/* The home navigation reads as the menu bar. */
-.desktop-layout #nd-nav {
-  background: var(--aqua-bar);
-  border-bottom: 1px solid var(--aqua-groove-dark);
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
-  backdrop-filter: blur(18px) saturate(1.6);
-  -webkit-backdrop-filter: blur(18px) saturate(1.6);
+.home-layout #nd-nav {
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+}
+
+/* Chinese reads better with more leading than Latin text. */
+:lang(zh) .prose {
+  line-height: 1.85;
 }
 
 @layer components {
-  /* The landing page is the desktop: pinstriped grey, windows on top. */
-  .desktop {
-    color: var(--aqua-ink);
-    background: var(--aqua-pinstripe), var(--aqua-desktop);
+  .home {
+    color: var(--fg);
+    background: var(--bg);
   }
 
-  .window {
-    display: flex;
-    flex-direction: column;
-    border-radius: 7px 7px 5px 5px;
-    background: var(--aqua-pinstripe), var(--aqua-window);
-    box-shadow: var(--aqua-shadow);
-    color: var(--aqua-ink);
+  /* A faint grid behind the hero, fading out downwards. */
+  .hero-grid {
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(
+      ellipse 80% 70% at 50% 0%,
+      black 30%,
+      transparent 75%
+    );
   }
 
-  .window-titlebar {
-    position: relative;
+  .hero-glow {
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--brand) 38%, transparent),
+      transparent
+    );
+    filter: blur(24px);
+  }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--panel);
+    box-shadow: var(--panel-shadow);
+  }
+
+  .panel-bar {
     display: flex;
     align-items: center;
-    justify-content: center;
-    min-height: 24px;
-    padding: 3px 76px;
-    border-radius: 7px 7px 0 0;
-    border-bottom: 1px solid var(--aqua-groove-dark);
-    background: linear-gradient(
-      to bottom,
-      var(--aqua-title-top),
-      var(--aqua-title-bottom)
-    );
-    font-size: 13px;
-    line-height: 1.3;
-    text-align: center;
-    text-shadow: 0 1px 0 var(--aqua-groove-light);
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 40px;
+    padding: 0 0.9rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-subtle);
   }
 
-  .window-lights {
-    position: absolute;
-    top: 50%;
-    left: 9px;
-    display: flex;
-    gap: 7px;
-    transform: translateY(-50%);
-  }
-
-  /* Glossy lights: a bright cap over a saturated base, ringed darker. */
-  .window-light {
-    width: 12px;
-    height: 12px;
-    border-radius: 9999px;
-    background:
-      radial-gradient(
-        circle at 50% 22%,
-        rgb(255 255 255 / 0.95) 0 16%,
-        transparent 42%
-      ),
-      radial-gradient(
-        circle at 50% 80%,
-        color-mix(in srgb, var(--light) 60%, white) 0 30%,
-        var(--light) 70%
-      );
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--light) 55%, black),
-      0 1px 1px rgb(0 0 0 / 0.2);
-  }
-
-  .window-light[data-light="close"] {
-    --light: #e0443e;
-  }
-
-  .window-light[data-light="minimize"] {
-    --light: #dea123;
-  }
-
-  .window-light[data-light="zoom"] {
-    --light: #1aab29;
-  }
-
-  .window-accessory {
-    position: absolute;
-    top: 50%;
-    right: 8px;
-    transform: translateY(-50%);
-  }
-
-  /* The white pane a window's content sits in. */
-  .inset {
-    border-radius: 4px;
-    background: var(--aqua-content);
-    box-shadow: var(--aqua-inset);
-  }
-
+  /* Terminals stay dark in both themes. */
   .terminal {
-    background: rgb(12 12 12 / 0.94);
+    background: #0a0a0a;
     color: rgb(255 255 255 / 0.88);
   }
 
-  /* Etched separator: a dark line over a light one. */
-  .groove {
-    border-top: 1px solid var(--aqua-groove-dark);
-    box-shadow: inset 0 1px 0 var(--aqua-groove-light);
+  .panel-dark {
+    border-color: #27272a;
+    background: #0a0a0a;
   }
 
-  .gel,
-  .gel-plain {
+  .panel-dark .panel-bar {
+    border-color: #27272a;
+    color: #71717a;
+  }
+
+  .btn,
+  .btn-outline {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    border-radius: 9999px;
-    padding: 0.4rem 1.15rem;
-    font-size: 0.875rem;
-    line-height: 1.4;
+    height: 2.5rem;
+    border-radius: 8px;
+    padding: 0 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
     text-decoration: none;
-    transition: filter 0.15s ease;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      opacity 0.15s ease;
   }
 
-  .gel {
-    background: var(--aqua-gel);
-    color: var(--aqua-gel-ink);
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--aqua-accent) 55%, black),
-      0 1px 2px
-      color-mix(
-        in srgb,
-        color-mix(in srgb, var(--aqua-accent) 45%, black) 45%,
-        transparent
-      );
-    text-shadow: 0 1px 0 rgb(255 255 255 / 0.35);
+  .btn {
+    background: var(--fg);
+    color: var(--bg);
   }
 
-  .gel-plain {
-    background: var(--aqua-gel-plain);
-    color: var(--aqua-gel-plain-ink);
-    box-shadow:
-      inset 0 0 0 1px rgb(0 0 0 / 0.35),
-      0 1px 2px rgb(0 0 0 / 0.18);
+  .btn:hover {
+    opacity: 0.88;
   }
 
-  .gel:hover,
-  .gel-plain:hover {
-    filter: brightness(1.06);
+  .btn-outline {
+    border: 1px solid var(--border-strong);
+    color: var(--fg);
   }
 
-  .gel:active,
-  .gel-plain:active {
-    filter: brightness(0.92);
+  .btn-outline:hover {
+    background: var(--bg-subtle);
+    border-color: var(--fg-subtle);
   }
 
-  .gel-small {
-    padding: 0.1rem 0.7rem;
+  .btn-sm {
+    height: 1.75rem;
+    padding: 0 0.6rem;
     font-size: 0.75rem;
   }
 
-  /* A numbered marker in the accent's gel. */
-  .gel-dot {
+  .btn:focus-visible,
+  .btn-outline:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* A small numbered marker. */
+  .marker {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.35rem;
-    height: 1.35rem;
+    width: 1.3rem;
+    height: 1.3rem;
     flex-shrink: 0;
+    border: 1px solid var(--border-strong);
     border-radius: 9999px;
-    background: var(--aqua-gel);
-    color: #ffffff;
-    font-weight: 700;
-    text-shadow: 0 1px 1px rgb(0 0 0 / 0.5);
-    box-shadow: inset 0 0 0 1px
-      color-mix(in srgb, var(--aqua-accent) 55%, black);
+    background: var(--bg);
+    color: var(--fg-muted);
     font-family: var(--font-mono);
     font-size: 11px;
+    font-weight: 500;
   }
 
-  /* A selected row in a source list. */
-  .row-selected {
-    background: var(--aqua-select);
-    color: #ffffff;
+  .marker-brand {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent);
   }
 
-  .progress {
-    position: relative;
-    height: 12px;
-    overflow: hidden;
-    border-radius: 9999px;
-    background: linear-gradient(#cfcfcf, #f4f4f4 60%, #e3e3e3);
-    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.28);
+  .severity-critical {
+    border: 1px solid color-mix(in srgb, var(--critical) 35%, transparent);
+    background: color-mix(in srgb, var(--critical) 10%, transparent);
+    color: var(--critical);
   }
 
-  .dark .progress {
-    background: linear-gradient(#1c1c1c, #333333 60%, #2a2a2a);
-  }
-
-  .progress-fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    border-radius: inherit;
-    background: var(--aqua-gel);
-    box-shadow: inset 0 0 0 1px
-      color-mix(in srgb, var(--aqua-accent) 55%, black);
-  }
-
-  /* The indeterminate "barber pole" of work in progress. */
-  .progress-busy {
-    width: 100%;
-    background:
-      repeating-linear-gradient(
-        -45deg,
-        transparent 0 6px,
-        rgb(255 255 255 / 0.45) 6px 12px
-      ),
-      var(--aqua-gel);
-    background-size:
-      17px 100%,
-      100% 100%;
-    animation: barber 0.9s linear infinite;
-  }
-}
-
-@keyframes barber {
-  to {
-    background-position:
-      17px 0,
-      0 0;
+  .verified {
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    background: var(--accent-soft);
+    color: var(--accent);
   }
 }
 
@@ -345,8 +266,7 @@ html > body[data-scroll-locked] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .caret,
-  .progress-busy {
+  .caret {
     animation: none;
   }
 }
