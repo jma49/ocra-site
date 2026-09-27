@@ -14,6 +14,24 @@ export const en: Copy = {
     window: "ocra — pipeline",
     body: "The steps that must not go wrong are plain, tested code. Models are only asked for judgment.",
     legend: { code: "code", model: "model", planned: "planned" },
+    flow: {
+      label: "Example run",
+      report: "Report",
+      play: "Play",
+      pause: "Pause",
+      captions: [
+        "Five files changed. The lock file is set aside; four are worth reading.",
+        "Churn and paths put the change in the full tier.",
+        "Related files are grouped into two bundles.",
+        "Five reviewer tasks are planned; one pair is skipped by scope.",
+        "Agents read the code and report four findings, each quoting the lines it means.",
+        "Each quote is matched to exact lines in the change.",
+        "One finding is already accepted in the repository's memory, so it is dropped before any check.",
+        "The verifier rereads the code: one finding is disproved, two are confirmed.",
+        "Two confirmed findings share a root cause and are merged into one.",
+        "One critical finding reaches the report, verified and pinned to src/auth/session.ts:42.",
+      ],
+    },
     stages: [
       {
         name: "Select",
