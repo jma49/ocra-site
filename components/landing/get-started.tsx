@@ -48,14 +48,19 @@ export function GetStarted({
           <button
             type="button"
             onClick={onCopy}
-            className="btn-outline btn-sm gap-1 border-[#3f3f46] text-white/80 hover:bg-white/5"
+            className="btn-outline btn-sm gap-1 border-[#3f3f46] text-white/80 hover:bg-white/5 focus-visible:outline-[#7fffd4]"
           >
-            {copied ? (
-              <Check className="size-3" />
-            ) : (
-              <CopyIcon className="size-3" />
-            )}
-            {copied ? copy.copied : copy.copy}
+            <span className="relative size-3" aria-hidden>
+              <CopyIcon
+                className="swap-icon absolute inset-0 size-3"
+                data-shown={!copied}
+              />
+              <Check
+                className="swap-icon absolute inset-0 size-3"
+                data-shown={copied}
+              />
+            </span>
+            <span aria-live="polite">{copied ? copy.copied : copy.copy}</span>
           </button>
         }
       >

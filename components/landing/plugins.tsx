@@ -38,7 +38,10 @@ export function Plugins({
         <ul className="space-y-3 text-[0.95rem]">
           {copy.points.map((point) => (
             <li key={point} className="flex gap-3">
-              <Check className="mt-1 size-4 shrink-0 text-[var(--accent)]" />
+              <Check
+                strokeWidth={1.5}
+                className="mt-1 size-4 shrink-0 text-[var(--accent)]"
+              />
               {point}
             </li>
           ))}

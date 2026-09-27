@@ -5,10 +5,11 @@ import { cn } from "@/lib/cn";
 import type { Copy, StageKind } from "@/lib/copy";
 import { Heading, Section } from "./section";
 
+// Shape, not colour, tells the kinds apart.
 const dot: Record<StageKind, string> = {
-  code: "bg-[var(--fg)]",
-  model: "bg-[var(--accent)]",
-  planned: "border border-[var(--fg-subtle)]",
+  code: "rounded-[2px] bg-[var(--fg)]",
+  model: "rounded-full border-[1.5px] border-[var(--fg)]",
+  planned: "rounded-full border border-dashed border-[var(--fg-subtle)]",
 };
 
 export function Run({ copy }: { copy: Copy["run"] }) {
@@ -35,7 +36,7 @@ export function Run({ copy }: { copy: Copy["run"] }) {
                   aria-pressed={selected}
                   onClick={() => setActive(i)}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
+                    "focus-ring flex w-full items-center gap-3 rounded-[4px] px-3 py-2.5 text-left text-sm transition-colors",
                     selected
                       ? "bg-[var(--color-fd-muted)]"
                       : "hover:bg-[var(--bg-subtle)]",
@@ -51,8 +52,10 @@ export function Run({ copy }: { copy: Copy["run"] }) {
                     </span>
                   </span>
                   <span
-                    className={cn("size-2 shrink-0 rounded-full", dot[s.kind])}
+                    aria-hidden
+                    className={cn("size-2 shrink-0", dot[s.kind])}
                   />
+                  <span className="sr-only">{copy.legend[s.kind]}</span>
                 </button>
               </li>
             );
@@ -60,7 +63,7 @@ export function Run({ copy }: { copy: Copy["run"] }) {
         </ol>
         <div className="flex flex-col p-7" aria-live="polite">
           <p className="flex items-center gap-2 font-mono text-xs text-[var(--fg-subtle)]">
-            <span className={cn("size-2 rounded-full", dot[stage.kind])} />
+            <span aria-hidden className={cn("size-2", dot[stage.kind])} />
             {copy.legend[stage.kind]}
           </p>
           <p className="mt-4 text-2xl font-semibold tracking-[-0.03em]">
@@ -74,7 +77,7 @@ export function Run({ copy }: { copy: Copy["run"] }) {
               .filter((kind) => copy.stages.some((s) => s.kind === kind))
               .map((kind) => (
                 <span key={kind} className="flex items-center gap-2">
-                  <span className={cn("size-2 rounded-full", dot[kind])} />
+                  <span aria-hidden className={cn("size-2", dot[kind])} />
                   {copy.legend[kind]}
                 </span>
               ))}

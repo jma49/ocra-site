@@ -64,8 +64,8 @@ const en: Copy = {
     title: "A code reviewer that reads before it comments.",
     subtitle:
       "ocra splits a change into focused review tasks. Each agent can only read your repository, has to quote the code it means, and must say what it checked. Most runs end with a handful of findings. Some end with none, and that is fine.",
-    start: "Quickstart",
-    github: "Source on GitHub",
+    start: "Get started",
+    github: "View source on GitHub",
     note: "Node 22+, any model OpenCode supports",
   },
   run: {
@@ -180,7 +180,7 @@ const en: Copy = {
       "Settings validated per plugin",
       "Clashing or late registrations fail with the plugin's name",
     ],
-    cta: "Plugin guide",
+    cta: "Read the plugin guide",
   },
   status: {
     title: "Where it stands",
@@ -238,7 +238,7 @@ const zh: Copy = {
     subtitle:
       "ocra 把一次改动拆成几个聚焦的审查任务。每个 agent 只能读你的仓库，必须引用它说的那段代码，还要交代自己查过什么。多数时候你会收到几条意见，有时一条也没有，这也是正常结果。",
     start: "快速上手",
-    github: "GitHub 源码",
+    github: "在 GitHub 查看源码",
     note: "Node 22+，支持 OpenCode 能用的任何模型",
   },
   run: {
@@ -353,7 +353,7 @@ const zh: Copy = {
       "每个插件的设置单独校验",
       "注册冲突或越界注册时报错，并指出是哪个插件",
     ],
-    cta: "插件指南",
+    cta: "阅读插件指南",
   },
   status: {
     title: "目前进展",
