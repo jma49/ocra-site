@@ -63,7 +63,13 @@ export interface Copy {
     states: {
       reported: { tab: string; text: string };
       fixed: { tab: string; text: string; resolved: string };
-      dismissed: { tab: string; text: string; reply: string; resolved: string };
+      dismissed: {
+        tab: string;
+        text: string;
+        reply: string;
+        resolved: string;
+        who: string;
+      };
     };
   };
   plugins: { title: string; body: string; points: string[]; cta: string };
@@ -83,6 +89,7 @@ export interface Copy {
     body: string;
     copy: string;
     copied: string;
+    copyFailed: string;
     docs: string;
     tabs: { cli: string; action: string };
     actionNote: string;

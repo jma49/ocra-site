@@ -154,7 +154,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
               )}
               {state === "dismissed" ? (
                 <div className="border-t border-[var(--border)] px-4 py-3 text-sm">
-                  <span className="font-medium">maintainer</span>
+                  <span className="font-medium">{states.dismissed.who}</span>
                   <p className="mt-1 text-[var(--fg-muted)]">
                     {states.dismissed.reply}
                   </p>
@@ -168,7 +168,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
             </div>
           </div>
         </figure>
-        <div className="lg:pt-2">
+        <div className="max-lg:order-first lg:pt-2">
           <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-[var(--border)] p-1">
             <legend className="sr-only">{copy.title}</legend>
             {STATES.map((s) => (

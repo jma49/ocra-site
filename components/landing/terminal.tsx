@@ -11,7 +11,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
     text: "[ocra] 4 review task(s), 2 reviewer/bundle pair(s) skipped by scope",
     tone: "dim",
   },
-  { text: "[ocra] security-1 completed in 9.2s · 0 finding(s)", tone: "ok" },
+  { text: "[ocra] security-1 completed in 9.2s · 2 finding(s)", tone: "ok" },
   { text: "[ocra] correctness-1 completed in 7.4s · 2 finding(s)", tone: "ok" },
   {
     text: "[ocra] Verified 3 finding(s), dropped 1 that the code disproves",
@@ -45,7 +45,7 @@ export function Terminal({ label }: { label: string }) {
   return (
     <div className="relative min-w-0">
       <Panel label={`ocra review — ${label}`} dark>
-        <pre className="terminal m-0 overflow-x-auto whitespace-pre-wrap p-5 font-mono text-[11.5px] leading-[1.7]">
+        <pre className="terminal m-0 overflow-x-auto whitespace-pre p-5 font-mono text-[11.5px] leading-[1.7]">
           {lines.map((line, i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static lines that never reorder
             <div key={i} className={line.tone ? tones[line.tone] : undefined}>

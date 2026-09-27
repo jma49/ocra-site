@@ -256,6 +256,13 @@ html > body[data-scroll-locked] {
   translate: 0 16px;
 }
 
+@media print {
+  [data-reveal="pending"] > * {
+    opacity: 1;
+    translate: none;
+  }
+}
+
 [data-reveal="visible"] > * {
   transition-property: opacity, translate;
   transition-duration: 0.7s;

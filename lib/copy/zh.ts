@@ -173,6 +173,7 @@ export const zh: Copy = {
         text: "维护者拒绝了这条问题。ocra 不再报告它，它也不再计入结论，除非它以更高的严重程度再次出现。PR 作者本人不能这样做。",
         reply: "Won't fix：这个服务里的 expiresAt 存的是毫秒。",
         resolved: "维护者关闭了这个讨论",
+        who: "维护者",
       },
     },
   },
@@ -246,6 +247,7 @@ export const zh: Copy = {
     body: "它可以在你本机的任何 Git 仓库上运行，也可以通过 GitHub Action 审查 PR。模型供应商能看到的，只有被审查的改动和 agent 打开过的文件。",
     copy: "复制",
     copied: "已复制",
+    copyFailed: "请手动选中复制",
     docs: "阅读快速上手",
     tabs: { cli: "本地 CLI", action: "GitHub Action" },
     actionNote:

@@ -30,7 +30,7 @@ export default async function Page({ params }: Props) {
         />
       </DocsBody>
       <EditOnGitHub
-        href={`${repoUrl}/blob/${gitConfig.branch}/docs/manual/${lang}/${page.path}`}
+        href={`${repoUrl}/blob/${gitConfig.branch}/docs/manual/${page.path}`}
       />
     </DocsPage>
   );

@@ -178,6 +178,7 @@ export const en: Copy = {
         text: "A maintainer declined it. ocra stops reporting it and it no longer counts towards the verdict, unless it comes back more severe. The pull request's own author cannot do this.",
         reply: "Won't fix: this service stores expiresAt in milliseconds.",
         resolved: "maintainer resolved this conversation",
+        who: "maintainer",
       },
     },
   },
@@ -251,6 +252,7 @@ export const en: Copy = {
     body: "It runs against any Git repository on your machine, or on pull requests through the GitHub Action. Your model provider sees the change under review and the files the agents open, nothing else.",
     copy: "Copy",
     copied: "Copied",
+    copyFailed: "Select and copy",
     docs: "Read the quickstart",
     tabs: { cli: "Local CLI", action: "GitHub Action" },
     actionNote:
