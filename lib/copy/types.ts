@@ -69,6 +69,9 @@ export interface Copy {
     copy: string;
     copied: string;
     docs: string;
+    tabs: { cli: string; action: string };
+    actionNote: string;
+    actionDocs: string;
   };
   footer: { tagline: string; github: string; license: string; manual: string };
 }

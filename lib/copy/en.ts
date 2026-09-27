@@ -216,6 +216,10 @@ export const en: Copy = {
     copy: "Copy",
     copied: "Copied",
     docs: "Read the quickstart",
+    tabs: { cli: "Local CLI", action: "GitHub Action" },
+    actionNote:
+      "Save it as .github/workflows/ocra.yml and store your model key as a repository secret. Every pull request gets inline comments and one summary.",
+    actionDocs: "Read the GitHub guide",
   },
   footer: {
     tagline: "Open-source code review with agents that read first.",
