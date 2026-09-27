@@ -11,7 +11,8 @@
     "start": "next start",
     "types:check": "next typegen && tsc --noEmit",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "cn": "^0.3.0",
