@@ -3,7 +3,7 @@
 import { ArrowRight, Check, Copy as CopyIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Window } from "@/components/aqua/window";
+import { Panel } from "@/components/ui/panel";
 import type { Copy } from "@/lib/copy";
 import { localePath } from "@/lib/shared";
 import { Heading, Section } from "./section";
@@ -36,18 +36,19 @@ export function GetStarted({
     <Section className="grid items-center gap-10 lg:grid-cols-[1fr_1.2fr]">
       <div>
         <Heading title={copy.title} body={copy.body} className="mb-8" />
-        <Link href={localePath(locale, "/docs/quickstart")} className="gel">
+        <Link href={localePath(locale, "/docs/quickstart")} className="btn">
           {copy.docs}
           <ArrowRight className="size-4" />
         </Link>
       </div>
-      <Window
-        title="Terminal — zsh"
+      <Panel
+        label="zsh"
+        dark
         accessory={
           <button
             type="button"
             onClick={onCopy}
-            className="gel-plain gel-small gap-1"
+            className="btn-outline btn-sm gap-1 border-[#3f3f46] text-white/80 hover:bg-white/5"
           >
             {copied ? (
               <Check className="size-3" />
@@ -58,10 +59,10 @@ export function GetStarted({
           </button>
         }
       >
-        <pre className="terminal m-0 overflow-x-auto rounded-b-[5px] p-5 font-mono text-[12px] leading-7">
+        <pre className="terminal m-0 overflow-x-auto p-5 font-mono text-[12px] leading-7">
           {commands}
         </pre>
-      </Window>
+      </Panel>
     </Section>
   );
 }

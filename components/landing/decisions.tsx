@@ -5,15 +5,20 @@ export function Decisions({ copy }: { copy: Copy["decisions"] }) {
   return (
     <Section>
       <Heading title={copy.title} body={copy.body} />
-      <ol className="grid gap-x-14 md:grid-cols-2">
+      <ol className="grid gap-x-16 md:grid-cols-2">
         {copy.items.map((item, i) => (
-          <li key={item.title} className="groove flex gap-5 py-7">
-            <span className="gel-dot mt-0.5">{i + 1}</span>
+          <li
+            key={item.title}
+            className="flex gap-5 border-t border-[var(--border)] py-8"
+          >
+            <span className="w-6 shrink-0 pt-0.5 font-mono text-xs text-[var(--fg-subtle)]">
+              {String(i + 1).padStart(2, "0")}
+            </span>
             <div>
-              <h3 className="text-[1.05rem] font-bold tracking-[-0.01em]">
+              <h3 className="text-[1.05rem] font-semibold tracking-[-0.015em]">
                 {item.title}
               </h3>
-              <p className="mt-2 leading-relaxed text-[var(--aqua-dim)]">
+              <p className="mt-2 leading-relaxed text-[var(--fg-muted)]">
                 {item.body}
               </p>
             </div>

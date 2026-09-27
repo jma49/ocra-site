@@ -1,12 +1,11 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
-import { Window } from "@/components/aqua/window";
+import { Panel } from "@/components/ui/panel";
 import type { Copy } from "@/lib/copy";
 import { localePath } from "@/lib/shared";
 import { Heading, Section } from "./section";
 
 const code = [
-  ["c", "// tools/ocra-team-rules.mjs\n"],
   ["k", "export default"],
   ["", " {\n  name: "],
   ["s", '"team-rules"'],
@@ -19,9 +18,9 @@ const code = [
 ] as const;
 
 const tone: Record<string, string> = {
-  c: "text-[var(--aqua-code-comment)]",
-  k: "text-[var(--aqua-code-keyword)] font-bold",
-  s: "text-[var(--aqua-code-string)]",
+  c: "text-[var(--code-comment)]",
+  k: "text-[var(--code-keyword)] font-medium",
+  s: "text-[var(--code-string)]",
   "": "",
 };
 
@@ -39,21 +38,21 @@ export function Plugins({
         <ul className="space-y-3 text-[0.95rem]">
           {copy.points.map((point) => (
             <li key={point} className="flex gap-3">
-              <span className="gel-dot mt-1 size-2.5" />
+              <Check className="mt-1 size-4 shrink-0 text-[var(--accent)]" />
               {point}
             </li>
           ))}
         </ul>
         <Link
           href={localePath(locale, "/docs/plugins")}
-          className="gel-plain mt-8"
+          className="btn-outline mt-9"
         >
           {copy.cta}
           <ArrowRight className="size-4" />
         </Link>
       </div>
-      <Window title="ocra-team-rules.mjs" bodyClassName="p-2">
-        <pre className="inset m-0 overflow-x-auto p-5 font-mono text-[12px] leading-[1.7]">
+      <Panel label="tools/ocra-team-rules.mjs">
+        <pre className="m-0 overflow-x-auto p-5 font-mono text-[12px] leading-[1.7]">
           {code.map(([t, text], i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static fragments that never reorder
             <span key={i} className={tone[t]}>
@@ -61,7 +60,7 @@ export function Plugins({
             </span>
           ))}
         </pre>
-      </Window>
+      </Panel>
     </Section>
   );
 }

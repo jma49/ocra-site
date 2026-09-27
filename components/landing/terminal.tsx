@@ -1,4 +1,5 @@
-import { Window } from "@/components/aqua/window";
+import { PeekingFrog } from "@/components/logo";
+import { Panel } from "@/components/ui/panel";
 
 const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "$ ocra review --from main", tone: "cmd" },
@@ -21,7 +22,7 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
   { text: "" },
   { text: "src/auth/session.ts" },
   {
-    text: "  critical   L42       Every session is treated as expired",
+    text: "  critical   L42       Every session is treated as expired [verified]",
     tone: "warn",
   },
   { text: "    isExpired() compares expiresAt in seconds with Date.now() in" },
@@ -35,24 +36,27 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
 ];
 
 const tones = {
-  dim: "text-white/50",
-  ok: "text-emerald-300",
-  warn: "text-amber-200",
-  cmd: "text-sky-200",
+  dim: "text-white/45",
+  ok: "text-[#7fffd4]",
+  warn: "text-amber-300",
+  cmd: "text-white",
 } as const;
 
 export function Terminal({ label }: { label: string }) {
   return (
-    <Window title={`Terminal — ocra review — ${label}`}>
-      <pre className="terminal m-0 overflow-x-auto whitespace-pre-wrap rounded-b-[5px] p-4 font-mono text-[12px] leading-[1.6]">
-        {lines.map((line, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: static lines that never reorder
-          <div key={i} className={line.tone ? tones[line.tone] : undefined}>
-            {line.text || " "}
-          </div>
-        ))}
-        <span className="caret inline-block h-3.5 w-[7px] translate-y-0.5 bg-white/80" />
-      </pre>
-    </Window>
+    <div className="relative min-w-0 pt-10">
+      <PeekingFrog className="absolute top-0 right-10 z-10 w-24" />
+      <Panel label={`ocra review — ${label}`} dark>
+        <pre className="terminal m-0 overflow-x-auto whitespace-pre-wrap p-5 font-mono text-[11.5px] leading-[1.7]">
+          {lines.map((line, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: static lines that never reorder
+            <div key={i} className={line.tone ? tones[line.tone] : undefined}>
+              {line.text || " "}
+            </div>
+          ))}
+          <span className="caret inline-block h-3.5 w-[7px] translate-y-0.5 bg-white/80" />
+        </pre>
+      </Panel>
+    </div>
   );
 }

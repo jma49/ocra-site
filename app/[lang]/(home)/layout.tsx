@@ -11,7 +11,7 @@ export default async function Layout({
 }) {
   const { lang } = await params;
   return (
-    <HomeLayout {...baseOptions(lang)} className="desktop desktop-layout">
+    <HomeLayout {...baseOptions(lang)} className="home home-layout">
       {children}
     </HomeLayout>
   );

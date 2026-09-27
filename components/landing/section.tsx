@@ -33,12 +33,12 @@ export function Heading({
   className?: string;
 }) {
   return (
-    <div className={cn("mb-10 max-w-2xl", className)}>
-      <h2 className="text-balance text-[1.7rem] font-bold leading-tight tracking-[-0.02em] md:text-[2.2rem]">
+    <div className={cn("mb-12 max-w-2xl", className)}>
+      <h2 className="text-balance text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.03em] md:text-[2.4rem]">
         {title}
       </h2>
       {body ? (
-        <p className="mt-3 text-pretty leading-relaxed text-[var(--aqua-dim)] md:text-[1.05rem]">
+        <p className="mt-4 text-pretty text-[1.05rem] leading-relaxed text-[var(--fg-muted)]">
           {body}
         </p>
       ) : null}
