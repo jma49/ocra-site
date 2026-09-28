@@ -41,8 +41,11 @@ colors:
   term-bg: "#0A0A0A"
   term-fg: "#E2E2E2"
   term-dim: "#919191"
+  term-strong: "#FFFFFF"
   term-label: "#85858E"
   term-border: "#27272A"
+  term-border-strong: "#3F3F46"
+  term-warn: "#FBBF24"
 typography:
   display:
     fontFamily: Geist
@@ -216,7 +219,12 @@ components:
     textColor: "{colors.brand}"
   terminal-warn:
     backgroundColor: "{colors.term-bg}"
-    textColor: "{colors.warning-dark}"
+    textColor: "{colors.term-warn}"
+  terminal-command:
+    backgroundColor: "{colors.term-bg}"
+    textColor: "{colors.term-strong}"
+  terminal-button-border:
+    backgroundColor: "{colors.term-border-strong}"
   terminal-bar:
     backgroundColor: "{colors.term-bg}"
     textColor: "{colors.term-label}"
@@ -286,7 +294,7 @@ The landing page and manual for a code review tool used by engineers. **Monochro
 - **Aquamarine (`brand`, #7FFFD4)** is the brand. In the light theme it is too pale for text, so links, focus rings and "verified" use `primary` (#0B7A5C, the same hue at about 5:1 on white; `--accent` in CSS). In the dark theme the accent is the brand itself.
 - **Review severities** (`critical`, `warning`) and diff lines are the only other colours.
 - **Neutrals** do everything else: `fg` for text, `fg-muted` for body copy and descriptions, `fg-subtle` for labels and captions, `border` / `border-strong` for lines.
-- **Terminals stay dark in both themes** and have their own tokens (`term-*`). Their "ok" line is the brand, their "warn" line is the dark-theme `warning`.
+- **Terminals stay dark in both themes** and have their own tokens (`--term-*`, defined once in `:root` and not redefined under `.dark`; utilities `text-term-dim`, `text-term-warn`, `border-term-border-strong`, …). Their "ok" line is the brand; their "warn" line is `term-warn`, the dark theme's `warning` (#FBBF24). `term-fg` and `term-dim` are white at 88% and 55% in CSS; the hex values above are what they blend to on `term-bg`.
 - The tokens are mapped onto Fumadocs' `--color-fd-*`, so the landing page and the manual share one system. The theme follows the system; light and dark must be equally polished.
 - Dark values carry a `-dark` suffix here; in CSS the same variable switches under `.dark`.
 
@@ -345,14 +353,13 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 ## Known issues
 
 - `warning` (#D97706) is 3.2:1 on white, below AA for text. It is not used as text today; if it ever is, use #AA5D05 (4.7:1) in the light theme.
-- The terminal hard-codes its colours (`terminal.tsx`: `#7fffd4`, `text-amber-300`; `get-started.tsx`: `#3f3f46`, `#7fffd4`), and its warn line uses amber-300 rather than the dark-theme `warning` (amber-400) that terminals are meant to use.
 
 ## Migration
 
 One step per pull request, each checked against baseline screenshots:
 
 1. **Done: tokens as utilities.** `@theme inline` in `app/global.css` registers every colour token as a Tailwind colour under its CSS variable's name (`text-fg-muted`, `border-border`, `bg-bg-subtle`, `text-accent`, …); the 109 `text-[var(--fg-muted)]`-style classes are gone. No visual difference.
-2. **Terminal tokens:** add `--term-bg`, `--term-fg`, `--term-dim`, `--term-label`, `--term-border` to `:root` (same in both themes) and use them in `.terminal`, `.panel-dark`, `terminal.tsx` and `get-started.tsx`. Expected diff: the warn line moves from amber-300 to amber-400 (`#FBBF24`). Decided 2026-09-27: terminals are dark in both themes, so they take the dark theme's `warning`, which leaves one warning colour on the whole site; it is 11.9:1 on the terminal background.
+2. **Done: terminal tokens.** `--term-*` in `:root`, used by `.terminal`, `.panel-dark`, `terminal.tsx` and `get-started.tsx`; no hex values or palette colours are left in components. Decided 2026-09-27: the warn line uses the dark theme's `warning` (amber-400, `#FBBF24`, 11.9:1 on the terminal) rather than amber-300, so the site has one warning colour. That line is the only visual difference.
 3. **Type scale:** add `--text-display`, `--text-display-sm`, `--text-display-zh`, `--text-display-zh-sm`, `--text-headline`, `--text-headline-sm`, `--text-lead` with their `--line-height` and `--letter-spacing` sub-properties, and use them in `hero.tsx`, `section.tsx`, `not-found-page.tsx`, `decisions.tsx`. Merge `1.08rem` into `lead` (1.05rem) and `11.5px` into `mono-caption`; `plugins.tsx`'s `0.95rem` becomes `body` or `lead`. Expected diff: the hero subtitle and those small labels shift slightly.
 4. **Radii:** `rounded-[2px]` and `rounded-[4px]` → one 4px token.
 

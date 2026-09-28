@@ -32,6 +32,15 @@
   --color-code-comment: var(--code-comment);
   --color-code-keyword: var(--code-keyword);
   --color-code-string: var(--code-string);
+  --color-term-bg: var(--term-bg);
+  --color-term-fg: var(--term-fg);
+  --color-term-strong: var(--term-strong);
+  --color-term-dim: var(--term-dim);
+  --color-term-label: var(--term-label);
+  --color-term-border: var(--term-border);
+  --color-term-border-strong: var(--term-border-strong);
+  --color-term-ok: var(--term-ok);
+  --color-term-warn: var(--term-warn);
 }
 
 :root {
@@ -54,6 +63,16 @@
   --code-comment: #737373;
   --code-keyword: #7c3aed;
   --code-string: #0b7a5c;
+  /* Terminals stay dark in both themes, so these are not redefined in .dark. */
+  --term-bg: #0a0a0a;
+  --term-fg: rgb(255 255 255 / 0.88);
+  --term-strong: #ffffff;
+  --term-dim: color-mix(in oklab, #ffffff 55%, transparent);
+  --term-label: #85858e;
+  --term-border: #27272a;
+  --term-border-strong: #3f3f46;
+  --term-ok: var(--brand);
+  --term-warn: #fbbf24;
 
   --color-fd-background: var(--bg);
   --color-fd-foreground: var(--fg);
@@ -163,18 +182,18 @@ html > body[data-scroll-locked] {
 
   /* Terminals stay dark in both themes. */
   .terminal {
-    background: #0a0a0a;
-    color: rgb(255 255 255 / 0.88);
+    background: var(--term-bg);
+    color: var(--term-fg);
   }
 
   .panel-dark {
-    border-color: #27272a;
-    background: #0a0a0a;
+    border-color: var(--term-border);
+    background: var(--term-bg);
   }
 
   .panel-dark .panel-bar {
-    border-color: #27272a;
-    color: #85858e;
+    border-color: var(--term-border);
+    color: var(--term-label);
   }
 
   .btn,

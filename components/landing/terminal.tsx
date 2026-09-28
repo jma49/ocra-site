@@ -35,10 +35,10 @@ const lines: { text: string; tone?: "dim" | "ok" | "warn" | "cmd" }[] = [
 ];
 
 const tones = {
-  dim: "text-white/55",
-  ok: "text-[#7fffd4]",
-  warn: "text-amber-300",
-  cmd: "text-white",
+  dim: "text-term-dim",
+  ok: "text-term-ok",
+  warn: "text-term-warn",
+  cmd: "text-term-strong",
 } as const;
 
 export function Terminal({ label }: { label: string }) {
@@ -52,7 +52,7 @@ export function Terminal({ label }: { label: string }) {
               {line.text || " "}
             </div>
           ))}
-          <span className="caret inline-block h-3.5 w-[7px] translate-y-0.5 bg-white/80" />
+          <span className="caret inline-block h-3.5 w-[7px] translate-y-0.5 bg-term-strong/80" />
         </pre>
       </Panel>
     </div>
