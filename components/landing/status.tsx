@@ -3,60 +3,67 @@ import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
 import { Heading, Section } from "./section";
 
-// Milestones as rows: shipped ones with a check, planned ones with a dashed
-// square. Planned items carry no dates.
-export function Status({
-  copy,
-  locale,
-}: {
-  copy: Copy["status"];
-  locale: string;
-}) {
+// A vertical timeline: shipped milestones on a solid rail with a check,
+// planned work on a dashed one. Planned items carry no dates.
+export function Status({ copy }: { copy: Copy["status"] }) {
   return (
-    <Section
-      id="roadmap"
-      labelledBy="roadmap-title"
-      className="grid gap-12 lg:grid-cols-[24rem_minmax(0,1fr)] lg:gap-14 lg:pt-8"
-    >
-      <Heading id="roadmap-title" title={copy.title} locale={locale} />
-      <ol className="m-0 flex list-none flex-col p-0">
-        {copy.items.map((item) => (
-          <li
-            key={`${item.milestone}-${item.title}`}
-            className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-5 gap-y-1 border-t border-border py-6 sm:grid-cols-[1.25rem_5rem_minmax(0,1fr)_auto]"
-          >
-            <span
-              aria-hidden
-              className={cn(
-                "mt-0.5 flex size-5 items-center justify-center",
-                item.done
-                  ? "bg-accent text-on-accent"
-                  : "border border-dashed border-fg-subtle",
-              )}
+    <Section>
+      <Heading index={5} title={copy.title} />
+      <ol className="relative max-w-3xl">
+        {copy.items.map((item, i) => {
+          const last = i === copy.items.length - 1;
+          const nextDone = copy.items[i + 1]?.done ?? false;
+          return (
+            <li
+              key={`${item.milestone}-${item.title}`}
+              className="relative flex gap-5 pb-10"
             >
-              {item.done ? (
-                <Check strokeWidth={3} className="size-3.5" />
-              ) : null}
-            </span>
-            <span className="font-mono text-sm text-fg-subtle max-sm:col-start-2">
-              {item.milestone}
-            </span>
-            <div className="min-w-0 max-sm:col-start-2">
-              <p className="font-semibold">{item.title}</p>
-              <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">
-                {item.body}
-              </p>
-            </div>
-            <span
-              className={cn(
-                "font-mono text-xs max-sm:col-start-2 sm:pt-1",
-                item.done ? "text-accent" : "text-fg-subtle",
+              {last ? null : (
+                <span
+                  aria-hidden
+                  className={cn(
+                    "absolute top-7 bottom-0 left-[13px] w-px",
+                    nextDone
+                      ? "bg-fg"
+                      : "border-l border-dashed border-border-strong",
+                  )}
+                />
               )}
-            >
-              {item.state}
-            </span>
-          </li>
-        ))}
+              <span
+                aria-hidden
+                className={cn(
+                  "relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full",
+                  item.done
+                    ? "bg-accent text-bg"
+                    : "border border-dashed border-fg-subtle bg-bg",
+                )}
+              >
+                {item.done ? (
+                  <Check strokeWidth={2.5} className="size-3.5" />
+                ) : null}
+              </span>
+              <div className="min-w-0 pt-0.5">
+                <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span className="font-mono text-sm text-fg-subtle">
+                    {item.milestone}
+                  </span>
+                  <span className="font-semibold">{item.title}</span>
+                  <span
+                    className={cn(
+                      "text-xs",
+                      item.done ? "font-medium text-accent" : "text-fg-subtle",
+                    )}
+                  >
+                    {item.state}
+                  </span>
+                </p>
+                <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">
+                  {item.body}
+                </p>
+              </div>
+            </li>
+          );
+        })}
       </ol>
     </Section>
   );

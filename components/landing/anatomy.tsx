@@ -1,11 +1,10 @@
 "use client";
 
 import { Check, CircleCheck, CircleSlash } from "lucide-react";
-import { type ReactNode, useState } from "react";
-import { LogoMark } from "@/components/logo";
+import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
-import { Section } from "./section";
+import { Heading, Section } from "./section";
 
 type State = "reported" | "fixed" | "dismissed";
 const STATES: State[] = ["reported", "fixed", "dismissed"];
@@ -25,28 +24,23 @@ function Line({
   sign: " " | "+" | "-";
   code: string;
   tone?: "add" | "del";
-  children?: ReactNode;
+  children?: React.ReactNode;
 }) {
   return (
     <div
       className={cn(
         "flex w-max min-w-full items-center",
-        tone === "add" && "bg-accent/[0.07]",
-        tone === "del" && "bg-critical/[0.08]",
+        tone === "add" &&
+          "bg-[color-mix(in_srgb,var(--accent)_10%,transparent)]",
+        tone === "del" &&
+          "bg-[color-mix(in_srgb,var(--critical)_9%,transparent)]",
       )}
     >
-      <span className="w-14 shrink-0 select-none pr-4 text-right text-fg-subtle">
+      <span className="w-12 shrink-0 select-none pr-3 text-right text-fg-subtle">
         {n}
       </span>
-      <span
-        className={cn(
-          "w-5 shrink-0 select-none",
-          tone === "add" ? "text-accent" : "text-fg-subtle",
-        )}
-      >
-        {sign}
-      </span>
-      <span className="whitespace-pre pr-6">{code}</span>
+      <span className="w-4 shrink-0 select-none text-fg-subtle">{sign}</span>
+      <span className="whitespace-pre pr-5">{code}</span>
       {children}
     </div>
   );
@@ -55,135 +49,59 @@ function Line({
 // The inline comment ocra posts, in the same shape as the real one
 // (vcs-github render.ts): title, severity, verification, reviewer, body,
 // suggestion. The example is labelled as one.
-function Comment() {
+function Comment({ copy }: { copy: Copy["anatomy"] }) {
   return (
-    <div className="flex flex-col gap-3.5 p-5">
-      <p className="flex flex-wrap items-center gap-2.5 text-[0.8125rem]">
-        <LogoMark className="size-[22px]" />
-        <span className="font-semibold">github-actions</span>
-        <span className="border border-border-strong px-1.5 text-[11px] text-fg-muted">
-          bot
-        </span>
-        <span className="text-fg-subtle">ocra review</span>
+    <div className="p-4">
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-fg-subtle">
+        <span className="font-medium text-fg">github-actions</span>
+        <span className="rounded border border-border px-1">bot</span>
       </p>
-      <p className="flex flex-wrap items-center gap-2 font-mono text-xs">
-        <span className="severity-critical px-1.5 py-px">critical</span>
-        <span className="verified flex items-center gap-1 px-1.5 py-px">
+      <p className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+        <span className="font-semibold">
+          Every session is treated as expired
+        </span>
+        <span className="severity-critical rounded-md px-1.5 py-px text-[11px]">
+          critical
+        </span>
+        <span className="verified flex items-center gap-1 rounded-md px-1.5 py-px text-[11px]">
           <Check className="size-3" />
           verified
         </span>
-        <span className="text-fg-muted">correctness</span>
+        <span className="text-xs text-fg-subtle">correctness</span>
         <Marker n={2} />
       </p>
-      <p className="text-[1.375rem] font-semibold leading-snug tracking-[-0.02em]">
-        Every session is treated as expired
-      </p>
-      <p className="text-[0.9375rem] leading-relaxed text-fg-muted">
+      <p className="mt-2 text-sm leading-relaxed text-fg-muted">
         isExpired() compares expiresAt in seconds with Date.now() in
         milliseconds, so every session counts as expired and users are logged
         out right after signing in.
         <Marker n={3} />
       </p>
-      <div className="flex flex-col gap-2">
-        <span className="flex items-center text-xs text-fg-subtle">
-          Suggestion
-          <Marker n={4} />
-        </span>
-        <code className="block overflow-x-auto border border-border bg-bg-subtle px-3 py-2.5 font-mono text-[0.8125rem] whitespace-pre">
+      <p className="mt-2 text-sm text-fg-muted">
+        <span className="font-medium text-fg">Suggestion: </span>
+        <code className="font-mono text-xs">
           return session.expiresAt * 1000 {"<"} Date.now();
         </code>
-      </div>
+        <Marker n={4} />
+      </p>
+      <p className="sr-only">{copy.example}</p>
     </div>
   );
 }
 
-export function Anatomy({
-  copy,
-  locale,
-}: {
-  copy: Copy["anatomy"];
-  locale: string;
-}) {
+export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
   const [state, setState] = useState<State>("reported");
   const { callouts, states } = copy;
   const fixed = state === "fixed";
   return (
-    <Section id="finding" labelledBy="finding-title" className="lg:pt-8">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_32rem] lg:items-end lg:gap-14">
-        <h2
-          id="finding-title"
-          className={cn(
-            "font-semibold",
-            locale === "zh"
-              ? "text-headline-zh-sm md:text-headline-zh"
-              : "text-balance text-headline-sm md:text-headline",
-          )}
-        >
-          {copy.title}
-        </h2>
-        <p className="text-pretty text-lead text-fg-muted">{copy.body}</p>
-      </div>
-      <div className="mt-14 grid gap-10 lg:grid-cols-[24rem_minmax(0,1fr)] lg:gap-14">
-        <fieldset className="m-0 flex min-w-0 flex-col border-0 p-0">
-          <legend className="sr-only">{copy.title}</legend>
-          {STATES.map((s) => {
-            const active = s === state;
-            return (
-              <div
-                key={s}
-                className={cn(
-                  "border-t-2 py-6",
-                  active ? "border-accent" : "border-border",
-                )}
-              >
-                <button
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => setState(s)}
-                  className={cn(
-                    "focus-ring w-full text-left text-title font-semibold transition-colors",
-                    active ? "text-fg" : "text-fg-subtle hover:text-fg",
-                  )}
-                >
-                  {states[s].tab}
-                </button>
-                {active ? (
-                  <div aria-live="polite" className="mt-3">
-                    <p className="text-[0.9375rem] leading-relaxed text-fg-muted">
-                      {states[s].text}
-                    </p>
-                    {s === "reported" ? (
-                      <ol className="mt-5 flex list-none flex-col gap-3 p-0">
-                        {[
-                          callouts.quote,
-                          callouts.lines,
-                          callouts.verified,
-                          callouts.suggestion,
-                        ].map((text, i) => (
-                          <li key={text} className="flex gap-3.5">
-                            <span className="marker marker-brand mt-0.5">
-                              {i + 1}
-                            </span>
-                            <span className="text-sm text-fg-muted">
-                              {text}
-                            </span>
-                          </li>
-                        ))}
-                      </ol>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
-        </fieldset>
-
-        <figure className="panel m-0 flex min-w-0 flex-col">
+    <Section id="finding">
+      <Heading index={3} title={copy.title} body={copy.body} />
+      <div className="grid items-start gap-12 lg:grid-cols-[1.45fr_1fr]">
+        <figure className="panel m-0 min-w-0 overflow-hidden">
           <figcaption className="panel-bar">
-            <span className="truncate text-fg">src/auth/session.ts</span>
+            <span className="truncate">src/auth/session.ts</span>
             <span className="shrink-0">{copy.example}</span>
           </figcaption>
-          <div className="overflow-x-auto py-3 font-mono text-[0.8125rem] leading-7 sm:text-sm">
+          <div className="overflow-x-auto border-b border-border py-2 font-mono text-[12px] leading-6">
             <Line
               n={41}
               sign=" "
@@ -216,42 +134,73 @@ export function Anatomy({
             )}
             <Line n={43} sign=" " code="}" />
           </div>
-          <div className="mx-4 mb-4 border border-border-strong bg-bg sm:mr-6 sm:mb-6 sm:ml-14">
-            {state === "reported" ? (
-              <Comment />
-            ) : (
-              <p className="flex items-center gap-2.5 px-5 py-4 text-sm text-fg-muted">
-                {fixed ? (
-                  <CircleCheck className="size-4 text-accent" />
-                ) : (
-                  <CircleSlash className="size-4 text-fg-subtle" />
-                )}
-                <span className="line-through decoration-fg-subtle">
-                  Every session is treated as expired
-                </span>
-              </p>
-            )}
-            {state === "dismissed" ? (
-              <div className="border-t border-border px-5 py-4 text-sm">
-                <span className="font-semibold">{states.dismissed.who}</span>
-                <p className="mt-1 text-fg-muted">{states.dismissed.reply}</p>
-              </div>
-            ) : null}
+          <div className="bg-bg-subtle p-3">
+            <div className="rounded-lg border border-border bg-panel">
+              {state === "reported" ? (
+                <Comment copy={copy} />
+              ) : (
+                <div className="flex items-center gap-2 px-4 py-3 text-sm text-fg-muted">
+                  {fixed ? (
+                    <CircleCheck className="size-4 text-accent" />
+                  ) : (
+                    <CircleSlash className="size-4 text-fg-subtle" />
+                  )}
+                  <span className="line-through decoration-fg-subtle">
+                    Every session is treated as expired
+                  </span>
+                </div>
+              )}
+              {state === "dismissed" ? (
+                <div className="border-t border-border px-4 py-3 text-sm">
+                  <span className="font-medium">{states.dismissed.who}</span>
+                  <p className="mt-1 text-fg-muted">{states.dismissed.reply}</p>
+                </div>
+              ) : null}
+              {state !== "reported" ? (
+                <p className="border-t border-border px-4 py-2 text-xs text-fg-subtle">
+                  {fixed ? states.fixed.resolved : states.dismissed.resolved}
+                </p>
+              ) : null}
+            </div>
           </div>
-          <p className="mt-auto flex items-center gap-2.5 border-t border-border px-5 py-4 text-sm text-fg-muted sm:pl-14">
-            {state === "reported" ? (
-              <>
-                <span aria-hidden className="size-2 shrink-0 bg-critical" />
-                {states.reported.open}
-              </>
-            ) : (
-              <>
-                <Check className="size-4 shrink-0 text-accent" />
-                {fixed ? states.fixed.resolved : states.dismissed.resolved}
-              </>
-            )}
-          </p>
         </figure>
+        <div className="max-lg:order-first lg:pt-2">
+          <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-border p-1">
+            <legend className="sr-only">{copy.title}</legend>
+            {STATES.map((s) => (
+              <button
+                key={s}
+                type="button"
+                aria-pressed={s === state}
+                onClick={() => setState(s)}
+                className={cn(
+                  "focus-ring rounded-[4px] px-3 py-1.5 text-sm transition-colors",
+                  s === state ? "bg-fg text-bg" : "text-fg-muted hover:text-fg",
+                )}
+              >
+                {states[s].tab}
+              </button>
+            ))}
+          </fieldset>
+          <p className="mt-5 leading-relaxed text-fg-muted" aria-live="polite">
+            {states[state].text}
+          </p>
+          {state === "reported" ? (
+            <ol className="mt-6 space-y-4">
+              {[
+                callouts.quote,
+                callouts.lines,
+                callouts.verified,
+                callouts.suggestion,
+              ].map((text, i) => (
+                <li key={text} className="flex gap-4">
+                  <span className="marker marker-brand mt-0.5">{i + 1}</span>
+                  <span className="text-sm text-fg-muted">{text}</span>
+                </li>
+              ))}
+            </ol>
+          ) : null}
+        </div>
       </div>
     </Section>
   );

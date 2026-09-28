@@ -32,23 +32,19 @@ export function Plugins({
   locale: string;
 }) {
   return (
-    <Section
-      id="plugins"
-      labelledBy="plugins-title"
-      className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:pt-8"
-    >
+    <Section band className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
       <div>
         <Heading
-          id="plugins-title"
+          index={4}
           title={copy.title}
           body={copy.body}
-          locale={locale}
+          className="mb-8"
         />
-        <ul className="mt-9 flex list-none flex-col gap-3 p-0 text-[0.9375rem]">
+        <ul className="space-y-3 text-[0.95rem]">
           {copy.points.map((point) => (
             <li key={point} className="flex gap-3">
               <Check
-                strokeWidth={2}
+                strokeWidth={1.5}
                 className="mt-1 size-4 shrink-0 text-accent"
               />
               {point}
@@ -57,14 +53,14 @@ export function Plugins({
         </ul>
         <Link
           href={localePath(locale, "/docs/plugins")}
-          className="btn-outline btn-lg mt-10"
+          className="btn-outline mt-9"
         >
           {copy.cta}
-          <ArrowRight className="size-[18px]" />
+          <ArrowRight className="size-4" />
         </Link>
       </div>
       <Panel label="tools/ocra-team-rules.mjs">
-        <pre className="m-0 overflow-x-auto p-6 font-mono text-[0.8125rem] leading-[1.8]">
+        <pre className="m-0 overflow-x-auto p-5 font-mono text-[12px] leading-[1.7]">
           {code.map(([t, text], i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static fragments that never reorder
             <span key={i} className={tone[t]}>

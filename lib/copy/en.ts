@@ -1,19 +1,8 @@
 import type { Copy } from "./types";
 
 export const en: Copy = {
-  nav: {
-    home: "ocra home",
-    how: "How it works",
-    manual: "Manual",
-    plugins: "Plugins",
-    roadmap: "Roadmap",
-    github: "GitHub",
-    start: "Get started",
-    language: "中文",
-  },
   hero: {
-    titleLead: "A code reviewer that",
-    titleRest: "reads before it comments.",
+    title: "A code reviewer that reads before it comments.",
     subtitle:
       "ocra splits a change into focused review tasks. Each agent can only read your repository, has to quote the code it means, and must say what it checked. Most runs end with a handful of findings. Some end with none, and that is fine.",
     start: "Get started",
@@ -21,72 +10,108 @@ export const en: Copy = {
     note: "Node 22+, any model OpenCode supports",
   },
   run: {
-    title: "What happens when you run {command}",
+    title: "What happens when you run ocra review",
+    window: "ocra — pipeline",
     body: "The steps that must not go wrong are plain, tested code. Models are only asked for judgment.",
-    legend: { code: "code", model: "model" },
-    region: "The stages of a review",
-    previous: "Previous stages",
-    next: "Next stages",
-    example: "example run",
-    groups: [
+    legend: { code: "code", model: "model", planned: "planned" },
+    flow: {
+      label: "Example run",
+      report: "Report",
+      play: "Play",
+      pause: "Pause",
+      previous: "Previous step",
+      next: "Next step",
+      files: "Changed files",
+      findings: "Findings",
+      tier: "full tier: the change touches auth/",
+      bundle: "Bundle",
+      skipped: "skipped by scope: docs only",
+      verdict: "Verdict: significant concerns",
+      reasons: {
+        lock: "lock file, set aside",
+        memory: "accepted in .ocra/memory.json",
+        disproved: "disproved: token.ts:31 revokes the token on logout",
+        merged: "merged into #1: same root cause",
+        verified: "verified",
+      },
+      captions: [
+        "Five files changed. The lock file is set aside with its reason; four are worth reading.",
+        "A change under auth/ is sensitive, so the whole change gets the full tier and every reviewer.",
+        "A cheap model groups the files: the auth code together, the docs on their own.",
+        "Each bundle gets the reviewers whose scope fits. Security and performance skip the docs bundle, and the report lists why.",
+        "Four isolated agents read the code with read-only tools and report four findings, each quoting the code it means.",
+        "ocra finds each quote in the diff and pins it to a line. The model never picks the line.",
+        "One finding was accepted by the team earlier, so it is dropped before a model is paid to check it.",
+        "The verifier rereads each finding next to the code: one is disproved, two are confirmed.",
+        "The judge sees every reviewer's findings together and merges the two that share a root cause.",
+        "One verified critical finding is reported on src/auth/session.ts:42. A confirmed critical sets the verdict.",
+      ],
+    },
+    stages: [
       {
-        title: "Only the files worth reading",
-        stages: [
-          { name: "select", kind: "code" },
-          { name: "triage", kind: "code" },
-        ],
-        text: "Binaries, lock files, vendored and generated code, likely secrets and oversized diffs are set aside, each with a recorded reason. Churn and sensitive paths such as auth/ put the change in a trivial, lite or full tier.",
+        name: "Select",
+        kind: "code",
+        summary: "Decide which files are worth reading",
+        detail:
+          "Binaries, lock files, vendored and generated code, likely secrets and oversized diffs are set aside, each with a recorded reason. Migrations are always kept. A secret can never be opted back in.",
       },
       {
-        title: "One task per group and reviewer",
-        stages: [
-          { name: "bundle", kind: "model" },
-          { name: "matrix", kind: "code" },
-        ],
-        text: "A cheap model groups files that belong together. Correctness always runs; security and performance join from the lite tier and skip documentation and tests. Every skipped pair is listed in the report, so a cheaper plan never hides a gap.",
+        name: "Triage",
+        kind: "code",
+        summary: "Size up the risk",
+        detail:
+          "Churn and sensitive paths such as auth/ or crypto/ put the change in a trivial, lite or full tier.",
       },
       {
-        title: "Findings quote the code they mean",
-        stages: [
-          { name: "review", kind: "model" },
-          { name: "anchor", kind: "code" },
-        ],
-        text: "An isolated agent per group and reviewer reads the exact revision under review with read-only tools, stops after 20 steps, and reports each issue by quoting code. ocra finds the quote in the diff and pins it to a line; the model never picks the line.",
+        name: "Bundle",
+        kind: "model",
+        summary: "Group files that belong together",
+        detail:
+          "A cheap model groups files by index: an interface with its implementation, translations together. Bad answers are repaired or fall back to one file per task.",
       },
       {
-        title: "Only what holds up on a second read",
-        stages: [
-          { name: "filter", kind: "code" },
-          { name: "verify", kind: "model" },
-          { name: "judge", kind: "model" },
-        ],
-        text: "Findings the team already accepted are dropped before a model is paid to check them. A verifier rereads each one next to the code, and a judge merges the same root cause. Only a critical finding the verifier confirmed can block.",
+        name: "Matrix",
+        kind: "code",
+        summary: "Pick reviewers per group",
+        detail:
+          "Correctness always runs. Security and performance join from the lite tier and skip documentation and tests. Every skipped pair is listed in the report, so a cheaper plan never hides a gap.",
+      },
+      {
+        name: "Review",
+        kind: "model",
+        summary: "One isolated agent per group and reviewer",
+        detail:
+          "The agent reads the exact revision under review through three tools and reports each issue by quoting code. It has no shell, cannot write, and stops after 20 steps.",
+      },
+      {
+        name: "Anchor",
+        kind: "code",
+        summary: "Find the lines ocra will point at",
+        detail:
+          "The quote is matched in the changed hunks, then the whole file, then the other changed files. If nothing matches, the finding stays on the file instead of disappearing.",
+      },
+      {
+        name: "Filter",
+        kind: "code",
+        summary: "Drop what the team already settled",
+        detail:
+          "Findings the repository's memory accepts, and those a reviewer dismissed on the pull request, are removed before any model is paid to check them. On a pull request, earlier findings are compared too: one counts as fixed only when the code it pointed at is gone.",
+      },
+      {
+        name: "Verify",
+        kind: "model",
+        summary: "Check each finding against the diff",
+        detail:
+          "A model rereads each file's findings next to its diff and the lines around them. A finding is dropped only when that code proves it wrong, with the reason kept in the report; the rest are marked confirmed or unconfirmed.",
+      },
+      {
+        name: "Judge",
+        kind: "model",
+        summary: "Merge duplicates, settle severity",
+        detail:
+          "A stronger model reads every reviewer's findings together, merges the same root cause, drops nitpicks and fixes severities. The verdict itself comes from a fixed rubric, so the same findings always get the same verdict, and only a critical finding the verifier confirmed can block.",
       },
     ],
-    figures: {
-      read: "read",
-      lockSetAside: "lock file, set aside",
-      tier: "tier",
-      touches: "touches auth/",
-      authCode: "auth code",
-      docs: "docs",
-      threeFiles: "3 files",
-      oneFile: "1 file",
-      skip: "skip",
-      tasks: "4 review tasks",
-      skipped: "2 skipped pairs, listed in the report",
-      agent: "agent",
-      on: "on",
-      off: "off",
-      quote: "quote",
-      matched: "matched in the diff",
-      confirmed: "confirmed",
-      merged: "merged into #1",
-      disproved: "disproved",
-      accepted: "accepted in memory",
-      verdict: "verdict: significant concerns",
-      verifiedCritical: "1 verified critical",
-    },
   },
   decisions: {
     title: "Decisions we made on purpose",
@@ -142,7 +167,6 @@ export const en: Copy = {
       reported: {
         tab: "Reported",
         text: "The finding stays open on the next push as long as its code is unchanged, even if no reviewer reports it again, so the same code keeps the same verdict.",
-        open: "Open. The next push keeps it open while line 42 is unchanged.",
       },
       fixed: {
         tab: "Fixed",
@@ -170,6 +194,7 @@ export const en: Copy = {
   },
   status: {
     title: "Where it stands",
+    window: "ocra — roadmap",
     items: [
       {
         milestone: "M1",
@@ -224,7 +249,6 @@ export const en: Copy = {
   },
   start: {
     title: "Try it on a repository you know",
-    titleRest: "Open source, Apache-2.0",
     body: "It runs against any Git repository on your machine, or on pull requests through the GitHub Action. Your model provider sees the change under review and the files the agents open, nothing else.",
     copy: "Copy",
     copied: "Copied",
@@ -237,11 +261,8 @@ export const en: Copy = {
   },
   footer: {
     tagline: "Open-source code review with agents that read first.",
-    project: "Project",
-    source: "Source",
-    language: "Language",
+    github: "GitHub",
     license: "Apache-2.0",
-    backToTop: "Back to top",
-    wordmark: "ocra",
+    manual: "Manual",
   },
 };
