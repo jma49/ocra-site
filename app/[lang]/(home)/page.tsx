@@ -4,7 +4,7 @@ import { Footer } from "@/components/landing/footer";
 import { GetStarted } from "@/components/landing/get-started";
 import { Hero } from "@/components/landing/hero";
 import { Plugins } from "@/components/landing/plugins";
-import { Run } from "@/components/landing/run";
+import { Stages } from "@/components/landing/stages";
 import { Status } from "@/components/landing/status";
 import { getCopy } from "@/lib/copy";
 
@@ -18,7 +18,7 @@ export default async function HomePage({
   return (
     <div className="relative flex flex-1 flex-col">
       <Hero copy={copy.hero} locale={lang} />
-      <Run copy={copy.run} />
+      <Stages copy={copy.run} />
       <Decisions copy={copy.decisions} />
       <Anatomy copy={copy.anatomy} />
       <Plugins copy={copy.plugins} locale={lang} />

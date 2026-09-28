@@ -11,6 +11,30 @@
     "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
   --font-mono:
     var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display: 4rem;
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.045em;
+  --text-display-sm: 2.6rem;
+  --text-display-sm--line-height: 1.05;
+  --text-display-sm--letter-spacing: -0.045em;
+  --text-display-zh: 3.3rem;
+  --text-display-zh--line-height: 1.2;
+  --text-display-zh--letter-spacing: -0.02em;
+  --text-display-zh-sm: 2.3rem;
+  --text-display-zh-sm--line-height: 1.2;
+  --text-display-zh-sm--letter-spacing: -0.02em;
+  --text-headline: 2.4rem;
+  --text-headline--line-height: 1.15;
+  --text-headline--letter-spacing: -0.03em;
+  --text-headline-sm: 1.75rem;
+  --text-headline-sm--line-height: 1.15;
+  --text-headline-sm--letter-spacing: -0.03em;
+  --text-title: 1.25rem;
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.015em;
+  --text-lead: 1.05rem;
+  --text-lead--line-height: 1.625;
 }
 
 /* The tokens below as Tailwind colours (`text-fg-muted`, `border-border`),
@@ -26,6 +50,7 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-brand: var(--brand);
+  --color-ink: var(--ink);
   --color-panel: var(--panel);
   --color-critical: var(--critical);
   --color-warning: var(--warning);
@@ -45,6 +70,8 @@
 
 :root {
   --brand: #7fffd4;
+  /* The frog's outline; the letters on the wordmark band in both themes. */
+  --ink: #0c3b30;
   /* Aquamarine is too light for text on white; the same hue, darkened to
      about 5:1 contrast, carries it in the light theme. */
   --accent: #0b7a5c;
@@ -140,9 +167,19 @@ html > body[data-scroll-locked] {
   -webkit-backdrop-filter: blur(12px) saturate(1.4);
 }
 
-/* Chinese reads better with more leading than Latin text. */
+/* Chinese reads better with more leading than Latin text, and without the
+   tight tracking that suits Geist: it crowds CJK glyphs. */
 :lang(zh) .prose {
   line-height: 1.85;
+}
+
+:lang(zh) {
+  --text-headline--letter-spacing: -0.01em;
+  --text-headline--line-height: 1.3;
+  --text-headline-sm--letter-spacing: -0.01em;
+  --text-headline-sm--line-height: 1.3;
+  --text-title--letter-spacing: 0;
+  --text-lead--line-height: 1.85;
 }
 
 @layer components {
@@ -274,6 +311,14 @@ html > body[data-scroll-locked] {
     border-color: transparent;
     background: var(--accent-soft);
     color: var(--accent);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
   .severity-critical {

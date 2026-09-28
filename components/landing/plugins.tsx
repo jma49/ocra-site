@@ -40,7 +40,7 @@ export function Plugins({
           body={copy.body}
           className="mb-8"
         />
-        <ul className="space-y-3 text-[0.95rem]">
+        <ul className="space-y-3 text-lead">
           {copy.points.map((point) => (
             <li key={point} className="flex gap-3">
               <Check

@@ -21,15 +21,15 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
         <div className="min-w-0">
           <h1
             className={cn(
-              "whitespace-pre-line text-balance font-semibold tracking-[-0.045em]",
+              "whitespace-pre-line text-balance font-semibold",
               locale === "zh"
-                ? "text-[2.3rem]/[1.15] sm:text-[3.3rem]/[1.15]"
-                : "text-[2.6rem]/[1.05] sm:text-[4rem]/[1.02]",
+                ? "text-display-zh-sm sm:text-display-zh"
+                : "text-display-sm sm:text-display",
             )}
           >
             {copy.title}
           </h1>
-          <p className="mt-6 max-w-xl text-pretty text-[1.08rem] leading-relaxed text-fg-muted">
+          <p className="mt-6 max-w-xl text-pretty text-lead text-fg-muted">
             {copy.subtitle}
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">

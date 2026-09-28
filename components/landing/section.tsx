@@ -41,7 +41,7 @@ export function Heading({
   className,
 }: {
   index?: number;
-  title: string;
+  title: ReactNode;
   body?: string;
   className?: string;
 }) {
@@ -52,13 +52,11 @@ export function Heading({
           {String(index).padStart(2, "0")}
         </span>
       ) : null}
-      <h2 className="text-balance text-[1.75rem] font-semibold leading-[1.15] tracking-[-0.03em] md:text-[2.4rem]">
+      <h2 className="whitespace-pre-line text-balance text-headline-sm font-semibold md:text-headline">
         {title}
       </h2>
       {body ? (
-        <p className="mt-4 text-pretty text-[1.05rem] leading-relaxed text-fg-muted">
-          {body}
-        </p>
+        <p className="mt-4 text-pretty text-lead text-fg-muted">{body}</p>
       ) : null}
     </div>
   );

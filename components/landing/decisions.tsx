@@ -7,7 +7,7 @@ function Visual({ children }: { children: ReactNode }) {
   return (
     <div
       aria-hidden
-      className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border border-border bg-bg-subtle px-3 py-2.5 font-mono text-[11.5px] text-fg-muted"
+      className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border border-border bg-bg-subtle px-3 py-2.5 font-mono text-[11px] text-fg-muted"
     >
       {children}
     </div>
@@ -93,7 +93,7 @@ export function Decisions({ copy }: { copy: Copy["decisions"] }) {
               {String(i + 1).padStart(2, "0")}
             </span>
             <div className="min-w-0">
-              <h3 className="text-[1.05rem] font-semibold tracking-[-0.015em]">
+              <h3 className="text-[1.05rem] font-semibold tracking-[-0.015em] [:lang(zh)_&]:tracking-normal">
                 {item.title}
               </h3>
               <p className="mt-2 leading-relaxed text-fg-muted">{item.body}</p>
