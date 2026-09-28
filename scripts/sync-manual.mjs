@@ -7,8 +7,12 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 
 const target = resolve("content/docs");
+// The maintainer's checkout is named ocra; a fresh clone is Open-CR-Agent.
 const localDir =
-  process.env.MANUAL_DIR ?? resolve("../Open-CR-Agent/docs/manual");
+  process.env.MANUAL_DIR ??
+  ["../ocra", "../Open-CR-Agent"]
+    .map((dir) => resolve(dir, "docs/manual"))
+    .find((dir) => existsSync(dir));
 const repo =
   process.env.MANUAL_REPO ?? "https://github.com/jma49/Open-CR-Agent.git";
 const ref = process.env.MANUAL_REF ?? "main";
@@ -19,7 +23,7 @@ function copyFrom(dir, label) {
   console.log(`[sync-manual] copied manual from ${label}`);
 }
 
-if (existsSync(localDir) && !process.env.VERCEL) {
+if (localDir && existsSync(localDir) && !process.env.VERCEL) {
   copyFrom(localDir, localDir);
 } else {
   const checkout = mkdtempSync(join(tmpdir(), "ocra-manual-"));
