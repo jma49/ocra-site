@@ -17,6 +17,13 @@ export const en: Copy = {
     previous: "Previous stages",
     next: "Next stages",
     example: "example run",
+    demo: {
+      label: "Video of an example ocra review run",
+      caption:
+        "An example run, sped up. The pipeline, the output and the verdict are ocra's own; the model's answers were scripted for the recording.",
+      play: "Play the example run",
+      pause: "Pause the example run",
+    },
     groups: [
       {
         title: "Only the files worth reading",

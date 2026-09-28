@@ -1,0 +1,11 @@
+{
+  "accepted": [
+    {
+      "fingerprint": "3db356201b07e176",
+      "file": "src/api/login.ts",
+      "title": "user may be undefined",
+      "reason": "validateLogin() rejects unknown emails before login() runs.",
+      "added": "2026-09-28"
+    }
+  ]
+}

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Geist"; src: url(fonts/Geist-Variable.woff2) format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Geist Mono"; src: url(fonts/GeistMono-Variable.woff2) format("woff2"); font-weight: 100 900; }
+:root {
+  --bg: #09090b; --panel: #0f0f11; --fg: #fafafa; --muted: #a1a1aa; --subtle: #85858e;
+  --border: #27272a; --border-strong: #3f3f46; --accent: #7fffd4; --critical: #f87171;
+  --term-bg: #0a0a0a; --term-fg: rgb(255 255 255 / 0.88); --term-dim: rgb(255 255 255 / 0.55); --warn: #fbbf24;
+  --sans: "Geist", "Noto Sans CJK SC", system-ui, sans-serif; --mono: "Geist Mono", "Noto Sans CJK SC", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+#stage { position: relative; width: 1280px; height: 720px; overflow: hidden; background: var(--bg); color: var(--fg); font-family: var(--sans); padding: 32px; display: grid; grid-template-columns: 372px 1fr; gap: 28px; }
+body.portrait #stage { width: 540px; height: 960px; padding: 24px; grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 18px; }
+#fade { position: absolute; inset: 0; background: var(--bg); opacity: 0; pointer-events: none; }
+
+/* rail */
+#rail { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.meta { font-family: var(--mono); font-size: 13px; color: var(--subtle); display: flex; justify-content: space-between; gap: 12px; padding: 0 2px 6px; }
+.meta b { color: var(--muted); font-weight: 400; }
+.group { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; background: var(--panel); transition: none; opacity: 0.38; }
+.group.on { opacity: 1; border-color: var(--border-strong); }
+.group.active { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.head { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 13.5px; }
+.idx { color: var(--accent); }
+.stages { display: flex; gap: 12px; flex-wrap: wrap; color: var(--muted); }
+.st { display: flex; align-items: center; gap: 6px; }
+.mark-code { width: 8px; height: 8px; border-radius: 2px; background: var(--muted); }
+.mark-model { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--accent); }
+.rows { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.rows:empty { display: none; }
+.row { display: flex; justify-content: space-between; gap: 10px; white-space: nowrap; }
+.row .v { color: var(--fg); }
+.row.crit .v { color: var(--critical); }
+.task { display: grid; grid-template-columns: 112px 1fr 84px; align-items: center; gap: 10px; }
+.bar { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--muted); }
+.task.done .bar i { background: var(--accent); }
+.task .r { text-align: right; color: var(--subtle); }
+.task.done .r { color: var(--fg); }
+body.portrait .group { padding: 9px 12px; }
+body.portrait .rows { font-size: 11px; gap: 4px; margin-top: 7px; }
+body.portrait .task { grid-template-columns: 96px 1fr 70px; }
+
+/* terminal */
+#term { display: flex; flex-direction: column; min-width: 0; min-height: 0; border: 1px solid var(--border); border-radius: 12px; background: var(--term-bg); overflow: hidden; }
+.bar-top { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 13px; color: var(--subtle); }
+.bar-top .clock { color: var(--muted); font-variant-numeric: tabular-nums; }
+#body { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 16px 10px 0; }
+#out { flex: 1; min-height: 0; margin: 0; padding: 0 8px 22.4px; font-family: var(--mono); font-size: 14px; line-height: 1.6; color: var(--term-fg); white-space: pre-wrap; overflow-wrap: anywhere; overflow: hidden; }
+
+#out .dim { color: var(--term-dim); }
+#out .ok { color: var(--accent); }
+#out .warn { color: var(--warn); }
+#out .cmd { color: #fff; }
+#out .finding { border-radius: 6px; margin: 0 -8px; padding: 0 8px; outline: 1px solid transparent; }
+#out .finding.hl { outline-color: color-mix(in srgb, var(--accent) 70%, transparent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.caret { display: inline-block; width: 8px; height: 15px; background: rgb(255 255 255 / 0.8); vertical-align: -2px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="rail"></div>
+  <div id="term">
+    <div class="bar-top"><span>acme-api · feat/session-expiry</span><span class="clock" id="clock">0:00</span></div>
+    <div id="body"><pre id="out"></pre></div>
+  </div>
+  <div id="fade"></div>
+</div>
+<script src="transcript.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const lang = params.get("lang") === "zh" ? "zh" : "en";
+document.documentElement.lang = lang;
+if (params.get("layout") === "portrait") document.body.classList.add("portrait");
+const T = window.TRANSCRIPT;
+const W = {
+  en: {
+    example: "example run", selected: "files selected", setAside: "set aside: generated", tier: "risk tier", touches: "touches auth/",
+    files: (n) => `${n} file${n > 1 ? "s" : ""}`, authCode: "auth code", docs: "docs", tasks: "review tasks", skipped: "pairs skipped",
+    quote: "quote", memory: "accepted in memory", verified: "verified", disproved: "disproved", merged: "merged by the judge", verdict: "verdict",
+  },
+  zh: {
+    example: "示例运行", selected: "选中的文件", setAside: "放到一边：generated", tier: "风险档位", touches: "涉及 auth/",
+    files: (n) => `${n} 个文件`, authCode: "auth 代码", docs: "文档", tasks: "审查任务", skipped: "跳过的组合",
+    quote: "引用", memory: "记忆中已接受", verified: "已核查", disproved: "被证伪", merged: "被 Judge 合并", verdict: "结论",
+  },
+}[lang];
+
+// Real run time (ms) -> video time (s), piecewise linear; the waits are sped up.
+const MAP = [[0, 2.5], [400, 3.1], [2800, 4.3], [24200, 7.7], [51500, 10.7], [66000, 12.5], [74700, 13.9], [80800, 15.9], [88100, 17.9]];
+function toVideo(ms) {
+  for (let i = 1; i < MAP.length; i++) {
+    const [r0, v0] = MAP[i - 1], [r1, v1] = MAP[i];
+    if (ms <= r1) return v0 + ((ms - r0) / (r1 - r0)) * (v1 - v0);
+  }
+  return MAP.at(-1)[1];
+}
+function toReal(v) {
+  if (v <= MAP[0][1]) return 0;
+  for (let i = 1; i < MAP.length; i++) {
+    const [r0, v0] = MAP[i - 1], [r1, v1] = MAP[i];
+    if (v <= v1) return r0 + ((v - v0) / (v1 - v0)) * (r1 - r0);
+  }
+  return MAP.at(-1)[0];
+}
+const TYPE_START = 0.7, TYPE_STEP = 0.062, HIGHLIGHT = 19.2, FADE_START = 28.0, END = 29.0;
+const COMMAND = T.command;
+
+// Each output line gets the video time it appears at; lines printed together are 35 ms apart.
+const lines = [];
+let lastT = -1, burst = 0;
+for (const l of T.lines) {
+  burst = l.t === lastT ? burst + 1 : 0;
+  lastT = l.t;
+  lines.push({ ...l, at: toVideo(l.t) + burst * 0.035 });
+}
+function tone(l) {
+  if (l.stream === "err") return /completed in/.test(l.text) ? "ok" : "dim";
+  if (/^\s+critical /.test(l.text)) return "warn";
+  if (/^\d+ finding\(s\)|^Verification|^Judge|^Session|matched the repository/.test(l.text)) return "dim";
+  return "";
+}
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const tasks = [
+  ["correctness-1", 71900, 2], ["security-1", 63200, 2], ["performance-1", 48700, 0], ["correctness-2", 21400, 0],
+];
+const TASKS_START = 2800;
+const stage = (name, kind) => `<span class="st"><span class="mark-${kind}"></span>${name}</span>`;
+const row = (k, v, cls = "") => `<div class="row ${cls}"><span>${k}</span><span class="v">${v}</span></div>`;
+
+function render(v) {
+  const real = toReal(v);
+  // terminal
+  const typed = Math.max(0, Math.min(COMMAND.length, Math.floor((v - TYPE_START) / TYPE_STEP)));
+  let html = `<span class="cmd">$ ${esc(COMMAND.slice(0, typed))}</span>`;
+  const shown = v >= MAP[0][1] - 0.1 ? lines.filter((l) => l.at <= v) : [];
+  if (shown.length === 0) html += `<span class="caret"></span>`;
+  html += "\n";
+  let inFinding = false;
+  shown.forEach((l, i) => {
+    const t = tone(l);
+    const text = esc(l.text) || " ";
+    const startsFinding = /^\s+critical /.test(l.text);
+    if (startsFinding) { html += `<div class="finding${v >= HIGHLIGHT ? " hl" : ""}">`; inFinding = true; }
+    html += `<div${t ? ` class="${t}"` : ""}>${text}</div>`;
+    const next = shown[i + 1];
+    if (inFinding && (!next || !/^\s{4}/.test(next.text))) { html += "</div>"; inFinding = false; }
+  });
+  if (shown.length === lines.length) html += `<div><span class="cmd">$ </span><span class="caret" style="opacity:${Math.floor(v * 2) % 2 ? 0 : 1}"></span></div>`;
+  const out = document.getElementById("out");
+  out.innerHTML = html;
+  // Scroll by whole lines, so the top line is never cut in half.
+  const lh = 22.4;
+  const overflow = out.scrollHeight - lh - out.clientHeight;
+  out.scrollTop = overflow > 0 ? Math.ceil(overflow / lh) * lh : 0;
+  const secs = Math.floor(real / 1000);
+  document.getElementById("clock").textContent = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+
+  // rail
+  const at = (ms) => real >= ms && v >= MAP[0][1];
+  const g = [];
+  const state = (on, active) => `group${on ? " on" : ""}${active ? " active" : ""}`;
+  const r0 = at(400) ? [row(W.selected, "4"), row("package-lock.json", W.setAside), row(W.tier, `full · ${W.touches}`)].join("") : "";
+  g.push(`<div class="${state(at(0), at(0) && !at(2800))}"><div class="head"><span class="idx">[00]</span><span class="stages">${stage("select", "code")}${stage("triage", "code")}</span></div><div class="rows">${r0}</div></div>`);
+  const r1 = at(2800) ? [row(W.authCode, W.files(3)), row(W.docs, W.files(1)), row(W.tasks, "4"), row(W.skipped, "2")].join("") : "";
+  g.push(`<div class="${state(at(400), at(400) && !at(2900))}"><div class="head"><span class="idx">[01]</span><span class="stages">${stage("bundle", "model")}${stage("matrix", "code")}</span></div><div class="rows">${r1}</div></div>`);
+  let r2 = "";
+  if (at(2800)) {
+    r2 = tasks.map(([name, ms, n]) => {
+      const p = Math.max(0, Math.min(1, (real - TASKS_START) / ms));
+      const done = p >= 1;
+      return `<div class="task${done ? " done" : ""}"><span>${name}</span><span class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></span><span class="r">${done ? `${(ms / 1000).toFixed(1)}s · ${n}` : ""}</span></div>`;
+    }).join("");
+    if (at(74700)) r2 += row(W.quote, "session.ts:42");
+  }
+  g.push(`<div class="${state(at(2800), at(2800) && !at(74700))}"><div class="head"><span class="idx">[02]</span><span class="stages">${stage("review", "model")}${stage("anchor", "code")}</span></div><div class="rows">${r2}</div></div>`);
+  let r3 = "";
+  if (at(74700)) r3 += row(W.memory, "1");
+  if (at(80800)) r3 += row(W.verified, "3") + row(W.disproved, "1");
+  if (at(88100)) r3 += row(W.merged, "1") + row(W.verdict, "significant concerns", "crit");
+  g.push(`<div class="${state(at(74700), at(74700) && v < HIGHLIGHT)}"><div class="head"><span class="idx">[03]</span><span class="stages">${stage("filter", "code")}${stage("verify", "model")}${stage("judge", "model")}${stage("verdict", "code")}</span></div><div class="rows">${r3}</div></div>`);
+  document.getElementById("rail").innerHTML = `<div class="meta"><span>${W.example}</span><b>ocra review --from main</b></div>${g.join("")}`;
+
+  const fade = v < 0.5 ? 1 - v / 0.5 : v <= FADE_START ? 0 : Math.min(1, (v - FADE_START) / (END - FADE_START));
+  document.getElementById("fade").style.opacity = fade;
+}
+window.render = render;
+window.DURATION = END;
+render(Number(params.get("t") ?? 0));
+</script>
+</body>
+</html>

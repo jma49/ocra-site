@@ -16,6 +16,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `components/landing/` | Landing page sections |
 | `lib/copy/` | All landing page copy: `types.ts`, then `en.ts` and `zh.ts` with the same shape |
 | `scripts/sync-manual.mjs` | Copies the manual into `content/docs` before `dev` and `build` |
+| `scripts/demo-video/` | Records the example run (real ocra CLI, scripted model) and renders the demo video; see its README |
 
 ## The manual is not written here
 
@@ -28,7 +29,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 ## Content rules
 
 - **Say only what is true today.** The project is early: no invented customers, logos, testimonials, statistics or benchmark results. Planned features are labeled as planned.
-- Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug.
+- Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug. The landing page's example (hero terminal, stage pictures, finding, demo video) is one recorded run from `scripts/demo-video/`; when ocra's output changes, record it again rather than editing the lines by hand.
 - The design is original. The site may borrow the structure of other product pages but never their copy, visuals or branding.
 
 ## Design
