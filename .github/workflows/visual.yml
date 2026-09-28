@@ -1,0 +1,90 @@
+name: Visual
+
+# Screenshots the base branch and the pull request in the same job, on the
+# same machine, and compares them. Nothing is committed: baselines taken on
+# another machine would differ in font rendering. A pull request that changes
+# the look on purpose gets the `visual-change` label; the job then passes and
+# the report shows what changed.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: visual-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      MANUAL_DIR: ${{ github.workspace }}/manual/docs/manual
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: head
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+      - name: Check out the manual once, so both builds render the same text
+        uses: actions/checkout@v7
+        with:
+          repository: jma49/Open-CR-Agent
+          path: manual
+          sparse-checkout: docs/manual
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            head/package-lock.json
+            base/package-lock.json
+
+      - name: Install
+        run: |
+          npm ci --prefix head
+          npm ci --prefix base
+          cd head && npx playwright install --with-deps chromium
+
+      - name: Build and serve the base branch
+        working-directory: base
+        run: |
+          npm run build
+          nohup npx next start -p 3101 > ../base-server.log 2>&1 &
+          timeout 60 bash -c 'until curl -sf -o /dev/null http://127.0.0.1:3101/; do sleep 1; done'
+
+      - name: Screenshot the base branch
+        working-directory: head
+        env:
+          VISUAL_BASE_URL: http://127.0.0.1:3101
+        run: npx playwright test --update-snapshots=all
+
+      - name: Build and serve the pull request
+        working-directory: head
+        run: |
+          npm run build
+          nohup npx next start -p 3102 > ../head-server.log 2>&1 &
+          timeout 60 bash -c 'until curl -sf -o /dev/null http://127.0.0.1:3102/; do sleep 1; done'
+
+      - name: Compare
+        working-directory: head
+        continue-on-error: ${{ contains(github.event.pull_request.labels.*.name, 'visual-change') }}
+        env:
+          VISUAL_BASE_URL: http://127.0.0.1:3102
+        run: npx playwright test
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-report
+          path: |
+            head/.visual/report
+            head/.visual/results
+          retention-days: 14
+          if-no-files-found: ignore
