@@ -12,6 +12,8 @@
     "types:check": "next typegen && tsc --noEmit",
     "lint": "biome check",
     "format": "biome format --write",
+    "visual:baseline": "playwright test --update-snapshots=all",
+    "visual": "playwright test",
     "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.14",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.6.1",

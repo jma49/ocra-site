@@ -39,7 +39,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 - Avoid the generic AI landing-page look: no pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy. Prefer left-aligned editorial layouts and concrete statements.
 - Style through the tokens in `app/global.css` only: no hex values or Tailwind palette colours in components. A token change edits `app/global.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
-- Look at the result before calling a UI change done: screenshot the affected pages before and after (both languages, 390px and desktop, light and dark, reduced motion on; see Verification in `DESIGN.md` for why reduced motion matters here), compare the pairs, check the browser console, and list intended visual differences in the pull request.
+- Look at the result before calling a UI change done: `npm run build && npm run visual:baseline` before the change, `npm run build && npm run visual` after it (both languages, three widths, both themes, console errors; see Verification in `DESIGN.md`). A pull request that changes the look on purpose gets the `visual-change` label and lists the intended differences.
 
 ## Code style
 
