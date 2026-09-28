@@ -1,5 +1,6 @@
+import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { ReactNode } from "react";
-import { Shell } from "@/components/landing/shell";
+import { baseOptions } from "@/lib/layout.shared";
 
 export default async function Layout({
   params,
@@ -9,5 +10,9 @@ export default async function Layout({
   children: ReactNode;
 }) {
   const { lang } = await params;
-  return <Shell locale={lang}>{children}</Shell>;
+  return (
+    <HomeLayout {...baseOptions(lang)} className="home home-layout">
+      {children}
+    </HomeLayout>
+  );
 }

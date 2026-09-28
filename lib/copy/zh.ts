@@ -1,19 +1,8 @@
 import type { Copy } from "./types";
 
 export const zh: Copy = {
-  nav: {
-    home: "ocra 首页",
-    how: "工作原理",
-    manual: "手册",
-    plugins: "插件",
-    roadmap: "路线图",
-    github: "GitHub",
-    start: "快速上手",
-    language: "English",
-  },
   hero: {
-    titleLead: "先读懂代码，",
-    titleRest: "再开口的代码审查。",
+    title: "先读懂代码，\n再开口的代码审查。",
     subtitle:
       "ocra 把一次改动拆成几个聚焦的审查任务。每个 agent 只能读你的仓库，必须引用它说的那段代码，还要交代自己查过什么。多数时候你会收到几条意见，有时一条也没有，这也是正常结果。",
     start: "快速上手",
@@ -21,72 +10,108 @@ export const zh: Copy = {
     note: "Node 22+，支持 OpenCode 能用的任何模型",
   },
   run: {
-    title: "运行 {command}\n时发生了什么",
+    title: "运行 ocra review 时发生了什么",
+    window: "ocra — 流水线",
     body: "不能出错的步骤，都是普通的、有测试的代码。只有需要判断的地方才交给模型。",
-    legend: { code: "代码", model: "模型" },
-    region: "一次审查的各个阶段",
-    previous: "上一组阶段",
-    next: "下一组阶段",
-    example: "示例运行",
-    groups: [
+    legend: { code: "代码", model: "模型", planned: "规划中" },
+    flow: {
+      label: "一次示例运行",
+      report: "报告",
+      play: "播放",
+      pause: "暂停",
+      previous: "上一步",
+      next: "下一步",
+      files: "改动的文件",
+      findings: "发现的问题",
+      tier: "full 档：改动涉及 auth/",
+      bundle: "分组",
+      skipped: "因适用范围跳过：只有文档",
+      verdict: "结论：significant concerns",
+      reasons: {
+        lock: "锁文件，放到一边",
+        memory: "已在 .ocra/memory.json 里被接受",
+        disproved: "被证伪：token.ts:31 在登出时会撤销令牌",
+        merged: "并入 #1：根因相同",
+        verified: "已核实",
+      },
+      captions: [
+        "改动了五个文件。锁文件被放到一边并记下原因，剩下四个值得读。",
+        "改动涉及 auth/，属于敏感路径，所以整次改动定为 full 档，所有审查员都会参与。",
+        "由便宜的模型给文件分组：auth 相关的代码一组，文档单独一组。",
+        "每组只分配适用范围覆盖它的审查员。security 和 performance 跳过纯文档那组，报告里写明原因。",
+        "四个隔离的 agent 用只读工具读代码，报告了四个问题，每个都引用了它指的代码。",
+        "ocra 在 diff 里找到每段引用，定位到具体行。行号从来不由模型决定。",
+        "有一个问题之前已被团队接受，在花钱让模型核查之前就被去掉。",
+        "核查模型把每个问题和代码放在一起重读：一个被证伪，两个得到确认。",
+        "Judge 通读所有审查员的问题，把根因相同的两个合并。",
+        "最终报告一条已核实的 critical 问题，位于 src/auth/session.ts:42。经确认的 critical 决定了结论。",
+      ],
+    },
+    stages: [
       {
-        title: "只读值得读的文件",
-        stages: [
-          { name: "select", kind: "code" },
-          { name: "triage", kind: "code" },
-        ],
-        text: "二进制、锁文件、第三方和生成的代码、疑似密钥、过大的 diff 会被放到一边，每个都记录原因。改动量和 auth/ 这类敏感路径，决定这次改动属于 trivial、lite 还是 full 档。",
+        name: "Select",
+        kind: "code",
+        summary: "决定哪些文件值得读",
+        detail:
+          "二进制、锁文件、第三方和生成的代码、疑似密钥、过大的 diff 会被放到一边，每个都记录原因。数据库迁移始终保留。密钥文件无论如何都不会被重新纳入。",
       },
       {
-        title: "每组、每个审查员一个任务",
-        stages: [
-          { name: "bundle", kind: "model" },
-          { name: "matrix", kind: "code" },
-        ],
-        text: "由便宜的模型把该一起看的文件分成组。correctness 总会运行；security 和 performance 从 lite 档开始加入，并跳过文档和测试。每个被跳过的组合都写进报告，省下的钱不会掩盖覆盖上的缺口。",
+        name: "Triage",
+        kind: "code",
+        summary: "判断风险",
+        detail:
+          "根据改动量和 auth/、crypto/ 这类敏感路径，把改动分到 trivial、lite 或 full 档。",
       },
       {
-        title: "每条意见都引用它说的代码",
-        stages: [
-          { name: "review", kind: "model" },
-          { name: "anchor", kind: "code" },
-        ],
-        text: "每组每个审查员一个隔离的 agent，用只读工具读取被审查的那个版本，最多执行 20 步，用引用代码的方式报告问题。ocra 在 diff 里找到引用并定位到具体行；行号从来不由模型决定。",
+        name: "Bundle",
+        kind: "model",
+        summary: "把该一起看的文件放一组",
+        detail:
+          "由便宜的模型按文件编号分组：接口和实现放一起，各语言的翻译文件放一起。答案不合格就修补，或者退回一个文件一个任务。",
       },
       {
-        title: "只留下经得起重读的意见",
-        stages: [
-          { name: "filter", kind: "code" },
-          { name: "verify", kind: "model" },
-          { name: "judge", kind: "model" },
-        ],
-        text: "团队已经接受过的问题，在花钱让模型核查之前就被去掉。核查模型把每条问题和代码放在一起重读，Judge 合并同一根因。只有经核查确认的 critical 才能拦下改动。",
+        name: "Matrix",
+        kind: "code",
+        summary: "为每组挑选审查员",
+        detail:
+          "correctness 总会运行。security 和 performance 从 lite 档开始加入，并跳过文档和测试。每个被跳过的组合都会写进报告，省下的钱不会掩盖覆盖上的缺口。",
+      },
+      {
+        name: "Review",
+        kind: "model",
+        summary: "每组每个审查员一个隔离的 agent",
+        detail:
+          "agent 通过三个工具读取被审查的那个版本，用引用代码的方式报告问题。它没有 shell，不能写文件，最多执行 20 步。",
+      },
+      {
+        name: "Anchor",
+        kind: "code",
+        summary: "找到 ocra 要指向的那几行",
+        detail:
+          "引用的代码依次在改动过的代码段、整个文件、其他改动文件里匹配。都匹配不上，问题就挂在文件上，而不是消失。",
+      },
+      {
+        name: "Filter",
+        kind: "code",
+        summary: "去掉团队已经定过的问题",
+        detail:
+          "仓库记忆里已接受的问题、PR 上被审查者驳回的问题，会在花钱让模型核查之前就去掉。审查 PR 时还会和上一次的结果对比：只有问题指向的代码已经不在了，才算修复。",
+      },
+      {
+        name: "Verify",
+        kind: "model",
+        summary: "对照 diff 核查每条问题",
+        detail:
+          "模型把每个文件的问题和它的 diff、问题附近的代码放在一起重读。只有当代码能证明某条问题是错的，它才会被删掉，原因会留在报告里；其余的标为已确认或未确认。",
+      },
+      {
+        name: "Judge",
+        kind: "model",
+        summary: "合并重复，定下严重程度",
+        detail:
+          "由更强的模型通读所有审查员的意见：合并同一根因，去掉吹毛求疵，校准严重程度。结论本身由固定规则给出，相同的问题总会得到相同的结论，而且只有经核查确认的 critical 才能拦下改动。",
       },
     ],
-    figures: {
-      read: "读取",
-      lockSetAside: "锁文件，放到一边",
-      tier: "档位",
-      touches: "涉及 auth/",
-      authCode: "auth 代码",
-      docs: "文档",
-      threeFiles: "3 个文件",
-      oneFile: "1 个文件",
-      skip: "跳过",
-      tasks: "4 个审查任务",
-      skipped: "跳过 2 个组合，写进报告",
-      agent: "agent",
-      on: "开",
-      off: "关",
-      quote: "引用",
-      matched: "在 diff 里匹配到",
-      confirmed: "已确认",
-      merged: "并入 #1",
-      disproved: "被证伪",
-      accepted: "已被记忆接受",
-      verdict: "结论：significant concerns",
-      verifiedCritical: "1 条已核实的 critical",
-    },
   },
   decisions: {
     title: "刻意做出的几个取舍",
@@ -137,7 +162,6 @@ export const zh: Copy = {
       reported: {
         tab: "已报告",
         text: "下一次 push 时，只要这段代码没变，这条问题就保持打开，即使没有审查员再报一次。同样的代码，结论不会变。",
-        open: "未关闭。只要第 42 行不变，下一次 push 后它仍然保持打开。",
       },
       fixed: {
         tab: "已修复",
@@ -165,6 +189,7 @@ export const zh: Copy = {
   },
   status: {
     title: "目前进展",
+    window: "ocra — 路线图",
     items: [
       {
         milestone: "M1",
@@ -219,7 +244,6 @@ export const zh: Copy = {
   },
   start: {
     title: "拿一个你熟悉的仓库试试",
-    titleRest: "开源，Apache-2.0 许可",
     body: "它可以在你本机的任何 Git 仓库上运行，也可以通过 GitHub Action 审查 PR。模型供应商能看到的，只有被审查的改动和 agent 打开过的文件。",
     copy: "复制",
     copied: "已复制",
@@ -232,11 +256,8 @@ export const zh: Copy = {
   },
   footer: {
     tagline: "先读代码再下结论的开源代码审查。",
-    project: "项目",
-    source: "源码",
-    language: "语言",
+    github: "GitHub",
     license: "Apache-2.0",
-    backToTop: "回到顶部",
-    wordmark: "ocra",
+    manual: "手册",
   },
 };

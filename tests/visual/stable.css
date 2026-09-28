@@ -11,11 +11,11 @@
   visibility: hidden !important;
 }
 
-/* The voxel frog on the 404 page renders through WebGL, which differs
-   between GPUs, and its frame shows a spinner, the model or the flat
-   fallback depending on timing. The frame keeps its size; only its contents
-   are hidden. */
-[data-frog-stage] > div > * {
+/* The voxel frog renders through WebGL, which differs between GPUs, and its
+   frame shows a spinner, the model or the flat fallback depending on timing.
+   Its frame keeps its size; only the contents are hidden. A mask would also
+   cover the top of the headline, which the frame overlaps. */
+.hero-glow + div > div > * {
   /* biome-ignore lint/complexity/noImportantStyles: hides the WebGL frog for screenshots */
   visibility: hidden !important;
 }
