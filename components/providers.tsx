@@ -31,7 +31,17 @@ function FrameworkLink({
   return <Link href={href} {...props} />;
 }
 
-export function Providers(props: ComponentProps<typeof RootProvider>) {
+// next-themes renders its theme script inline. When React renders the tree on
+// the client (a dev remount, or recovery from a hydration error) it warns
+// about that script; typed as data on the client, it renders silently. The
+// server HTML keeps the executable script, which is the one that runs.
+const clientScriptProps =
+  typeof window === "undefined" ? undefined : { type: "application/json" };
+
+export function Providers({
+  theme,
+  ...props
+}: ComponentProps<typeof RootProvider>) {
   return (
     <FrameworkProvider
       usePathname={useVisiblePathname}
@@ -39,7 +49,10 @@ export function Providers(props: ComponentProps<typeof RootProvider>) {
       useParams={useParams}
       Link={FrameworkLink}
     >
-      <RootProvider {...props} />
+      <RootProvider
+        {...props}
+        theme={{ ...theme, scriptProps: clientScriptProps }}
+      />
     </FrameworkProvider>
   );
 }
