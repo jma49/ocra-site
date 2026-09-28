@@ -18,9 +18,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn(
-        band && "border-y border-[var(--border)] bg-[var(--bg-subtle)]",
-      )}
+      className={cn(band && "border-y border-border bg-bg-subtle")}
     >
       <Reveal>
         <div
@@ -50,7 +48,7 @@ export function Heading({
   return (
     <div className={cn("mb-12 max-w-2xl", className)}>
       {index ? (
-        <span className="mb-4 block font-mono text-sm text-[var(--accent)]">
+        <span className="mb-4 block font-mono text-sm text-accent">
           {String(index).padStart(2, "0")}
         </span>
       ) : null}
@@ -58,7 +56,7 @@ export function Heading({
         {title}
       </h2>
       {body ? (
-        <p className="mt-4 text-pretty text-[1.05rem] leading-relaxed text-[var(--fg-muted)]">
+        <p className="mt-4 text-pretty text-[1.05rem] leading-relaxed text-fg-muted">
           {body}
         </p>
       ) : null}

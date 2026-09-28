@@ -18,9 +18,9 @@ const code = [
 ] as const;
 
 const tone: Record<string, string> = {
-  c: "text-[var(--code-comment)]",
-  k: "text-[var(--code-keyword)] font-medium",
-  s: "text-[var(--code-string)]",
+  c: "text-code-comment",
+  k: "text-code-keyword font-medium",
+  s: "text-code-string",
   "": "",
 };
 
@@ -45,7 +45,7 @@ export function Plugins({
             <li key={point} className="flex gap-3">
               <Check
                 strokeWidth={1.5}
-                className="mt-1 size-4 shrink-0 text-[var(--accent)]"
+                className="mt-1 size-4 shrink-0 text-accent"
               />
               {point}
             </li>

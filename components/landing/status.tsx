@@ -24,8 +24,8 @@ export function Status({ copy }: { copy: Copy["status"] }) {
                   className={cn(
                     "absolute top-7 bottom-0 left-[13px] w-px",
                     nextDone
-                      ? "bg-[var(--fg)]"
-                      : "border-l border-dashed border-[var(--border-strong)]",
+                      ? "bg-fg"
+                      : "border-l border-dashed border-border-strong",
                   )}
                 />
               )}
@@ -34,8 +34,8 @@ export function Status({ copy }: { copy: Copy["status"] }) {
                 className={cn(
                   "relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full",
                   item.done
-                    ? "bg-[var(--accent)] text-[var(--bg)]"
-                    : "border border-dashed border-[var(--fg-subtle)] bg-[var(--bg)]",
+                    ? "bg-accent text-bg"
+                    : "border border-dashed border-fg-subtle bg-bg",
                 )}
               >
                 {item.done ? (
@@ -44,22 +44,20 @@ export function Status({ copy }: { copy: Copy["status"] }) {
               </span>
               <div className="min-w-0 pt-0.5">
                 <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-mono text-sm text-[var(--fg-subtle)]">
+                  <span className="font-mono text-sm text-fg-subtle">
                     {item.milestone}
                   </span>
                   <span className="font-semibold">{item.title}</span>
                   <span
                     className={cn(
                       "text-xs",
-                      item.done
-                        ? "font-medium text-[var(--accent)]"
-                        : "text-[var(--fg-subtle)]",
+                      item.done ? "font-medium text-accent" : "text-fg-subtle",
                     )}
                   >
                     {item.state}
                   </span>
                 </p>
-                <p className="mt-1.5 text-sm leading-relaxed text-[var(--fg-muted)]">
+                <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">
                   {item.body}
                 </p>
               </div>

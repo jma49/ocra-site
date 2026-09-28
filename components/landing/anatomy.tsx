@@ -36,12 +36,10 @@ function Line({
           "bg-[color-mix(in_srgb,var(--critical)_9%,transparent)]",
       )}
     >
-      <span className="w-12 shrink-0 select-none pr-3 text-right text-[var(--fg-subtle)]">
+      <span className="w-12 shrink-0 select-none pr-3 text-right text-fg-subtle">
         {n}
       </span>
-      <span className="w-4 shrink-0 select-none text-[var(--fg-subtle)]">
-        {sign}
-      </span>
+      <span className="w-4 shrink-0 select-none text-fg-subtle">{sign}</span>
       <span className="whitespace-pre pr-5">{code}</span>
       {children}
     </div>
@@ -54,9 +52,9 @@ function Line({
 function Comment({ copy }: { copy: Copy["anatomy"] }) {
   return (
     <div className="p-4">
-      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--fg-subtle)]">
-        <span className="font-medium text-[var(--fg)]">github-actions</span>
-        <span className="rounded border border-[var(--border)] px-1">bot</span>
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-fg-subtle">
+        <span className="font-medium text-fg">github-actions</span>
+        <span className="rounded border border-border px-1">bot</span>
       </p>
       <p className="mt-3 flex flex-wrap items-center gap-2 text-sm">
         <span className="font-semibold">
@@ -69,17 +67,17 @@ function Comment({ copy }: { copy: Copy["anatomy"] }) {
           <Check className="size-3" />
           verified
         </span>
-        <span className="text-xs text-[var(--fg-subtle)]">correctness</span>
+        <span className="text-xs text-fg-subtle">correctness</span>
         <Marker n={2} />
       </p>
-      <p className="mt-2 text-sm leading-relaxed text-[var(--fg-muted)]">
+      <p className="mt-2 text-sm leading-relaxed text-fg-muted">
         isExpired() compares expiresAt in seconds with Date.now() in
         milliseconds, so every session counts as expired and users are logged
         out right after signing in.
         <Marker n={3} />
       </p>
-      <p className="mt-2 text-sm text-[var(--fg-muted)]">
-        <span className="font-medium text-[var(--fg)]">Suggestion: </span>
+      <p className="mt-2 text-sm text-fg-muted">
+        <span className="font-medium text-fg">Suggestion: </span>
         <code className="font-mono text-xs">
           return session.expiresAt * 1000 {"<"} Date.now();
         </code>
@@ -103,7 +101,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
             <span className="truncate">src/auth/session.ts</span>
             <span className="shrink-0">{copy.example}</span>
           </figcaption>
-          <div className="overflow-x-auto border-b border-[var(--border)] py-2 font-mono text-[12px] leading-6">
+          <div className="overflow-x-auto border-b border-border py-2 font-mono text-[12px] leading-6">
             <Line
               n={41}
               sign=" "
@@ -136,32 +134,30 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
             )}
             <Line n={43} sign=" " code="}" />
           </div>
-          <div className="bg-[var(--bg-subtle)] p-3">
-            <div className="rounded-lg border border-[var(--border)] bg-[var(--panel)]">
+          <div className="bg-bg-subtle p-3">
+            <div className="rounded-lg border border-border bg-panel">
               {state === "reported" ? (
                 <Comment copy={copy} />
               ) : (
-                <div className="flex items-center gap-2 px-4 py-3 text-sm text-[var(--fg-muted)]">
+                <div className="flex items-center gap-2 px-4 py-3 text-sm text-fg-muted">
                   {fixed ? (
-                    <CircleCheck className="size-4 text-[var(--accent)]" />
+                    <CircleCheck className="size-4 text-accent" />
                   ) : (
-                    <CircleSlash className="size-4 text-[var(--fg-subtle)]" />
+                    <CircleSlash className="size-4 text-fg-subtle" />
                   )}
-                  <span className="line-through decoration-[var(--fg-subtle)]">
+                  <span className="line-through decoration-fg-subtle">
                     Every session is treated as expired
                   </span>
                 </div>
               )}
               {state === "dismissed" ? (
-                <div className="border-t border-[var(--border)] px-4 py-3 text-sm">
+                <div className="border-t border-border px-4 py-3 text-sm">
                   <span className="font-medium">{states.dismissed.who}</span>
-                  <p className="mt-1 text-[var(--fg-muted)]">
-                    {states.dismissed.reply}
-                  </p>
+                  <p className="mt-1 text-fg-muted">{states.dismissed.reply}</p>
                 </div>
               ) : null}
               {state !== "reported" ? (
-                <p className="border-t border-[var(--border)] px-4 py-2 text-xs text-[var(--fg-subtle)]">
+                <p className="border-t border-border px-4 py-2 text-xs text-fg-subtle">
                   {fixed ? states.fixed.resolved : states.dismissed.resolved}
                 </p>
               ) : null}
@@ -169,7 +165,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
           </div>
         </figure>
         <div className="max-lg:order-first lg:pt-2">
-          <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-[var(--border)] p-1">
+          <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-border p-1">
             <legend className="sr-only">{copy.title}</legend>
             {STATES.map((s) => (
               <button
@@ -179,19 +175,14 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
                 onClick={() => setState(s)}
                 className={cn(
                   "focus-ring rounded-[4px] px-3 py-1.5 text-sm transition-colors",
-                  s === state
-                    ? "bg-[var(--fg)] text-[var(--bg)]"
-                    : "text-[var(--fg-muted)] hover:text-[var(--fg)]",
+                  s === state ? "bg-fg text-bg" : "text-fg-muted hover:text-fg",
                 )}
               >
                 {states[s].tab}
               </button>
             ))}
           </fieldset>
-          <p
-            className="mt-5 leading-relaxed text-[var(--fg-muted)]"
-            aria-live="polite"
-          >
+          <p className="mt-5 leading-relaxed text-fg-muted" aria-live="polite">
             {states[state].text}
           </p>
           {state === "reported" ? (
@@ -204,7 +195,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
               ].map((text, i) => (
                 <li key={text} className="flex gap-4">
                   <span className="marker marker-brand mt-0.5">{i + 1}</span>
-                  <span className="text-sm text-[var(--fg-muted)]">{text}</span>
+                  <span className="text-sm text-fg-muted">{text}</span>
                 </li>
               ))}
             </ol>

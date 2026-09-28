@@ -340,7 +340,7 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 - Don't use pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy.
 - Don't add gradients, textures, skeuomorphism or new background effects; the hero glow is the only one.
 - Don't use colour for decoration, or the accent for the primary button.
-- Don't write `text-[var(--token)]` in new code once the tokens are registered as utilities (see Migration); never hex values or Tailwind palette colours (`text-amber-300`) in components.
+- Don't write `text-[var(--token)]`; use the utility of the same name (`text-fg-muted`). Never hex values or Tailwind palette colours (`text-amber-300`) in components.
 
 ## Known issues
 
@@ -351,7 +351,7 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 
 One step per pull request, each checked against baseline screenshots:
 
-1. **Register the tokens as utilities** in `@theme inline` (`--color-fg: var(--fg)`, `--color-fg-muted`, `--color-fg-subtle`, `--color-bg`, `--color-bg-subtle`, `--color-border`, `--color-border-strong`, `--color-accent`, `--color-accent-soft`, `--color-brand`, `--color-panel`, `--color-critical`, `--color-warning`), keeping the same names as the CSS variables. Then replace the ~110 `text-[var(--fg-muted)]`-style classes with `text-fg-muted` etc. Expected visual diff: none.
+1. **Done: tokens as utilities.** `@theme inline` in `app/global.css` registers every colour token as a Tailwind colour under its CSS variable's name (`text-fg-muted`, `border-border`, `bg-bg-subtle`, `text-accent`, …); the 109 `text-[var(--fg-muted)]`-style classes are gone. No visual difference.
 2. **Terminal tokens:** add `--term-bg`, `--term-fg`, `--term-dim`, `--term-label`, `--term-border` to `:root` (same in both themes) and use them in `.terminal`, `.panel-dark`, `terminal.tsx` and `get-started.tsx`. Expected diff: the warn line moves from amber-300 to amber-400 (`#FBBF24`). Decided 2026-09-27: terminals are dark in both themes, so they take the dark theme's `warning`, which leaves one warning colour on the whole site; it is 11.9:1 on the terminal background.
 3. **Type scale:** add `--text-display`, `--text-display-sm`, `--text-display-zh`, `--text-display-zh-sm`, `--text-headline`, `--text-headline-sm`, `--text-lead` with their `--line-height` and `--letter-spacing` sub-properties, and use them in `hero.tsx`, `section.tsx`, `not-found-page.tsx`, `decisions.tsx`. Merge `1.08rem` into `lead` (1.05rem) and `11.5px` into `mono-caption`; `plugins.tsx`'s `0.95rem` becomes `body` or `lead`. Expected diff: the hero subtitle and those small labels shift slightly.
 4. **Radii:** `rounded-[2px]` and `rounded-[4px]` → one 4px token.

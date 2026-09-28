@@ -76,7 +76,7 @@ export function GetStarted({
           body={copy.body}
           className="mb-8"
         />
-        <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-[var(--border)] p-1">
+        <fieldset className="m-0 inline-flex min-w-0 rounded-lg border border-border p-1">
           <legend className="sr-only">{copy.title}</legend>
           {(Object.keys(snippets) as Tab[]).map((t) => (
             <button
@@ -89,9 +89,7 @@ export function GetStarted({
               }}
               className={cn(
                 "focus-ring rounded-[4px] px-3 py-1.5 text-sm transition-colors",
-                t === tab
-                  ? "bg-[var(--fg)] text-[var(--bg)]"
-                  : "text-[var(--fg-muted)] hover:text-[var(--fg)]",
+                t === tab ? "bg-fg text-bg" : "text-fg-muted hover:text-fg",
               )}
             >
               {copy.tabs[t]}
@@ -99,7 +97,7 @@ export function GetStarted({
           ))}
         </fieldset>
         {tab === "action" ? (
-          <p className="mt-5 text-sm leading-relaxed text-[var(--fg-muted)]">
+          <p className="mt-5 text-sm leading-relaxed text-fg-muted">
             {copy.actionNote}
           </p>
         ) : null}

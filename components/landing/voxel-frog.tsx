@@ -211,7 +211,7 @@ export function VoxelFrog() {
       className="relative mx-auto flex aspect-square w-[240px] items-center justify-center overflow-hidden sm:w-[360px] md:w-[420px]"
     >
       {state === "loading" ? (
-        <span className="absolute size-8 animate-spin rounded-full border-2 border-[var(--border)] border-t-[var(--accent)]" />
+        <span className="absolute size-8 animate-spin rounded-full border-2 border-border border-t-accent" />
       ) : null}
       {state === "fallback" ? <LogoMark className="size-40" /> : null}
     </div>
