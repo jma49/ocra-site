@@ -13,6 +13,27 @@
     var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+/* The tokens below as Tailwind colours (`text-fg-muted`, `border-border`),
+   under the same names as the CSS variables. */
+@theme inline {
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-brand: var(--brand);
+  --color-panel: var(--panel);
+  --color-critical: var(--critical);
+  --color-warning: var(--warning);
+  --color-code-comment: var(--code-comment);
+  --color-code-keyword: var(--code-keyword);
+  --color-code-string: var(--code-string);
+}
+
 :root {
   --brand: #7fffd4;
   /* Aquamarine is too light for text on white; the same hue, darkened to

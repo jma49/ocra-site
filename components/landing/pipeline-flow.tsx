@@ -81,10 +81,9 @@ function Tag({
       className={cn(
         "inline-flex items-center gap-1 rounded-md px-1.5 py-px font-sans text-[11px]",
         tone === "drop" &&
-          "border border-dashed border-[var(--border-strong)] text-[var(--fg-muted)]",
+          "border border-dashed border-border-strong text-fg-muted",
         tone === "ok" && "verified",
-        tone === "info" &&
-          "border border-[var(--border)] text-[var(--fg-muted)]",
+        tone === "info" && "border border-border text-fg-muted",
       )}
     >
       {tone === "drop" ? <X className="size-3" /> : null}
@@ -101,9 +100,9 @@ function Files({ step, copy }: { step: number; copy: Flow }) {
         {BUNDLES.map((bundle, b) => (
           <div
             key={bundle.files.join()}
-            className="rounded-lg border border-[var(--border)] p-3"
+            className="rounded-lg border border-border p-3"
           >
-            <p className="font-mono text-[11px] text-[var(--fg-subtle)]">
+            <p className="font-mono text-[11px] text-fg-subtle">
               {copy.bundle} {b + 1}
             </p>
             <ul className="mt-2 space-y-1 font-mono text-xs">
@@ -134,9 +133,7 @@ function Files({ step, copy }: { step: number; copy: Flow }) {
         const lock = file === "package-lock.json";
         return (
           <li key={file} className="flex flex-wrap items-center gap-2">
-            <span
-              className={cn(lock && "text-[var(--fg-subtle)] line-through")}
-            >
+            <span className={cn(lock && "text-fg-subtle line-through")}>
               {file}
             </span>
             {lock ? <Tag tone="drop">{copy.reasons.lock}</Tag> : null}
@@ -165,28 +162,23 @@ function Findings({ step, copy }: { step: number; copy: Flow }) {
             key={f.title}
             className={cn(
               "rounded-lg border px-3 py-2",
-              report && "border-[var(--accent)]",
-              !report && !gone && "border-[var(--border)]",
-              gone &&
-                "border-dashed border-[var(--border-strong)] bg-[var(--bg-subtle)]",
+              report && "border-accent",
+              !report && !gone && "border-border",
+              gone && "border-dashed border-border-strong bg-bg-subtle",
             )}
           >
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
-              <span className="font-mono text-xs text-[var(--fg-subtle)]">
-                #{i + 1}
-              </span>
+              <span className="font-mono text-xs text-fg-subtle">#{i + 1}</span>
               <span
                 className={cn(
                   "font-medium",
-                  gone && "text-[var(--fg-muted)] line-through",
+                  gone && "text-fg-muted line-through",
                 )}
               >
                 {f.title}
               </span>
               {step >= 5 ? (
-                <span className="font-mono text-xs text-[var(--fg-subtle)]">
-                  {f.at}
-                </span>
+                <span className="font-mono text-xs text-fg-subtle">{f.at}</span>
               ) : null}
             </div>
             <div className="mt-1.5 flex flex-wrap gap-1.5">
@@ -196,7 +188,7 @@ function Findings({ step, copy }: { step: number; copy: Flow }) {
                   "rounded-md px-1.5 py-px text-[11px]",
                   f.severity === "critical"
                     ? "severity-critical"
-                    : "border border-[var(--border)] text-[var(--fg-muted)]",
+                    : "border border-border text-fg-muted",
                 )}
               >
                 {f.severity}
@@ -274,7 +266,7 @@ export function PipelineFlow({
     <div ref={ref} className="grid md:grid-cols-[13rem_1fr]">
       <ol
         ref={strip}
-        className="relative flex gap-1 overflow-x-auto border-b max-md:[mask-image:linear-gradient(to_right,black_80%,transparent)] border-[var(--border)] p-2 md:flex-col md:overflow-visible md:border-r md:border-b-0"
+        className="relative flex gap-1 overflow-x-auto border-b max-md:[mask-image:linear-gradient(to_right,black_80%,transparent)] border-border p-2 md:flex-col md:overflow-visible md:border-r md:border-b-0"
       >
         {labels.map((label, i) => {
           const kind = stages[i]?.kind;
@@ -286,10 +278,9 @@ export function PipelineFlow({
                 onClick={() => go(i)}
                 className={cn(
                   "focus-ring flex w-full items-center gap-2.5 rounded-[4px] px-2.5 py-1.5 text-left text-sm transition-colors",
-                  i === step && "bg-[var(--fg)] text-[var(--bg)]",
-                  i < step && "text-[var(--fg)] hover:bg-[var(--bg-subtle)]",
-                  i > step &&
-                    "text-[var(--fg-subtle)] hover:bg-[var(--bg-subtle)]",
+                  i === step && "bg-fg text-bg",
+                  i < step && "text-fg hover:bg-bg-subtle",
+                  i > step && "text-fg-subtle hover:bg-bg-subtle",
                 )}
               >
                 <span className="w-5 font-mono text-[11px]">
@@ -309,7 +300,7 @@ export function PipelineFlow({
       </ol>
       <div className="flex min-w-0 flex-col p-5 md:p-6">
         <div className="flex items-center justify-between gap-3">
-          <p className="min-w-0 truncate font-mono text-xs text-[var(--fg-subtle)]">
+          <p className="min-w-0 truncate font-mono text-xs text-fg-subtle">
             {copy.label} · {step < FILE_STEPS ? copy.files : copy.findings}
           </p>
           <div className="flex items-center gap-1">
@@ -356,7 +347,7 @@ export function PipelineFlow({
               <h3 className="text-xl font-semibold tracking-[-0.02em]">
                 {label}
               </h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-[var(--fg-muted)]">
+              <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">
                 {copy.captions[i]}
               </p>
               <div className="mt-5 pb-5">
@@ -367,7 +358,7 @@ export function PipelineFlow({
                 )}
               </div>
               {stages[i] ? (
-                <p className="mt-auto border-t border-[var(--border)] pt-4 text-xs leading-relaxed text-[var(--fg-subtle)]">
+                <p className="mt-auto border-t border-border pt-4 text-xs leading-relaxed text-fg-subtle">
                   {stages[i].detail}
                 </p>
               ) : null}
@@ -376,10 +367,10 @@ export function PipelineFlow({
         </div>
         <div
           aria-hidden
-          className="mt-4 h-0.5 overflow-hidden rounded-full bg-[var(--border)]"
+          className="mt-4 h-0.5 overflow-hidden rounded-full bg-border"
         >
           <div
-            className="h-full bg-[var(--accent)] transition-[width] duration-500"
+            className="h-full bg-accent transition-[width] duration-500"
             style={{ width: `${((step + 1) / STEPS) * 100}%` }}
           />
         </div>

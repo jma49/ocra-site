@@ -9,7 +9,7 @@ import { Terminal } from "./terminal";
 
 export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
   return (
-    <div className="relative overflow-hidden border-b border-[var(--border)]">
+    <div className="relative overflow-hidden border-b border-border">
       <div
         aria-hidden
         className="hero-glow pointer-events-none absolute top-0 left-1/2 h-[520px] w-[620px] -translate-x-1/2 opacity-60"
@@ -29,7 +29,7 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
           >
             {copy.title}
           </h1>
-          <p className="mt-6 max-w-xl text-pretty text-[1.08rem] leading-relaxed text-[var(--fg-muted)]">
+          <p className="mt-6 max-w-xl text-pretty text-[1.08rem] leading-relaxed text-fg-muted">
             {copy.subtitle}
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -42,7 +42,7 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: string }) {
               {copy.github}
             </a>
           </div>
-          <p className="mt-5 text-xs text-[var(--fg-subtle)]">{copy.note}</p>
+          <p className="mt-5 text-xs text-fg-subtle">{copy.note}</p>
         </div>
         <Terminal label={locale === "zh" ? "示例输出" : "example output"} />
       </div>

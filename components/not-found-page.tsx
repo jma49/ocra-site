@@ -30,11 +30,11 @@ export function NotFoundPage() {
     <HomeLayout {...baseOptions(lang)} className="home home-layout">
       <title>{`404 · ${t.title} · ocra`}</title>
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-4 py-32 sm:px-8">
-        <p className="font-mono text-sm text-[var(--accent)]">404</p>
+        <p className="font-mono text-sm text-accent">404</p>
         <h1 className="mt-4 text-[2.4rem] font-semibold leading-[1.1] tracking-[-0.04em]">
           {t.title}
         </h1>
-        <p className="mt-4 text-[var(--fg-muted)]">{t.body}</p>
+        <p className="mt-4 text-fg-muted">{t.body}</p>
         <div className="mt-8">
           <Link href={localePath(lang, "/")} className="btn">
             <ArrowLeft className="size-4" />
