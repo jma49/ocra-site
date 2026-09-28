@@ -341,6 +341,7 @@ Flat by default. A `Panel` has a 1px border and a very soft shadow (`--panel-sha
 - **`.marker`** numbered dots (`.marker-brand` for the highlighted step).
 - **Tags:** `.severity-critical` and `.verified`.
 - **Stage groups** (`stages.tsx`, `stage-figures.tsx`): "How it works" as one row that scrolls sideways as a whole: the heading first, lined up with the page column, then the four groups of stages running off the right edge of the page. The arrows and `[00]`–`[03]` buttons below stay put; the buttons light up for the cards in view. Each card has a 300px panel picturing the same example run: dashed lines, filled 2px-radius squares for work that runs, `skip` for work that does not. Identifiers (file names, tiers, reviewers, tool names, the findings) stay in English in both languages.
+- **Demo video** (`demo-video.tsx`, `public/demo/`, made by `scripts/demo-video/`): under the stage row, the example run recorded as a 16:9 dark video (H.264 with a VP9 fallback, a WebP poster of the finished run), one per language, with a caption saying it is an example, sped up, with scripted model answers. It plays muted and looped while half in view; a round play/pause button sits in its corner. On a phone the browser's own controls replace the button, since the terminal is only readable full screen. The hero terminal, the stage pictures and the finding all quote this run.
 - **`Wordmark`** (`wordmark.tsx`, `lib/wordmark.ts`, `lib/ripple.ts`): see Mascot.
 - **Manual (MDX):** `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`. Register a component before the manual uses it, or the build fails.
 - Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings.
@@ -359,7 +360,7 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 
 - Do keep every page and string in English and Chinese, and check the Chinese layout separately.
 - Do check light and dark, 390px and desktop, reduced motion on and off, before calling a change done.
-- **Motion:** motion the visitor makes plays whatever their motion setting: the wordmark ripple, the frog turning with the pointer, the stage row's arrows scrolling smoothly, a button pressing in. Motion that plays by itself respects reduced motion: the frog skips its spin and auto-rotation, the terminal caret stops blinking, and sections fade in without rising.
+- **Motion:** motion the visitor makes plays whatever their motion setting: the wordmark ripple, the frog turning with the pointer, the stage row's arrows scrolling smoothly, a button pressing in. Motion that plays by itself respects reduced motion: the frog skips its spin and auto-rotation, the terminal caret stops blinking, sections fade in without rising, and the demo video waits on its poster until the visitor presses play.
 - Do label examples of ocra output as examples and keep them technically correct.
 - Don't use pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy.
 - Don't add gradients, textures, skeuomorphism or new background effects; the hero glow and the wordmark band are the only two.

@@ -17,6 +17,13 @@ export const zh: Copy = {
     previous: "上一组阶段",
     next: "下一组阶段",
     example: "示例运行",
+    demo: {
+      label: "ocra review 示例运行的视频",
+      caption:
+        "一次示例运行，加速播放。流水线、输出和结论都来自 ocra 本身；模型的回答是为录制预先写好的。",
+      play: "播放示例运行",
+      pause: "暂停示例运行",
+    },
     groups: [
       {
         title: "只读值得读的文件",

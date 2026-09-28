@@ -18,7 +18,7 @@ export default async function HomePage({
   return (
     <div className="relative flex flex-1 flex-col">
       <Hero copy={copy.hero} locale={lang} />
-      <Stages copy={copy.run} />
+      <Stages copy={copy.run} locale={lang} />
       <Decisions copy={copy.decisions} />
       <Anatomy copy={copy.anatomy} />
       <Plugins copy={copy.plugins} locale={lang} />

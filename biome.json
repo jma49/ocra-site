@@ -7,7 +7,16 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build", "!.source"]
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.next",
+      "!dist",
+      "!build",
+      "!.source",
+      "!scripts/demo-video/repo",
+      "!scripts/demo-video/transcript.js"
+    ]
   },
   "formatter": {
     "enabled": true,

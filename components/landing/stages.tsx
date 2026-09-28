@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
+import { DemoVideo } from "./demo-video";
 import { Reveal } from "./reveal";
 import { Heading } from "./section";
 import { KindMark, StageFigure } from "./stage-figures";
@@ -12,7 +13,13 @@ import { KindMark, StageFigure } from "./stage-figures";
 // row that scrolls sideways as a whole, starting at the page column: swipe
 // or scroll it, or use the arrows and numbers below it, which stay put. The
 // numbers light up for the cards in view.
-export function Stages({ copy }: { copy: Copy["run"] }) {
+export function Stages({
+  copy,
+  locale,
+}: {
+  copy: Copy["run"];
+  locale: string;
+}) {
   const row = useRef<HTMLDivElement>(null);
   const cards = useRef<(HTMLLIElement | null)[]>([]);
   const [inView, setInView] = useState<boolean[]>(() =>
@@ -191,6 +198,9 @@ export function Stages({ copy }: { copy: Copy["run"] }) {
                 </button>
               ))}
             </div>
+          </div>
+          <div className="mt-14 px-[var(--column)] md:mt-20">
+            <DemoVideo copy={copy.demo} locale={locale} />
           </div>
         </div>
       </Reveal>

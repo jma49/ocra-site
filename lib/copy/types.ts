@@ -17,6 +17,8 @@ export interface Copy {
     previous: string;
     next: string;
     example: string;
+    // The recorded example run under the stage row (public/demo).
+    demo: { label: string; caption: string; play: string; pause: string };
     groups: {
       title: string;
       stages: { name: string; kind: StageKind }[];
