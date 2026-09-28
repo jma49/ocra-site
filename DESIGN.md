@@ -341,7 +341,7 @@ Flat by default. A `Panel` has a 1px border and a very soft shadow (`--panel-sha
 - **`.marker`** numbered dots (`.marker-brand` for the highlighted step).
 - **Tags:** `.severity-critical` and `.verified`.
 - **Stage groups** (`stages.tsx`, `stage-figures.tsx`): "How it works" as one row that scrolls sideways as a whole: the heading first, lined up with the page column, then the four groups of stages running off the right edge of the page. The arrows and `[00]`–`[03]` buttons below stay put; the buttons light up for the cards in view. Each card has a 300px panel picturing the same example run: dashed lines, filled 2px-radius squares for work that runs, `skip` for work that does not. Identifiers (file names, tiers, reviewers, tool names, the findings) stay in English in both languages.
-- **`Wordmark`** (`wordmark.tsx`, `lib/wordmark.ts`, `lib/glitch.ts`): see Mascot.
+- **`Wordmark`** (`wordmark.tsx`, `lib/wordmark.ts`, `lib/ripple.ts`): see Mascot.
 - **Manual (MDX):** `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`. Register a component before the manual uses it, or the build fails.
 - Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings.
 
@@ -353,7 +353,7 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 - Rendering pauses off screen; reduced motion skips the spin and the auto-rotation; a browser without WebGL gets the flat mark. three.js loads lazily through `frog-stage.tsx`. The effect follows the voxel mascot on craftz.dog; the model and code are our own.
 - Outlines are a thick dark stroke under the fills. Inline SVGs use no `id` references (the layout renders the logo more than once).
 - **The OCRA wordmark** closes the landing page: heavy geometric letters drawn for ocra, full width on an aquamarine band, in `ink` (the frog's outline colour), sitting on the band's bottom edge in both themes. The O is the frog's eye, glancing ahead. The paths wind their counters the other way, so the default fill rule cuts them out.
-- **Its glitch:** moving the pointer over the band drags horizontal slices of the letters along its path, most of them trailing a streak stretched from their edge; some pixelate or darken instead; faster movement drags further, pressing and dragging further still; it settles within about a second. A canvas over the static SVG draws only the disturbed slices, so the page reads the same without JavaScript, nothing runs while nothing moves, and reduced motion leaves the band still. Sizes scale with the band's width.
+- **Its ripple:** moving the pointer over the band drops rings that spread outward like ripples on water and bend the letters as they pass, with a faint light and shadow on each crest; faster movement makes stronger rings, pressing drops a bigger one, and they fade within two seconds. A WebGL canvas over the static SVG draws the band only while rings are alive, so the page reads the same without JavaScript or WebGL, nothing runs while nothing moves, and reduced motion leaves the band still. Sizes scale with the band's width.
 
 ## Do's and Don'ts
 
