@@ -16,7 +16,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI
-    ? [["list"], ["html", { open: "never", outputFolder: ".visual/report" }]]
+    ? [
+        ["list"],
+        ["github"],
+        ["html", { open: "never", outputFolder: ".visual/report" }],
+      ]
     : [["list"]],
   expect: {
     toHaveScreenshot: {
