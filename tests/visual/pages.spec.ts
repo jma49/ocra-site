@@ -30,6 +30,12 @@ for (const locale of locales) {
       await page.goto(url, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
 
+      // stable.css hides the frog by this selector; fail loudly if the 404
+      // markup changes and the selector stops matching.
+      if (target.missing) {
+        await expect(page.locator("[data-frog-stage] > div")).toHaveCount(1);
+      }
+
       await expect(page).toHaveScreenshot(`${locale.code}-${target.name}.png`, {
         fullPage: true,
       });
