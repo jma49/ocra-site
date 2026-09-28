@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import type { Copy } from "@/lib/copy";
 import { localePath, repoUrl } from "@/lib/shared";
+import { Wordmark } from "./wordmark";
 
 export function Footer({
   copy,
@@ -29,6 +30,7 @@ export function Footer({
           </a>
         </nav>
       </div>
+      <Wordmark label={copy.wordmark} />
     </footer>
   );
 }

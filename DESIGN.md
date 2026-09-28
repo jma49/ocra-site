@@ -6,6 +6,7 @@ colors:
   primary: "#0B7A5C"
   on-primary: "#FFFFFF"
   brand: "#7FFFD4"
+  ink: "#0C3B30"
   accent-soft: "#D6FFF1"
   bg: "#FFFFFF"
   bg-subtle: "#FAFAFA"
@@ -63,14 +64,14 @@ typography:
     fontFamily: PingFang SC
     fontSize: 3.3rem
     fontWeight: 600
-    lineHeight: 1.15
-    letterSpacing: -0.045em
+    lineHeight: 1.2
+    letterSpacing: -0.02em
   display-zh-sm:
     fontFamily: PingFang SC
     fontSize: 2.3rem
     fontWeight: 600
-    lineHeight: 1.15
-    letterSpacing: -0.045em
+    lineHeight: 1.2
+    letterSpacing: -0.02em
   headline:
     fontFamily: Geist
     fontSize: 2.4rem
@@ -83,6 +84,12 @@ typography:
     fontWeight: 600
     lineHeight: 1.15
     letterSpacing: -0.03em
+  title:
+    fontFamily: Geist
+    fontSize: 1.25rem
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: -0.015em
   lead:
     fontFamily: Geist
     fontSize: 1.05rem
@@ -132,6 +139,9 @@ spacing:
   panel-bar-height: 40px
   marker: 1.3rem
 components:
+  wordmark-band:
+    backgroundColor: "{colors.brand}"
+    textColor: "{colors.ink}"
   page:
     backgroundColor: "{colors.bg}"
     textColor: "{colors.fg}"
@@ -289,9 +299,9 @@ The landing page and manual for a code review tool used by engineers. **Monochro
 
 ## Colors
 
-**Colour carries meaning only.**
+**Colour carries meaning only**, with one exception: the aquamarine wordmark band at the foot of the landing page.
 
-- **Aquamarine (`brand`, #7FFFD4)** is the brand. In the light theme it is too pale for text, so links, focus rings and "verified" use `primary` (#0B7A5C, the same hue at about 5:1 on white; `--accent` in CSS). In the dark theme the accent is the brand itself.
+- **Aquamarine (`brand`, #7FFFD4)** is the brand. In the light theme it is too pale for text, so links, focus rings and "verified" use `primary` (#0B7A5C, the same hue at about 5:1 on white; `--accent` in CSS). In the dark theme the accent is the brand itself. `ink` (#0C3B30, the frog's outline) is the wordmark's letters on the band, in both themes.
 - **Review severities** (`critical`, `warning`) and diff lines are the only other colours.
 - **Neutrals** do everything else: `fg` for text, `fg-muted` for body copy and descriptions, `fg-subtle` for labels and captions, `border` / `border-strong` for lines.
 - **Terminals stay dark in both themes** and have their own tokens (`--term-*`, defined once in `:root` and not redefined under `.dark`; utilities `text-term-dim`, `text-term-warn`, `border-term-border-strong`, …). Their "ok" line is the brand; their "warn" line is `term-warn`, the dark theme's `warning` (#FBBF24). `term-fg` and `term-dim` are white at 88% and 55% in CSS; the hex values above are what they blend to on `term-bg`.
@@ -302,8 +312,9 @@ The landing page and manual for a code review tool used by engineers. **Monochro
 
 Geist and Geist Mono (loaded with `next/font`); Chinese in the system faces (PingFang SC, Noto Sans SC) after Geist.
 
-- Headlines are semibold with tight tracking. `display` for the hero, `headline` for section headings; each has a smaller step below the `sm`/`md` breakpoint (`-sm`).
-- **Chinese headings get their own sizes** (`display-zh`, `display-zh-sm`) and explicit line breaks; do not rely on automatic balancing for CJK. Chinese prose gets more leading (`:lang(zh) .prose`, 1.85).
+- The scale lives in `@theme` as `--text-*` tokens carrying their line height and tracking, used as utilities: `text-display` / `text-display-sm` for the hero, `text-headline` / `text-headline-sm` for section headings (the `-sm` step below `sm`/`md`), `text-title` for card titles, `text-lead` for the paragraph under a heading. `lib/cn.ts` registers them with `cn`; without that, `text-lead` next to `text-fg-muted` looks like two colours and the size is dropped.
+- Headlines are semibold with tight tracking in Latin text.
+- **Chinese headings get their own sizes** (`display-zh`, `display-zh-sm`) and explicit line breaks; do not rely on automatic balancing for CJK. Tight tracking crowds CJK glyphs, so `display-zh` uses -0.02em and `:lang(zh)` resets the headline tracking to -0.01em with 1.3 leading, card titles to 0, and `lead` to 1.85 leading, like Chinese prose (`:lang(zh) .prose`).
 - `lead` for the paragraph under a heading, `body` for everything else, `caption` for small print.
 - Mono for code, commands, file names and numbered markers: `mono-label` in panel bars, `mono-caption` in markers and small annotations.
 - Set a headline's line height with the `text-[size]/[leading]` form (or a `--text-*--line-height` token): `cn` (tailwind-merge) drops a separate `leading-*` next to an arbitrary text size.
@@ -317,7 +328,7 @@ Geist and Geist Mono (loaded with `next/font`); Chinese in the system faces (Pin
 
 ## Elevation & Depth
 
-Flat by default. A `Panel` has a 1px border and a very soft shadow (`--panel-shadow`); nothing else casts a shadow. The only background effect on the whole site is the soft aquamarine glow behind the 3D mascot at the top of the hero (`.hero-glow`). The top nav on the home layout is the one translucent surface.
+Flat by default. A `Panel` has a 1px border and a very soft shadow (`--panel-shadow`); nothing else casts a shadow. There are two background effects on the whole site: the soft aquamarine glow behind the 3D mascot at the top of the hero (`.hero-glow`) and the OCRA wordmark band that closes the landing page. The top nav on the home layout is the one translucent surface.
 
 ## Shapes
 
@@ -329,6 +340,8 @@ Flat by default. A `Panel` has a 1px border and a very soft shadow (`--panel-sha
 - **Buttons:** `.btn` (primary, foreground-coloured, not the accent) and `.btn-outline`; `.btn-sm` for small accessories like copy buttons.
 - **`.marker`** numbered dots (`.marker-brand` for the highlighted step).
 - **Tags:** `.severity-critical` and `.verified`.
+- **Stage groups** (`stages.tsx`, `stage-figures.tsx`): "How it works" as four groups of stages in a row that scrolls sideways and runs off the right edge of the page, with arrows and `[00]`–`[03]` buttons that light up for the cards in view; the heading column lines up with the page column. Each card has a 300px panel picturing the same example run: dashed lines, filled 2px-radius squares for work that runs, `skip` for work that does not. Identifiers (file names, tiers, reviewers, tool names, the findings) stay in English in both languages.
+- **`Wordmark`** (`wordmark.tsx`, `lib/wordmark.ts`, `lib/glitch.ts`): see Mascot.
 - **Manual (MDX):** `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`. Register a component before the manual uses it, or the build fails.
 - Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings.
 
@@ -339,6 +352,8 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 - The voxel frog (`components/landing/voxel-frog.tsx`, three.js, voxels generated in `lib/voxel-frog.ts`, not loaded from a model) spins in and settles, then turns slowly. Hovering turns it with the pointer, no click needed (crossing the frame is a full turn; height tilts slightly); touch turns it with a horizontal swipe and keeps vertical scrolling. No zoom or pan, so the frog never leaves its frame.
 - Rendering pauses off screen; reduced motion skips the spin and the auto-rotation; a browser without WebGL gets the flat mark. three.js loads lazily through `frog-stage.tsx`. The effect follows the voxel mascot on craftz.dog; the model and code are our own.
 - Outlines are a thick dark stroke under the fills. Inline SVGs use no `id` references (the layout renders the logo more than once).
+- **The OCRA wordmark** closes the landing page: heavy geometric letters drawn for ocra, full width on an aquamarine band, in `ink` (the frog's outline colour), sitting on the band's bottom edge in both themes. The O is the frog's eye, glancing ahead. The paths wind their counters the other way, so the default fill rule cuts them out.
+- **Its glitch:** moving the pointer over the band shifts horizontal slices of the letters sideways, pixelates some and darkens others; pressing and dragging makes it stronger; it settles within a second. A canvas over the static SVG draws only the disturbed slices, so the page reads the same without JavaScript, nothing runs while nothing moves, and reduced motion leaves the band still. Sizes scale with the band's width.
 
 ## Do's and Don'ts
 
@@ -346,7 +361,7 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 - Do check light and dark, 390px and desktop, reduced motion on and off, before calling a change done.
 - Do label examples of ocra output as examples and keep them technically correct.
 - Don't use pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy.
-- Don't add gradients, textures, skeuomorphism or new background effects; the hero glow is the only one.
+- Don't add gradients, textures, skeuomorphism or new background effects; the hero glow and the wordmark band are the only two.
 - Don't use colour for decoration, or the accent for the primary button.
 - Don't write `text-[var(--token)]`; use the utility of the same name (`text-fg-muted`). Never hex values or Tailwind palette colours (`text-amber-300`) in components.
 
@@ -360,7 +375,7 @@ One step per pull request, each checked against baseline screenshots:
 
 1. **Done: tokens as utilities.** `@theme inline` in `app/global.css` registers every colour token as a Tailwind colour under its CSS variable's name (`text-fg-muted`, `border-border`, `bg-bg-subtle`, `text-accent`, …); the 109 `text-[var(--fg-muted)]`-style classes are gone. No visual difference.
 2. **Done: terminal tokens.** `--term-*` in `:root`, used by `.terminal`, `.panel-dark`, `terminal.tsx` and `get-started.tsx`; no hex values or palette colours are left in components. Decided 2026-09-27: the warn line uses the dark theme's `warning` (amber-400, `#FBBF24`, 11.9:1 on the terminal) rather than amber-300, so the site has one warning colour. That line is the only visual difference.
-3. **Type scale:** add `--text-display`, `--text-display-sm`, `--text-display-zh`, `--text-display-zh-sm`, `--text-headline`, `--text-headline-sm`, `--text-lead` with their `--line-height` and `--letter-spacing` sub-properties, and use them in `hero.tsx`, `section.tsx`, `not-found-page.tsx`, `decisions.tsx`. Merge `1.08rem` into `lead` (1.05rem) and `11.5px` into `mono-caption`; `plugins.tsx`'s `0.95rem` becomes `body` or `lead`. Expected diff: the hero subtitle and those small labels shift slightly.
+3. **Done (2026-09-28): type scale.** The tokens below are in `@theme` and registered with `cn`; the hero, section headings, the 404 heading, decisions and plugins use them, and Chinese headings and leads get their own tracking and leading through `:lang(zh)`. What was planned: add `--text-display`, `--text-display-sm`, `--text-display-zh`, `--text-display-zh-sm`, `--text-headline`, `--text-headline-sm`, `--text-lead` with their `--line-height` and `--letter-spacing` sub-properties, and use them in `hero.tsx`, `section.tsx`, `not-found-page.tsx`, `decisions.tsx`. Merge `1.08rem` into `lead` (1.05rem) and `11.5px` into `mono-caption`; `plugins.tsx`'s `0.95rem` becomes `body` or `lead`. Expected diff: the hero subtitle and those small labels shift slightly.
 4. **Radii:** `rounded-[2px]` and `rounded-[4px]` → one 4px token.
 
 ## Verification

@@ -35,7 +35,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 `DESIGN.md` holds the design system: tokens, type scale, components, the mascot, and the migration in progress. Read it before any change to `app/`, `components/` or `app/global.css`. The rules that apply to every change:
 
-- **Monochrome and typography-led; colour carries meaning only** (the aquamarine accent for links, focus and "verified"; review severities; diff lines). No gradients, textures or skeuomorphism; the hero glow behind the mascot is the only background effect.
+- **Monochrome and typography-led; colour carries meaning only** (the aquamarine accent for links, focus and "verified"; review severities; diff lines). No gradients, textures or skeuomorphism; the hero glow behind the mascot and the OCRA wordmark band at the foot of the landing page are the only background effects (the band is the one place the brand colour is decoration).
 - Avoid the generic AI landing-page look: no pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy. Prefer left-aligned editorial layouts and concrete statements.
 - Style through the tokens in `app/global.css` only: no hex values or Tailwind palette colours in components. A token change edits `app/global.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.

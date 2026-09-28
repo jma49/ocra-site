@@ -45,7 +45,7 @@ export function Terminal({ label }: { label: string }) {
   return (
     <div className="relative min-w-0">
       <Panel label={`ocra review — ${label}`} dark>
-        <pre className="terminal m-0 overflow-x-auto whitespace-pre p-5 font-mono text-[11.5px] leading-[1.7]">
+        <pre className="terminal m-0 overflow-x-auto whitespace-pre p-5 font-mono text-[11px] leading-[1.7]">
           {lines.map((line, i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static lines that never reorder
             <div key={i} className={line.tone ? tones[line.tone] : undefined}>
