@@ -121,7 +121,7 @@ export function GetStarted({
           <button
             type="button"
             onClick={onCopy}
-            className="btn-outline btn-sm gap-1 border-[#3f3f46] text-white/80 hover:bg-white/5 focus-visible:outline-[#7fffd4]"
+            className="btn-outline btn-sm gap-1 border-term-border-strong text-term-strong/80 hover:bg-term-strong/5 focus-visible:outline-term-ok"
           >
             <span className="relative size-3" aria-hidden>
               <CopyIcon
