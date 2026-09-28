@@ -64,8 +64,11 @@ function visuals(v: Copy["decisions"]["visuals"]): ReactNode[] {
       ))}
     </Visual>,
     <Visual key="bill">
-      <span>tokens: 19558 in (15360 cached), 118 out, 0 reasoning</span>
-      <span className="text-fg">$0.0062</span>
+      <span>
+        16 step(s), 14 tool call(s), 121766 in / 3312 out / 2958 reasoning
+        tokens,
+      </span>
+      <span className="text-fg">$0.2045</span>
     </Visual>,
     <Visual key="failback">
       <span className="flex items-center gap-1 text-fg-subtle">
