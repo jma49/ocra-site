@@ -26,13 +26,18 @@ for (const locale of locales) {
   for (const target of pages) {
     test(`${locale.code} ${target.name}`, async ({ page }, testInfo) => {
       const errors = collectErrors(page);
+      // A baseline run records the base branch as it is; only the change
+      // under test must pass the checks below.
+      const recordingBaseline = ["all", "changed"].includes(
+        testInfo.config.updateSnapshots,
+      );
       const url = `${locale.prefix}${target.path}`.replace(/\/$/, "") || "/";
       await page.goto(url, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
 
       // stable.css hides the frog by this selector; fail loudly if the 404
       // markup changes and the selector stops matching.
-      if (target.missing) {
+      if (target.missing && !recordingBaseline) {
         await expect(page.locator("[data-frog-stage] > div")).toHaveCount(1);
       }
 
@@ -40,11 +45,6 @@ for (const locale of locales) {
         fullPage: true,
       });
 
-      // A baseline run records the base branch as it is; only the change
-      // under test must be free of errors.
-      const recordingBaseline = ["all", "changed"].includes(
-        testInfo.config.updateSnapshots,
-      );
       const expected = target.missing ? /status of 404/ : null;
       const unexpected = errors.filter((e) => !expected?.test(e));
       if (!recordingBaseline) expect(unexpected).toEqual([]);
