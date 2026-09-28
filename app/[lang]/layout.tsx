@@ -25,11 +25,13 @@ const meta = {
   },
 };
 
-// Vercel provides the production domain; SITE_URL overrides it for a custom domain.
+// Every Vercel build, previews included, points canonical links at the
+// custom domain; SITE_URL overrides it.
+const PRODUCTION_URL = "https://ocra.majincheng.com";
+
 function siteUrl(): string {
   if (process.env.SITE_URL) return process.env.SITE_URL;
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  return vercel ? `https://${vercel}` : "http://localhost:3000";
+  return process.env.VERCEL ? PRODUCTION_URL : "http://localhost:3000";
 }
 
 export async function generateMetadata({
