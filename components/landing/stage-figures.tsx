@@ -4,9 +4,9 @@ import type { Copy, StageKind } from "@/lib/copy";
 
 type Words = Copy["run"]["figures"];
 
-// The example run behind the four pictures, the same one the manual's
-// walk-through uses. File names, tiers, reviewers, tool names and the
-// findings (ocra's own output) are identifiers and stay in English.
+// The example run behind the four pictures: the demo repository recorded
+// for the site's video and hero terminal. File names, tiers, reviewers, tool
+// names and the findings (ocra's own output) stay in English.
 const FILES = [
   "src/auth/session.ts",
   "src/auth/token.ts",
@@ -172,8 +172,8 @@ function Review({ w }: { w: Words }) {
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-fg-subtle">{w.quote}</span>
-        <code className="block rounded-md border border-border bg-bg-subtle px-3 py-2 whitespace-pre text-fg">
-          {"return session.expiresAt\n  < Date.now();"}
+        <code className="block overflow-x-auto rounded-md border border-border bg-bg-subtle px-3 py-2 whitespace-pre text-fg">
+          return session.expiresAt {"<"} Date.now();
         </code>
         <span className="flex items-center gap-2 text-fg-subtle">
           <span

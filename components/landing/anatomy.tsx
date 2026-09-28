@@ -71,9 +71,9 @@ function Comment({ copy }: { copy: Copy["anatomy"] }) {
         <Marker n={2} />
       </p>
       <p className="mt-2 text-sm leading-relaxed text-fg-muted">
-        isExpired() compares expiresAt in seconds with Date.now() in
-        milliseconds, so every session counts as expired and users are logged
-        out right after signing in.
+        isExpired() compares expiresAt, stored in seconds, with Date.now() in
+        milliseconds, so it is always true: loadSession() deletes every session
+        and users are logged out right after signing in.
         <Marker n={3} />
       </p>
       <p className="mt-2 text-sm text-fg-muted">
@@ -105,7 +105,7 @@ export function Anatomy({ copy }: { copy: Copy["anatomy"] }) {
             <Line
               n={41}
               sign=" "
-              code="export function isExpired(session: Session) {"
+              code="export function isExpired(session: Session): boolean {"
             />
             {fixed ? (
               <>

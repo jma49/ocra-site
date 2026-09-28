@@ -18,9 +18,11 @@ const snippets: Record<Tab, { label: string; text: string }> = {
 cd Open-CR-Agent && npm install && npm run build
 npm link --workspace @open-cr-agent/cli
 export GEMINI_API_KEY=...
-cd your-repository && ocra review`,
+export OCRA_MODEL_STANDARD=google/gemini-3.5-flash
+export OCRA_MODEL_LIGHT=google/gemini-flash-lite-latest
+cd your-repository && ocra review --from main`,
   },
-  // Same workflow as the manual's GitHub page.
+  // The manual's GitHub page, with models set in env.
   action: {
     label: ".github/workflows/ocra.yml",
     text: `name: ocra
@@ -29,6 +31,10 @@ on: pull_request
 permissions:
   contents: read
   pull-requests: write
+
+concurrency:
+  group: ocra-\${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   review:
@@ -39,7 +45,9 @@ jobs:
           fetch-depth: 0
       - uses: jma49/Open-CR-Agent@main
         env:
-          GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}`,
+          GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
+          OCRA_MODEL_STANDARD: google/gemini-3.5-flash
+          OCRA_MODEL_LIGHT: google/gemini-flash-lite-latest`,
   },
 };
 
