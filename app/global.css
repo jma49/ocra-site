@@ -249,11 +249,9 @@ html > body[data-scroll-locked] {
     transition-timing-function: ease-out;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .btn:active,
-    .btn-outline:active {
-      scale: 0.96;
-    }
+  .btn:active,
+  .btn-outline:active {
+    scale: 0.96;
   }
 
   .btn {
@@ -352,6 +350,12 @@ html > body[data-scroll-locked] {
   transition-property: opacity, translate;
   transition-duration: 0.7s;
   transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal="pending"] > * {
+    translate: none;
+  }
 }
 
 /* Icons swapped in place cross-fade instead of popping. */

@@ -72,10 +72,7 @@ export function Stages({ copy }: { copy: Copy["run"] }) {
     ];
   };
   const go = (left: number) => {
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    row.current?.scrollTo({ left, behavior: reduced ? "auto" : "smooth" });
+    row.current?.scrollTo({ left, behavior: "smooth" });
   };
   const step = (direction: 1 | -1) => {
     const el = row.current;

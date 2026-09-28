@@ -2,17 +2,16 @@
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
-// Fades content in the first time it scrolls into view. Nothing is hidden
-// until this has run, so the page reads the same without JavaScript, and
-// reduced motion skips it entirely.
+// Fades content in the first time it scrolls into view, rising slightly
+// unless the visitor prefers reduced motion. Nothing is hidden until this
+// has run, so the page reads the same without JavaScript.
 export function Reveal({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [state, setState] = useState<"idle" | "pending" | "visible">("idle");
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
+    if (!el) return;
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight) return;
     setState("pending");

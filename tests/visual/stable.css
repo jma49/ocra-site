@@ -11,6 +11,15 @@
   visibility: hidden !important;
 }
 
+/* Sections below the fold wait to fade in until they scroll into view; a
+   full-page screenshot records them as they look once shown. */
+[data-reveal] > * {
+  /* biome-ignore lint/complexity/noImportantStyles: shows sections that have not scrolled into view */
+  opacity: 1 !important;
+  /* biome-ignore lint/complexity/noImportantStyles: shows sections that have not scrolled into view */
+  translate: none !important;
+}
+
 /* The voxel frog renders through WebGL, which differs between GPUs, and its
    frame shows a spinner, the model or the flat fallback depending on timing.
    Its frame keeps its size; only the contents are hidden. A mask would also

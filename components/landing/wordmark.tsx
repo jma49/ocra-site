@@ -5,8 +5,8 @@ import { attachRipple } from "@/lib/ripple";
 import { WORDMARK } from "@/lib/wordmark";
 
 // The full-width OCRA band that closes the page. Moving the pointer over it
-// sends ripples through the letters, pressing drops a bigger one; reduced
-// motion leaves it still.
+// sends ripples through the letters, pressing drops a bigger one. The
+// visitor makes every ripple, so it plays with reduced motion too.
 export function Wordmark({ label }: { label: string }) {
   const band = useRef<HTMLDivElement>(null);
   const art = useRef<SVGSVGElement>(null);
@@ -14,7 +14,6 @@ export function Wordmark({ label }: { label: string }) {
 
   useEffect(() => {
     if (!band.current || !art.current || !canvas.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     return attachRipple(band.current, canvas.current, art.current);
   }, []);
 
