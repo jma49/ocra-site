@@ -21,7 +21,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 
 The user manual's source lives in the main repository under `docs/manual/{en,zh}`, next to the code it documents. `content/docs` is generated and git-ignored. Edit the manual in the main repository; this repository only renders it.
 
-- Locally the sync script reads `../Open-CR-Agent/docs/manual`, or `MANUAL_DIR`.
+- Locally the sync script reads `MANUAL_DIR`, else `../ocra/docs/manual` or `../Open-CR-Agent/docs/manual` (the default clone name), whichever exists.
 - On Vercel it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository).
 - The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
