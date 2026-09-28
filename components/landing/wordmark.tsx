@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import { attachGlitch } from "@/lib/glitch";
 import { WORDMARK } from "@/lib/wordmark";
 
-// The full-width OCRA band that closes the page. Moving or dragging the
-// pointer over it shifts and pixelates slices of the letters; reduced motion
+// The full-width OCRA band that closes the page. Moving the pointer over it
+// drags slices of the letters along; pressing drags harder; reduced motion
 // leaves it still.
 export function Wordmark({ label }: { label: string }) {
   const band = useRef<HTMLDivElement>(null);

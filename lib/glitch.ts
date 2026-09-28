@@ -1,7 +1,9 @@
-// Pixel glitch for the wordmark band: under the pointer, horizontal slices
-// of the letters shift sideways, some pixelate or darken, then settle back.
-// A canvas over the static SVG draws only the disturbed slices, so the page
-// looks the same without JavaScript, and nothing runs while nothing moves.
+// Pixel glitch for the wordmark band: the pointer drags horizontal slices of
+// the letters along its path, stretching their trailing edge into streaks;
+// some slices pixelate or darken, then all settle back. Pressing drags
+// harder. A canvas over the static SVG draws only the disturbed slices, so
+// the page looks the same without JavaScript, and nothing runs while
+// nothing moves.
 
 interface Block {
   x: number;
@@ -11,7 +13,7 @@ interface Block {
   dx: number;
   born: number;
   life: number;
-  kind: "shift" | "pixel" | "tint";
+  kind: "smear" | "shift" | "pixel" | "tint";
   pixel: number;
 }
 
@@ -27,8 +29,8 @@ interface Surface {
 
 const HEIGHTS = [4, 8, 8, 12, 16, 16, 24, 32, 48];
 const PIXELS = [6, 8, 12, 16];
-const MAX_BLOCKS = 90;
-const SPAWN_EVERY_MS = 24;
+const MAX_BLOCKS = 160;
+const SPAWN_EVERY_MS = 16;
 
 const pick = <T>(list: readonly T[]): T =>
   list[Math.floor(Math.random() * list.length)] as T;
@@ -107,45 +109,54 @@ export function attachGlitch(
     vx: number,
     power: number,
   ) => {
-    const count = Math.min(5, 1 + Math.round(power * 2)) + (pressed ? 3 : 0);
-    const boost = pressed ? 1.6 : 1;
+    const speed = Math.min(power, 3);
+    const count = Math.min(8, 2 + Math.round(speed * 2)) + (pressed ? 4 : 0);
+    const boost = pressed ? 2.2 : 1;
+    const along = vx >= 0 ? 1 : -1;
+    const now = performance.now();
     for (let i = 0; i < count; i++) {
       const h = Math.max(
         2,
         Math.round(pick(HEIGHTS) * s.unit * (pressed ? 1.5 : 1)),
       );
       const w = Math.round(
-        (24 + Math.random() * (pressed ? 360 : 200)) * s.unit,
+        (40 + Math.random() * (pressed ? 420 : 260)) * s.unit,
       );
-      const along = vx >= 0 ? 1 : -1;
-      const direction = Math.random() < 0.7 ? along : -along;
+      const direction = Math.random() < 0.85 ? along : -along;
       const roll = Math.random();
       blocks.push({
         x: Math.max(
           0,
           Math.min(
             s.width - w,
-            x - w / 2 + (Math.random() - 0.5) * 180 * s.unit,
+            x - w / 2 + (Math.random() - 0.5) * 200 * s.unit,
           ),
         ),
         y: Math.max(
           0,
           Math.min(
             s.height - h,
-            y - h / 2 + (Math.random() - 0.5) * 120 * s.unit,
+            y - h / 2 + (Math.random() - 0.5) * 140 * s.unit,
           ),
         ),
         w,
         h,
         dx:
           direction *
-          (8 + Math.random() * 48) *
-          (0.6 + Math.min(power, 2) * 0.4) *
+          (16 + Math.random() * 72) *
+          (0.6 + speed * 0.5) *
           boost *
           s.unit,
-        born: performance.now(),
-        life: 320 + Math.random() * 520,
-        kind: roll < 0.3 ? "pixel" : roll < 0.45 ? "tint" : "shift",
+        born: now,
+        life: (380 + Math.random() * 620) * (pressed ? 1.4 : 1),
+        kind:
+          roll < 0.4
+            ? "smear"
+            : roll < 0.65
+              ? "shift"
+              : roll < 0.9
+                ? "pixel"
+                : "tint",
         pixel: pick(PIXELS),
       });
     }
@@ -202,6 +213,16 @@ export function attachGlitch(
         );
       } else {
         ctx.drawImage(s.source, x, y, b.w, b.h, x + dx, y, b.w, b.h);
+      }
+      // The gap a slice leaves behind is filled by its trailing column of
+      // pixels, stretched: the letters look dragged rather than cut.
+      if (b.kind === "smear" && Math.abs(dx) >= 1) {
+        const edge = Math.max(1, Math.round(2 * s.unit));
+        const from = dx > 0 ? x : x + b.w - edge;
+        const gap = Math.min(Math.abs(dx), b.w);
+        const to = dx > 0 ? x + dx - gap : x + b.w + dx;
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(s.source, from, y, edge, b.h, to, y, gap, b.h);
       }
       if (b.kind === "tint") {
         ctx.globalAlpha = 0.3 * amount;
