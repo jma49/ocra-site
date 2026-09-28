@@ -20,6 +20,10 @@ export default defineConfig({
     : [["list"]],
   expect: {
     toHaveScreenshot: {
+      // Both sides render on the same machine, so pixels match exactly unless
+      // something changed. The default threshold (0.2) let a token change
+      // like amber-300 → amber-400 pass as "no difference".
+      threshold: 0.02,
       maxDiffPixels: 20,
       animations: "disabled",
       caret: "hide",
