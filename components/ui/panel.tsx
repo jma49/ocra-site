@@ -5,26 +5,18 @@ import { cn } from "@/lib/cn";
 export function Panel({
   label,
   accessory,
-  dark = false,
   className,
   bodyClassName,
   children,
 }: {
   label?: string;
   accessory?: ReactNode;
-  dark?: boolean;
   className?: string;
   bodyClassName?: string;
   children: ReactNode;
 }) {
   return (
-    <figure
-      className={cn(
-        "panel m-0 min-w-0 overflow-hidden",
-        dark && "panel-dark",
-        className,
-      )}
-    >
+    <figure className={cn("panel m-0 min-w-0 overflow-hidden", className)}>
       {label ? (
         <figcaption className="panel-bar">
           <span className="truncate">{label}</span>

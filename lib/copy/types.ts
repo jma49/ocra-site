@@ -1,47 +1,66 @@
-export type StageKind = "code" | "model" | "planned";
+export type StageKind = "code" | "model";
 
 export interface Copy {
+  nav: {
+    home: string;
+    how: string;
+    manual: string;
+    plugins: string;
+    roadmap: string;
+    github: string;
+    start: string;
+    // The link to the other language, in that language.
+    language: string;
+  };
   hero: {
-    title: string;
+    // Two tones: the lead is muted, the rest is bright.
+    titleLead: string;
+    titleRest: string;
     subtitle: string;
     start: string;
     github: string;
     note: string;
   };
   run: {
+    // `{command}` marks where `ocra review` goes, set in mono.
     title: string;
     body: string;
-    window: string;
     legend: Record<StageKind, string>;
-    // The animated walk-through: one caption per stage, then the report.
-    flow: {
-      label: string;
-      report: string;
-      play: string;
-      pause: string;
-      previous: string;
-      next: string;
-      files: string;
-      findings: string;
-      tier: string;
-      bundle: string;
-      skipped: string;
-      verdict: string;
-      reasons: {
-        lock: string;
-        memory: string;
-        disproved: string;
-        merged: string;
-        verified: string;
-      };
-      captions: string[];
-    };
-    stages: {
-      name: string;
-      kind: StageKind;
-      summary: string;
-      detail: string;
+    region: string;
+    previous: string;
+    next: string;
+    example: string;
+    groups: {
+      title: string;
+      stages: { name: string; kind: StageKind }[];
+      text: string;
     }[];
+    // Words inside the illustrations; file names, tiers, reviewers and tool
+    // names are identifiers and stay untranslated.
+    figures: {
+      read: string;
+      lockSetAside: string;
+      tier: string;
+      touches: string;
+      authCode: string;
+      docs: string;
+      threeFiles: string;
+      oneFile: string;
+      skip: string;
+      tasks: string;
+      skipped: string;
+      agent: string;
+      on: string;
+      off: string;
+      quote: string;
+      matched: string;
+      confirmed: string;
+      merged: string;
+      disproved: string;
+      accepted: string;
+      verdict: string;
+      verifiedCritical: string;
+    };
   };
   decisions: {
     title: string;
@@ -61,7 +80,7 @@ export interface Copy {
       suggestion: string;
     };
     states: {
-      reported: { tab: string; text: string };
+      reported: { tab: string; text: string; open: string };
       fixed: { tab: string; text: string; resolved: string };
       dismissed: {
         tab: string;
@@ -75,7 +94,6 @@ export interface Copy {
   plugins: { title: string; body: string; points: string[]; cta: string };
   status: {
     title: string;
-    window: string;
     items: {
       milestone: string;
       title: string;
@@ -86,6 +104,7 @@ export interface Copy {
   };
   start: {
     title: string;
+    titleRest: string;
     body: string;
     copy: string;
     copied: string;
@@ -95,5 +114,13 @@ export interface Copy {
     actionNote: string;
     actionDocs: string;
   };
-  footer: { tagline: string; github: string; license: string; manual: string };
+  footer: {
+    tagline: string;
+    project: string;
+    source: string;
+    language: string;
+    license: string;
+    backToTop: string;
+    wordmark: string;
+  };
 }
