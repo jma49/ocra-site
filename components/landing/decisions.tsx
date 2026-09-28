@@ -7,7 +7,7 @@ function Visual({ children }: { children: ReactNode }) {
   return (
     <div
       aria-hidden
-      className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-lg border border-border bg-bg-subtle px-3 py-2.5 font-mono text-[11.5px] text-fg-muted"
+      className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1.5 border border-border bg-bg-subtle px-3 py-2.5 font-mono text-[11px] text-fg-muted"
     >
       {children}
     </div>
@@ -78,27 +78,38 @@ function visuals(v: Copy["decisions"]["visuals"]): ReactNode[] {
   ];
 }
 
-export function Decisions({ copy }: { copy: Copy["decisions"] }) {
+export function Decisions({
+  copy,
+  locale,
+}: {
+  copy: Copy["decisions"];
+  locale: string;
+}) {
   const pictures = visuals(copy.visuals);
   return (
-    <Section band>
-      <Heading index={2} title={copy.title} body={copy.body} />
-      <ol className="grid gap-x-16 md:grid-cols-2">
+    <Section id="decisions" labelledBy="decisions-title" className="lg:pt-8">
+      <Heading
+        id="decisions-title"
+        title={copy.title}
+        body={copy.body}
+        locale={locale}
+      />
+      <ol className="mt-16 grid list-none gap-x-10 gap-y-14 p-0 md:grid-cols-2 xl:grid-cols-3">
         {copy.items.map((item, i) => (
           <li
             key={item.title}
-            className="flex gap-5 border-t border-border py-8"
+            className="flex min-w-0 flex-col gap-3 border-t border-border pt-5"
           >
-            <span className="w-6 shrink-0 pt-0.5 font-mono text-xs text-fg-subtle">
-              {String(i + 1).padStart(2, "0")}
+            <span className="font-mono text-[0.8125rem] text-accent">
+              [{String(i + 1).padStart(2, "0")}]
             </span>
-            <div className="min-w-0">
-              <h3 className="text-[1.05rem] font-semibold tracking-[-0.015em]">
-                {item.title}
-              </h3>
-              <p className="mt-2 leading-relaxed text-fg-muted">{item.body}</p>
-              {pictures[i]}
-            </div>
+            <h3 className="text-xl font-semibold leading-snug tracking-[-0.01em]">
+              {item.title}
+            </h3>
+            <p className="mb-2 text-[0.9375rem] leading-relaxed text-fg-muted">
+              {item.body}
+            </p>
+            {pictures[i]}
           </li>
         ))}
       </ol>

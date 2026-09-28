@@ -33,9 +33,9 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 ## Design
 
-`DESIGN.md` holds the design system: tokens, type scale, components, the mascot, and the migration in progress. Read it before any change to `app/`, `components/` or `app/global.css`. The rules that apply to every change:
+`DESIGN.md` holds the design system: tokens, type scale, components, the mascot and the wordmark. Read it before any change to `app/`, `components/` or `app/global.css`. The rules that apply to every change:
 
-- **Monochrome and typography-led; colour carries meaning only** (the aquamarine accent for links, focus and "verified"; review severities; diff lines). No gradients, textures or skeuomorphism; the hero glow behind the mascot is the only background effect.
+- **Dark, square and typography-led; colour carries meaning and the brand only.** The landing and 404 pages are dark in both themes; the manual follows the system theme. Aquamarine is the accent (links, focus, "verified", indices, primary buttons) and the wordmark band; review severities and diff lines are the only other colours. No gradients, shadows, textures, rounded corners or skeuomorphism; the hero's pixel field and the wordmark band are the only background effects.
 - Avoid the generic AI landing-page look: no pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy. Prefer left-aligned editorial layouts and concrete statements.
 - Style through the tokens in `app/global.css` only: no hex values or Tailwind palette colours in components. A token change edits `app/global.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
@@ -45,7 +45,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 - The code is the documentation: no large comment blocks; comment only a non-obvious "why".
 - No source file over 500 lines.
-- Changes must work in light and dark mode and at phone width (390 px) without horizontal page scroll.
+- Changes must work at phone width (390 px) without horizontal page scroll, with reduced motion on and off, and, in the manual, in light and dark mode.
 
 ## Handoff
 

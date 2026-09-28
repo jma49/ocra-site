@@ -1,11 +1,12 @@
 ---
 version: alpha
 name: Open-CR-Agent site
-description: Monochrome, typography-led developer-tool site. Neutral greys, 1px borders, soft shadows; aquamarine only where colour means something.
+description: Dark, square-cornered, typography-led developer-tool site lit only by the frog's aquamarine. Near-black greens, 1px lines, no radii; a pixel field behind the hero and a giant OCRA wordmark at the foot.
 colors:
+  brand: "#7FFFD4"
+  ink: "#0A0D0C"
   primary: "#0B7A5C"
   on-primary: "#FFFFFF"
-  brand: "#7FFFD4"
   accent-soft: "#D6FFF1"
   bg: "#FFFFFF"
   bg-subtle: "#FAFAFA"
@@ -17,25 +18,23 @@ colors:
   border-strong: "#D4D4D4"
   panel: "#FFFFFF"
   critical: "#B91C1C"
-  critical-soft: "#F8E8E8"
   warning: "#D97706"
   code-comment: "#737373"
   code-keyword: "#7C3AED"
   code-string: "#0B7A5C"
   primary-dark: "#7FFFD4"
   on-primary-dark: "#04110C"
-  accent-soft-dark: "#1A2B27"
-  bg-dark: "#09090B"
-  bg-subtle-dark: "#0F0F11"
-  muted-dark: "#18181B"
-  fg-dark: "#FAFAFA"
-  fg-muted-dark: "#A1A1AA"
-  fg-subtle-dark: "#85858E"
-  border-dark: "#27272A"
-  border-strong-dark: "#3F3F46"
-  panel-dark: "#0F0F11"
-  critical-dark: "#F87171"
-  critical-soft-dark: "#211315"
+  accent-soft-dark: "#1A2F28"
+  bg-dark: "#0A0D0C"
+  bg-subtle-dark: "#0F1412"
+  muted-dark: "#151B19"
+  fg-dark: "#F1F6F4"
+  fg-muted-dark: "#A9B5B0"
+  fg-subtle-dark: "#7A8681"
+  border-dark: "#1D2522"
+  border-strong-dark: "#2A3431"
+  panel-dark: "#0F1412"
+  critical-dark: "#FF8F8F"
   warning-dark: "#FBBF24"
   code-keyword-dark: "#C4B5FD"
   term-bg: "#0A0A0A"
@@ -49,45 +48,69 @@ colors:
 typography:
   display:
     fontFamily: Geist
-    fontSize: 4rem
+    fontSize: 4.25rem
     fontWeight: 600
-    lineHeight: 1.02
-    letterSpacing: -0.045em
-  display-sm:
+    lineHeight: 1.04
+    letterSpacing: -0.035em
+  display-md:
     fontFamily: Geist
-    fontSize: 2.6rem
+    fontSize: 3.25rem
     fontWeight: 600
     lineHeight: 1.05
-    letterSpacing: -0.045em
+    letterSpacing: -0.035em
+  display-sm:
+    fontFamily: Geist
+    fontSize: 2.5rem
+    fontWeight: 600
+    lineHeight: 1.06
+    letterSpacing: -0.03em
   display-zh:
     fontFamily: PingFang SC
-    fontSize: 3.3rem
+    fontSize: 4rem
     fontWeight: 600
-    lineHeight: 1.15
-    letterSpacing: -0.045em
+    lineHeight: 1.2
+    letterSpacing: -0.02em
   display-zh-sm:
     fontFamily: PingFang SC
-    fontSize: 2.3rem
+    fontSize: 2.25rem
     fontWeight: 600
-    lineHeight: 1.15
-    letterSpacing: -0.045em
+    lineHeight: 1.25
+    letterSpacing: -0.02em
   headline:
     fontFamily: Geist
-    fontSize: 2.4rem
+    fontSize: 3.5rem
     fontWeight: 600
-    lineHeight: 1.15
-    letterSpacing: -0.03em
+    lineHeight: 1.08
+    letterSpacing: -0.035em
   headline-sm:
     fontFamily: Geist
-    fontSize: 1.75rem
+    fontSize: 2.25rem
     fontWeight: 600
-    lineHeight: 1.15
+    lineHeight: 1.12
     letterSpacing: -0.03em
+  headline-zh:
+    fontFamily: PingFang SC
+    fontSize: 3rem
+    fontWeight: 600
+    lineHeight: 1.25
+    letterSpacing: -0.02em
+  headline-zh-sm:
+    fontFamily: PingFang SC
+    fontSize: 2rem
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: -0.02em
+  title:
+    fontFamily: Geist
+    fontSize: 1.375rem
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: -0.01em
   lead:
     fontFamily: Geist
-    fontSize: 1.05rem
+    fontSize: 1rem
     fontWeight: 400
-    lineHeight: 1.625
+    lineHeight: 1.6
   body:
     fontFamily: Geist
     fontSize: 0.875rem
@@ -102,115 +125,177 @@ typography:
     fontFamily: Geist Mono
     fontSize: 0.8125rem
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.75
+  mono-index:
+    fontFamily: Geist Mono
+    fontSize: 0.9375rem
+    fontWeight: 500
+    lineHeight: 1.2
   mono-label:
     fontFamily: Geist Mono
     fontSize: 12px
     fontWeight: 400
     lineHeight: 1.4
-  mono-caption:
-    fontFamily: Geist Mono
-    fontSize: 11px
-    fontWeight: 500
-    lineHeight: 1.4
 rounded:
-  xs: 4px
-  sm: 6px
-  md: 8px
-  lg: 12px
+  none: 0px
   full: 9999px
 spacing:
   unit: 4px
   gutter: 16px
   gutter-sm: 32px
-  content-max: 72rem
+  content-max: 90rem
   text-max: 42rem
-  section-y: 64px
-  section-y-md: 96px
+  section-y: 96px
+  section-y-lg: 160px
+  header-height: 64px
   control-height: 40px
+  control-height-lg: 56px
   control-height-sm: 28px
-  panel-bar-height: 40px
-  marker: 1.3rem
+  panel-bar-height: 44px
+  figure-height: 300px
+  marker: 1.25rem
 components:
   page:
-    backgroundColor: "{colors.bg}"
-    textColor: "{colors.fg}"
-    typography: "{typography.body}"
-  page-dark:
     backgroundColor: "{colors.bg-dark}"
     textColor: "{colors.fg-dark}"
-  secondary-text:
+    typography: "{typography.body}"
+  manual-page:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.fg}"
+  manual-secondary-text:
     backgroundColor: "{colors.bg}"
     textColor: "{colors.fg-muted}"
-    typography: "{typography.lead}"
-  secondary-text-dark:
-    backgroundColor: "{colors.bg-dark}"
-    textColor: "{colors.fg-muted-dark}"
-  quiet-text:
+  manual-quiet-text:
     backgroundColor: "{colors.bg-subtle}"
     textColor: "{colors.fg-subtle}"
-    typography: "{typography.caption}"
-  quiet-text-dark:
-    backgroundColor: "{colors.bg-subtle-dark}"
-    textColor: "{colors.fg-subtle-dark}"
-  muted-surface:
+  manual-muted-surface:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.fg-muted}"
-  muted-surface-dark:
-    backgroundColor: "{colors.muted-dark}"
-    textColor: "{colors.fg-muted-dark}"
-  link:
-    backgroundColor: "{colors.bg}"
+  manual-panel:
+    backgroundColor: "{colors.panel}"
+    textColor: "{colors.fg}"
+  manual-border:
+    backgroundColor: "{colors.border}"
+  manual-border-strong:
+    backgroundColor: "{colors.border-strong}"
+  manual-tag-verified:
+    backgroundColor: "{colors.accent-soft}"
     textColor: "{colors.primary}"
-  link-dark:
+  manual-critical-text:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.critical}"
+  manual-warning-text:
+    backgroundColor: "{colors.bg}"
+    textColor: "{colors.warning}"
+  manual-code-keyword:
+    backgroundColor: "{colors.bg-subtle}"
+    textColor: "{colors.code-keyword}"
+  manual-code-comment:
+    backgroundColor: "{colors.bg-subtle}"
+    textColor: "{colors.code-comment}"
+  manual-code-string:
+    backgroundColor: "{colors.bg-subtle}"
+    textColor: "{colors.code-string}"
+  secondary-text:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.fg-muted-dark}"
+    typography: "{typography.lead}"
+  quiet-text:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.fg-subtle-dark}"
+    typography: "{typography.caption}"
+  headline-muted:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.fg-subtle-dark}"
+    typography: "{typography.display}"
+  link:
     backgroundColor: "{colors.bg-dark}"
     textColor: "{colors.primary-dark}"
-  button:
-    backgroundColor: "{colors.fg}"
-    textColor: "{colors.bg}"
-    rounded: "{rounded.md}"
-    height: "{spacing.control-height}"
-  button-dark:
-    backgroundColor: "{colors.fg-dark}"
-    textColor: "{colors.bg-dark}"
-  button-outline:
+  link-light:
     backgroundColor: "{colors.bg}"
-    textColor: "{colors.fg}"
-    rounded: "{rounded.md}"
-    height: "{spacing.control-height}"
-  button-outline-hover:
-    backgroundColor: "{colors.bg-subtle}"
-  button-outline-border:
-    backgroundColor: "{colors.border-strong}"
-  button-outline-border-dark:
-    backgroundColor: "{colors.border-strong-dark}"
-  docs-primary-button:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
-  docs-primary-button-dark:
+    textColor: "{colors.primary}"
+  index:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.primary-dark}"
+    typography: "{typography.mono-index}"
+  button:
     backgroundColor: "{colors.primary-dark}"
     textColor: "{colors.on-primary-dark}"
+    rounded: "{rounded.none}"
+    height: "{spacing.control-height}"
+  button-lg:
+    backgroundColor: "{colors.primary-dark}"
+    textColor: "{colors.on-primary-dark}"
+    rounded: "{rounded.none}"
+    height: "{spacing.control-height-lg}"
+  button-light:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+  button-outline:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.fg-dark}"
+    rounded: "{rounded.none}"
+    height: "{spacing.control-height}"
+  button-ghost:
+    backgroundColor: "{colors.muted-dark}"
+    textColor: "{colors.fg-dark}"
+    rounded: "{rounded.none}"
   panel:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.fg}"
-    rounded: "{rounded.lg}"
-  panel-dark:
     backgroundColor: "{colors.panel-dark}"
     textColor: "{colors.fg-dark}"
+    rounded: "{rounded.none}"
   panel-border:
-    backgroundColor: "{colors.border}"
-  panel-border-dark:
     backgroundColor: "{colors.border-dark}"
   panel-bar:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.fg-subtle}"
+    backgroundColor: "{colors.panel-dark}"
+    textColor: "{colors.fg-subtle-dark}"
     typography: "{typography.mono-label}"
     height: "{spacing.panel-bar-height}"
+  stage-figure:
+    backgroundColor: "{colors.bg-subtle-dark}"
+    textColor: "{colors.fg-dark}"
+    typography: "{typography.mono-label}"
+    height: "{spacing.figure-height}"
+    rounded: "{rounded.none}"
+  figure-line:
+    backgroundColor: "{colors.border-strong-dark}"
+  marker-brand:
+    backgroundColor: "{colors.accent-soft-dark}"
+    textColor: "{colors.primary-dark}"
+    typography: "{typography.mono-label}"
+    size: "{spacing.marker}"
+    rounded: "{rounded.none}"
+  model-mark:
+    backgroundColor: "{colors.bg-subtle-dark}"
+    textColor: "{colors.primary-dark}"
+    rounded: "{rounded.full}"
+  tag-critical:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.critical-dark}"
+    typography: "{typography.mono-label}"
+    rounded: "{rounded.none}"
+  tag-verified:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.primary-dark}"
+    typography: "{typography.mono-label}"
+    rounded: "{rounded.none}"
+  warning-text:
+    backgroundColor: "{colors.bg-dark}"
+    textColor: "{colors.warning-dark}"
+  code-sample:
+    backgroundColor: "{colors.panel-dark}"
+    textColor: "{colors.code-keyword-dark}"
+    typography: "{typography.mono}"
+  code-string:
+    backgroundColor: "{colors.panel-dark}"
+    textColor: "{colors.primary-dark}"
+  wordmark-band:
+    backgroundColor: "{colors.brand}"
+    textColor: "{colors.ink}"
   terminal:
     backgroundColor: "{colors.term-bg}"
     textColor: "{colors.term-fg}"
     typography: "{typography.mono}"
-    rounded: "{rounded.lg}"
   terminal-dim:
     backgroundColor: "{colors.term-bg}"
     textColor: "{colors.term-dim}"
@@ -223,60 +308,13 @@ components:
   terminal-command:
     backgroundColor: "{colors.term-bg}"
     textColor: "{colors.term-strong}"
-  terminal-button-border:
-    backgroundColor: "{colors.term-border-strong}"
   terminal-bar:
     backgroundColor: "{colors.term-bg}"
     textColor: "{colors.term-label}"
   terminal-border:
     backgroundColor: "{colors.term-border}"
-  marker:
-    backgroundColor: "{colors.bg}"
-    textColor: "{colors.fg-muted}"
-    typography: "{typography.mono-caption}"
-    size: "{spacing.marker}"
-    rounded: "{rounded.full}"
-  marker-brand:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.primary}"
-  marker-brand-dark:
-    backgroundColor: "{colors.accent-soft-dark}"
-    textColor: "{colors.primary-dark}"
-  tag-verified:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.primary}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.xs}"
-  tag-verified-dark:
-    backgroundColor: "{colors.accent-soft-dark}"
-    textColor: "{colors.primary-dark}"
-  tag-critical:
-    backgroundColor: "{colors.critical-soft}"
-    textColor: "{colors.critical}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.xs}"
-  tag-critical-dark:
-    backgroundColor: "{colors.critical-soft-dark}"
-    textColor: "{colors.critical-dark}"
-  warning-text:
-    backgroundColor: "{colors.bg}"
-    textColor: "{colors.warning}"
-  warning-text-dark:
-    backgroundColor: "{colors.bg-dark}"
-    textColor: "{colors.warning-dark}"
-  code-sample:
-    backgroundColor: "{colors.bg-subtle}"
-    textColor: "{colors.code-keyword}"
-    typography: "{typography.mono}"
-  code-sample-dark:
-    backgroundColor: "{colors.term-bg}"
-    textColor: "{colors.code-keyword-dark}"
-  code-comment:
-    backgroundColor: "{colors.bg-subtle}"
-    textColor: "{colors.code-comment}"
-  code-string:
-    backgroundColor: "{colors.bg-subtle}"
-    textColor: "{colors.code-string}"
+  terminal-button-border:
+    backgroundColor: "{colors.term-border-strong}"
 ---
 
 # Open-CR-Agent site
@@ -285,69 +323,71 @@ components:
 
 ## Overview
 
-The landing page and manual for a code review tool used by engineers. **Monochrome and typography-led**, in the manner of modern developer-tool sites but original: neutral greys, generous whitespace, 1px borders, 8–12px radii, very soft shadows. It should read like careful engineering documentation that happens to be well designed: concrete, calm, left-aligned, no hype.
+The landing page and manual for a code review tool used by engineers. The landing page is **dark in both themes, square-cornered and typography-led**, lit only by the frog's aquamarine. It borrows the structure of trae.ai's landing page (a hero over a pixel field, a sideways row of numbered cards, two-tone headlines, a giant wordmark at the foot) but none of its copy, visuals or branding: the pixel field is a code minimap, the cards are ocra's pipeline, the wordmark and its letterforms are ours. It should still read like careful engineering documentation: concrete, calm, left-aligned, no hype.
+
+The manual (Fumadocs) follows the system theme; in dark mode it uses the same tokens as the landing page.
 
 ## Colors
 
-**Colour carries meaning only.**
+**Colour carries meaning, and the brand.**
 
-- **Aquamarine (`brand`, #7FFFD4)** is the brand. In the light theme it is too pale for text, so links, focus rings and "verified" use `primary` (#0B7A5C, the same hue at about 5:1 on white; `--accent` in CSS). In the dark theme the accent is the brand itself.
-- **Review severities** (`critical`, `warning`) and diff lines are the only other colours.
-- **Neutrals** do everything else: `fg` for text, `fg-muted` for body copy and descriptions, `fg-subtle` for labels and captions, `border` / `border-strong` for lines.
-- **Terminals stay dark in both themes** and have their own tokens (`--term-*`, defined once in `:root` and not redefined under `.dark`; utilities `text-term-dim`, `text-term-warn`, `border-term-border-strong`, …). Their "ok" line is the brand; their "warn" line is `term-warn`, the dark theme's `warning` (#FBBF24). `term-fg` and `term-dim` are white at 88% and 55% in CSS; the hex values above are what they blend to on `term-bg`.
-- The tokens are mapped onto Fumadocs' `--color-fd-*`, so the landing page and the manual share one system. The theme follows the system; light and dark must be equally polished.
-- Dark values carry a `-dark` suffix here; in CSS the same variable switches under `.dark`.
+- **Aquamarine (`brand`, #7FFFD4)** is the brand. On the dark landing page it is the accent itself: links, focus rings, "verified", numbered indices, primary buttons, and the wordmark band. In the light theme (the manual) it is too pale for text, so the accent there is `primary` (#0B7A5C, about 5:1 on white).
+- **`ink` (#0A0D0C)** is the dark theme's page colour and the letters on the wordmark band. The dark neutrals lean slightly green towards it: `bg-subtle-dark` for figures and panels, `border-dark` / `border-strong-dark` for lines, `fg-dark` for text, `fg-muted-dark` for body copy, `fg-subtle-dark` for labels, captions and the muted half of a two-tone headline (5.2:1 on `bg-dark`, 4.9:1 on panels).
+- **Review severities** (`critical`, `warning`) and diff lines are the only other colours. In the dark theme `critical` is the frog's cheek colour (#FF8F8F, 8.9:1).
+- **Terminals** keep their own tokens (`--term-*`, defined once in `:root`); nothing on the landing page uses them today, the manual's code blocks may.
+- The tokens are mapped onto Fumadocs' `--color-fd-*`. The mappings are declared again under `.dark`, because a custom property that points at another resolves where it is declared, and the landing page is a `.dark` subtree inside a page whose root may be light.
 
 ## Typography
 
 Geist and Geist Mono (loaded with `next/font`); Chinese in the system faces (PingFang SC, Noto Sans SC) after Geist.
 
-- Headlines are semibold with tight tracking. `display` for the hero, `headline` for section headings; each has a smaller step below the `sm`/`md` breakpoint (`-sm`).
-- **Chinese headings get their own sizes** (`display-zh`, `display-zh-sm`) and explicit line breaks; do not rely on automatic balancing for CJK. Chinese prose gets more leading (`:lang(zh) .prose`, 1.85).
-- `lead` for the paragraph under a heading, `body` for everything else, `caption` for small print.
-- Mono for code, commands, file names and numbered markers: `mono-label` in panel bars, `mono-caption` in markers and small annotations.
-- Set a headline's line height with the `text-[size]/[leading]` form (or a `--text-*--line-height` token): `cn` (tailwind-merge) drops a separate `leading-*` next to an arbitrary text size.
+- The scale lives in `@theme` as `--text-*` tokens with their line height and tracking, used as utilities: `text-display` (hero, from the `wide` breakpoint, 85rem), `text-display-md`, `text-display-sm`, `text-headline` / `text-headline-sm` (section headings), `text-title` (card and tab titles), `text-lead` (the paragraph under a heading).
+- `lib/cn.ts` registers the scale with `cn`; without that, `text-title` next to `text-fg` looks like two colours and the size is dropped.
+- **Two-tone headlines:** the hero and the closing call to action set their first part in `fg-subtle` and the rest in `fg`, as two blocks.
+- **Chinese headings get their own sizes** (`text-display-zh*`, `text-headline-zh*`) and explicit line breaks (`\n` in the copy, `whitespace-pre-line`); do not rely on automatic balancing for CJK. Chinese prose gets more leading (`:lang(zh) .prose`, 1.85).
+- Mono for code, file names, stage names, bracketed indices (`[00]`) and the text inside figures.
 
 ## Layout
 
-- Content sits in a `max-w-6xl` column with a 16px gutter (32px from `sm`). Section headers are at most `max-w-2xl`.
-- Sections breathe: 64px vertical padding, 96px from `md`. Rhythm comes from spacing and type, not from boxes around everything.
-- Prefer left-aligned editorial layouts; the hero is a two-column grid on large screens.
-- Must work at 390px wide without horizontal page scroll; wide code scrolls inside its panel.
+- Content sits in a `max-w-[90rem]` column with a 16px gutter (32px from `sm`), shared by header, sections and footer (`column` in `section.tsx`).
+- Sections breathe: 96px vertical padding, 160px from `lg`. Rhythm comes from spacing and type, not from boxes around everything.
+- The header is sticky, 64px, solid `bg`, with no border.
+- The hero fills the first screen on large screens (at least 40rem): headline bottom left, the paragraph and buttons bottom right, the pixel field behind both. Below `lg` the field is a band above the text.
+- "How it works" is a heading column and a row of four cards that bleeds to the right edge and scrolls sideways (scroll snap, arrows, and `[00]`–`[03]` buttons that light up for the cards in view).
+- Must work at 390px wide without horizontal page scroll; wide code and the card row scroll inside themselves.
 
 ## Elevation & Depth
 
-Flat by default. A `Panel` has a 1px border and a very soft shadow (`--panel-shadow`); nothing else casts a shadow. The only background effect on the whole site is the soft aquamarine glow behind the 3D mascot at the top of the hero (`.hero-glow`). The top nav on the home layout is the one translucent surface.
+Flat. No shadows anywhere; surfaces are told apart by `bg-subtle` and 1px lines. There are exactly two background effects: the pixel field behind the hero (`public/hero-field.svg`, drawn by `scripts/hero-field.mjs`; regenerate it with `node scripts/hero-field.mjs`, never edit the SVG by hand) and the aquamarine wordmark band at the foot.
 
 ## Shapes
 
-`rounded-md` (8px) for buttons, `rounded-lg` (12px) for panels and terminals, `rounded-full` for markers, 4px for tags and inline chips. No other radii.
+Square corners everywhere (`rounded.none`): buttons, panels, figures, tags, markers, the stage-group cards. The only round shapes are the "model" mark (a ring, next to the filled square for "code") and the frog.
 
 ## Components
 
-- **`Panel`** (`components/ui/panel.tsx`): a bordered surface with an optional label bar for a file name or command; `dark` for terminals.
-- **Buttons:** `.btn` (primary, foreground-coloured, not the accent) and `.btn-outline`; `.btn-sm` for small accessories like copy buttons.
-- **`.marker`** numbered dots (`.marker-brand` for the highlighted step).
-- **Tags:** `.severity-critical` and `.verified`.
+- **Buttons:** `.btn` (the accent: aquamarine with ink text on the dark page), `.btn-outline` (1px foreground border), `.btn-ghost` (a faint foreground tint, for the header's GitHub link), `.btn-lg` (56px, hero and calls to action), `.btn-sm` (copy buttons).
+- **`Panel`** (`components/ui/panel.tsx`) and `.panel` / `.panel-bar`: a bordered surface with an optional mono label bar.
+- **Stage figures** (`stage-figures.tsx`): 300px-high illustrations of the example run, drawn in HTML with dashed lines, filled squares for work that runs and `skip` for work that does not. Identifiers (file names, tiers, reviewers, tool names, the findings) stay in English in both languages; the words around them come from the copy.
+- **`.marker`** numbered squares (`.marker-brand` for callouts), **tags** `.severity-critical` and `.verified` (outlined, mono).
+- **`Wordmark`** (`wordmark.tsx`, `lib/wordmark.ts`, `lib/glitch.ts`): see below.
 - **Manual (MDX):** `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`. Register a component before the manual uses it, or the build fails.
-- Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings.
+- Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings, except identifiers and the example of ocra's own output.
 
-## Mascot
+## Mascot and wordmark
 
-An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`): round head, two raised eyes looking down at the code, dark teal outline, coral cheeks. It may take its spirit from friendly beverage mascots but must never copy one (no Jinro toad shapes, colours or poses). It appears as the logo mark, the favicon and the Apple icon (on a light tile), and once on the landing page as a 3D voxel frog above the hero.
-
-- The voxel frog (`components/landing/voxel-frog.tsx`, three.js, voxels generated in `lib/voxel-frog.ts`, not loaded from a model) spins in and settles, then turns slowly. Hovering turns it with the pointer, no click needed (crossing the frame is a full turn; height tilts slightly); touch turns it with a horizontal swipe and keeps vertical scrolling. No zoom or pan, so the frog never leaves its frame.
-- Rendering pauses off screen; reduced motion skips the spin and the auto-rotation; a browser without WebGL gets the flat mark. three.js loads lazily through `frog-stage.tsx`. The effect follows the voxel mascot on craftz.dog; the model and code are our own.
-- Outlines are a thick dark stroke under the fills. Inline SVGs use no `id` references (the layout renders the logo more than once).
+- **The frog** (`components/logo.tsx`, `app/icon.svg`): round head, two raised eyes looking down at the code, dark teal outline, coral cheeks. It may take its spirit from friendly beverage mascots but must never copy one. It is the logo mark, the favicon, the Apple icon, the avatar on the example comment and the mark in the footer.
+- **The OCRA wordmark** closes every landing and 404 page: heavy geometric letters drawn for ocra, full width on the aquamarine band, sitting on its bottom edge. The O is the frog's eye, glancing ahead. The paths wind their counters the other way, so the default fill rule cuts them out.
+- **The glitch:** moving the pointer over the band shifts horizontal slices of the letters sideways, pixelates some and darkens others; pressing and dragging makes it stronger; it settles within a second. A canvas over the static SVG draws only the disturbed slices, so the page reads the same without JavaScript, nothing runs while nothing moves, and reduced motion leaves the band still. Sizes scale with the band's width.
 
 ## Do's and Don'ts
 
 - Do keep every page and string in English and Chinese, and check the Chinese layout separately.
-- Do check light and dark, 390px and desktop, reduced motion on and off, before calling a change done.
+- Do check 390px, 768px and desktop, reduced motion on and off, and the manual in both themes, before calling a change done.
 - Do label examples of ocra output as examples and keep them technically correct.
 - Don't use pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy.
-- Don't add gradients, textures, skeuomorphism or new background effects; the hero glow is the only one.
-- Don't use colour for decoration, or the accent for the primary button.
+- Don't add gradients, shadows, textures, rounded corners or new background effects; the pixel field and the wordmark band are the only two.
+- Don't use colour for decoration beyond the brand's own places listed above.
 - Don't write `text-[var(--token)]`; use the utility of the same name (`text-fg-muted`). Never hex values or Tailwind palette colours (`text-amber-300`) in components.
 
 ## Known issues
@@ -356,17 +396,14 @@ An original aquamarine frog reading code (`components/logo.tsx`, `app/icon.svg`)
 
 ## Migration
 
-One step per pull request, each checked against baseline screenshots:
-
-1. **Done: tokens as utilities.** `@theme inline` in `app/global.css` registers every colour token as a Tailwind colour under its CSS variable's name (`text-fg-muted`, `border-border`, `bg-bg-subtle`, `text-accent`, …); the 109 `text-[var(--fg-muted)]`-style classes are gone. No visual difference.
-2. **Done: terminal tokens.** `--term-*` in `:root`, used by `.terminal`, `.panel-dark`, `terminal.tsx` and `get-started.tsx`; no hex values or palette colours are left in components. Decided 2026-09-27: the warn line uses the dark theme's `warning` (amber-400, `#FBBF24`, 11.9:1 on the terminal) rather than amber-300, so the site has one warning colour. That line is the only visual difference.
-3. **Type scale:** add `--text-display`, `--text-display-sm`, `--text-display-zh`, `--text-display-zh-sm`, `--text-headline`, `--text-headline-sm`, `--text-lead` with their `--line-height` and `--letter-spacing` sub-properties, and use them in `hero.tsx`, `section.tsx`, `not-found-page.tsx`, `decisions.tsx`. Merge `1.08rem` into `lead` (1.05rem) and `11.5px` into `mono-caption`; `plugins.tsx`'s `0.95rem` becomes `body` or `lead`. Expected diff: the hero subtitle and those small labels shift slightly.
-4. **Radii:** `rounded-[2px]` and `rounded-[4px]` → one 4px token.
+1. **Done: tokens as utilities.** `@theme inline` in `app/global.css` registers every colour token as a Tailwind colour under its CSS variable's name.
+2. **Done: terminal tokens.** `--term-*` in `:root`; the warn line uses the dark theme's `warning` (#FBBF24).
+3. **Done (2026-09-28, the redesign): type scale and radii.** The landing page was rebuilt dark and square: the type scale became `--text-*` tokens, every radius became 0, the dark tokens moved to green-leaning neutrals, the 3D voxel frog and the animated pipeline walk-through were removed (three.js is no longer a dependency), and the pixel field and the wordmark were added. The old steps 3 (type scale) and 4 (radii) are covered by this.
 
 ## Verification
 
 - Lint this file: `npx @google/design.md lint DESIGN.md`.
-- **Screenshots** (`tests/visual/`, Playwright): `/` and `/zh`, the manual index (`Cards`), quickstart (`Steps`), installation (`Callout`) and the 404 page in each language; at 390, 768 and 1280px; light and dark. Every page also fails on console errors (a hydration error on every English docs page once shipped unnoticed).
+- **Screenshots** (`tests/visual/`, Playwright): `/` and `/zh`, the manual index (`Cards`), quickstart (`Steps`), installation (`Callout`) and the 404 page in each language; at 390, 768 and 1280px; light and dark. Every page also fails on console errors.
 - Locally: `npm run build && npm run visual:baseline` before the change, then `npm run build && npm run visual` after it. Screenshots stay in the git-ignored `.visual/`; the HTML report and diffs are under `.visual/results`.
 - In CI, the Visual workflow builds the base branch and the pull request in one job and compares them, so nothing is committed and fonts render identically. A pull request that changes the look on purpose gets the `visual-change` label and lists the expected differences; the job then passes and uploads the report.
-- The harness takes screenshots with **reduced motion on**: otherwise `Reveal` keeps every section below the fold at opacity 0 until it scrolls into view, and a full-page screenshot shows them blank. `tests/visual/stable.css` hides the voxel frog's contents (WebGL output differs between machines) and pins the docs table of contents, whose active item follows the scroll position.
+- The harness takes screenshots with **reduced motion on**: otherwise `Reveal` keeps every section below the fold at opacity 0 until it scrolls into view. Reduced motion also keeps the wordmark still, so the band is the static SVG. `tests/visual/stable.css` pins the docs table of contents, whose active item follows the scroll position.
