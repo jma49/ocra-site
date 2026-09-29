@@ -200,8 +200,8 @@ export const en: Copy = {
         milestone: "M5",
         title: "Measure",
         body: "A golden set of expected findings plus AACR-Bench. The first results are published with their limits: a small sample on one model family, with recall the weak point.",
-        state: "now",
-        done: false,
+        state: "built",
+        done: true,
         link: { label: "Read the results", href: "/docs/quality" },
       },
       {
@@ -214,8 +214,8 @@ export const en: Copy = {
       {
         milestone: "M7",
         title: "Ship v0.1",
-        body: "npm packages and a one-line install, and the Action on real pull requests for a month. Today ocra installs from source.",
-        state: "planned",
+        body: "v0.1.0 is on npm and installs with one line. Next: the Action on real pull requests for a month.",
+        state: "now",
         done: false,
       },
     ],
