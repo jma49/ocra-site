@@ -90,6 +90,7 @@ export interface Copy {
       body: string;
       state: string;
       done: boolean;
+      link?: { label: string; href: string };
     }[];
   };
   start: {

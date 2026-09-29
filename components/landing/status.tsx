@@ -1,11 +1,19 @@
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import type { Copy } from "@/lib/copy";
+import { localePath } from "@/lib/shared";
 import { Heading, Section } from "./section";
 
 // A vertical timeline: shipped milestones on a solid rail with a check,
 // planned work on a dashed one. Planned items carry no dates.
-export function Status({ copy }: { copy: Copy["status"] }) {
+export function Status({
+  copy,
+  locale,
+}: {
+  copy: Copy["status"];
+  locale: string;
+}) {
   return (
     <Section>
       <Heading index={5} title={copy.title} />
@@ -60,6 +68,15 @@ export function Status({ copy }: { copy: Copy["status"] }) {
                 <p className="mt-1.5 text-sm leading-relaxed text-fg-muted">
                   {item.body}
                 </p>
+                {item.link ? (
+                  <Link
+                    href={localePath(locale, item.link.href)}
+                    className="focus-ring mt-2 inline-flex items-center gap-1 rounded-sm text-sm font-medium text-accent underline-offset-4 hover:underline"
+                  >
+                    {item.link.label}
+                    <ArrowRight className="size-3.5" />
+                  </Link>
+                ) : null}
               </div>
             </li>
           );
