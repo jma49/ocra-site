@@ -194,9 +194,10 @@ export const zh: Copy = {
       {
         milestone: "M5",
         title: "度量",
-        body: "一套标注了预期问题的黄金集，加上 AACR-Bench，直到数字稳定到可以公开。第一批基线已经跑出，还没有公开。更深入的审查已经做完，等度量证明有用后再合并。",
+        body: "一套标注了预期问题的黄金集，加上 AACR-Bench。第一批结果已经连同局限一起公开：样本小，只测了一个模型家族，召回率是短板。",
         state: "进行中",
         done: false,
+        link: { label: "查看结果", href: "/docs/quality" },
       },
       {
         milestone: "M6",
@@ -208,7 +209,7 @@ export const zh: Copy = {
       {
         milestone: "M7",
         title: "发布 v0.1",
-        body: "发布到 npm、一行命令安装，Action 在真实 PR 上跑一个月，并在这里公开评测结果。目前 ocra 需要从源码安装。",
+        body: "发布到 npm、一行命令安装，Action 在真实 PR 上跑一个月。目前 ocra 需要从源码安装。",
         state: "规划中",
         done: false,
       },

@@ -22,7 +22,7 @@ export default async function HomePage({
       <Decisions copy={copy.decisions} />
       <Anatomy copy={copy.anatomy} />
       <Plugins copy={copy.plugins} locale={lang} />
-      <Status copy={copy.status} />
+      <Status copy={copy.status} locale={lang} />
       <GetStarted copy={copy.start} locale={lang} />
       <Footer copy={copy.footer} locale={lang} />
     </div>
