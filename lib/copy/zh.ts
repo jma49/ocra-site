@@ -209,7 +209,7 @@ export const zh: Copy = {
       {
         milestone: "M7",
         title: "发布 v0.1",
-        body: "v0.1.2 已带 provenance 发布到 npm，一行命令就能安装。Action 已在两个仓库的真实 PR 上审查。",
+        body: "v0.1 已带 provenance 发布到 npm，一行命令就能安装。Action 已在两个仓库的真实 PR 上审查。",
         state: "已完成",
         done: true,
       },
@@ -224,7 +224,7 @@ export const zh: Copy = {
       {
         milestone: "M9",
         title: "覆盖面与可信度",
-        body: "GitLab Merge Request（GitLab.com 和自建实例）；用于代码扫描的 SARIF；容器镜像；你自己的 OpenAI 兼容模型端点；安全策略。已合并，随 0.2.0 发布。",
+        body: "GitLab Merge Request（GitLab.com 和自建实例）；用于代码扫描的 SARIF；容器镜像；你自己的 OpenAI 兼容模型端点；安全策略。已随 0.2.0 发布；下一步是在真实的 GitLab 实例上验证。",
         state: "进行中",
         done: false,
       },

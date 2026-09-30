@@ -214,7 +214,7 @@ export const en: Copy = {
       {
         milestone: "M7",
         title: "Ship v0.1",
-        body: "v0.1.2 is on npm with provenance and installs with one line. The Action reviews real pull requests on two repositories.",
+        body: "v0.1 went to npm with provenance and installs with one line. The Action reviews real pull requests on two repositories.",
         state: "built",
         done: true,
       },
@@ -229,7 +229,7 @@ export const en: Copy = {
       {
         milestone: "M9",
         title: "Reach and trust",
-        body: "GitLab merge requests, on GitLab.com or self-managed; SARIF for code scanning; a container image; your own OpenAI-compatible model endpoint; a security policy. Merged; ships in 0.2.0.",
+        body: "GitLab merge requests, on GitLab.com or self-managed; SARIF for code scanning; a container image; your own OpenAI-compatible model endpoint; a security policy. Released in 0.2.0; next, a check on a live GitLab instance.",
         state: "now",
         done: false,
       },
