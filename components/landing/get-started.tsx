@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: jma49/Open-CR-Agent@v0.1.1
+      - uses: jma49/Open-CR-Agent@v0.1.2
         env:
           GEMINI_API_KEY: \${{ secrets.GEMINI_API_KEY }}
           OCRA_MODEL_TOP: google/gemini-3.1-pro-preview
