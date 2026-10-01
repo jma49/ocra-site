@@ -151,7 +151,7 @@ export const zh: Copy = {
   },
   plugins: {
     title: "把团队规范写成插件",
-    body: "Git 和 GitHub 适配器、OpenCode 运行时，以及目前自带的三个审查员，本身也是插件。你写的插件用的是同一套接口：注册规则、审查员、工具或事件监听，并拿到只属于自己的设置。插件会执行代码，所以只在本地审查时加载；审查 PR 时，同样的规则写在 base 分支的 .ocra/rules.json 里。",
+    body: "Git 和 GitHub 适配器、OpenCode 运行时，以及目前自带的五个审查员，本身也是插件。你写的插件用的是同一套接口：注册规则、审查员、工具或事件监听，并拿到只属于自己的设置。插件会执行代码，所以只在本地审查时加载；审查 PR 时，同样的规则写在 base 分支的 .ocra/rules.json 里。",
     points: [
       "三个生命周期钩子，按固定顺序执行",
       "每个插件的设置单独校验",
@@ -194,7 +194,7 @@ export const zh: Copy = {
       {
         milestone: "M5",
         title: "度量",
-        body: "一套标注了预期问题的黄金集，加上 AACR-Bench。第一批结果已经连同局限一起公开：样本小，只测了一个模型家族，召回率是短板。",
+        body: "一套标注了预期问题的黄金集，加上 AACR-Bench。第一批结果已经连同局限一起公开：样本小，只测了一个模型家族，召回率是短板。把黄金集扩大到足以判断一次改动的规模，要等模型额度。",
         state: "已完成",
         done: true,
         link: { label: "查看结果", href: "/docs/quality" },
@@ -224,8 +224,36 @@ export const zh: Copy = {
       {
         milestone: "M9",
         title: "覆盖面与可信度",
-        body: "GitLab Merge Request（GitLab.com 和自建实例）；用于代码扫描的 SARIF；容器镜像；你自己的 OpenAI 兼容模型端点；安全策略。已随 0.2.0 发布；下一步是在真实的 GitLab 实例上验证。",
-        state: "进行中",
+        body: "GitLab Merge Request（GitLab.com 和自建实例）；用于代码扫描的 SARIF；容器镜像；你自己的 OpenAI 兼容模型端点；安全策略和一次安全审计。已随 0.2.0 发布；在真实 GitLab 实例上的验证仍待进行。",
+        state: "已完成",
+        done: true,
+      },
+      {
+        milestone: "M10",
+        title: "契约",
+        body: "ocra 的长期定位是其他审查 agent 赖以构建的引擎，而不是又一个 bot。先把契约立起来：带 JSON Schema 的 Finding 规范；一个公开的 review() 入口，CLI 和其他人一样调用它；第二个 agent 运行时，连同证明它不写文件、不开 shell、不连网络的一致性测试；以及 SARIF 导入，让静态分析工具进入同一条流水线。",
+        state: "下一步",
+        done: false,
+      },
+      {
+        milestone: "M11",
+        title: "证据",
+        body: "CI 里每夜一次真实模型测试；黄金集扩大到能看出五个百分点的变化；按审查员、按模型公布准确率和召回率。提示词只在这些数字之下解冻。需要一条常设的模型额度。",
+        state: "计划中",
+        done: false,
+      },
+      {
+        milestone: "M12",
+        title: "可运维",
+        body: "被审查仓库无法覆盖的组织级策略；贯穿日志、评论和报告的 run id；运维团队可以采集的指标。",
+        state: "计划中",
+        done: false,
+      },
+      {
+        milestone: "M13",
+        title: "外部使用",
+        body: "三个外部团队用上一个月，他们的驳回和回复进入黄金集。他们的需要决定第二年做什么：控制面、组织级记忆、更多平台。",
+        state: "计划中",
         done: false,
       },
     ],

@@ -156,7 +156,7 @@ export const en: Copy = {
   },
   plugins: {
     title: "Your team's rules, as a plugin",
-    body: "The Git and GitHub adapters, the OpenCode runtime and the three reviewers that ship today are plugins too. Yours get the same small contract: register rules, reviewers, tools or listeners, and receive your own settings. Plugins run code, so they load only in local reviews; for pull requests, the same rules go in .ocra/rules.json on the base branch.",
+    body: "The Git and GitHub adapters, the OpenCode runtime and the five reviewers that ship today are plugins too. Yours get the same small contract: register rules, reviewers, tools or listeners, and receive your own settings. Plugins run code, so they load only in local reviews; for pull requests, the same rules go in .ocra/rules.json on the base branch.",
     points: [
       "Three lifecycle hooks, run in a fixed order",
       "Settings validated per plugin",
@@ -199,7 +199,7 @@ export const en: Copy = {
       {
         milestone: "M5",
         title: "Measure",
-        body: "A golden set of expected findings plus AACR-Bench. The first results are published with their limits: a small sample on one model family, with recall the weak point.",
+        body: "A golden set of expected findings plus AACR-Bench. The first results are published with their limits: a small sample on one model family, with recall the weak point. Growing the set until it can decide a change waits for model credit.",
         state: "built",
         done: true,
         link: { label: "Read the results", href: "/docs/quality" },
@@ -229,8 +229,36 @@ export const en: Copy = {
       {
         milestone: "M9",
         title: "Reach and trust",
-        body: "GitLab merge requests, on GitLab.com or self-managed; SARIF for code scanning; a container image; your own OpenAI-compatible model endpoint; a security policy. Released in 0.2.0; next, a check on a live GitLab instance.",
-        state: "now",
+        body: "GitLab merge requests, on GitLab.com or self-managed; SARIF for code scanning; a container image; your own OpenAI-compatible model endpoint; a security policy and a security audit. Released in 0.2.0; a check on a live GitLab instance is still open.",
+        state: "built",
+        done: true,
+      },
+      {
+        milestone: "M10",
+        title: "Contracts",
+        body: "ocra's long-term position is the engine other review agents are built on, not another bot. First the contracts: a Finding specification with a JSON Schema; a public review() entry the CLI calls like anyone else; a second agent runtime, with a conformance suite that proves it ran with no write, no shell and no network; and SARIF in, so static analyzers join the same pipeline.",
+        state: "next",
+        done: false,
+      },
+      {
+        milestone: "M11",
+        title: "Evidence",
+        body: "A nightly live test in CI, a golden set large enough to see a five-point change, and precision and recall published per reviewer and per model. Prompts unfreeze only under those numbers. Needs a standing line of model credit.",
+        state: "planned",
+        done: false,
+      },
+      {
+        milestone: "M12",
+        title: "Operability",
+        body: "Organization policy the reviewed repository cannot override, a run id through logs, comments and reports, and metrics an operations team can scrape.",
+        state: "planned",
+        done: false,
+      },
+      {
+        milestone: "M13",
+        title: "External use",
+        body: "Three external teams running ocra for a month, their dismissals and replies feeding the golden set. What they need decides year two: a control plane, organization memory, more platforms.",
+        state: "planned",
         done: false,
       },
     ],
