@@ -3,6 +3,7 @@
 // an outer frame, a capture spiral of sagging segments with a free zone
 // around the hub, a few drops of dew and one broken strand. Seeded, so the
 // server and the client draw the same web.
+import { itemAt } from "@/lib/item-at";
 
 export type Corner = "tl" | "tr" | "bl" | "br";
 
@@ -55,18 +56,18 @@ export function orbWeb(
     return { angle, length, wall: length < reach };
   }).sort((a, b) => a.angle - b.angle);
   const at = (i: number, r: number): [number, number] => [
-    hx + r * Math.cos(radials[i].angle),
-    hy + r * Math.sin(radials[i].angle),
+    hx + r * Math.cos(itemAt(radials, i).angle),
+    hy + r * Math.sin(itemAt(radials, i).angle),
   ];
 
   let frame = "";
   const free = radials.flatMap((r, i) => (r.wall ? [] : [i]));
   for (let k = 0; k < free.length - 1; k++) {
-    const i = free[k];
-    const j = free[k + 1];
+    const i = itemAt(free, k);
+    const j = itemAt(free, k + 1);
     if (j - i > 3) continue;
-    const [x1, y1] = at(i, radials[i].length);
-    const [x2, y2] = at(j, radials[j].length);
+    const [x1, y1] = at(i, itemAt(radials, i).length);
+    const [x2, y2] = at(j, itemAt(radials, j).length);
     const mx = (x1 + x2) / 2;
     const my = (y1 + y2) / 2;
     frame += `M${f(x1)} ${f(y1)}Q${f(mx + (hx - mx) * 0.06)} ${f(my + (hy - my) * 0.06)} ${f(x2)} ${f(y2)}`;
@@ -97,7 +98,7 @@ export function orbWeb(
       const rr = r + between(-1.2, 1.2);
       r += step / count;
       const [x, y] = at(i, rr);
-      if (rr > radials[i].length * 0.96 || x < 1 || y < 1) {
+      if (rr > itemAt(radials, i).length * 0.96 || x < 1 || y < 1) {
         prev = null;
         continue;
       }
@@ -111,7 +112,7 @@ export function orbWeb(
           dew.push({
             x: mx + (hx - mx) * sag * 0.5,
             y: my + (hy - my) * sag * 0.5,
-            r: [1.2, 1.5, 1.9][Math.floor(rand() * 3)],
+            r: itemAt([1.2, 1.5, 1.9], Math.floor(rand() * 3)),
             pink: rand() < 0.3,
           });
         }
@@ -122,7 +123,7 @@ export function orbWeb(
   }
 
   const broken = Math.floor(rand() * count);
-  const [lx, ly] = at(broken, radials[broken].length * 0.55);
+  const [lx, ly] = at(broken, itemAt(radials, broken).length * 0.55);
   const loose = `M${f(lx)} ${f(ly)}q10 14 -4 26`;
 
   return {

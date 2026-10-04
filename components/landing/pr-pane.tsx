@@ -9,12 +9,14 @@ import {
 } from "react";
 import { SmallSpider } from "@/components/brand/spider-mark";
 import type { Copy } from "@/lib/copy";
-import { Line, Return, SessionCode, Suggestion } from "./session-code";
+import { exampleRun } from "@/lib/landing/example-run";
+import { FindingComment } from "./session-code";
 
 type State = "running" | "done";
 const STAGES = ["select", "bundle", "review", "verify", "verdict"];
-const TOKENS = 315936;
-const DOLLARS = 0.5134;
+const { pr, files } = exampleRun;
+const TOKENS: number = exampleRun.usage.input;
+const DOLLARS: number = exampleRun.usage.dollars;
 
 // The pull request as ocra leaves it, replayed when it scrolls into view:
 // stages light up, the summary fills in, the cost counts up.
@@ -128,11 +130,11 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
     <div ref={root} className="pr" data-state={state}>
       <div className="pr-main">
         <div className="pr-title">
-          {copy.title} <span>#812</span>
+          {copy.title} <span>#{pr.number}</span>
         </div>
         <div className="pr-meta">
-          {copy.meta.into} <code>main</code> {copy.meta.from}{" "}
-          <code>fix/session-expiry</code> · {copy.meta.files}
+          {copy.meta.into} <code>{pr.base}</code> {copy.meta.from}{" "}
+          <code>{pr.head}</code> · {copy.meta.files}
         </div>
         <div className="cmt">
           <div className="cmt-h">
@@ -200,37 +202,17 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
           </div>
         </div>
         <div className={`cmt finding${finding ? "" : " hide"}`}>
-          <div className="cmt-h">
-            <span className="av">
-              <SmallSpider size={18} dark />
-            </span>
-            <span>
-              <strong>ocra</strong> · <code>src/auth/session.ts</code>{" "}
-              {copy.onLine} 42
-            </span>
-          </div>
-          <div className="fold">
-            <div className="fold-in">
-              <SessionCode>
-                <Line n={42} quoted>
-                  <Return />
-                  <span className="qtip" role="tooltip">
-                    {copy.quoteTip}
-                  </span>
-                </Line>
-              </SessionCode>
-              <div className="cmt-b">
-                <div className="tags">
-                  <span className="tag t-crit">critical</span>
-                  <span className="tag t-ok">verified</span>
-                  <span className="tag t-plain">correctness</span>
-                </div>
-                <strong className="fg">{copy.findingTitle}</strong>{" "}
-                {copy.findingBody}
-                <Suggestion />
-              </div>
-            </div>
-          </div>
+          <FindingComment
+            variant="pr"
+            title={copy.findingTitle}
+            body={copy.findingBody}
+            onLine={copy.onLine}
+            tip={
+              <span className="qtip" role="tooltip">
+                {copy.quoteTip}
+              </span>
+            }
+          />
         </div>
       </div>
       <aside className="pr-side">
@@ -253,18 +235,17 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
           {busy ? s.running : s.blocking}
         </div>
         <p className="side-h">{s.files}</p>
-        <div className="chk file" data-why={s.why.session}>
-          src/auth/session.ts
-        </div>
-        <div className="chk file" data-why={s.why.login}>
-          src/auth/login.ts
-        </div>
-        <div className="chk file" data-why={s.why.docs}>
-          docs/sessions.md
-        </div>
-        <div className="chk file out" data-why={s.why.lock}>
-          package-lock.json
-        </div>
+        {files
+          .filter((f) => s.why[f.id])
+          .map((f) => (
+            <div
+              key={f.id}
+              className={f.selected ? "chk file" : "chk file out"}
+              data-why={s.why[f.id]}
+            >
+              {f.path}
+            </div>
+          ))}
       </aside>
     </div>
   );

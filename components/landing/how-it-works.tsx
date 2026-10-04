@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Copy } from "@/lib/copy";
+import type { Copy, StepId } from "@/lib/copy";
 import { SplitHead, withCode } from "./heading";
 import { howFigures } from "./how-figures";
+
+const STEPS: StepId[] = ["select", "bundle", "review", "verify"];
 
 // The four steps of a review. On wide screens the picture for the step in
 // the middle of the viewport sits in a sticky panel; on narrow ones each
@@ -69,36 +71,39 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
         </div>
         <div className="sync">
           <div className="steps">
-            {copy.steps.map((step, i) => (
-              <div
-                key={step.title}
-                ref={(el) => {
-                  steps.current[i] = el;
-                }}
-                data-i={i}
-                className={i === active ? "step on" : "step"}
-              >
-                <div className="k">
-                  {String(i + 1).padStart(2, "0")}
-                  {step.stages.map((s) => (
-                    <span
-                      key={s.name}
-                      className={s.kind === "model" ? "chip m" : "chip"}
-                    >
-                      {s.name}
-                    </span>
-                  ))}
+            {STEPS.map((id, i) => {
+              const step = copy.steps[id];
+              return (
+                <div
+                  key={id}
+                  ref={(el) => {
+                    steps.current[i] = el;
+                  }}
+                  data-i={i}
+                  className={i === active ? "step on" : "step"}
+                >
+                  <div className="k">
+                    {String(i + 1).padStart(2, "0")}
+                    {step.stages.map((s) => (
+                      <span
+                        key={s.name}
+                        className={s.kind === "model" ? "chip m" : "chip"}
+                      >
+                        {s.name}
+                      </span>
+                    ))}
+                  </div>
+                  <h3>{step.title}</h3>
+                  <p>{withCode(step.text)}</p>
+                  <div className="inline-vis">{figures[id]}</div>
                 </div>
-                <h3>{step.title}</h3>
-                <p>{withCode(step.text)}</p>
-                <div className="inline-vis">{figures[i]}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="sticky" aria-hidden="true">
-            {figures.map((fig, i) => (
-              <div key={fig.key} className={i === active ? "vis on" : "vis"}>
-                {fig}
+            {STEPS.map((id, i) => (
+              <div key={id} className={i === active ? "vis on" : "vis"}>
+                {figures[id]}
               </div>
             ))}
           </div>

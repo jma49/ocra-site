@@ -1,8 +1,28 @@
+import type { ExampleRun, FileId } from "@/lib/landing/example-run";
+
 export type StageKind = "code" | "model";
+
+// Copy that quotes the recorded example run takes the run, so a new
+// recording changes lib/landing/example-run.ts only. getCopy resolves these
+// on the server: functions cannot be passed to client components.
+export type FromRun = (run: ExampleRun) => string;
+
+type Resolved<T> = T extends FromRun
+  ? string
+  : T extends object
+    ? { [K in keyof T]: Resolved<T[K]> }
+    : T;
+
+// The copy as components receive it, with the run filled in.
+export type Copy = Resolved<CopySource>;
+
+export type StepId = "select" | "bundle" | "review" | "verify";
+export type BillRow = "input" | "cached" | "output" | "total";
+export type PlanId = "self" | "cloud" | "team";
 
 // Every landing page string, in one shape per language. Code, file names,
 // reviewer names and tool names are identifiers and stay untranslated.
-export interface Copy {
+export interface CopySource {
   announce: { label: string; text: string; link: string };
   nav: {
     links: {
@@ -30,11 +50,11 @@ export interface Copy {
   };
   window: {
     tabs: { pr: string; terminal: string; cloud: string };
-    urls: { pr: string; terminal: string; cloud: string };
+    urls: { pr: FromRun; terminal: FromRun; cloud: string };
     example: string;
     pr: {
       title: string;
-      meta: { into: string; from: string; files: string };
+      meta: { into: string; from: string; files: FromRun };
       reviewing: string;
       reviewed: string;
       replay: string;
@@ -46,10 +66,10 @@ export interface Copy {
         cost: string;
       };
       values: {
-        reviewed: string;
-        tasks: string;
-        findings: string;
-        tokens: string;
+        reviewed: FromRun;
+        tasks: FromRun;
+        findings: FromRun;
+        tokens: FromRun;
       };
       onLine: string;
       quoteTip: string;
@@ -62,8 +82,10 @@ export interface Copy {
         reviewing: string;
         changes: string;
         running: string;
-        blocking: string;
-        why: { session: string; login: string; docs: string; lock: string };
+        blocking: FromRun;
+        // Why ocra read or set aside each file listed beside the pull
+        // request; a file without a reason is not listed.
+        why: Partial<Record<FileId, string>>;
       };
     };
     console: {
@@ -85,11 +107,14 @@ export interface Copy {
     emphasis: string;
     body: string;
     legend: Record<StageKind, string>;
-    steps: {
-      title: string;
-      stages: { name: string; kind: StageKind }[];
-      text: string;
-    }[];
+    steps: Record<
+      StepId,
+      {
+        title: string;
+        stages: { name: string; kind: StageKind }[];
+        text: string;
+      }
+    >;
     figures: {
       read: string;
       setAside: string;
@@ -106,7 +131,7 @@ export interface Copy {
         merged: string;
         disproved: string;
         verdict: string;
-        critical: string;
+        critical: FromRun;
       };
       claims: { sessions: string; refresh: string; token: string };
     };
@@ -120,7 +145,7 @@ export interface Copy {
     bill: {
       title: string;
       body: string;
-      rows: [string, string, string, string];
+      rows: Record<BillRow, string>;
     };
     fallback: {
       title: string;
@@ -135,7 +160,7 @@ export interface Copy {
     tabs: { reported: string; fixed: string; dismissed: string };
     notes: { reported: string; fixed: string; dismissed: string };
     caption: string;
-    reply: string;
+    reply: FromRun;
     maintainer: string;
     resolvedBot: string;
     resolvedMaintainer: string;
@@ -161,15 +186,18 @@ export interface Copy {
     title: string;
     emphasis: string;
     body: string;
-    items: {
-      state: string;
-      name: string;
-      price: string;
-      unit: string;
-      points: string[];
-      cta: string;
-      planned?: boolean;
-    }[];
+    items: Record<
+      PlanId,
+      {
+        state: string;
+        name: string;
+        price: string;
+        unit: string;
+        points: string[];
+        cta: string;
+        planned?: boolean;
+      }
+    >;
     fine: string;
   };
   faq: { title: string; emphasis: string; items: { q: string; a: string }[] };
