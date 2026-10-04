@@ -72,6 +72,20 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 
 - The state of the project, the site included, is kept in `handoff.md` in the maintainers' private repository `jma49/ocra-internal` (cloned as `../ocra-internal`). Update it at the end of every task or batch of work, before reporting it done, without being asked. Never put such notes in this public repository.
 
+## Working with agents
+
+Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: change all three together.
+
+- **One owner per issue queue, one worktree per session.** Never edit a checkout another session is using.
+- **The maintainer runs production:** deploys, production database writes and secret-store changes. Prepare the exact command and a dry-run result, then hand off.
+- **A critical Dependabot alert is a P0:** fix or pin it the same day.
+- **Validate what you act on, after normalising it** (`new URL()`, path resolution), never only the raw input.
+- **Uniqueness and currency live in the database** (`UNIQUE`, `ON CONFLICT`, compare-and-set), never in check-then-write code.
+- **A fix's test fails on the old code on an assertion,** not on a module the fix adds (`scripts/fails-without.sh` refuses that).
+- **Shapes the CLI and ocra Cloud share live in `@open-cr-agent/cloud-contract`;** never retype them.
+- **Show only what exists:** mocks, demos and the landing use shipped behaviour and recorded or synthetic data, never the maintainer's accounts, numbers, keys or budget.
+- **Keep AGENTS.md under 150 lines:** a rule names the check that enforces it; stories go to `../ocra-internal/pitfalls.md`.
+
 ## Git workflow
 
 - `main` is always deployable. Work on `<type>/<short-kebab-description>` branches, merge through pull requests with rebase, and delete the branch afterwards.
