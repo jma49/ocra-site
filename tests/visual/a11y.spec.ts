@@ -1,6 +1,16 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
+// The comparison job runs these tests against the base branch while it
+// records its screenshots; only the change under test must pass them.
+// biome-ignore lint/correctness/noEmptyPattern: Playwright reads the fixtures a hook needs from this pattern; it needs none
+test.beforeEach(({}, testInfo) => {
+  test.skip(
+    ["all", "changed"].includes(testInfo.config.updateSnapshots),
+    "recording the base branch",
+  );
+});
+
 // axe on the landing page in both languages; the projects run it at every
 // width in both colour schemes. The product window's tabs and the
 // lifecycle's states are checked open, since each renders different markup.
