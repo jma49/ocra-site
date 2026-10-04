@@ -18,7 +18,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `app/landing/` | The landing page's styles, split by section (`index.css` imports them in order) |
 | `app/docs.css` | The manual's restyling of Fumadocs |
 | `lib/copy/` | All landing page copy: `types.ts`, then `en.ts` and `zh.ts` with the same shape |
-| `scripts/sync-manual.mjs` | Copies the manual into `content/docs` before `dev` and `build` |
+| `scripts/sync-manual.mjs` | Copies the manual into `content/docs`, and the JSON Schemas into `public/schema`, before `dev` and `build` |
 | `scripts/demo-video/` | Records the example run (real ocra CLI, scripted model) that the landing page quotes; see its README |
 | `lib/landing/example-run.ts` | That run's numbers, files, finding and terminal lines: the only place the page takes them from |
 
@@ -28,6 +28,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 - Locally the sync script reads `MANUAL_DIR`, else `../ocra/docs/manual` or `../Open-CR-Agent/docs/manual` (the default clone name), whichever exists.
 - On Vercel it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository).
+- The engine's JSON Schemas (`docs/schema/*.json`) are served at `/schema/<file>`, where their `$id` points. The sync refuses a schema whose `$id` is not this site's `/schema/<its file name>`, and CI's `npm run check:schemas` checks each one answers there after the build. Their v1 `$id`s use the old host `ocra.majincheng.com`, so its redirect to this site (path kept) must stay.
 - The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
 ## How the site uses Fumadocs

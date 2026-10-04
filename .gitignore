@@ -26,6 +26,7 @@ yarn-error.log*
 next-env.d.ts
 # synced from the main repository at build time
 /content/docs
+/public/schema
 
 # screenshots from `npm run visual`
 /.visual
