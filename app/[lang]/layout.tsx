@@ -2,11 +2,12 @@ import { i18nProvider } from "fumadocs-ui/i18n";
 import type { Metadata } from "next";
 import { Archivo } from "next/font/google";
 import localFont from "next/font/local";
-import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Providers } from "@/components/providers";
-import { i18n, isLocale } from "@/lib/i18n";
+import { getCopy } from "@/lib/copy";
+import { htmlLang, i18n } from "@/lib/i18n";
 import { translations } from "@/lib/layout.shared";
+import { localeParam } from "@/lib/locale-param";
 import "../global.css";
 
 // Latin faces; Chinese falls through to the system fonts in global.css.
@@ -32,19 +33,6 @@ const mono = localFont({
   variable: "--font-maple",
 });
 
-const meta = {
-  en: {
-    title: "ocra — code review that reads before it comments",
-    description:
-      "Open-CR-Agent (ocra) runs specialized review agents inside a deterministic pipeline: grounded findings, anchored to the right line, built to be measured.",
-  },
-  zh: {
-    title: "ocra — 先读懂代码，再开口的代码审查",
-    description:
-      "Open-CR-Agent（ocra）在确定性的流水线里运行专项审查 agent：意见有据可查，落在正确的行上，为评测而生。",
-  },
-};
-
 // Every Vercel build, previews included, points canonical links at the
 // custom domain; SITE_URL overrides it.
 const PRODUCTION_URL = "https://ocracloud.com";
@@ -59,13 +47,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
-  const { lang } = await params;
-  const { title, description } = lang === "zh" ? meta.zh : meta.en;
+  const { title, description } = getCopy(await localeParam(params)).meta;
   return {
     metadataBase: new URL(siteUrl()),
     title: { default: title, template: "%s · ocra" },
     description,
-    alternates: { languages: { en: "/", "zh-CN": "/zh" } },
+    alternates: { languages: { [htmlLang.en]: "/", [htmlLang.zh]: "/zh" } },
   };
 }
 
@@ -80,11 +67,10 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>;
   children: ReactNode;
 }) {
-  const { lang } = await params;
-  if (!isLocale(lang)) notFound();
+  const lang = await localeParam(params);
   return (
     <html
-      lang={lang === "zh" ? "zh-CN" : "en"}
+      lang={htmlLang[lang]}
       className={`${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >

@@ -1,3 +1,5 @@
+import { i18n, type Locale } from "./i18n";
+
 export const appName = "ocra";
 export const docsRoute = "/docs";
 
@@ -10,8 +12,10 @@ export const gitConfig = {
 export const repoUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
 
 // English lives at the root and other languages under their prefix.
-export function localePath(locale: string, path: string): string {
-  return locale === "en" ? path : `/${locale}${path === "/" ? "" : path}`;
+export function localePath(locale: Locale, path: string): string {
+  return locale === i18n.defaultLanguage
+    ? path
+    : `/${locale}${path === "/" ? "" : path}`;
 }
 
 // ocra Cloud's console; the landing page's sign-in and "start" links.

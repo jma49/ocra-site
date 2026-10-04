@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/logo";
-import type { Copy } from "@/lib/copy";
+import type { Copy, FooterLinkId } from "@/lib/copy";
+import { type Locale, otherLocale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 import { BigSpider } from "./hanging-spider";
 import { Heading } from "./heading";
@@ -30,7 +31,7 @@ export function Final({
   locale,
 }: {
   copy: Copy["final"];
-  locale: string;
+  locale: Locale;
 }) {
   return (
     <section className="final" id="final">
@@ -52,12 +53,27 @@ export function Final({
   );
 }
 
-// Footer hrefs may use {repo}, {cloud} and {other} (the page in the other
-// language); paths starting with / are localised.
-function resolve(href: string, locale: string) {
-  if (href === "{other}") return locale === "zh" ? "/" : "/zh";
-  if (href.startsWith("/")) return localePath(locale, href);
-  return href.replace("{repo}", repoUrl).replace("{cloud}", cloudUrl);
+function footerHref(id: FooterLinkId, locale: Locale): string {
+  const docs = (page: string) => localePath(locale, `/docs/${page}`);
+  const hrefs: Record<FooterLinkId, string> = {
+    how: "#how",
+    product: "#product",
+    plans: "#plans",
+    changelog: `${repoUrl}/blob/main/CHANGELOG.md`,
+    quickstart: docs("quickstart"),
+    "github-action": docs("github"),
+    gitlab: docs("gitlab"),
+    providers: docs("providers"),
+    "threat-model": docs("threat-model"),
+    privacy: `${cloudUrl}/privacy`,
+    "security-policy": `${repoUrl}/security/policy`,
+    quality: docs("quality"),
+    repo: repoUrl,
+    roadmap: `${repoUrl}/blob/main/docs/roadmap.md`,
+    license: `${repoUrl}/blob/main/LICENSE`,
+    "other-language": localePath(otherLocale(locale), "/"),
+  };
+  return hrefs[id];
 }
 
 export function Footer({
@@ -65,7 +81,7 @@ export function Footer({
   locale,
 }: {
   copy: Copy["footer"];
-  locale: string;
+  locale: Locale;
 }) {
   return (
     <footer className="foot">
@@ -82,8 +98,8 @@ export function Footer({
               <h3>{col.title}</h3>
               <ul>
                 {col.links.map((l) => (
-                  <li key={l.label}>
-                    <a href={resolve(l.href, locale)}>{l.label}</a>
+                  <li key={l.id}>
+                    <a href={footerHref(l.id, locale)}>{l.label}</a>
                   </li>
                 ))}
               </ul>

@@ -10,13 +10,14 @@ import { SiteHeader } from "@/components/landing/site-header";
 import { Statement } from "@/components/landing/statement";
 import { Works } from "@/components/landing/works";
 import { getCopy } from "@/lib/copy";
+import { localeParam } from "@/lib/locale-param";
 
 export default async function HomePage({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }) {
-  const { lang } = await params;
+  const lang = await localeParam(params);
   const copy = getCopy(lang);
   return (
     <>

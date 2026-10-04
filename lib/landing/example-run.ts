@@ -4,6 +4,20 @@
 // re-recording updates this file and nothing else.
 
 export type FileId = "session" | "login" | "routes" | "docs" | "lock";
+export type CallRole = "review" | "grouping" | "verification" | "judge";
+
+// Every model call of the run (scripts/demo-video/scripted-runtime.mjs); the
+// model is named only where the recording names it.
+const calls: { role: CallRole; model?: string; input: number }[] = [
+  { role: "review", model: "google/gemini-3.5-flash", input: 121_766 },
+  { role: "review", model: "google/gemini-3.5-flash", input: 98_410 },
+  { role: "review", model: "google/gemini-3.5-flash", input: 61_208 },
+  { role: "review", model: "google/gemini-3.5-flash", input: 18_342 },
+  { role: "grouping", input: 1_830 },
+  { role: "verification", input: 5_210 },
+  { role: "verification", input: 5_210 },
+  { role: "judge", input: 3_960 },
+];
 
 export const exampleRun = {
   command: "ocra review --from main",
@@ -24,8 +38,9 @@ export const exampleRun = {
   // What happened to the candidate findings: one confirmed, one merged into
   // it, one the code disproves.
   outcome: { verified: 1, merged: 1, disproved: 1 },
+  calls,
   usage: {
-    input: 315_936,
+    input: calls.reduce((sum, call) => sum + call.input, 0),
     cached: 209_152,
     output: 9_021,
     reasoning: 8_489,

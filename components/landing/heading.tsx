@@ -52,7 +52,7 @@ export function SplitHead({
 
 // Inline `code` in copy: the strings mark identifiers with backticks.
 export function withCode(text: string): ReactNode {
-  const parts = text.split(/(`[^`]+`|\.ocra\/rules\.json|maxCostUsd|--plan)/);
+  const parts = text.split(/(`[^`]+`)/);
   return parts.map((part, i) =>
     i % 2 ? (
       // biome-ignore lint/suspicious/noArrayIndexKey: static copy

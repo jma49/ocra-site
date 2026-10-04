@@ -1,4 +1,4 @@
-import type { ExampleRun, FileId } from "@/lib/landing/example-run";
+import type { CallRole, ExampleRun, FileId } from "@/lib/landing/example-run";
 
 export type StageKind = "code" | "model";
 
@@ -19,10 +19,30 @@ export type Copy = Resolved<CopySource>;
 export type StepId = "select" | "bundle" | "review" | "verify";
 export type BillRow = "input" | "cached" | "output" | "total";
 export type PlanId = "self" | "cloud" | "team";
+// Footer links name a destination; components/landing/closing.tsx holds the
+// hrefs, so copy carries no URLs.
+export type FooterLinkId =
+  | "how"
+  | "product"
+  | "plans"
+  | "changelog"
+  | "quickstart"
+  | "github-action"
+  | "gitlab"
+  | "providers"
+  | "threat-model"
+  | "privacy"
+  | "security-policy"
+  | "quality"
+  | "repo"
+  | "roadmap"
+  | "license"
+  | "other-language";
 
 // Every landing page string, in one shape per language. Code, file names,
 // reviewer names and tool names are identifiers and stay untranslated.
 export interface CopySource {
+  meta: { title: string; description: string };
   announce: { label: string; text: string; link: string };
   nav: {
     links: {
@@ -37,6 +57,8 @@ export interface CopySource {
     start: string;
     menu: string;
     theme: string;
+    home: string;
+    primary: string;
   };
   hero: {
     // `emphasis` is the tail of the headline, set in the brand colour.
@@ -91,6 +113,7 @@ export interface CopySource {
     console: {
       nav: string[];
       stats: { reviews: string; requests: string; spend: string };
+      roles: Record<CallRole, string>;
     };
   };
   works: {
@@ -204,7 +227,11 @@ export interface CopySource {
   final: { title: string; emphasis: string; cloud: string; manual: string };
   footer: {
     tagline: string;
-    columns: { title: string; links: { label: string; href: string }[] }[];
+    columns: {
+      title: string;
+      links: { id: FooterLinkId; label: string }[];
+    }[];
   };
   dock: { start: string; copy: string; copied: string };
+  notFound: { title: string; body: string; back: string };
 }

@@ -1,17 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Copy } from "@/lib/copy";
 import { cloudUrl } from "@/lib/shared";
 
 const INSTALL = "npm install -g @open-cr-agent/cli";
 
 // Follows the reader once the hero has scrolled away, and steps aside for the
 // final call to action, which repeats the same choice.
-export function Dock({
-  copy: labels,
-}: {
-  copy: { start: string; copy: string; copied: string };
-}) {
+export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
   const [shown, setShown] = useState(false);
   const [copied, setCopied] = useState(false);
 

@@ -1,11 +1,12 @@
 import type { Copy } from "@/lib/copy";
+import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath } from "@/lib/shared";
 import { HangingSpider } from "./hanging-spider";
 import { Night } from "./night";
 import { PlatedHeading } from "./plated-heading";
 import { ProductWindow } from "./product-window";
 
-export function Hero({ copy, locale }: { copy: Copy; locale: string }) {
+export function Hero({ copy, locale }: { copy: Copy; locale: Locale }) {
   const h = copy.hero;
   return (
     <section className="hero" id="hero">
