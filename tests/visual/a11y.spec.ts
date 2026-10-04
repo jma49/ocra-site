@@ -40,8 +40,7 @@ for (const path of ["/", "/zh"]) {
       const { violations } = await new AxeBuilder({ page }).analyze();
       expect(
         violations.map(
-          (v) =>
-            `${state.name}: ${v.id} ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`,
+          (v) => `${state.name}: ${v.id} ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`,
         ),
       ).toEqual([]);
     }
@@ -64,10 +63,7 @@ test("tabs move with the arrow keys", async ({ page }) => {
 });
 
 test("the menu closes on Escape and returns focus", async ({ page }) => {
-  test.skip(
-    page.viewportSize()?.width !== 390,
-    "the menu button is phone-only",
-  );
+  test.skip(page.viewportSize()?.width !== 390, "the menu button is phone-only");
   await page.goto("/", { waitUntil: "networkidle" });
   const button = page.locator("button[aria-controls=site-menu]");
   await button.click();

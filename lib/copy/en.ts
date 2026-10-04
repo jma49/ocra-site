@@ -40,8 +40,7 @@ export const en: CopySource = {
   window: {
     tabs: { pr: "Pull request", terminal: "Terminal", cloud: "ocra Cloud" },
     urls: {
-      pr: (run) =>
-        `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
+      pr: (run) => `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
       terminal: (run) => `${run.repo} · ${run.command}`,
       cloud: "ocra Cloud · Overview",
     },
@@ -67,8 +66,7 @@ export const en: CopySource = {
       values: {
         reviewed: (run) =>
           `${run.changedFiles} files in ${run.bundles} bundles · ${run.files.filter((f) => !f.selected).length} set aside (generated)`,
-        tasks: (run) =>
-          `correctness, security · ${run.skippedPairs} pairs skipped with a reason`,
+        tasks: (run) => `correctness, security · ${run.skippedPairs} pairs skipped with a reason`,
         findings: ({ outcome: o }) =>
           `${o.verified} critical, verified · ${o.merged} merged · ${o.disproved} disproved`,
         tokens: (run) => `tokens in (${formatCount(run.usage.cached)} cached)`,
@@ -118,8 +116,7 @@ export const en: CopySource = {
     },
   },
   works: {
-    title:
-      "Reviews where your team already works, with the model you already pay for.",
+    title: "Reviews where your team already works, with the model you already pay for.",
     body: "Pull requests on GitHub, merge requests on GitLab, or any local branch. Bring a key from any of 45 providers, or your own OpenAI-compatible endpoint.",
     platforms: "Platforms",
     providers: "Model providers",
@@ -221,11 +218,7 @@ export const en: CopySource = {
     fallback: {
       title: "When a model falls over, the next takes the task",
       body: "Each tier lists several models. Overloads move on; a model out of quota is dropped for the rest of the run.",
-      chain: [
-        "model A · overloaded",
-        "model B · out of quota",
-        "model C · reviewing",
-      ],
+      chain: ["model A · overloaded", "model B · out of quota", "model C · reviewing"],
     },
   },
   lifecycle: {

@@ -64,9 +64,7 @@ export default async function RootLayout({
       className={`${sans.variable} ${mono.variable}`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-screen flex-col font-sans antialiased">
-        {children}
-      </body>
+      <body className="flex min-h-screen flex-col font-sans antialiased">{children}</body>
     </html>
   );
 }

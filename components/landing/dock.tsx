@@ -60,12 +60,7 @@ export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
   };
 
   return (
-    <aside
-      className="dock"
-      aria-label={labels.label}
-      data-shown={shown}
-      inert={!shown}
-    >
+    <aside className="dock" aria-label={labels.label} data-shown={shown} inert={!shown}>
       <code>{INSTALL}</code>
       <button type="button" className="copy" onClick={copy}>
         {copied ? labels.copied : labels.copy}

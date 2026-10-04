@@ -134,10 +134,7 @@ export function PrPane({
     [copy.rows.reviewed, v.reviewed],
     [copy.rows.tasks, v.tasks],
     [copy.rows.findings, v.findings],
-    [
-      copy.rows.cost,
-      `${tokens.toLocaleString("en-US")} ${v.tokens} · $${dollars.toFixed(4)}`,
-    ],
+    [copy.rows.cost, `${tokens.toLocaleString("en-US")} ${v.tokens} · $${dollars.toFixed(4)}`],
   ];
   const s = copy.side;
   const busy = running;
@@ -149,8 +146,8 @@ export function PrPane({
           {copy.title} <span>#{pr.number}</span>
         </div>
         <div className="pr-meta">
-          {copy.meta.into} <code>{pr.base}</code> {copy.meta.from}{" "}
-          <code>{pr.head}</code> · {copy.meta.files}
+          {copy.meta.into} <code>{pr.base}</code> {copy.meta.from} <code>{pr.head}</code> ·{" "}
+          {copy.meta.files}
         </div>
         <div className="cmt">
           <div className="cmt-h">
@@ -190,12 +187,7 @@ export function PrPane({
               }
             >
               {STAGES.map((name, i) => (
-                <span
-                  key={name}
-                  className={
-                    i === stage ? "on" : i < stage ? "done" : undefined
-                  }
-                >
+                <span key={name} className={i === stage ? "on" : i < stage ? "done" : undefined}>
                   {name}
                 </span>
               ))}

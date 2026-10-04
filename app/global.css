@@ -7,11 +7,9 @@
 /* CJK text uses the system faces after Archivo. */
 @theme {
   --font-sans:
-    var(--font-archivo), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
-    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
-  --font-mono:
-    var(--font-maple), "Maple Mono NF", ui-monospace, SFMono-Regular, Menlo,
-    monospace;
+    var(--font-archivo), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+    ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-maple), "Maple Mono NF", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 html {

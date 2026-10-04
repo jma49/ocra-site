@@ -15,20 +15,12 @@ export function Lifecycle({
   return (
     <section className="chapter tight-top lifecycle">
       <div className="wrap">
-        <SplitHead
-          title={copy.title}
-          emphasis={copy.emphasis}
-          body={copy.body}
-        />
+        <SplitHead title={copy.title} emphasis={copy.emphasis} body={copy.body} />
         <LifecycleStates
           copy={{ tabs: copy.tabs, notes: copy.notes }}
           thread={
             <>
-              <div
-                className="caption"
-                aria-hidden="true"
-                data-in="reported fixed"
-              >
+              <div className="caption" aria-hidden="true" data-in="reported fixed">
                 {copy.caption}
               </div>
               <div className="cmt">

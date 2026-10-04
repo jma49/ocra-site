@@ -47,15 +47,13 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
           </div>
         </header>
         <div className="drawer" id="site-menu">
-          {[
-            ...links,
-            { href: repoUrl, label: n.github },
-            { href: cloudUrl, label: n.signIn },
-          ].map((l) => (
-            <a key={l.href} href={l.href}>
-              {l.label}
-            </a>
-          ))}
+          {[...links, { href: repoUrl, label: n.github }, { href: cloudUrl, label: n.signIn }].map(
+            (l) => (
+              <a key={l.href} href={l.href}>
+                {l.label}
+              </a>
+            ),
+          )}
         </div>
       </NavShell>
     </>

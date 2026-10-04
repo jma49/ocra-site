@@ -49,14 +49,8 @@ function SilhouetteDef({ id }: { id: string }) {
         [leg, leg.map(mirror) as typeof leg].map(([hip, knee, tip], side) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: fixed geometry
           <g key={`${i}-${side}`} fill="none" strokeLinecap="round">
-            <path
-              d={`M${hip.join(" ")} L${knee.join(" ")}`}
-              strokeWidth={i ? 4.4 : 6}
-            />
-            <path
-              d={`M${knee.join(" ")} L${tip.join(" ")}`}
-              strokeWidth={i ? 2.8 : 4}
-            />
+            <path d={`M${hip.join(" ")} L${knee.join(" ")}`} strokeWidth={i ? 4.4 : 6} />
+            <path d={`M${knee.join(" ")} L${tip.join(" ")}`} strokeWidth={i ? 2.8 : 4} />
           </g>
         )),
       )}
@@ -90,14 +84,7 @@ function Details({ id }: { id: string }) {
           <ellipse cx="32" cy="45.5" rx="11" ry="12.5" fill={`url(#${id}g)`} />
         </mask>
       </defs>
-      <ellipse
-        cx="32"
-        cy="45.5"
-        rx="11"
-        ry="12.5"
-        fill={`url(#${id}d)`}
-        mask={`url(#${id}k)`}
-      />
+      <ellipse cx="32" cy="45.5" rx="11" ry="12.5" fill={`url(#${id}d)`} mask={`url(#${id}k)`} />
       <circle cx="27" cy="25.5" r="4.7" style={{ fill: AQUA }} />
       <circle cx="37" cy="25.5" r="4.7" style={{ fill: AQUA }} />
       <circle cx="25.6" cy="23.8" r="1.3" style={{ fill: WHITE }} />
@@ -172,20 +159,8 @@ export function SpiderMark({
         <>
           <defs>
             <mask id={`${id}m`}>
-              <rect
-                x="-10"
-                y="-10"
-                width="84"
-                height="84"
-                style={{ fill: WHITE }}
-              />
-              <rect
-                x="-10"
-                y="29.6"
-                width="84"
-                height="4.2"
-                style={{ fill: BLACK }}
-              />
+              <rect x="-10" y="-10" width="84" height="84" style={{ fill: WHITE }} />
+              <rect x="-10" y="29.6" width="84" height="4.2" style={{ fill: BLACK }} />
             </mask>
             <clipPath id={`${id}c`}>
               <rect x="-10" y="29.6" width="84" height="4.2" />
@@ -222,12 +197,6 @@ export function SmallSpider({
 }) {
   const glitch = size >= 32 ? 2 : size >= 24 ? 1.4 : 0;
   return (
-    <SpiderMark
-      size={size}
-      dark={dark}
-      glitch={glitch}
-      slice={size >= 32}
-      className={className}
-    />
+    <SpiderMark size={size} dark={dark} glitch={glitch} slice={size >= 32} className={className} />
   );
 }

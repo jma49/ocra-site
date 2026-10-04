@@ -6,13 +6,7 @@ import { SplitHead, withCode } from "./heading";
 const PLANS: PlanId[] = ["self", "cloud", "team"];
 const FEATURED: PlanId = "cloud";
 
-export function Plans({
-  copy,
-  locale,
-}: {
-  copy: Copy["plans"];
-  locale: Locale;
-}) {
+export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale }) {
   const links: Record<PlanId, string> = {
     self: localePath(locale, "/docs/quickstart"),
     cloud: cloudUrl,
@@ -21,11 +15,7 @@ export function Plans({
   return (
     <section className="chapter tight-top" id="plans">
       <div className="wrap">
-        <SplitHead
-          title={copy.title}
-          emphasis={copy.emphasis}
-          body={copy.body}
-        />
+        <SplitHead title={copy.title} emphasis={copy.emphasis} body={copy.body} />
         <div className="plans">
           {PLANS.map((id) => {
             const p = copy.items[id];
@@ -48,10 +38,7 @@ export function Plans({
                     </li>
                   ))}
                 </ul>
-                <a
-                  className={featured ? "btn btn-brand" : "btn btn-soft"}
-                  href={links[id]}
-                >
+                <a className={featured ? "btn btn-brand" : "btn btn-soft"} href={links[id]}>
                   {p.cta}
                   {featured && <i>&rarr;</i>}
                 </a>

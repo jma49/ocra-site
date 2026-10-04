@@ -46,8 +46,7 @@ export function PlatedHeading({
       // The glitch slice flickers only while the pointer moves; once the
       // plates settle and the pointer rests, the loop stops until it moves.
       const glitching = !reduced && hover && t - lastMove < 260;
-      if (cut)
-        cut.style.opacity = glitching && Math.random() > 0.35 ? "1" : "0";
+      if (cut) cut.style.opacity = glitching && Math.random() > 0.35 ? "1" : "0";
       const settling =
         Math.abs(tgt.s - cur.s) > 0.002 ||
         Math.abs(tgt.x - cur.x) > 0.002 ||
@@ -58,8 +57,7 @@ export function PlatedHeading({
       if (!raf) raf = requestAnimationFrame(tick);
     };
     go();
-    if (!matchMedia("(hover: hover)").matches)
-      return () => cancelAnimationFrame(raf);
+    if (!matchMedia("(hover: hover)").matches) return () => cancelAnimationFrame(raf);
     const enter = () => {
       hover = true;
       tgt.s = 1;
@@ -69,14 +67,8 @@ export function PlatedHeading({
       const r = el.getBoundingClientRect();
       tgt.x = ((e.clientX - r.left) / r.width - 0.5) * 2;
       tgt.y = ((e.clientY - r.top) / r.height - 0.5) * 2;
-      el.style.setProperty(
-        "--cy",
-        `${Math.max(0, e.clientY - r.top - 10).toFixed(0)}px`,
-      );
-      el.style.setProperty(
-        "--cx",
-        `${((Math.random() - 0.5) * 0.12).toFixed(3)}em`,
-      );
+      el.style.setProperty("--cy", `${Math.max(0, e.clientY - r.top - 10).toFixed(0)}px`);
+      el.style.setProperty("--cx", `${((Math.random() - 0.5) * 0.12).toFixed(3)}em`);
       lastMove = performance.now();
       go();
     };

@@ -20,15 +20,11 @@ type Text = Copy["notFound"] & {
 // link follow it.
 export function NotFoundPage({ text }: { text: Record<Locale, Text> }) {
   const params = useParams<{ lang?: string }>();
-  const lang =
-    params.lang && isLocale(params.lang) ? params.lang : i18n.defaultLanguage;
+  const lang = params.lang && isLocale(params.lang) ? params.lang : i18n.defaultLanguage;
   const t = text[lang];
   return (
     <Providers i18n={t.ui}>
-      <HomeLayout
-        {...baseOptions(lang, { docs: t.docs })}
-        className="home home-layout"
-      >
+      <HomeLayout {...baseOptions(lang, { docs: t.docs })} className="home home-layout">
         <title>{`404 · ${t.title} · ocra`}</title>
         <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-4 py-32 sm:px-8">
           <p className="font-mono text-sm text-(--aqua-ink)">404</p>

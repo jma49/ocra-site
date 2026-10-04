@@ -75,12 +75,7 @@
 .code .l:not(.q),
 .props li,
 .keys li {
-  background-image: linear-gradient(
-    90deg,
-    var(--hv-row),
-    var(--hv-row) 70%,
-    transparent
-  );
+  background-image: linear-gradient(90deg, var(--hv-row), var(--hv-row) 70%, transparent);
   background-size: 0% 100%;
 }
 .nav .links a,

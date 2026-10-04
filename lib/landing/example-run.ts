@@ -79,10 +79,7 @@ export const terminalLines: [string, "c" | "d" | "o" | "w" | ""][] = [
   ],
   ["[ocra] Verified 3 finding(s), dropped 1 that the code disproves\n⋮", "d"],
   ["Verdict: significant concerns\n\nsrc/auth/session.ts", ""],
-  [
-    "  critical   L42   Every session is treated as expired [verified] #b7d6c863",
-    "w",
-  ],
+  ["  critical   L42   Every session is treated as expired [verified] #b7d6c863", "w"],
   [
     "    isExpired() compares expiresAt, stored in seconds, with Date.now() in milliseconds, so it is always true: loadSession() deletes every session and users are logged out right after signing in.\n    Suggestion: return session.expiresAt * 1000 < Date.now();\n",
     "",

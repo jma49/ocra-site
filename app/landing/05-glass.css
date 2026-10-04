@@ -146,13 +146,7 @@
 .mq-wrap {
   display: grid;
   gap: 10px;
-  mask-image: linear-gradient(
-    90deg,
-    transparent,
-    var(--black) 9%,
-    var(--black) 91%,
-    transparent
-  );
+  mask-image: linear-gradient(90deg, transparent, var(--black) 9%, var(--black) 91%, transparent);
 }
 .mq {
   display: flex;

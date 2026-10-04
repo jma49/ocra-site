@@ -39,9 +39,7 @@ export function Statement({ copy }: { copy: Copy["statement"] }) {
   }, []);
 
   // Chinese has no spaces: it brightens by character instead of by word.
-  const parts = /\s/.test(copy.body)
-    ? copy.body.split(/(\s+)/)
-    : [...copy.body];
+  const parts = /\s/.test(copy.body) ? copy.body.split(/(\s+)/) : [...copy.body];
   return (
     <section className="chapter tight-top">
       <div className="wrap state-grid">

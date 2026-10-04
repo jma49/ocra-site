@@ -12,9 +12,7 @@ export const repoUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`;
 
 // English lives at the root and other languages under their prefix.
 export function localePath(locale: Locale, path: string): string {
-  return locale === i18n.defaultLanguage
-    ? path
-    : `/${locale}${path === "/" ? "" : path}`;
+  return locale === i18n.defaultLanguage ? path : `/${locale}${path === "/" ? "" : path}`;
 }
 
 // ocra Cloud's console; the landing page's sign-in and "start" links.

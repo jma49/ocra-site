@@ -20,11 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { alternates: alternates(await localeParam(params), "/") };
 }
 
-export default async function HomePage({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}) {
+export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const lang = await localeParam(params);
   const copy = getCopy(lang);
   return (
