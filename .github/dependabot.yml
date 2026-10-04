@@ -1,0 +1,15 @@
+version: 2
+# Actions are pinned by commit SHA; Dependabot proposes the new SHA with its
+# version comment. A release is adopted a week after it is published, when a
+# compromised version has usually been found and pulled (as in the engine).
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
