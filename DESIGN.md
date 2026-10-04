@@ -287,7 +287,7 @@ Pills for buttons, tabs and segmented controls; 5px for tags; 8px for small cont
 - **Don't resemble a competitor's visual signature** (Greptile's halftone animals, for one): borrow finish, not devices. Before showing a design, name the product it could be mistaken for, and change direction rather than recolour.
 - Don't use the pink as a text colour or to carry meaning.
 - Don't use pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy.
-- Don't write a colour literal outside `app/tokens.css`; name a token, and derive translucent variants with `color-mix(in srgb, var(--token) N%, transparent)`. The standalone icons (`app/icon.svg`, `app/apple-icon.tsx`) are the exception.
+- Don't write a colour literal outside `app/tokens.css`; name a token, and derive translucent variants with `color-mix(in srgb, var(--token) N%, transparent)`. The standalone icons and the share card (`app/icon.svg`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`) are the exception: they are images, rendered without the page's CSS.
 
 ## Known issues
 

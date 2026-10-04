@@ -8,6 +8,7 @@ import { getCopy } from "@/lib/copy";
 import { htmlLang, i18n } from "@/lib/i18n";
 import { translations } from "@/lib/layout.shared";
 import { localeParam } from "@/lib/locale-param";
+import { siteUrl, social } from "@/lib/seo";
 import "../global.css";
 
 // Latin faces; Chinese falls through to the system fonts in global.css.
@@ -33,26 +34,18 @@ const mono = localFont({
   variable: "--font-maple",
 });
 
-// Every Vercel build, previews included, points canonical links at the
-// custom domain; SITE_URL overrides it.
-const PRODUCTION_URL = "https://ocracloud.com";
-
-function siteUrl(): string {
-  if (process.env.SITE_URL) return process.env.SITE_URL;
-  return process.env.VERCEL ? PRODUCTION_URL : "http://localhost:3000";
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
-  const { title, description } = getCopy(await localeParam(params)).meta;
+  const locale = await localeParam(params);
+  const { title, description } = getCopy(locale).meta;
   return {
     metadataBase: new URL(siteUrl()),
     title: { default: title, template: "%s · ocra" },
     description,
-    alternates: { languages: { [htmlLang.en]: "/", [htmlLang.zh]: "/zh" } },
+    ...social({ locale, path: "/", title, description }),
   };
 }
 

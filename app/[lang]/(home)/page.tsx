@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Faq, Final, Footer } from "@/components/landing/closing";
 import { Dock } from "@/components/landing/dock";
 import { Features } from "@/components/landing/features";
@@ -11,6 +12,13 @@ import { Statement } from "@/components/landing/statement";
 import { Works } from "@/components/landing/works";
 import { getCopy } from "@/lib/copy";
 import { localeParam } from "@/lib/locale-param";
+import { alternates } from "@/lib/seo";
+
+type Props = { params: Promise<{ lang: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return { alternates: alternates(await localeParam(params), "/") };
+}
 
 export default async function HomePage({
   params,

@@ -1,6 +1,6 @@
 // Colours come from the tokens in app/tokens.css (DESIGN.md); this fails on a
-// colour literal anywhere else. The standalone icons are images, not themed
-// pages, so they keep their own values.
+// colour literal anywhere else. The standalone icons and the share card are
+// images, not themed pages, so they keep their own values.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -9,6 +9,7 @@ const allowed = new Set([
   "app/tokens.css",
   "app/icon.svg",
   "app/apple-icon.tsx",
+  "app/opengraph-image.tsx",
 ]);
 const css =
   /#[0-9a-f]{3,8}\b|\b(?:rgba?|hsla?|oklch|oklab|lab|lch)\(|(?<![\w-])(?:white|black)(?![\w-])/gi;
