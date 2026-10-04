@@ -5,10 +5,11 @@ import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/logo";
 import type { Copy } from "@/lib/copy";
+import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 
 // Announcement bar and the floating dark-glass nav of the landing page.
-export function SiteHeader({ copy, locale }: { copy: Copy; locale: string }) {
+export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
   const [open, setOpen] = useState(false);
   const shell = useRef<HTMLDivElement>(null);
 
@@ -51,10 +52,10 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: string }) {
       </aside>
       <div className="nav-shell" data-open={open} ref={shell}>
         <header className="nav">
-          <Link href={localePath(locale, "/")} aria-label="ocra home">
+          <Link href={localePath(locale, "/")} aria-label={copy.nav.home}>
             <Logo dark />
           </Link>
-          <nav className="links" aria-label="Primary">
+          <nav className="links" aria-label={copy.nav.primary}>
             {links.map((l) => (
               <a key={l.href} href={l.href}>
                 {l.label}

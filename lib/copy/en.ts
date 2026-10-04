@@ -2,6 +2,11 @@ import { formatCount } from "@/lib/landing/example-run";
 import type { CopySource } from "./types";
 
 export const en: CopySource = {
+  meta: {
+    title: "ocra — code review that reads before it comments",
+    description:
+      "Open-CR-Agent (ocra) runs specialized review agents inside a deterministic pipeline: grounded findings, anchored to the right line, built to be measured.",
+  },
   announce: {
     label: "Announcement",
     text: "ocra Cloud is in early access. Sign in with GitHub and bring your own model key.",
@@ -20,6 +25,8 @@ export const en: CopySource = {
     start: "Start free",
     menu: "Open menu",
     theme: "Toggle colour theme",
+    home: "ocra home",
+    primary: "Primary",
   },
   hero: {
     title: "Code review that reads",
@@ -39,7 +46,7 @@ export const en: CopySource = {
       cloud: "ocra Cloud · Overview",
     },
     example:
-      "An example run: the pipeline, output and verdict are ocra's own; the console shows sample data.",
+      "An example run: the pipeline, output and verdict are ocra's own; the console shows the same run.",
     pr: {
       title: "Keep sessions alive after sign-in",
       meta: {
@@ -102,6 +109,12 @@ export const en: CopySource = {
         requests: "Requests",
         spend: "Spend",
       },
+      roles: {
+        review: "review tasks",
+        grouping: "file grouping",
+        verification: "verification",
+        judge: "judge",
+      },
     },
   },
   works: {
@@ -133,7 +146,7 @@ export const en: CopySource = {
           { name: "bundle", kind: "model" },
           { name: "matrix", kind: "code" },
         ],
-        text: "A light model groups files that belong together. Correctness always runs; security and performance skip docs and tests. --plan lists every task before a model is paid.",
+        text: "A light model groups files that belong together. Correctness always runs; security and performance skip docs and tests. `--plan` lists every task before a model is paid.",
       },
       review: {
         title: "Findings quote the code they mean",
@@ -189,7 +202,7 @@ export const en: CopySource = {
     emphasis: "a real repository.",
     rules: {
       title: "Your team's rules, without writing a plugin",
-      body: "Put review rules in .ocra/rules.json on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
+      body: "Put review rules in `.ocra/rules.json` on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
     },
     write: {
       title: "No agent can write",
@@ -197,7 +210,7 @@ export const en: CopySource = {
     },
     bill: {
       title: "Every attempt shows its bill",
-      body: "Tokens and dollars per task, helpers included. Set maxCostUsd and the run stops spending there.",
+      body: "Tokens and dollars per task, helpers included. Set `maxCostUsd` and the run stops spending there.",
       rows: {
         input: "input",
         cached: "cached",
@@ -375,40 +388,45 @@ export const en: CopySource = {
       {
         title: "Product",
         links: [
-          { label: "How it works", href: "#how" },
-          { label: "Product", href: "#product" },
-          { label: "Pricing", href: "#plans" },
-          { label: "Changelog", href: "{repo}/blob/main/CHANGELOG.md" },
+          { id: "how", label: "How it works" },
+          { id: "product", label: "Product" },
+          { id: "plans", label: "Pricing" },
+          { id: "changelog", label: "Changelog" },
         ],
       },
       {
         title: "Run it",
         links: [
-          { label: "Quickstart", href: "/docs/quickstart" },
-          { label: "GitHub Action", href: "/docs/github" },
-          { label: "GitLab", href: "/docs/gitlab" },
-          { label: "Model providers", href: "/docs/providers" },
+          { id: "quickstart", label: "Quickstart" },
+          { id: "github-action", label: "GitHub Action" },
+          { id: "gitlab", label: "GitLab" },
+          { id: "providers", label: "Model providers" },
         ],
       },
       {
         title: "Trust",
         links: [
-          { label: "Threat model", href: "/docs/threat-model" },
-          { label: "Data policy", href: "{cloud}/privacy" },
-          { label: "Security policy", href: "{repo}/security/policy" },
-          { label: "Quality results", href: "/docs/quality" },
+          { id: "threat-model", label: "Threat model" },
+          { id: "privacy", label: "Data policy" },
+          { id: "security-policy", label: "Security policy" },
+          { id: "quality", label: "Quality results" },
         ],
       },
       {
         title: "Project",
         links: [
-          { label: "GitHub", href: "{repo}" },
-          { label: "Roadmap", href: "{repo}/blob/main/docs/roadmap.md" },
-          { label: "Apache-2.0", href: "{repo}/blob/main/LICENSE" },
-          { label: "中文", href: "{other}" },
+          { id: "repo", label: "GitHub" },
+          { id: "roadmap", label: "Roadmap" },
+          { id: "license", label: "Apache-2.0" },
+          { id: "other-language", label: "中文" },
         ],
       },
     ],
   },
   dock: { start: "Start with ocra Cloud", copy: "Copy", copied: "Copied" },
+  notFound: {
+    title: "Page not found",
+    body: "The page you are looking for does not exist, or it moved.",
+    back: "Back to the home page",
+  },
 };

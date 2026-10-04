@@ -1,4 +1,5 @@
 import type { Copy } from "@/lib/copy";
+import type { Locale } from "@/lib/i18n";
 import { localePath } from "@/lib/shared";
 import { SplitHead } from "./heading";
 
@@ -17,7 +18,7 @@ export function Security({
   locale,
 }: {
   copy: Copy["security"];
-  locale: string;
+  locale: Locale;
 }) {
   const f = copy.flow;
   return (

@@ -2,6 +2,11 @@ import { formatCount } from "@/lib/landing/example-run";
 import type { CopySource } from "./types";
 
 export const zh: CopySource = {
+  meta: {
+    title: "ocra — 先读懂代码，再开口的代码审查",
+    description:
+      "Open-CR-Agent（ocra）在确定性的流水线里运行专项审查 agent：意见有据可查，落在正确的行上，为评测而生。",
+  },
   announce: {
     label: "公告",
     text: "ocra Cloud 早期体验中：用 GitHub 登录，自带模型 key。",
@@ -20,6 +25,8 @@ export const zh: CopySource = {
     start: "免费开始",
     menu: "打开菜单",
     theme: "切换深浅色",
+    home: "ocra 首页",
+    primary: "主导航",
   },
   hero: {
     title: "先读懂代码，",
@@ -39,7 +46,7 @@ export const zh: CopySource = {
       cloud: "ocra Cloud · 概览",
     },
     example:
-      "示例运行：流水线、输出和结论都来自 ocra 本身；控制台显示的是示例数据。",
+      "示例运行：流水线、输出和结论都来自 ocra 本身；控制台显示的也是这次运行。",
     pr: {
       title: "Keep sessions alive after sign-in",
       meta: {
@@ -91,6 +98,12 @@ export const zh: CopySource = {
     console: {
       nav: ["概览", "活动", "审查", "模型 key", "默认模型", "CLI 会话", "设置"],
       stats: { reviews: "近 14 天审查", requests: "请求数", spend: "花费" },
+      roles: {
+        review: "审查任务",
+        grouping: "文件分组",
+        verification: "核实",
+        judge: "裁判",
+      },
     },
   },
   works: {
@@ -121,7 +134,7 @@ export const zh: CopySource = {
           { name: "bundle", kind: "model" },
           { name: "matrix", kind: "code" },
         ],
-        text: "由轻量模型把该一起看的文件分成组。correctness 总会运行；security 和 performance 跳过文档和测试。--plan 能在调用模型之前列出全部任务。",
+        text: "由轻量模型把该一起看的文件分成组。correctness 总会运行；security 和 performance 跳过文档和测试。`--plan` 能在调用模型之前列出全部任务。",
       },
       review: {
         title: "每条意见都引用它说的代码",
@@ -177,7 +190,7 @@ export const zh: CopySource = {
     emphasis: "一个真实的仓库。",
     rules: {
       title: "团队规则，不用写插件",
-      body: "把审查规则写进基础分支上的 .ocra/rules.json。本地审查时，插件还能通过一套很小的接口添加规则、审查员、工具和监听器。",
+      body: "把审查规则写进基础分支上的 `.ocra/rules.json`。本地审查时，插件还能通过一套很小的接口添加规则、审查员、工具和监听器。",
     },
     write: {
       title: "没有 agent 能写",
@@ -185,7 +198,7 @@ export const zh: CopySource = {
     },
     bill: {
       title: "每次尝试都有账单",
-      body: "每个任务的 token 和花费，辅助调用也算在内。设置 maxCostUsd，运行到这个额度就停止花钱。",
+      body: "每个任务的 token 和花费，辅助调用也算在内。设置 `maxCostUsd`，运行到这个额度就停止花钱。",
       rows: {
         input: "输入",
         cached: "缓存",
@@ -356,40 +369,45 @@ export const zh: CopySource = {
       {
         title: "产品",
         links: [
-          { label: "工作原理", href: "#how" },
-          { label: "产品", href: "#product" },
-          { label: "价格", href: "#plans" },
-          { label: "更新日志", href: "{repo}/blob/main/CHANGELOG.md" },
+          { id: "how", label: "工作原理" },
+          { id: "product", label: "产品" },
+          { id: "plans", label: "价格" },
+          { id: "changelog", label: "更新日志" },
         ],
       },
       {
         title: "使用",
         links: [
-          { label: "快速上手", href: "/docs/quickstart" },
-          { label: "GitHub Action", href: "/docs/github" },
-          { label: "GitLab", href: "/docs/gitlab" },
-          { label: "模型服务商", href: "/docs/providers" },
+          { id: "quickstart", label: "快速上手" },
+          { id: "github-action", label: "GitHub Action" },
+          { id: "gitlab", label: "GitLab" },
+          { id: "providers", label: "模型服务商" },
         ],
       },
       {
         title: "信任",
         links: [
-          { label: "威胁模型", href: "/docs/threat-model" },
-          { label: "数据政策", href: "{cloud}/privacy" },
-          { label: "安全政策", href: "{repo}/security/policy" },
-          { label: "质量结果", href: "/docs/quality" },
+          { id: "threat-model", label: "威胁模型" },
+          { id: "privacy", label: "数据政策" },
+          { id: "security-policy", label: "安全政策" },
+          { id: "quality", label: "质量结果" },
         ],
       },
       {
         title: "项目",
         links: [
-          { label: "GitHub", href: "{repo}" },
-          { label: "路线图", href: "{repo}/blob/main/docs/roadmap.md" },
-          { label: "Apache-2.0", href: "{repo}/blob/main/LICENSE" },
-          { label: "English", href: "{other}" },
+          { id: "repo", label: "GitHub" },
+          { id: "roadmap", label: "路线图" },
+          { id: "license", label: "Apache-2.0" },
+          { id: "other-language", label: "English" },
         ],
       },
     ],
   },
   dock: { start: "开始使用 ocra Cloud", copy: "复制", copied: "已复制" },
+  notFound: {
+    title: "页面不存在",
+    body: "你要找的页面不存在，或者已经移动。",
+    back: "返回首页",
+  },
 };

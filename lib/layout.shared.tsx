@@ -1,7 +1,7 @@
 import { uiTranslations } from "fumadocs-ui/i18n";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import { Logo } from "@/components/logo";
-import { i18n } from "./i18n";
+import { i18n, type Locale } from "./i18n";
 import { localePath, repoUrl } from "./shared";
 import { zhUi } from "./ui-zh";
 
@@ -10,12 +10,11 @@ export const translations = i18n
   .extend(uiTranslations())
   .add({ en: { displayName: "English" }, zh: zhUi });
 
-const docsLabel: Record<string, string> = { en: "Docs", zh: "文档" };
-
-// The manual's sidebar is dark glass, so its logo takes the light-on-dark spider.
+// The manual's sidebar is dark glass, so its logo takes the light-on-dark
+// spider. `docs` is the nav label from the copy.
 export function baseOptions(
-  locale: string,
-  { dark = false }: { dark?: boolean } = {},
+  locale: Locale,
+  { docs, dark = false }: { docs: string; dark?: boolean },
 ): BaseLayoutProps {
   return {
     nav: {
@@ -26,7 +25,7 @@ export function baseOptions(
     githubUrl: repoUrl,
     links: [
       {
-        text: docsLabel[locale] ?? "Docs",
+        text: docs,
         url: localePath(locale, "/docs"),
         active: "nested-url",
       },

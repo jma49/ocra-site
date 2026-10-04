@@ -2,32 +2,38 @@
 
 import { useState } from "react";
 import type { Copy } from "@/lib/copy";
-import { terminalLines } from "@/lib/landing/example-run";
+import {
+  type CallRole,
+  exampleRun,
+  formatCount,
+  terminalLines,
+} from "@/lib/landing/example-run";
 import { PrPane } from "./pr-pane";
 
 type Tab = "pr" | "terminal" | "cloud";
 
-// Sample data for the console picture; labelled as such under the window.
-const BARS: [number, number, number][] = [
-  [3, 2, 1],
-  [5, 2, 2],
-  [2, 1, 1],
-  [6, 3, 2],
-  [8, 3, 1],
-  [4, 2, 2],
-  [2, 1, 0],
-  [7, 4, 2],
-  [9, 3, 3],
-  [6, 2, 1],
-  [10, 4, 2],
-  [8, 3, 2],
-  [11, 5, 3],
-  [9, 4, 2],
-];
-const ROWS = [
-  ["openrouter · qwen3.8-27b", "7,911 in"],
-  ["anthropic · claude-sonnet-5-5", "41,204 in"],
-  ["deepseek · deepseek-v4", "12,880 in"],
+// The console after the run above: one review, its model calls by role.
+// Fourteen days; the run is on the last.
+const DAYS = Array.from({ length: 14 }, (_, i) => `day-${i + 1}`);
+const TODAY = DAYS.at(-1);
+const { calls, usage } = exampleRun;
+const ROLES: CallRole[] = ["review", "grouping", "verification", "judge"];
+const byRole = ROLES.map((role) => {
+  const of = calls.filter((call) => call.role === role);
+  return {
+    role,
+    model: of.find((call) => call.model)?.model,
+    count: of.length,
+    input: of.reduce((sum, call) => sum + call.input, 0),
+  };
+});
+const count = (...roles: CallRole[]) =>
+  calls.filter((call) => roles.includes(call.role)).length;
+// The chart stacks three shades: review tasks, grouping, and the checks.
+const SEGMENTS = [
+  count("review"),
+  count("grouping"),
+  count("verification", "judge"),
 ];
 
 export function ProductWindow({ copy }: { copy: Copy["window"] }) {
@@ -82,32 +88,39 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
               <div className="stats">
                 <div className="stat">
                   <small>{copy.console.stats.reviews}</small>
-                  <b>38</b>
+                  <b>1</b>
                 </div>
                 <div className="stat">
                   <small>{copy.console.stats.requests}</small>
-                  <b>2,114</b>
+                  <b>{calls.length}</b>
                 </div>
                 <div className="stat">
                   <small>{copy.console.stats.spend}</small>
-                  <b>$9.82</b>
+                  <b>${usage.dollars.toFixed(4)}</b>
                 </div>
               </div>
               <div className="bars" aria-hidden="true">
-                {BARS.map(([a, b, c], i) => (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: fixed sample series
-                  <i key={i} style={{ height: (a + b + c) * 5.6 }}>
-                    <b style={{ flex: a }} />
-                    <b style={{ flex: b }} />
-                    <b style={{ flex: c }} />
+                {DAYS.map((day) => (
+                  <i
+                    key={day}
+                    style={{ height: day === TODAY ? calls.length * 9 : 0 }}
+                  >
+                    {day === TODAY &&
+                      SEGMENTS.map((n, i) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: fixed segments
+                        <b key={i} style={{ flex: n }} />
+                      ))}
                   </i>
                 ))}
               </div>
               <div className="rows">
-                {ROWS.map(([m, n]) => (
-                  <div key={m}>
-                    <span>{m}</span>
-                    <span>{n}</span>
+                {byRole.map((r) => (
+                  <div key={r.role}>
+                    <span>
+                      {copy.console.roles[r.role]}
+                      {r.model && ` · ${r.model}`}
+                    </span>
+                    <span>{formatCount(r.input)} in</span>
                     <span>200</span>
                   </div>
                 ))}

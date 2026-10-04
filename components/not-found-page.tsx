@@ -4,30 +4,25 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import type { Copy } from "@/lib/copy";
+import { i18n, isLocale, type Locale } from "@/lib/i18n";
 import { baseOptions } from "@/lib/layout.shared";
 import { localePath } from "@/lib/shared";
 
-const text = {
-  en: {
-    title: "Page not found",
-    body: "The page you are looking for does not exist, or it moved.",
-    back: "Back to the home page",
-  },
-  zh: {
-    title: "页面不存在",
-    body: "你要找的页面不存在，或者已经移动。",
-    back: "返回首页",
-  },
-};
+type Text = Copy["notFound"] & { docs: string };
 
-// not-found receives no params, so the language comes from the URL on the
-// client; the header and the home link follow it.
-export function NotFoundPage() {
+// The language comes from the URL on the client; the header and the home
+// link follow it.
+export function NotFoundPage({ text }: { text: Record<Locale, Text> }) {
   const params = useParams<{ lang?: string }>();
-  const lang = params.lang === "zh" ? "zh" : "en";
+  const lang =
+    params.lang && isLocale(params.lang) ? params.lang : i18n.defaultLanguage;
   const t = text[lang];
   return (
-    <HomeLayout {...baseOptions(lang)} className="home home-layout">
+    <HomeLayout
+      {...baseOptions(lang, { docs: t.docs })}
+      className="home home-layout"
+    >
       <title>{`404 · ${t.title} · ocra`}</title>
       <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-4 py-32 sm:px-8">
         <p className="font-mono text-sm text-(--aqua-ink)">404</p>

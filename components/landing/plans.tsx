@@ -1,4 +1,5 @@
 import type { Copy, PlanId } from "@/lib/copy";
+import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 import { SplitHead, withCode } from "./heading";
 
@@ -10,7 +11,7 @@ export function Plans({
   locale,
 }: {
   copy: Copy["plans"];
-  locale: string;
+  locale: Locale;
 }) {
   const links: Record<PlanId, string> = {
     self: localePath(locale, "/docs/quickstart"),
