@@ -61,7 +61,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 
 ## Handoff
 
-- The state of the project, the site included, is kept in the main repository's `docs/handoff.md`. Update it at the end of every task or batch of work, before reporting it done, without being asked.
+- The state of the project, the site included, is kept in `handoff.md` in the maintainers' private repository `jma49/ocra-internal` (cloned as `../ocra-internal`). Update it at the end of every task or batch of work, before reporting it done, without being asked. Never put such notes in this public repository.
 
 ## Git workflow
 
