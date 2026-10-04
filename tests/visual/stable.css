@@ -10,3 +10,11 @@
   /* biome-ignore lint/complexity/noImportantStyles: hides the moving thumb for screenshots */
   visibility: hidden !important;
 }
+
+/* The providers marquee keeps drifting under Reduce motion (DESIGN.md,
+   Motion), so two screenshots in a row never match; it is pinned to its
+   start for the screenshot. */
+.mq-track {
+  /* biome-ignore lint/complexity/noImportantStyles: overrides the marquee animation for screenshots */
+  animation: none !important;
+}
