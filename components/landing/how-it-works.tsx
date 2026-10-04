@@ -13,18 +13,40 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
   const steps = useRef<(HTMLDivElement | null)[]>([]);
   const figures = howFigures(copy.figures);
 
+  // The active step is the one whose middle is nearest the viewport's
+  // middle, computed from layout on scroll and resize. Unlike an
+  // IntersectionObserver it is a pure function of the layout, so it never
+  // flips between two identical frames (a full-page screenshot stretches the
+  // viewport and used to catch it mid-switch).
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting)
-            setActive(Number((e.target as HTMLElement).dataset.i));
+    let raf = 0;
+    const pick = () => {
+      raf = 0;
+      const mid = innerHeight / 2;
+      let best = 0;
+      let dist = Number.POSITIVE_INFINITY;
+      steps.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < dist) {
+          dist = d;
+          best = i;
         }
-      },
-      { rootMargin: "-45% 0px -45% 0px" },
-    );
-    for (const el of steps.current) if (el) io.observe(el);
-    return () => io.disconnect();
+      });
+      setActive(best);
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(pick);
+    };
+    pick();
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule);
+    return () => {
+      removeEventListener("scroll", schedule);
+      removeEventListener("resize", schedule);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
