@@ -333,7 +333,7 @@ export const en: Copy = {
         planned: true,
       },
     ],
-    fine: "With ocra Cloud your change passes through its gateway on the way to your model provider, and the console keeps counts, never code. If nothing but your provider may see the code, self-host: it is the same engine.",
+    fine: "With ocra Cloud your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing. If nothing but your provider may see the code, self-host: it is the same engine.",
   },
   faq: {
     title: "Questions,",
