@@ -1,7 +1,9 @@
+import { i18nProvider } from "fumadocs-ui/i18n";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import type { ReactNode } from "react";
+import { Providers } from "@/components/providers";
 import { getCopy } from "@/lib/copy";
-import { baseOptions } from "@/lib/layout.shared";
+import { baseOptions, translations } from "@/lib/layout.shared";
 import { localeParam } from "@/lib/locale-param";
 import { source } from "@/lib/source";
 
@@ -14,14 +16,16 @@ export default async function Layout({
 }) {
   const lang = await localeParam(params);
   return (
-    <DocsLayout
-      tree={source.getPageTree(lang)}
-      {...baseOptions(lang, {
-        docs: getCopy(lang).nav.links.docs,
-        dark: true,
-      })}
-    >
-      {children}
-    </DocsLayout>
+    <Providers i18n={i18nProvider(translations, lang)}>
+      <DocsLayout
+        tree={source.getPageTree(lang)}
+        {...baseOptions(lang, {
+          docs: getCopy(lang).nav.links.docs,
+          dark: true,
+        })}
+      >
+        {children}
+      </DocsLayout>
+    </Providers>
   );
 }
