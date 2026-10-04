@@ -1,11 +1,14 @@
-import { Anatomy } from "@/components/landing/anatomy";
-import { Decisions } from "@/components/landing/decisions";
-import { Footer } from "@/components/landing/footer";
-import { GetStarted } from "@/components/landing/get-started";
+import { Faq, Final, Footer } from "@/components/landing/closing";
+import { Dock } from "@/components/landing/dock";
+import { Features } from "@/components/landing/features";
 import { Hero } from "@/components/landing/hero";
-import { Plugins } from "@/components/landing/plugins";
-import { Stages } from "@/components/landing/stages";
-import { Status } from "@/components/landing/status";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { Lifecycle } from "@/components/landing/lifecycle";
+import { Plans } from "@/components/landing/plans";
+import { Security } from "@/components/landing/security";
+import { SiteHeader } from "@/components/landing/site-header";
+import { Statement } from "@/components/landing/statement";
+import { Works } from "@/components/landing/works";
 import { getCopy } from "@/lib/copy";
 
 export default async function HomePage({
@@ -16,15 +19,22 @@ export default async function HomePage({
   const { lang } = await params;
   const copy = getCopy(lang);
   return (
-    <div className="relative flex flex-1 flex-col">
-      <Hero copy={copy.hero} locale={lang} />
-      <Stages copy={copy.run} locale={lang} />
-      <Decisions copy={copy.decisions} />
-      <Anatomy copy={copy.anatomy} />
-      <Plugins copy={copy.plugins} locale={lang} />
-      <Status copy={copy.status} locale={lang} />
-      <GetStarted copy={copy.start} locale={lang} />
+    <>
+      <SiteHeader copy={copy} locale={lang} />
+      <main className="landing">
+        <Hero copy={copy} locale={lang} />
+        <Works copy={copy.works} />
+        <HowItWorks copy={copy.how} />
+        <Statement copy={copy.statement} />
+        <Features copy={copy.features} />
+        <Lifecycle copy={copy.lifecycle} finding={copy.window.pr} />
+        <Security copy={copy.security} locale={lang} />
+        <Plans copy={copy.plans} locale={lang} />
+        <Faq copy={copy.faq} />
+        <Final copy={copy.final} locale={lang} />
+      </main>
       <Footer copy={copy.footer} locale={lang} />
-    </div>
+      <Dock copy={copy.dock} />
+    </>
   );
 }

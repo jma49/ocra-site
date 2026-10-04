@@ -1,0 +1,153 @@
+/* ---- One hover language ----
+   Blocks lift up-left and print a pink plate behind, an aquamarine one ahead.
+   Lines get an aquamarine highlighter sweep from the left. Nothing else moves. */
+.home {
+  --hv-t: 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --hv-shadow: 4px 4px 0 var(--pink), -2px -2px 0 var(--aqua);
+  --hv-mark: rgb(127 255 212 / 0.55);
+  --hv-row: rgb(127 255 212 / 0.26);
+}
+.dark .home {
+  --hv-mark: rgb(127 255 212 / 0.22);
+  --hv-row: rgb(127 255 212 / 0.12);
+}
+
+.home .btn,
+.card,
+.plan,
+.logo-tile,
+.pchip,
+.tabs button,
+.seg button,
+.replay,
+.commit,
+.ib,
+.dock .copy {
+  transition:
+    transform var(--hv-t),
+    box-shadow var(--hv-t),
+    background-color var(--hv-t),
+    color var(--hv-t);
+}
+.home .btn i {
+  transition: transform 0.3s ease;
+}
+@media (hover: hover) {
+  .home .btn:hover,
+  .card:hover,
+  .plan:hover,
+  .logo-tile:hover,
+  .pchip:hover,
+  .tabs button:hover,
+  .seg button:hover,
+  .replay:hover,
+  .commit:hover:not(:disabled),
+  .ib:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--hv-shadow);
+  }
+  .card:hover,
+  .plan:not(.feat):hover,
+  .logo-tile:hover {
+    box-shadow:
+      var(--hv-shadow),
+      inset 0 1px 0 var(--glass-hi);
+  }
+  .logo-tile:hover,
+  .pchip:hover {
+    color: var(--text);
+  }
+  .home .btn:hover i {
+    transform: translateX(3px);
+  }
+}
+.home .btn:active,
+.tabs button:active,
+.seg button:active,
+.replay:active,
+.commit:active,
+.ib:active {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 var(--pink);
+}
+
+.nav .links a,
+.nav-r .t,
+.announce a,
+.foot a,
+.tlink,
+.drawer a,
+.faq summary,
+.file,
+.sum td,
+.code .l:not(.q),
+.props li,
+.keys li {
+  background-image: linear-gradient(var(--hv-mark), var(--hv-mark));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 40%;
+  transition:
+    background-size 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color var(--hv-t);
+}
+.drawer a,
+.faq summary,
+.file,
+.sum td,
+.code .l:not(.q),
+.props li,
+.keys li {
+  background-image: linear-gradient(
+    90deg,
+    var(--hv-row),
+    var(--hv-row) 70%,
+    transparent
+  );
+  background-size: 0% 100%;
+}
+.nav .links a,
+.nav-r .t,
+.foot a,
+.tlink,
+.announce a {
+  padding: 0 2px;
+  margin: 0 -2px;
+}
+.file {
+  padding: 4px 8px;
+  margin: 0 -8px;
+  border-radius: 6px;
+}
+.drawer a {
+  padding-left: 12px;
+  padding-right: 12px;
+  margin: 0 -12px;
+  border-radius: 10px;
+}
+@media (hover: hover) {
+  .nav .links a:hover,
+  .nav-r .t:hover,
+  .foot a:hover,
+  .tlink:hover,
+  .announce a:hover {
+    background-size: 100% 40%;
+  }
+  .nav .links a:hover,
+  .nav-r .t:hover,
+  .announce a:hover {
+    color: #fff;
+  }
+  .foot a:hover {
+    color: var(--text);
+  }
+  .drawer a:hover,
+  .faq summary:hover,
+  .file:hover,
+  .sum tr:hover td,
+  .code .l:not(.q):hover,
+  .props li:hover,
+  .keys li:hover {
+    background-size: 100% 100%;
+  }
+}

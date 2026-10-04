@@ -8,7 +8,7 @@ export const contentType = "image/png";
 const svg = readFileSync(join(process.cwd(), "app/icon.svg"), "utf8");
 
 export default function AppleIcon() {
-  // iOS fills transparency with black, so the frog sits on a light tile.
+  // The icon is a dark tile already; iOS adds the rounded corners.
   return new ImageResponse(
     <div
       style={{
@@ -17,14 +17,14 @@ export default function AppleIcon() {
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-        background: "#e9fff7",
+        background: "#0b0f0e",
       }}
     >
       {/* biome-ignore lint/performance/noImgElement: ImageResponse renders plain elements, not next/image */}
       <img
         src={`data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`}
-        width={140}
-        height={140}
+        width={180}
+        height={180}
         alt=""
       />
     </div>,

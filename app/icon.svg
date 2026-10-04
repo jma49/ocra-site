@@ -1,22 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <title>ocra</title>
-  <g fill="#0c3b30" stroke="#0c3b30" stroke-width="5">
-    <ellipse cx="32" cy="39" rx="26" ry="19"/>
-    <circle cx="19" cy="21" r="11"/>
-    <circle cx="45" cy="21" r="11"/>
-  </g>
-  <g fill="#7fffd4">
-    <ellipse cx="32" cy="39" rx="26" ry="19"/>
-    <circle cx="19" cy="21" r="11"/>
-    <circle cx="45" cy="21" r="11"/>
-  </g>
-  <circle cx="19" cy="21" r="7" fill="#fff"/>
-  <circle cx="45" cy="21" r="7" fill="#fff"/>
-  <circle cx="20.5" cy="23" r="3.6" fill="#0c3b30"/>
-  <circle cx="46.5" cy="23" r="3.6" fill="#0c3b30"/>
-  <circle cx="21.6" cy="21.7" r="1.2" fill="#fff"/>
-  <circle cx="47.6" cy="21.7" r="1.2" fill="#fff"/>
-  <ellipse cx="14" cy="41" rx="4.5" ry="2.6" fill="#ff8f8f" fill-opacity=".55"/>
-  <ellipse cx="50" cy="41" rx="4.5" ry="2.6" fill="#ff8f8f" fill-opacity=".55"/>
-  <path d="M24 41.5q8 6.5 16 0" fill="none" stroke="#0c3b30" stroke-width="2.6" stroke-linecap="round"/>
+<title>ocra</title>
+<rect width="64" height="64" rx="14" fill="#0b0f0e"/>
+<g transform="translate(3.5 3.5) scale(.89)">
+<g>
+<path d="M25 22.5 L17 11" stroke="#f4f2ea" stroke-width="6" stroke-linecap="round">
+</path>
+<path d="M17 11 L19.5 2.5" stroke="#f4f2ea" stroke-width="4" stroke-linecap="round">
+</path>
+<path d="M39 22.5 L47 11" stroke="#f4f2ea" stroke-width="6" stroke-linecap="round">
+</path>
+<path d="M47 11 L44.5 2.5" stroke="#f4f2ea" stroke-width="4" stroke-linecap="round">
+</path>
+<path d="M22.5 27 L9 21" stroke="#f4f2ea" stroke-width="4.4" stroke-linecap="round">
+</path>
+<path d="M9 21 L2.5 15.5" stroke="#f4f2ea" stroke-width="2.8" stroke-linecap="round">
+</path>
+<path d="M41.5 27 L55 21" stroke="#f4f2ea" stroke-width="4.4" stroke-linecap="round">
+</path>
+<path d="M55 21 L61.5 15.5" stroke="#f4f2ea" stroke-width="2.8" stroke-linecap="round">
+</path>
+<path d="M22.5 31 L8 34.5" stroke="#f4f2ea" stroke-width="4.4" stroke-linecap="round">
+</path>
+<path d="M8 34.5 L2.5 41.5" stroke="#f4f2ea" stroke-width="2.8" stroke-linecap="round">
+</path>
+<path d="M41.5 31 L56 34.5" stroke="#f4f2ea" stroke-width="4.4" stroke-linecap="round">
+</path>
+<path d="M56 34.5 L61.5 41.5" stroke="#f4f2ea" stroke-width="2.8" stroke-linecap="round">
+</path>
+<path d="M25 35.5 L14.5 45.5" stroke="#f4f2ea" stroke-width="4.4" stroke-linecap="round">
+</path>
+<path d="M14.5 45.5 L11 57" stroke="#f4f2ea" stroke-width="2.8" stroke-linecap="round">
+</path>
+<path d="M39 35.5 L49.5 45.5" stroke="#f4f2ea" stroke-width="4.4" stroke-linecap="round">
+</path>
+<path d="M49.5 45.5 L53 57" stroke="#f4f2ea" stroke-width="2.8" stroke-linecap="round">
+</path>
+<ellipse cx="32" cy="45.5" rx="11" ry="12.5" fill="#f4f2ea">
+</ellipse>
+<path d="M27 35.5 Q32 38 37 35.5 L36 33 L28 33 Z" fill="#f4f2ea">
+</path>
+<circle cx="32" cy="26.5" r="11" fill="#f4f2ea">
+</circle>
+</g>
+<circle cx="27" cy="25.5" r="5.2" fill="#7fffd4"/>
+<circle cx="37" cy="25.5" r="5.2" fill="#7fffd4"/>
+</g>
 </svg>

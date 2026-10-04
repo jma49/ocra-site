@@ -1,18 +1,8 @@
-import { HomeLayout } from "fumadocs-ui/layouts/home";
 import type { ReactNode } from "react";
-import { baseOptions } from "@/lib/layout.shared";
+import "../../landing/index.css";
 
-export default async function Layout({
-  params,
-  children,
-}: {
-  params: Promise<{ lang: string }>;
-  children: ReactNode;
-}) {
-  const { lang } = await params;
-  return (
-    <HomeLayout {...baseOptions(lang)} className="home home-layout">
-      {children}
-    </HomeLayout>
-  );
+// The landing page draws its own header and footer (components/landing);
+// the manual keeps Fumadocs' layout.
+export default function Layout({ children }: { children: ReactNode }) {
+  return <div className="home">{children}</div>;
 }

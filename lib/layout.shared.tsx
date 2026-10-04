@@ -12,10 +12,14 @@ export const translations = i18n
 
 const docsLabel: Record<string, string> = { en: "Docs", zh: "文档" };
 
-export function baseOptions(locale: string): BaseLayoutProps {
+// The manual's sidebar is dark glass, so its logo takes the light-on-dark spider.
+export function baseOptions(
+  locale: string,
+  { dark = false }: { dark?: boolean } = {},
+): BaseLayoutProps {
   return {
     nav: {
-      title: <Logo />,
+      title: <Logo dark={dark} />,
       url: localePath(locale, "/"),
       transparentMode: "top",
     },

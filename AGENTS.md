@@ -14,9 +14,12 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `app/[lang]/(home)` | Landing page |
 | `app/[lang]/docs` | Rendered user manual |
 | `components/landing/` | Landing page sections |
+| `components/brand/` | The spider mark |
+| `app/landing/` | The landing page's styles, split by section (`index.css` imports them in order) |
+| `app/docs.css` | The manual's restyling of Fumadocs |
 | `lib/copy/` | All landing page copy: `types.ts`, then `en.ts` and `zh.ts` with the same shape |
 | `scripts/sync-manual.mjs` | Copies the manual into `content/docs` before `dev` and `build` |
-| `scripts/demo-video/` | Records the example run (real ocra CLI, scripted model) and renders the demo video; see its README |
+| `scripts/demo-video/` | Records the example run (real ocra CLI, scripted model) that the landing page quotes; see its README |
 
 ## The manual is not written here
 
@@ -40,16 +43,17 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 ## Content rules
 
 - **Say only what is true today.** The project is early: no invented customers, logos, testimonials, statistics or benchmark results. Planned features are labeled as planned.
-- Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug. The landing page's example (hero terminal, stage pictures, finding, demo video) is one recorded run from `scripts/demo-video/`; when ocra's output changes, record it again rather than editing the lines by hand.
+- Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug. The landing page's example (the pull request and terminal in the hero window, the step pictures, the finding) is one recorded run from `scripts/demo-video/`; when ocra's output changes, record it again rather than editing the lines by hand.
 - The design is original. The site may borrow the structure of other product pages but never their copy, visuals or branding.
 
 ## Design
 
 `DESIGN.md` holds the design system: tokens, type scale, components, the mascot, and the migration in progress. Read it before any change to `app/`, `components/` or `app/global.css`. The rules that apply to every change:
 
-- **Monochrome and typography-led; colour carries meaning only** (the aquamarine accent for links, focus and "verified"; review severities; diff lines). No gradients, textures or skeuomorphism; the hero glow behind the mascot and the OCRA wordmark band at the foot of the landing page are the only background effects (the band is the one place the brand colour is decoration).
-- Avoid the generic AI landing-page look: no pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy. Prefer left-aligned editorial layouts and concrete statements.
-- Style through the tokens in `app/global.css` only: no hex values or Tailwind palette colours in components. A token change edits `app/global.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
+- **Ink, paper, aquamarine and pink.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); pink is only the second print plate (off-register edges, hover shadows, the spider's ghost) and never carries meaning or body text. Frosted glass for windows and panels; the halftone night, the corner webs and the soft light behind panels are the background effects.
+- **One hover language** (DESIGN.md, Motion): blocks lift up-left with a pink plate behind and an aquamarine one ahead; lines get a highlighter sweep. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
+- **Never resemble a competitor's visual signature**; borrow finish, not devices.
+- Style through the tokens in `app/global.css` and `app/landing/01-base.css` only: no hex values or Tailwind palette colours in components. A token change edits `app/global.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
 - Look at the result before calling a UI change done: `npm run build && npm run visual:baseline` before the change, `npm run build && npm run visual` after it (both languages, three widths, both themes, console errors; see Verification in `DESIGN.md`). A pull request that changes the look on purpose gets the `visual-change` label and lists the intended differences.
 

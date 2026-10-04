@@ -1,0 +1,311 @@
+/* The landing page (DESIGN.md, "Landing page"). Ink, paper, aquamarine and
+   pink; frosted glass panels over a faint print texture. Motion and hover
+   rules live in landing-motion.css. */
+
+.home {
+  --paper: #f7f6f1;
+  --paper-2: #efede6;
+  --card: #ffffff;
+  --text: #111a17;
+  --text-2: #4a5550;
+  --text-3: #626b66;
+  --line: #e3e0d6;
+  --line-2: #d2cec2;
+  --aqua: #7fffd4;
+  --aqua-ink: #0b7a5c;
+  --pink: #ff3d7f;
+  --night: #0b0f0e;
+  --on-night: #f4f2ea;
+  --marker: rgb(127 255 212 / 0.8);
+  --red: #b5301b;
+  --red-soft: #f8e4dd;
+  --amber: #a35a00;
+  --kw: #6b3fa0;
+  --glass: rgb(255 255 255 / 0.56);
+  --glass-soft: rgb(255 255 255 / 0.42);
+  --glass-inner: rgb(255 255 255 / 0.4);
+  --glass-line: rgb(255 255 255 / 0.7);
+  --glass-edge: rgb(17 26 23 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.85);
+  --glass-blur: blur(22px) saturate(1.6);
+  --glow-o: 1;
+  background: var(--paper);
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--text) 7%, transparent) 1px,
+    transparent 1.4px
+  );
+  background-size: 18px 18px;
+  color: var(--text);
+  font-size: 16.5px;
+  line-height: 1.6;
+}
+
+.dark .home {
+  --paper: #0c100e;
+  --paper-2: #121815;
+  --card: #141a17;
+  --text: #ecf1ee;
+  --text-2: #a6b1ab;
+  --text-3: #7d8781;
+  --line: #222a26;
+  --line-2: #2e3833;
+  --aqua-ink: #7fffd4;
+  --marker: rgb(127 255 212 / 0.3);
+  --red: #ff7a5c;
+  --red-soft: #2a1713;
+  --amber: #f2ad4b;
+  --kw: #c9a7ff;
+  --glass: rgb(24 31 28 / 0.5);
+  --glass-soft: rgb(30 38 34 / 0.42);
+  --glass-inner: rgb(255 255 255 / 0.04);
+  --glass-line: rgb(255 255 255 / 0.09);
+  --glass-edge: rgb(0 0 0 / 0.4);
+  --glass-hi: rgb(255 255 255 / 0.07);
+  --glow-o: 0.38;
+}
+
+.home ::selection {
+  background: var(--aqua);
+  color: var(--night);
+}
+.home code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+}
+.home :focus-visible {
+  outline: 2px solid var(--aqua-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.landing {
+  overflow-x: clip;
+}
+.wrap {
+  width: 100%;
+  max-width: 78rem;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 768px) {
+  .wrap {
+    padding: 0 40px;
+  }
+}
+.chapter {
+  position: relative;
+  padding: 128px 0;
+}
+@media (min-width: 900px) {
+  .chapter {
+    padding: 176px 0;
+  }
+}
+.chapter.tight-top {
+  padding-top: 0;
+}
+
+/* ---- Type: one family, Archivo, on its width axis ---- */
+.home h1,
+.home h2,
+.home h3 {
+  margin: 0;
+  text-wrap: balance;
+}
+.home h2 {
+  font-size: clamp(2.2rem, 3.9vw, 3.6rem);
+  line-height: 1;
+  font-weight: 800;
+  font-stretch: 86%;
+  letter-spacing: -0.028em;
+}
+.home h2.narrow {
+  max-width: 46rem;
+}
+.home h2 em {
+  font-style: italic;
+  text-shadow:
+    -0.022em -0.012em 0 rgb(127 255 212 / 0.85),
+    0.022em 0.012em 0 rgb(255 61 127 / 0.7);
+}
+.home h3 {
+  font-weight: 700;
+  font-stretch: 92%;
+  letter-spacing: -0.018em;
+}
+.home p {
+  text-wrap: pretty;
+}
+.lede {
+  font-size: 1.15rem;
+  color: var(--text-2);
+  margin: 0;
+}
+.fg {
+  color: var(--text);
+}
+:lang(zh) .home h2 {
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+:lang(zh) .home h2 em {
+  font-style: normal;
+}
+
+.split-head {
+  display: grid;
+  gap: 28px;
+}
+@media (min-width: 960px) {
+  .split-head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 72px;
+  }
+}
+
+/* ---- Buttons ---- */
+.home .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-stretch: 92%;
+  font-size: 15.5px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.home .btn i {
+  font-style: normal;
+}
+.home .btn-dark {
+  background: var(--text);
+  color: var(--paper);
+}
+.home .btn-soft {
+  background: var(--glass-soft);
+  color: var(--text);
+  border-color: var(--line-2);
+  backdrop-filter: blur(8px);
+}
+.home .btn-brand {
+  background: var(--aqua);
+  color: var(--night);
+}
+.home .btn-sm {
+  height: 38px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+/* ---- Header ---- */
+.announce {
+  text-align: center;
+  font-size: 13.5px;
+  padding: 10px 16px;
+  background: var(--night);
+  color: rgb(244 242 234 / 0.78);
+  border-bottom: 1px solid rgb(244 242 234 / 0.08);
+}
+.announce a {
+  color: var(--aqua);
+}
+.nav-shell {
+  position: sticky;
+  top: 12px;
+  z-index: 60;
+  padding: 0 12px;
+  margin-top: 12px;
+}
+.nav {
+  max-width: 74rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 58px;
+  padding: 0 10px 0 18px;
+  border-radius: 16px;
+  background: rgb(14 19 17 / 0.78);
+  border: 1px solid rgb(244 242 234 / 0.1);
+  color: var(--on-night);
+  backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 10px 30px -14px rgb(0 0 0 / 0.6);
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 900;
+  font-stretch: 80%;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+}
+.nav .links {
+  display: none;
+  gap: 28px;
+  font-size: 14.5px;
+  color: rgb(244 242 234 / 0.7);
+}
+.nav-r {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-r .t {
+  display: none;
+  font-size: 14.5px;
+  color: rgb(244 242 234 / 0.7);
+  padding: 0 6px;
+}
+.ib {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(244 242 234 / 0.16);
+  background: transparent;
+  color: rgb(244 242 234 / 0.75);
+  cursor: pointer;
+}
+.ib.menu {
+  display: grid;
+}
+@media (min-width: 980px) {
+  .nav .links {
+    display: flex;
+  }
+  .nav-r .t {
+    display: inline;
+  }
+  .ib.menu {
+    display: none;
+  }
+}
+.drawer {
+  display: none;
+  max-width: 74rem;
+  margin: 8px auto 0;
+  border-radius: 16px;
+  background: #0e1311;
+  color: var(--on-night);
+  border: 1px solid rgb(244 242 234 / 0.1);
+  padding: 8px 18px;
+}
+.drawer a {
+  display: block;
+  padding: 13px 0;
+  border-bottom: 1px solid rgb(244 242 234 / 0.08);
+}
+.drawer a:last-child {
+  border-bottom: 0;
+}
+.nav-shell[data-open="true"] .drawer {
+  display: block;
+}

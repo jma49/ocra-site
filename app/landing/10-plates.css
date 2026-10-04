@@ -1,0 +1,89 @@
+/* Tooltips on hover: the quoted line and the files in the sidebar. */
+.qtip {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  z-index: 5;
+  white-space: nowrap;
+  font: 500 11px var(--font-mono);
+  background: var(--night);
+  color: var(--aqua);
+  padding: 4px 9px;
+  border-radius: 7px;
+  box-shadow: 3px 3px 0 var(--pink);
+  opacity: 0;
+  transform: translate(6px, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: none;
+}
+.code .q {
+  cursor: help;
+}
+.code .q:hover .qtip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+.file::after {
+  content: attr(data-why);
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translate(6px, -50%);
+  white-space: nowrap;
+  font: 500 11px var(--font-mono);
+  background: var(--night);
+  color: var(--on-night);
+  padding: 5px 9px;
+  border-radius: 7px;
+  box-shadow: 3px 3px 0 var(--pink);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  text-decoration: none;
+}
+.file:hover::after {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* ---- Poster headlines: plates off register ---- */
+.plated {
+  position: relative;
+  isolation: isolate;
+}
+.plate {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+.plate,
+.plate em {
+  text-shadow: none;
+}
+.plate-a,
+.plate-a em {
+  color: var(--aqua);
+}
+.plate-p,
+.plate-p em {
+  color: var(--pink);
+}
+.plate-a {
+  transform: translate(var(--ax, 0), var(--ay, 0));
+}
+.plate-p {
+  transform: translate(var(--px, 0.03em), var(--py, 0.02em));
+  mix-blend-mode: screen;
+}
+.plate-cut {
+  z-index: 1;
+  background: var(--night);
+  opacity: 0;
+  clip-path: inset(var(--cy, 0) 0 calc(100% - var(--cy, 0px) - 0.16em) 0);
+  transform: translateX(var(--cx, 0));
+}
