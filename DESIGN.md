@@ -247,7 +247,7 @@ Pills for buttons, tabs and segmented controls; 5px for tags; 8px for small cont
 - **Favicon and Apple icon**: the silhouette in paper with aquamarine eyes on a night tile.
 - **Plated headline** (`plated-heading.tsx`): the poster headline on three plates; the text is never split, so it reads and wraps as one line.
 - **Hanging spider** (`hanging-spider.tsx`): hangs on its thread over the hero window; click or Enter sends it up the thread, again brings it down, the thread follows. The big spider over the final call to action bursts on hover.
-- **Product window** (`product-window.tsx`, `pr-pane.tsx`): the example pull request, terminal and ocra Cloud console behind tabs. The pull request replays the review when it scrolls into view and has a working "Commit suggestion" that re-reviews and resolves the thread.
+- **Product window** (`product-window.tsx`, `pr-pane.tsx`): the example pull request, terminal and ocra Cloud console behind tabs. The pull request replays the review when it scrolls into view; each finding ends with its suggestion as a plain `Suggestion:` line, the way ocra posts it (no committable suggestion: ocra does not post GitHub suggestion blocks).
 - **Providers marquee** (`works.tsx`, `lib/landing/brand-icons.ts`): two rows of glass chips with single-colour 24px marks (LobeHub icons, MIT; Simple Icons, CC0), moving in opposite directions.
 - **Manual (MDX)**: `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`, which gives the panels the `glass` class and cards the block hover. Register a component before the manual uses it, or the build fails.
 - Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings except identifiers.
