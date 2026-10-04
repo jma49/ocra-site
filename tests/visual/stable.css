@@ -18,3 +18,11 @@
   /* biome-ignore lint/complexity/noImportantStyles: overrides the marquee animation for screenshots */
   animation: none !important;
 }
+
+/* The hanging spider answers the pointer and sits half off the hero's edge;
+   a few of its pixels differed between two consecutive screenshots. Its box
+   keeps its place; only the drawing is hidden. */
+.hang .yo {
+  /* biome-ignore lint/complexity/noImportantStyles: hides the spider for screenshots */
+  visibility: hidden !important;
+}
