@@ -100,7 +100,7 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
               );
             })}
           </div>
-          <div className="sticky" aria-hidden="true">
+          <div className="sticky" inert>
             {STEPS.map((id, i) => (
               <div key={id} className={i === active ? "vis on" : "vis"}>
                 {figures[id]}

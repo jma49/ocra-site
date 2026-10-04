@@ -2,6 +2,7 @@
 
 import {
   type CSSProperties,
+  type HTMLAttributes,
   useCallback,
   useEffect,
   useRef,
@@ -20,7 +21,13 @@ const DOLLARS: number = exampleRun.usage.dollars;
 
 // The pull request as ocra leaves it, replayed when it scrolls into view:
 // stages light up, the summary fills in, the cost counts up.
-export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
+export function PrPane({
+  copy,
+  panel,
+}: {
+  copy: Copy["window"]["pr"];
+  panel: HTMLAttributes<HTMLDivElement>;
+}) {
   const root = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
   const [state, setState] = useState<State>("done");
@@ -127,7 +134,7 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
   const busy = running;
 
   return (
-    <div ref={root} className="pr" data-state={state}>
+    <div ref={root} className="pr" data-state={state} {...panel}>
       <div className="pr-main">
         <div className="pr-title">
           {copy.title} <span>#{pr.number}</span>

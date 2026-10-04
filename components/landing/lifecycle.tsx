@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { Copy } from "@/lib/copy";
 import { SplitHead } from "./heading";
 import { FindingComment } from "./session-code";
+import { tabPattern } from "./tabs";
 
 type State = "reported" | "fixed" | "dismissed";
 
@@ -18,6 +19,7 @@ export function Lifecycle({
 }) {
   const [state, setState] = useState<State>("reported");
   const states: State[] = ["reported", "fixed", "dismissed"];
+  const t = tabPattern("lifecycle", states, state, setState);
   return (
     <section className="chapter tight-top lifecycle">
       <div className="wrap">
@@ -28,20 +30,14 @@ export function Lifecycle({
         />
         <div className="life" data-s={state}>
           <div>
-            <div className="seg" role="tablist">
+            <div className="seg" {...t.list}>
               {states.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  role="tab"
-                  aria-selected={state === s}
-                  onClick={() => setState(s)}
-                >
+                <button key={s} type="button" {...t.tab(s)}>
                   {copy.tabs[s]}
                 </button>
               ))}
             </div>
-            <div className="thread">
+            <div className="thread" {...t.panel(state)}>
               {state !== "dismissed" && (
                 <div className="caption" aria-hidden="true">
                   {copy.caption}

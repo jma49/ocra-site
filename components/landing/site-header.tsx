@@ -12,8 +12,10 @@ import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
   const [open, setOpen] = useState(false);
   const shell = useRef<HTMLDivElement>(null);
+  const menuButton = useRef<HTMLButtonElement>(null);
 
-  // The menu closes on a tap outside it, on Escape and once the page scrolls.
+  // The menu closes on a tap outside it, on Escape (focus returns to its
+  // button) and once the page scrolls.
   useEffect(() => {
     if (!open) return;
     const close = () => setOpen(false);
@@ -21,7 +23,9 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
       if (!shell.current?.contains(e.target as Node)) close();
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key !== "Escape") return;
+      close();
+      menuButton.current?.focus();
     };
     const startY = scrollY;
     const scrolled = () => {
@@ -95,9 +99,11 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
             </a>
             <button
               type="button"
+              ref={menuButton}
               className="ib menu"
               aria-label={n.menu}
               aria-expanded={open}
+              aria-controls="site-menu"
               onClick={() => setOpen((o) => !o)}
             >
               <svg
@@ -115,7 +121,7 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
             </button>
           </div>
         </header>
-        <div className="drawer">
+        <div className="drawer" id="site-menu">
           {[
             ...links,
             { href: repoUrl, label: n.github },
