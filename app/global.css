@@ -1,16 +1,18 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
+@import "./docs.css";
 
 /* Monochrome, typography-led design. Colour carries meaning only: the
    aquamarine brand for links, focus and "verified", and the review
-   severities. CJK text uses the system faces after Geist. */
+   severities. CJK text uses the system faces after Archivo. */
 @theme {
   --font-sans:
-    var(--font-geist), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+    var(--font-archivo), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
     "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
   --font-mono:
-    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+    var(--font-maple), "Maple Mono NF", ui-monospace, SFMono-Regular, Menlo,
+    monospace;
 
   --text-display: 4rem;
   --text-display--line-height: 1.02;
@@ -70,19 +72,21 @@
 
 :root {
   --brand: #7fffd4;
-  /* The frog's outline; the letters on the wordmark band in both themes. */
-  --ink: #0c3b30;
+  /* Ink: text on the aquamarine, the night sections, the spider. */
+  --pink: #ff3d7f;
+  --ink: #0b0f0e;
   /* Aquamarine is too light for text on white; the same hue, darkened to
      about 5:1 contrast, carries it in the light theme. */
   --accent: #0b7a5c;
   --accent-soft: color-mix(in srgb, var(--brand) 32%, white);
-  --bg: #ffffff;
-  --bg-subtle: #fafafa;
-  --fg: #0a0a0a;
-  --fg-muted: #525252;
-  --fg-subtle: #737373;
-  --border: #e5e5e5;
-  --border-strong: #d4d4d4;
+  /* Paper and ink, shared with the landing page. */
+  --bg: #f7f6f1;
+  --bg-subtle: #efede6;
+  --fg: #111a17;
+  --fg-muted: #4a5550;
+  --fg-subtle: #626b66;
+  --border: #e3e0d6;
+  --border-strong: #d2cec2;
   --panel: #ffffff;
   --panel-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
   --critical: #b91c1c;
@@ -103,7 +107,7 @@
 
   --color-fd-background: var(--bg);
   --color-fd-foreground: var(--fg);
-  --color-fd-muted: #f4f4f5;
+  --color-fd-muted: var(--bg-subtle);
   --color-fd-muted-foreground: var(--fg-muted);
   --color-fd-card: var(--bg-subtle);
   --color-fd-card-foreground: var(--fg);
@@ -112,9 +116,9 @@
   --color-fd-border: var(--border);
   --color-fd-primary: var(--accent);
   --color-fd-primary-foreground: #ffffff;
-  --color-fd-secondary: #f4f4f5;
+  --color-fd-secondary: var(--bg-subtle);
   --color-fd-secondary-foreground: var(--fg);
-  --color-fd-accent: #f4f4f5;
+  --color-fd-accent: color-mix(in srgb, var(--brand) 22%, var(--bg));
   --color-fd-accent-foreground: var(--fg);
   --color-fd-ring: var(--accent);
 }
@@ -122,14 +126,14 @@
 .dark {
   --accent: var(--brand);
   --accent-soft: color-mix(in srgb, var(--brand) 14%, transparent);
-  --bg: #09090b;
-  --bg-subtle: #0f0f11;
-  --fg: #fafafa;
-  --fg-muted: #a1a1aa;
-  --fg-subtle: #85858e;
-  --border: #27272a;
-  --border-strong: #3f3f46;
-  --panel: #0f0f11;
+  --bg: #0c100e;
+  --bg-subtle: #121815;
+  --fg: #ecf1ee;
+  --fg-muted: #a6b1ab;
+  --fg-subtle: #7d8781;
+  --border: #222a26;
+  --border-strong: #2e3833;
+  --panel: #141a17;
   --panel-shadow:
     0 0 0 1px rgb(255 255 255 / 0.02), 0 8px 32px rgb(0 0 0 / 0.5);
   --critical: #f87171;
@@ -138,9 +142,9 @@
   --code-keyword: #c4b5fd;
   --code-string: var(--brand);
 
-  --color-fd-muted: #18181b;
-  --color-fd-secondary: #18181b;
-  --color-fd-accent: #18181b;
+  --color-fd-muted: var(--bg-subtle);
+  --color-fd-secondary: var(--bg-subtle);
+  --color-fd-accent: color-mix(in srgb, var(--brand) 12%, var(--bg));
   --color-fd-primary-foreground: #04110c;
 }
 
@@ -332,45 +336,6 @@ html > body[data-scroll-locked] {
   }
 }
 
-/* Sections fade in on first view (see Reveal); pending is only set once
-   the script has run, so nothing is hidden without JavaScript. */
-[data-reveal="pending"] > * {
-  opacity: 0;
-  translate: 0 16px;
-}
-
-@media print {
-  [data-reveal="pending"] > * {
-    opacity: 1;
-    translate: none;
-  }
-}
-
-[data-reveal="visible"] > * {
-  transition-property: opacity, translate;
-  transition-duration: 0.7s;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal="pending"] > * {
-    translate: none;
-  }
-}
-
-/* Icons swapped in place cross-fade instead of popping. */
-.swap-icon {
-  transition-property: opacity, scale, filter;
-  transition-duration: 0.2s;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-}
-
-.swap-icon[data-shown="false"] {
-  opacity: 0;
-  scale: 0.25;
-  filter: blur(4px);
-}
-
 @keyframes caret {
   50% {
     opacity: 0;
@@ -385,4 +350,16 @@ html > body[data-scroll-locked] {
   .caret {
     animation: none;
   }
+}
+
+/* The wordmark beside the spider, everywhere the logo appears. */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 900;
+  font-stretch: 80%;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
 }

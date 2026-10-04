@@ -33,3 +33,6 @@ next-env.d.ts
 # demo video: the demo repository, frames and fonts (scripts/demo-video)
 /.demo
 /scripts/demo-video/fonts
+
+# optional demo video renders (scripts/demo-video)
+/public/demo

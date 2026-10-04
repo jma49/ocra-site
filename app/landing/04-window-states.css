@@ -1,0 +1,138 @@
+.resolved-line {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text-3);
+}
+.term {
+  margin: 0;
+  background: #0b0f0d;
+  color: rgb(255 255 255 / 0.86);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.85;
+  padding: 22px 26px 28px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 420px;
+}
+.term .d {
+  color: rgb(255 255 255 / 0.5);
+}
+.term .o {
+  color: var(--aqua);
+}
+.term .w {
+  color: #fbbf24;
+}
+.term .c {
+  color: #fff;
+}
+.term .caret {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: rgb(255 255 255 / 0.8);
+  vertical-align: -2px;
+}
+.console {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 420px;
+  font-size: 13px;
+}
+@media (min-width: 760px) {
+  .console {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+}
+.console aside {
+  display: none;
+  border-right: 1px solid var(--glass-line);
+  padding: 18px 12px;
+  color: var(--text-2);
+}
+@media (min-width: 760px) {
+  .console aside {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+.console aside span {
+  padding: 7px 10px;
+  border-radius: 8px;
+}
+.console aside span.on {
+  background: var(--glass-inner);
+  color: var(--text);
+  font-weight: 600;
+}
+.console .m {
+  padding: 22px;
+  min-width: 0;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.stat {
+  border: 1px solid var(--glass-line);
+  border-radius: 10px;
+  padding: 12px;
+  background: var(--glass-inner);
+}
+.stat small {
+  display: block;
+  color: var(--text-3);
+  font-size: 11.5px;
+}
+.stat b {
+  font-weight: 800;
+  font-stretch: 80%;
+  font-size: 1.6rem;
+  letter-spacing: -0.03em;
+}
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 120px;
+  margin: 22px 0 12px;
+  border-bottom: 1px solid var(--line);
+}
+.bars i {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+.bars b:nth-child(1) {
+  background: var(--aqua-ink);
+}
+.bars b:nth-child(2) {
+  background: var(--aqua);
+}
+.bars b:nth-child(3) {
+  background: var(--line-2);
+}
+.rows div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.rows div:last-child {
+  border-bottom: 0;
+}
+.rows span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}

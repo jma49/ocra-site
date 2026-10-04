@@ -35,12 +35,6 @@ for (const locale of locales) {
       await page.goto(url, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
 
-      // stable.css hides the frog by this selector; fail loudly if the hero
-      // markup changes and the selector stops matching.
-      if (target.name === "home" && !recordingBaseline) {
-        await expect(page.locator(".hero-glow + div > div")).toHaveCount(1);
-      }
-
       await expect(page).toHaveScreenshot(`${locale.code}-${target.name}.png`, {
         fullPage: true,
       });
