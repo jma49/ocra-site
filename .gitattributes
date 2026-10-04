@@ -1,0 +1,3 @@
+# Text files are stored and checked out with LF on every OS: Windows
+# checkouts would otherwise fail Biome's format check.
+* text=auto eol=lf
