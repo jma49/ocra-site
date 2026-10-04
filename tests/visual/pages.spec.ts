@@ -28,9 +28,7 @@ for (const locale of locales) {
       const errors = collectErrors(page);
       // A baseline run records the base branch as it is; only the change
       // under test must pass the checks below.
-      const recordingBaseline = ["all", "changed"].includes(
-        testInfo.config.updateSnapshots,
-      );
+      const recordingBaseline = ["all", "changed"].includes(testInfo.config.updateSnapshots);
       const url = `${locale.prefix}${target.path}`.replace(/\/$/, "") || "/";
       await page.goto(url, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);

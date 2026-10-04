@@ -16,9 +16,7 @@ function resolve(value: unknown): unknown {
   if (typeof value === "function") return value(exampleRun);
   if (Array.isArray(value)) return value.map(resolve);
   if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, item]) => [key, resolve(item)]),
-    );
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, resolve(item)]));
   }
   return value;
 }

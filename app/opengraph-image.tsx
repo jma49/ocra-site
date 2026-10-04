@@ -32,9 +32,7 @@ export default function OpenGraphImage() {
         alt=""
       />
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <div style={{ fontSize: 150, fontWeight: 800, letterSpacing: -6 }}>
-          ocra
-        </div>
+        <div style={{ fontSize: 150, fontWeight: 800, letterSpacing: -6 }}>ocra</div>
         <div style={{ fontSize: 44, color: "#7fffd4" }}>Open-CR-Agent</div>
       </div>
     </div>,

@@ -16,11 +16,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI
-    ? [
-        ["list"],
-        ["github"],
-        ["html", { open: "never", outputFolder: ".visual/report" }],
-      ]
+    ? [["list"], ["github"], ["html", { open: "never", outputFolder: ".visual/report" }]]
     : [["list"]],
   expect: {
     // A full-page desktop home is 12,000 px tall; on CI's runners two stable

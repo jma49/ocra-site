@@ -7,10 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cli = process.env.OCRA_CLI;
-if (!cli)
-  throw new Error(
-    "Set OCRA_CLI to packages/cli/dist/main.js of an Open-CR-Agent build",
-  );
+if (!cli) throw new Error("Set OCRA_CLI to packages/cli/dist/main.js of an Open-CR-Agent build");
 const repo = join(here, "../../.demo/acme-api");
 
 const start = performance.now();
@@ -40,7 +37,5 @@ child.on("close", (exit) => {
     join(here, "transcript.js"),
     `window.TRANSCRIPT = ${JSON.stringify(transcript, null, 1)};\n`,
   );
-  console.log(
-    `exit ${exit}, ${lines.length} lines over ${lines.at(-1)?.t ?? 0} ms`,
-  );
+  console.log(`exit ${exit}, ${lines.length} lines over ${lines.at(-1)?.t ?? 0} ms`);
 });

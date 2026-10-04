@@ -2,12 +2,7 @@
 
 import { useState } from "react";
 import type { Copy } from "@/lib/copy";
-import {
-  type CallRole,
-  exampleRun,
-  formatCount,
-  terminalLines,
-} from "@/lib/landing/example-run";
+import { type CallRole, exampleRun, formatCount, terminalLines } from "@/lib/landing/example-run";
 import { PrPane } from "./pr-pane";
 import { tabPattern } from "./tabs";
 
@@ -28,14 +23,9 @@ const byRole = ROLES.map((role) => {
     input: of.reduce((sum, call) => sum + call.input, 0),
   };
 });
-const count = (...roles: CallRole[]) =>
-  calls.filter((call) => roles.includes(call.role)).length;
+const count = (...roles: CallRole[]) => calls.filter((call) => roles.includes(call.role)).length;
 // The chart stacks three shades: review tasks, grouping, and the checks.
-const SEGMENTS = [
-  count("review"),
-  count("grouping"),
-  count("verification", "judge"),
-];
+const SEGMENTS = [count("review"), count("grouping"), count("verification", "judge")];
 
 export function ProductWindow({ copy }: { copy: Copy["window"] }) {
   const [tab, setTab] = useState<Tab>("pr");
@@ -74,10 +64,7 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
         {tab === "terminal" && (
           <pre className="term" {...t.panel("terminal")}>
             {terminalLines.map(([text, tone]) => (
-              <span
-                key={text}
-                className={tone || undefined}
-              >{`${text}\n`}</span>
+              <span key={text} className={tone || undefined}>{`${text}\n`}</span>
             ))}
             <span className="caret" />
           </pre>
@@ -108,10 +95,7 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
               </div>
               <div className="bars" aria-hidden="true">
                 {DAYS.map((day) => (
-                  <i
-                    key={day}
-                    style={{ height: day === TODAY ? calls.length * 9 : 0 }}
-                  >
+                  <i key={day} style={{ height: day === TODAY ? calls.length * 9 : 0 }}>
                     {day === TODAY &&
                       SEGMENTS.map((n, i) => (
                         // biome-ignore lint/suspicious/noArrayIndexKey: fixed segments

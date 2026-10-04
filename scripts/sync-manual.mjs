@@ -31,8 +31,7 @@ const localDir = remote
 if (localDir && !existsSync(localDir)) {
   throw new Error(`MANUAL_DIR ${localDir} does not exist`);
 }
-const repo =
-  process.env.MANUAL_REPO ?? "https://github.com/jma49/Open-CR-Agent.git";
+const repo = process.env.MANUAL_REPO ?? "https://github.com/jma49/Open-CR-Agent.git";
 const ref = process.env.MANUAL_REF ?? "main";
 
 // docs/schema sits next to docs/manual in the main repository.

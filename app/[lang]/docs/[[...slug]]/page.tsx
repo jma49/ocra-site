@@ -28,13 +28,9 @@ export default async function Page({ params }: Props) {
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX
-          components={getMDXComponents({ a: createRelativeLink(source, page) })}
-        />
+        <MDX components={getMDXComponents({ a: createRelativeLink(source, page) })} />
       </DocsBody>
-      <EditOnGitHub
-        href={`${repoUrl}/blob/${gitConfig.branch}/docs/manual/${page.path}`}
-      />
+      <EditOnGitHub href={`${repoUrl}/blob/${gitConfig.branch}/docs/manual/${page.path}`} />
     </DocsPage>
   );
 }

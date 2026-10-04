@@ -41,8 +41,7 @@ export const zhUi = {
   "Parameters(type table)": "参数",
   "Previous Page(pagination)": "上一页",
   "Prop(type table)": "属性",
-  "Read {url}, I want to ask questions about it.(page actions)":
-    "阅读 {url}，我想就它提几个问题。",
+  "Read {url}, I want to ask questions about it.(page actions)": "阅读 {url}，我想就它提几个问题。",
   "Returns(type table)": "返回值",
   "Search(search dialog)": "搜索",
   "Search(search trigger)": "搜索",

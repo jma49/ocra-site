@@ -20,13 +20,7 @@ const sleep = (ms, signal) =>
     );
   });
 
-const usage = (
-  inputTokens,
-  cachedTokens,
-  outputTokens,
-  reasoningTokens,
-  costUsd,
-) => ({
+const usage = (inputTokens, cachedTokens, outputTokens, reasoningTokens, costUsd) => ({
   inputTokens,
   cachedTokens,
   outputTokens,
@@ -37,13 +31,10 @@ const usage = (
 function toolSummary(calls) {
   const counts = new Map();
   for (const name of calls) counts.set(name, (counts.get(name) ?? 0) + 1);
-  const byUse = [...counts].sort(
-    (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
-  );
+  const byUse = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   return `${calls.length} tool call(s) (${byUse.map(([n, c]) => `${n} ${c}`).join(", ")})`;
 }
-const calls = (spec) =>
-  Object.entries(spec).flatMap(([name, n]) => Array(n).fill(name));
+const calls = (spec) => Object.entries(spec).flatMap(([name, n]) => Array(n).fill(name));
 
 const TASKS = {
   "correctness-1": {
@@ -132,8 +123,7 @@ const TASKS = {
 
 function indexed(user, pattern) {
   const out = [];
-  for (const m of user.matchAll(pattern))
-    out.push({ index: Number(m[1]), title: m[2].trim() });
+  for (const m of user.matchAll(pattern)) out.push({ index: Number(m[1]), title: m[2].trim() });
   return out;
 }
 
@@ -155,19 +145,16 @@ const runtime = {
       taskId: spec.taskId,
       message: `${MODEL}: ${task.steps} step(s), ${toolSummary(task.tools)}, ${inputTokens} in / ${outputTokens} out / ${reasoningTokens} reasoning tokens, $${costUsd.toFixed(4)}`,
     };
-    for (const finding of task.findings)
-      yield { type: "finding", taskId: spec.taskId, finding };
+    for (const finding of task.findings) yield { type: "finding", taskId: spec.taskId, finding };
     yield { type: "done", taskId: spec.taskId };
   },
   async complete(request, signal) {
     if (request.tier === "light") {
       await sleep(2_400, signal);
-      const files = [...request.user.matchAll(/^\[(\d+)\] \S+ (\S+)/gm)].map(
-        (m) => ({
-          i: Number(m[1]),
-          path: m[2],
-        }),
-      );
+      const files = [...request.user.matchAll(/^\[(\d+)\] \S+ (\S+)/gm)].map((m) => ({
+        i: Number(m[1]),
+        path: m[2],
+      }));
       const answer = [
         {
           label: "auth code",
@@ -175,9 +162,7 @@ const runtime = {
         },
         {
           label: "docs",
-          files: files
-            .filter((f) => !f.path.startsWith("src/"))
-            .map((f) => f.i),
+          files: files.filter((f) => !f.path.startsWith("src/")).map((f) => f.i),
         },
       ].filter((g) => g.files.length > 0);
       return {
@@ -187,22 +172,18 @@ const runtime = {
     }
     if (!request.system.includes("judge of a multi-agent code review")) {
       await sleep(6_100, signal);
-      const titles = [...request.user.matchAll(/^Title: (.*)$/gm)].map((m) =>
-        m[1].trim(),
-      );
+      const titles = [...request.user.matchAll(/^Title: (.*)$/gm)].map((m) => m[1].trim());
       const answer = titles.map((title, index) =>
         title === "Token stays valid after logout"
           ? {
               index,
               verdict: "refuted",
-              reason:
-                "logout() deletes token:<value> right after ending the session.",
+              reason: "logout() deletes token:<value> right after ending the session.",
             }
           : {
               index,
               verdict: "confirmed",
-              reason:
-                "isExpired() compares a seconds value with Date.now() in milliseconds.",
+              reason: "isExpired() compares a seconds value with Date.now() in milliseconds.",
             },
       );
       return {
@@ -212,12 +193,8 @@ const runtime = {
     }
     await sleep(7_300, signal);
     const found = indexed(request.user, /index="(\d+)"[^\n]*\n(.*)/g);
-    const critical = found.find(
-      (f) => f.title === "Every session is treated as expired",
-    );
-    const twin = found.find(
-      (f) => f.title === "Expiry compares seconds with milliseconds",
-    );
+    const critical = found.find((f) => f.title === "Every session is treated as expired");
+    const twin = found.find((f) => f.title === "Expiry compares seconds with milliseconds");
     return {
       text: JSON.stringify({
         duplicates: critical && twin ? [[critical.index, twin.index]] : [],

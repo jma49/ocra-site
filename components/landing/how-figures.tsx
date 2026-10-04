@@ -5,15 +5,7 @@ import { SessionCode } from "./session-code";
 
 type F = Copy["how"]["figures"];
 
-function Panel({
-  head,
-  meta,
-  children,
-}: {
-  head: string;
-  meta: string;
-  children: ReactNode;
-}) {
+function Panel({ head, meta, children }: { head: string; meta: string; children: ReactNode }) {
   return (
     <div className="panel">
       <div className="panel-h">

@@ -26,13 +26,7 @@ export function Faq({ copy }: { copy: Copy["faq"] }) {
   );
 }
 
-export function Final({
-  copy,
-  locale,
-}: {
-  copy: Copy["final"];
-  locale: Locale;
-}) {
+export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale }) {
   return (
     <section className="final" id="final">
       <Night variant="final" />
@@ -76,13 +70,7 @@ function footerHref(id: FooterLinkId, locale: Locale): string {
   return hrefs[id];
 }
 
-export function Footer({
-  copy,
-  locale,
-}: {
-  copy: Copy["footer"];
-  locale: Locale;
-}) {
+export function Footer({ copy, locale }: { copy: Copy["footer"]; locale: Locale }) {
   return (
     <footer className="foot">
       <div className="wrap">

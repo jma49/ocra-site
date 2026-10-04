@@ -22,11 +22,7 @@
   backdrop-filter: blur(16px) saturate(1.4);
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
   --color-fd-foreground: var(--on-night);
-  --color-fd-muted-foreground: color-mix(
-    in srgb,
-    var(--on-night) 62%,
-    transparent
-  );
+  --color-fd-muted-foreground: color-mix(in srgb, var(--on-night) 62%, transparent);
   --color-fd-border: color-mix(in srgb, var(--on-night) 10%, transparent);
   --color-fd-secondary: color-mix(in srgb, var(--on-night) 6%, transparent);
   --color-fd-muted: color-mix(in srgb, var(--on-night) 6%, transparent);

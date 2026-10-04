@@ -22,9 +22,7 @@ export function alternates(
   return {
     canonical: localePath(locale, path),
     languages: {
-      ...Object.fromEntries(
-        languages.map((l) => [htmlLang[l], localePath(l, path)]),
-      ),
+      ...Object.fromEntries(languages.map((l) => [htmlLang[l], localePath(l, path)])),
       ...(languages.includes(i18n.defaultLanguage) && {
         "x-default": localePath(i18n.defaultLanguage, path),
       }),

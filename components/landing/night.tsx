@@ -34,27 +34,10 @@ export function Night({ variant }: { variant: "hero" | "final" }) {
           >
             <circle cx="7" cy="7" r="2" style={{ fill: "var(--aqua)" }} />
           </pattern>
-          <radialGradient
-            id={`${id}-g`}
-            cx="0.5"
-            cy={variant === "hero" ? "0.32" : "0.4"}
-            r="0.75"
-          >
-            <stop
-              offset="0"
-              style={{ stopColor: "var(--white)" }}
-              stopOpacity=".06"
-            />
-            <stop
-              offset=".55"
-              style={{ stopColor: "var(--white)" }}
-              stopOpacity=".18"
-            />
-            <stop
-              offset="1"
-              style={{ stopColor: "var(--white)" }}
-              stopOpacity=".6"
-            />
+          <radialGradient id={`${id}-g`} cx="0.5" cy={variant === "hero" ? "0.32" : "0.4"} r="0.75">
+            <stop offset="0" style={{ stopColor: "var(--white)" }} stopOpacity=".06" />
+            <stop offset=".55" style={{ stopColor: "var(--white)" }} stopOpacity=".18" />
+            <stop offset="1" style={{ stopColor: "var(--white)" }} stopOpacity=".6" />
           </radialGradient>
           <mask id={`${id}-m`}>
             <rect width="1440" height="900" fill={`url(#${id}-g)`} />
@@ -62,12 +45,7 @@ export function Night({ variant }: { variant: "hero" | "final" }) {
         </defs>
         <g mask={`url(#${id}-m)`}>
           <rect width="1440" height="900" fill={`url(#${id}-p)`} opacity=".5" />
-          <rect
-            width="1440"
-            height="900"
-            fill={`url(#${id}-a)`}
-            opacity=".65"
-          />
+          <rect width="1440" height="900" fill={`url(#${id}-a)`} opacity=".65" />
         </g>
       </svg>
       {webs.map((web) => (
@@ -100,26 +78,14 @@ function CornerWeb({ web }: { web: Web }) {
           r={size * 0.95}
         >
           <stop offset="0" style={{ stopColor: "var(--white)" }} />
-          <stop
-            offset=".55"
-            style={{ stopColor: "var(--white)" }}
-            stopOpacity=".85"
-          />
-          <stop
-            offset="1"
-            style={{ stopColor: "var(--white)" }}
-            stopOpacity="0"
-          />
+          <stop offset=".55" style={{ stopColor: "var(--white)" }} stopOpacity=".85" />
+          <stop offset="1" style={{ stopColor: "var(--white)" }} stopOpacity="0" />
         </radialGradient>
         <mask id={mask}>
           <rect width={size} height={size} fill={`url(#${mask}-g)`} />
         </mask>
       </defs>
-      <g
-        className="web"
-        mask={`url(#${mask})`}
-        style={{ transformOrigin: `${gx}px ${gy}px` }}
-      >
+      <g className="web" mask={`url(#${mask})`} style={{ transformOrigin: `${gx}px ${gy}px` }}>
         <g
           transform={`translate(${flipX ? size : 0} ${flipY ? size : 0}) scale(${flipX ? -1 : 1} ${flipY ? -1 : 1})`}
         >

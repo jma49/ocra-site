@@ -13,11 +13,7 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
   return (
     <section className="chapter" id="how">
       <div className="wrap">
-        <SplitHead
-          title={copy.title}
-          emphasis={copy.emphasis}
-          body={copy.body}
-        />
+        <SplitHead title={copy.title} emphasis={copy.emphasis} body={copy.body} />
         <div className="legend">
           <span>
             <span className="chip">code</span>
@@ -37,10 +33,7 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
                   <div className="k">
                     {String(i + 1).padStart(2, "0")}
                     {step.stages.map((s) => (
-                      <span
-                        key={s.name}
-                        className={s.kind === "model" ? "chip m" : "chip"}
-                      >
+                      <span key={s.name} className={s.kind === "model" ? "chip m" : "chip"}>
                         {s.name}
                       </span>
                     ))}

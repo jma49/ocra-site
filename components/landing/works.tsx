@@ -105,10 +105,7 @@ export function Works({ copy }: { copy: Copy["works"] }) {
             ))}
           </section>
           <p className="mq-note">
-            {copy.more.replace(
-              "{count}",
-              String(PROVIDERS_TOTAL - ROW_A.length - ROW_B.length),
-            )}
+            {copy.more.replace("{count}", String(PROVIDERS_TOTAL - ROW_A.length - ROW_B.length))}
           </p>
         </div>
       </div>

@@ -32,9 +32,7 @@ for (const root of roots) {
     readFileSync(path, "utf8")
       .split("\n")
       .forEach((line, i) => {
-        const text = path.endsWith(".css")
-          ? line.replace(/\/\*.*?\*\//g, "")
-          : line;
+        const text = path.endsWith(".css") ? line.replace(/\/\*.*?\*\//g, "") : line;
         for (const match of text.matchAll(pattern)) {
           found.push(`${path}:${i + 1}: ${match[0]}`);
         }

@@ -175,8 +175,7 @@
   border: 1px solid color-mix(in srgb, var(--on-night) 10%, transparent);
   color: var(--on-night);
   backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 10px 30px -14px
-    color-mix(in srgb, var(--black) 60%, transparent);
+  box-shadow: 0 10px 30px -14px color-mix(in srgb, var(--black) 60%, transparent);
 }
 .nav .links {
   display: none;

@@ -259,8 +259,7 @@
   background: var(--glass);
   backdrop-filter: blur(14px);
   border: 1px solid var(--line-2);
-  box-shadow: 0 14px 40px -16px
-    color-mix(in srgb, var(--black) 40%, transparent);
+  box-shadow: 0 14px 40px -16px color-mix(in srgb, var(--black) 40%, transparent);
   max-width: calc(100vw - 24px);
 }
 .dock[data-shown="true"] {

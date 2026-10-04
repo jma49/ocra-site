@@ -13,22 +13,12 @@ const TOOLS: [string, boolean][] = [
   ["web", false],
 ];
 
-export function Security({
-  copy,
-  locale,
-}: {
-  copy: Copy["security"];
-  locale: Locale;
-}) {
+export function Security({ copy, locale }: { copy: Copy["security"]; locale: Locale }) {
   const f = copy.flow;
   return (
     <section className="chapter tight-top" id="security">
       <div className="wrap">
-        <SplitHead
-          title={copy.title}
-          emphasis={copy.emphasis}
-          body={copy.body}
-        />
+        <SplitHead title={copy.title} emphasis={copy.emphasis} body={copy.body} />
         <div className="secure">
           <div className="sec-grid">
             <div className="flow">
@@ -77,10 +67,7 @@ export function Security({
                   </li>
                 ))}
               </ul>
-              <a
-                className="tlink"
-                href={localePath(locale, "/docs/threat-model")}
-              >
+              <a className="tlink" href={localePath(locale, "/docs/threat-model")}>
                 {copy.link} &rarr;
               </a>
             </div>

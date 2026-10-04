@@ -4,12 +4,8 @@ import { siteUrl } from "@/lib/seo";
 import { localePath } from "@/lib/shared";
 import { source } from "@/lib/source";
 
-function entry(
-  path: string,
-  languages: readonly Locale[],
-): MetadataRoute.Sitemap {
-  const url = (locale: Locale) =>
-    new URL(localePath(locale, path), siteUrl()).href;
+function entry(path: string, languages: readonly Locale[]): MetadataRoute.Sitemap {
+  const url = (locale: Locale) => new URL(localePath(locale, path), siteUrl()).href;
   const alternates = {
     languages: Object.fromEntries(languages.map((l) => [htmlLang[l], url(l)])),
   };
@@ -20,9 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const docs = new Map<string, Locale[]>();
   for (const locale of i18n.languages) {
     for (const page of source.getPages(locale)) {
-      const path = page.slugs.length
-        ? `/docs/${page.slugs.join("/")}`
-        : "/docs";
+      const path = page.slugs.length ? `/docs/${page.slugs.join("/")}` : "/docs";
       docs.set(path, [...(docs.get(path) ?? []), locale]);
     }
   }

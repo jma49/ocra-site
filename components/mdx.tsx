@@ -13,9 +13,7 @@ function Callout({ className, ...props }: ComponentProps<typeof FdCallout>) {
 }
 
 function Card({ className, ...props }: ComponentProps<typeof FdCard>) {
-  return (
-    <FdCard className={`glass block-hover ${className ?? ""}`} {...props} />
-  );
+  return <FdCard className={`glass block-hover ${className ?? ""}`} {...props} />;
 }
 
 function Tabs({ className, ...props }: ComponentProps<typeof FdTabs>) {

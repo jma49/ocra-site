@@ -295,12 +295,7 @@
   box-shadow: inset 3px 0 0 var(--red);
 }
 .code .q .src {
-  background: linear-gradient(
-      transparent 42%,
-      var(--marker) 42% 80%,
-      transparent 80%
-    )
-    no-repeat;
+  background: linear-gradient(transparent 42%, var(--marker) 42% 80%, transparent 80%) no-repeat;
 }
 .kw {
   color: var(--keyword);

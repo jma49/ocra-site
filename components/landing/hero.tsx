@@ -20,10 +20,7 @@ export function Hero({ copy, locale }: { copy: Copy; locale: Locale }) {
             <a className="btn btn-dark" href={cloudUrl}>
               {h.cloud} <i>&rarr;</i>
             </a>
-            <a
-              className="btn btn-soft"
-              href={localePath(locale, "/docs/quickstart")}
-            >
+            <a className="btn btn-soft" href={localePath(locale, "/docs/quickstart")}>
               {h.selfHost}
             </a>
           </div>

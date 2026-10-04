@@ -16,8 +16,7 @@ const H264 =
 const VP9 =
   "-c:v libvpx-vp9 -pix_fmt yuv420p -crf 34 -b:v 0 -row-mt 1 -threads 2 -deadline good -cpu-used 3 -an";
 const POSTER = "-vf scale=1600:-1 -c:v libwebp -quality 80";
-const ffmpeg = (...args) =>
-  execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args]);
+const ffmpeg = (...args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args]);
 
 const browser = await chromium.launch(
   process.env.CHROMIUM ? { executablePath: process.env.CHROMIUM } : {},
@@ -50,12 +49,7 @@ for (const lang of ["en", "zh"]) {
   ffmpeg(...input, ...H264.split(" "), `${out}.mp4`);
   // For browsers without an H.264 decoder, such as some Linux builds.
   ffmpeg(...input, ...VP9.split(" "), `${out}.webm`);
-  ffmpeg(
-    "-i",
-    frame(Math.round(POSTER_AT * FPS)),
-    ...POSTER.split(" "),
-    `${out}.webp`,
-  );
+  ffmpeg("-i", frame(Math.round(POSTER_AT * FPS)), ...POSTER.split(" "), `${out}.webp`);
   console.log(`${lang}: ${count} frames`);
 }
 await browser.close();

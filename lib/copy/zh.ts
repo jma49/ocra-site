@@ -40,13 +40,11 @@ export const zh: CopySource = {
   window: {
     tabs: { pr: "Pull request", terminal: "终端", cloud: "ocra Cloud" },
     urls: {
-      pr: (run) =>
-        `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
+      pr: (run) => `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
       terminal: (run) => `${run.repo} · ${run.command}`,
       cloud: "ocra Cloud · 概览",
     },
-    example:
-      "示例运行：流水线、输出和结论都来自 ocra 本身；控制台显示的也是这次运行。",
+    example: "示例运行：流水线、输出和结论都来自 ocra 本身；控制台显示的也是这次运行。",
     pr: {
       title: "Keep sessions alive after sign-in",
       meta: {
@@ -67,18 +65,15 @@ export const zh: CopySource = {
       values: {
         reviewed: (run) =>
           `${run.bundles} 组共 ${run.changedFiles} 个文件 · ${run.files.filter((f) => !f.selected).length} 个被搁置（生成文件）`,
-        tasks: (run) =>
-          `correctness、security · ${run.skippedPairs} 个组合被跳过，均记录原因`,
+        tasks: (run) => `correctness、security · ${run.skippedPairs} 个组合被跳过，均记录原因`,
         findings: ({ outcome: o }) =>
           `${o.verified} 个 critical，已核实 · ${o.merged} 个合并 · ${o.disproved} 个被证伪`,
-        tokens: (run) =>
-          `输入 token（${formatCount(run.usage.cached)} 命中缓存）`,
+        tokens: (run) => `输入 token（${formatCount(run.usage.cached)} 命中缓存）`,
       },
       onLine: "第",
       quoteTip: "agent 引用了这一行 · ocra 在 diff 中找到了它",
       findingTitle: "每个会话都被当成已过期。",
-      findingBody:
-        "expiresAt 以秒存储，却和以毫秒计的 Date.now() 比较，用户登录后会立刻被登出。",
+      findingBody: "expiresAt 以秒存储，却和以毫秒计的 Date.now() 比较，用户登录后会立刻被登出。",
       side: {
         reviewers: "审查者",
         checks: "检查",
@@ -220,8 +215,7 @@ export const zh: CopySource = {
     notes: {
       reported:
         "只要被引用的代码没变，下次推送时这条意见仍然保持打开，即使没有审查员再次报告，同样的代码得到同样的结论。",
-      fixed:
-        "意见指向的代码已经不在文件里，ocra 自己解决这个讨论。这是它认定修复的唯一依据。",
+      fixed: "意见指向的代码已经不在文件里，ocra 自己解决这个讨论。这是它认定修复的唯一依据。",
       dismissed:
         "维护者拒绝了它。ocra 不再报告，它也不再计入结论，除非它以更严重的级别再次出现。PR 的作者本人不能这样做。",
     },

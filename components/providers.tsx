@@ -18,9 +18,7 @@ const hiddenPrefix = `/${i18n.defaultLanguage}`;
 function useVisiblePathname(): string {
   const pathname = usePathname();
   if (pathname === hiddenPrefix) return "/";
-  return pathname.startsWith(`${hiddenPrefix}/`)
-    ? pathname.slice(hiddenPrefix.length)
-    : pathname;
+  return pathname.startsWith(`${hiddenPrefix}/`) ? pathname.slice(hiddenPrefix.length) : pathname;
 }
 
 // Fumadocs hands links plain anchor props; Next's Link needs an href.
@@ -32,10 +30,7 @@ function FrameworkLink({
   return <Link href={href} {...props} />;
 }
 
-export function Providers({
-  theme,
-  ...props
-}: ComponentProps<typeof RootProvider>) {
+export function Providers({ theme, ...props }: ComponentProps<typeof RootProvider>) {
   return (
     <FrameworkProvider
       usePathname={useVisiblePathname}

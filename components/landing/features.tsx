@@ -57,11 +57,7 @@ export function Features({ copy }: { copy: Copy["features"] }) {
   return (
     <section className="chapter tight-top features">
       <div className="wrap">
-        <Heading
-          title={copy.title}
-          emphasis={copy.emphasis}
-          className="narrow"
-        />
+        <Heading title={copy.title} emphasis={copy.emphasis} className="narrow" />
         <div className="cards">
           <article className="card c-wide">
             <h3>{copy.rules.title}</h3>
