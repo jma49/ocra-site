@@ -35,15 +35,31 @@ const ROW_B = [
 // ocra Cloud's gateway lists 45 providers.
 const PROVIDERS_TOTAL = 45;
 
+// Each mark is drawn once as a symbol: the marquee repeats every row for
+// its loop, and the paths are most of the page's markup.
+function IconSymbols({ names }: { names: string[] }) {
+  return (
+    <svg width="0" height="0" aria-hidden="true" className="icon-defs">
+      <defs>
+        {names.map((name) => (
+          <symbol
+            key={name}
+            id={`icon-${name}`}
+            viewBox="0 0 24 24"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: static icon paths bundled with the site
+            dangerouslySetInnerHTML={{ __html: brandIcons[name]?.body ?? "" }}
+          />
+        ))}
+      </defs>
+    </svg>
+  );
+}
+
 function Icon({ name }: { name: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: static icon paths bundled with the site
-      dangerouslySetInnerHTML={{ __html: brandIcons[name]?.body ?? "" }}
-    />
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <use href={`#icon-${name}`} />
+    </svg>
   );
 }
 
@@ -63,6 +79,7 @@ function Track({ names, hidden }: { names: string[]; hidden?: boolean }) {
 export function Works({ copy }: { copy: Copy["works"] }) {
   return (
     <section className="works">
+      <IconSymbols names={[...PLATFORMS, ...ROW_A, ...ROW_B]} />
       <div className="wrap works-grid">
         <div className="works-copy">
           <h2>{copy.title}</h2>

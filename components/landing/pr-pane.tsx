@@ -5,19 +5,50 @@ import {
   type HTMLAttributes,
   useCallback,
   useEffect,
+  useReducer,
   useRef,
-  useState,
 } from "react";
 import { SmallSpider } from "@/components/brand/spider-mark";
 import type { Copy } from "@/lib/copy";
 import { exampleRun } from "@/lib/landing/example-run";
 import { FindingComment } from "./session-code";
 
-type State = "running" | "done";
 const STAGES = ["select", "bundle", "review", "verify", "verdict"];
 const { pr, files } = exampleRun;
 const TOKENS: number = exampleRun.usage.input;
 const DOLLARS: number = exampleRun.usage.dollars;
+
+// What the pane shows at one moment of the replay; `cost` is the share of
+// the run's cost counted up so far.
+interface Frame {
+  running: boolean;
+  stage: number;
+  rows: number;
+  finding: boolean;
+  cost: number;
+}
+
+const DONE: Frame = {
+  running: false,
+  stage: STAGES.length,
+  rows: 4,
+  finding: true,
+  cost: 1,
+};
+
+// The replay as a table: at each time, what changes. The cost counts up
+// over COUNT_MS from the moment `count` is set.
+const COUNT_MS = 900;
+const TIMELINE: [number, Partial<Frame> & { count?: true }][] = [
+  [0, { running: true, stage: 0, rows: 0, finding: false, cost: 0 }],
+  [500, { rows: 1, stage: 1 }],
+  [1100, { rows: 2, stage: 2 }],
+  [1900, { finding: true, stage: 3 }],
+  [2600, { rows: 3, stage: 4 }],
+  [3100, { rows: 4, count: true }],
+  // The count runs on to 4000 ms; the verdict lands before it ends.
+  [3500, { running: false, stage: STAGES.length }],
+];
 
 // The pull request as ocra leaves it, replayed when it scrolls into view:
 // stages light up, the summary fills in, the cost counts up.
@@ -29,71 +60,46 @@ export function PrPane({
   panel: HTMLAttributes<HTMLDivElement>;
 }) {
   const root = useRef<HTMLDivElement>(null);
-  const timers = useRef<number[]>([]);
-  const [state, setState] = useState<State>("done");
-  const [stage, setStage] = useState(STAGES.length);
-  const [rows, setRows] = useState(4);
-  const [finding, setFinding] = useState(true);
-  const [tokens, setTokens] = useState(TOKENS);
-  const [dollars, setDollars] = useState(DOLLARS);
+  const pending = useRef<{ timers: number[]; frame: number }>({
+    timers: [],
+    frame: 0,
+  });
+  const [frame, update] = useReducer(
+    (current: Frame, patch: Partial<Frame>) => ({ ...current, ...patch }),
+    DONE,
+  );
 
   const clear = useCallback(() => {
-    for (const t of timers.current) clearTimeout(t);
-    timers.current = [];
-  }, []);
-  const later = useCallback((ms: number, f: () => void) => {
-    timers.current.push(window.setTimeout(f, ms));
+    for (const t of pending.current.timers) clearTimeout(t);
+    cancelAnimationFrame(pending.current.frame);
+    pending.current = { timers: [], frame: 0 };
   }, []);
 
   const count = useCallback(() => {
     const t0 = performance.now();
     const step = (t: number) => {
-      const k = Math.min(1, (t - t0) / 900);
-      const e = 1 - (1 - k) ** 3;
-      setTokens(Math.round(TOKENS * e));
-      setDollars(DOLLARS * e);
-      if (k < 1) requestAnimationFrame(step);
+      const k = Math.min(1, (t - t0) / COUNT_MS);
+      update({ cost: 1 - (1 - k) ** 3 });
+      pending.current.frame = k < 1 ? requestAnimationFrame(step) : 0;
     };
-    requestAnimationFrame(step);
+    pending.current.frame = requestAnimationFrame(step);
   }, []);
 
   const run = useCallback(() => {
     clear();
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setState("done");
+      update(DONE);
       return;
     }
-    setState("running");
-    setStage(0);
-    setRows(0);
-    setFinding(false);
-    setTokens(0);
-    setDollars(0);
-    later(500, () => {
-      setRows(1);
-      setStage(1);
-    });
-    later(1100, () => {
-      setRows(2);
-      setStage(2);
-    });
-    later(1900, () => {
-      setFinding(true);
-      setStage(3);
-    });
-    later(2600, () => {
-      setRows(3);
-      setStage(4);
-    });
-    later(3100, () => {
-      setRows(4);
-      count();
-    });
-    later(3500, () => {
-      setStage(STAGES.length);
-      setState("done");
-    });
-  }, [clear, later, count]);
+    for (const [ms, { count: counting, ...patch }] of TIMELINE) {
+      const apply = () => {
+        update(patch);
+        if (counting) count();
+      };
+      if (ms === 0) apply();
+      else pending.current.timers.push(window.setTimeout(apply, ms));
+    }
+  }, [clear, count]);
 
   useEffect(() => {
     const el = root.current;
@@ -115,7 +121,10 @@ export function PrPane({
     };
   }, [run, clear]);
 
-  const running = state === "running";
+  const { running, stage, rows, finding } = frame;
+  const state = running ? "running" : "done";
+  const tokens = Math.round(TOKENS * frame.cost);
+  const dollars = DOLLARS * frame.cost;
   const head = {
     running: copy.reviewing,
     done: copy.reviewed,

@@ -193,3 +193,6 @@
   font-size: 13.5px;
   color: var(--text-3);
 }
+.icon-defs {
+  position: absolute;
+}

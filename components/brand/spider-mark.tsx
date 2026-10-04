@@ -40,17 +40,15 @@ const LEGS: [Point, Point, Point][] = [
 
 const mirror = ([x, y]: Point): Point => [64 - x, y];
 
-function Silhouette({ fill }: { fill: string }) {
+// The silhouette is drawn once per mark, in currentColor, and placed with
+// <use> for the ink, the two colour plates and the glitch slice.
+function SilhouetteDef({ id }: { id: string }) {
   return (
-    <g>
+    <g id={id} fill="currentColor" stroke="currentColor">
       {LEGS.flatMap((leg, i) =>
         [leg, leg.map(mirror) as typeof leg].map(([hip, knee, tip], side) => (
-          <g
-            // biome-ignore lint/suspicious/noArrayIndexKey: fixed geometry
-            key={`${i}-${side}`}
-            style={{ stroke: fill }}
-            strokeLinecap="round"
-          >
+          // biome-ignore lint/suspicious/noArrayIndexKey: fixed geometry
+          <g key={`${i}-${side}`} fill="none" strokeLinecap="round">
             <path
               d={`M${hip.join(" ")} L${knee.join(" ")}`}
               strokeWidth={i ? 4.4 : 6}
@@ -62,9 +60,11 @@ function Silhouette({ fill }: { fill: string }) {
           </g>
         )),
       )}
-      <ellipse cx="32" cy="45.5" rx="11" ry="12.5" style={{ fill }} />
-      <path d="M27 35.5 Q32 38 37 35.5 L36 33 L28 33 Z" style={{ fill }} />
-      <circle cx="32" cy="26.5" r="11" style={{ fill }} />
+      <g stroke="none">
+        <ellipse cx="32" cy="45.5" rx="11" ry="12.5" />
+        <path d="M27 35.5 Q32 38 37 35.5 L36 33 L28 33 Z" />
+        <circle cx="32" cy="26.5" r="11" />
+      </g>
     </g>
   );
 }
@@ -131,6 +131,9 @@ export function SpiderMark({
   const id = useId().replace(/:/g, "");
   const ink = dark ? INK_ON_DARK : INK;
   const cls = (name: string) => (animated ? name : undefined);
+  const Silhouette = ({ fill }: { fill: string }) => (
+    <use href={`#${id}s`} style={{ color: fill }} />
+  );
   const main = (
     <>
       <Silhouette fill={ink} />
@@ -148,6 +151,9 @@ export function SpiderMark({
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >
+      <defs>
+        <SilhouetteDef id={`${id}s`} />
+      </defs>
       {glitch > 0 && (
         <>
           <g transform={`translate(${glitch} ${glitch * 0.55})`}>

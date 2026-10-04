@@ -12,19 +12,41 @@ export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
   const [shown, setShown] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Observers instead of a scroll handler: no layout reads per scroll event.
+  // The hero counts as gone once it is above the viewport; the final call
+  // to action counts as near once its top enters the bottom tenth.
   useEffect(() => {
     const hero = document.getElementById("hero");
     const final = document.getElementById("final");
-    const onScroll = () => {
-      if (!hero || !final) return;
-      setShown(
-        hero.getBoundingClientRect().bottom < 0 &&
-          final.getBoundingClientRect().top > innerHeight * 0.9,
+    if (!hero || !final) return;
+    const state = { heroGone: false, finalNear: false };
+    const watch = (
+      el: HTMLElement,
+      rootMargin: string,
+      update: (entry: IntersectionObserverEntry) => void,
+    ) => {
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry) return;
+          update(entry);
+          setShown(state.heroGone && !state.finalNear);
+        },
+        { rootMargin },
       );
+      io.observe(el);
+      return io;
     };
-    onScroll();
-    addEventListener("scroll", onScroll, { passive: true });
-    return () => removeEventListener("scroll", onScroll);
+    const observers = [
+      watch(hero, "0px", (e) => {
+        state.heroGone = !e.isIntersecting && e.boundingClientRect.bottom < 0;
+      }),
+      watch(final, "0px 0px -10% 0px", (e) => {
+        state.finalNear = e.isIntersecting || e.boundingClientRect.top < 0;
+      }),
+    ];
+    return () => {
+      for (const io of observers) io.disconnect();
+    };
   }, []);
 
   const copy = async () => {

@@ -188,6 +188,12 @@
 .thread .main {
   transition: opacity 0.4s ease;
 }
+/* The thread holds every ending; data-in names the states a part shows in. */
+.life[data-s="reported"] [data-in]:not([data-in~="reported"]),
+.life[data-s="fixed"] [data-in]:not([data-in~="fixed"]),
+.life[data-s="dismissed"] [data-in]:not([data-in~="dismissed"]) {
+  display: none;
+}
 .life:not([data-s="reported"]) .main {
   opacity: 0.42;
 }

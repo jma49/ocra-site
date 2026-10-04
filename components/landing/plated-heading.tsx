@@ -43,14 +43,16 @@ export function PlatedHeading({
       el.style.setProperty("--ay", `${(-oy).toFixed(4)}em`);
       el.style.setProperty("--px", `${(ox * 1.3).toFixed(4)}em`);
       el.style.setProperty("--py", `${(oy * 1.3).toFixed(4)}em`);
-      if (cut) {
-        const live = !reduced && hover && t - lastMove < 260;
-        cut.style.opacity = live && Math.random() > 0.35 ? "1" : "0";
-      }
-      raf =
-        Math.abs(tgt.s - cur.s) > 0.002 || hover
-          ? requestAnimationFrame(tick)
-          : 0;
+      // The glitch slice flickers only while the pointer moves; once the
+      // plates settle and the pointer rests, the loop stops until it moves.
+      const glitching = !reduced && hover && t - lastMove < 260;
+      if (cut)
+        cut.style.opacity = glitching && Math.random() > 0.35 ? "1" : "0";
+      const settling =
+        Math.abs(tgt.s - cur.s) > 0.002 ||
+        Math.abs(tgt.x - cur.x) > 0.002 ||
+        Math.abs(tgt.y - cur.y) > 0.002;
+      raf = settling || glitching ? requestAnimationFrame(tick) : 0;
     };
     const go = () => {
       if (!raf) raf = requestAnimationFrame(tick);

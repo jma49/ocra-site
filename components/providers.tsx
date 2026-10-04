@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import type { ComponentProps } from "react";
 import { i18n } from "@/lib/i18n";
+import { clientScriptProps, themeOptions } from "@/lib/theme";
 
 const hiddenPrefix = `/${i18n.defaultLanguage}`;
 
@@ -31,13 +32,6 @@ function FrameworkLink({
   return <Link href={href} {...props} />;
 }
 
-// next-themes renders its theme script inline. When React renders the tree on
-// the client (a dev remount, or recovery from a hydration error) it warns
-// about that script; typed as data on the client, it renders silently. The
-// server HTML keeps the executable script, which is the one that runs.
-const clientScriptProps =
-  typeof window === "undefined" ? undefined : { type: "application/json" };
-
 export function Providers({
   theme,
   ...props
@@ -51,7 +45,7 @@ export function Providers({
     >
       <RootProvider
         {...props}
-        theme={{ ...theme, scriptProps: clientScriptProps }}
+        theme={{ ...themeOptions, ...theme, scriptProps: clientScriptProps }}
       />
     </FrameworkProvider>
   );
