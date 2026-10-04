@@ -18,7 +18,9 @@ const port = await new Promise((done) => {
 const server = spawn(
   "npx",
   ["next", "start", "--hostname", "127.0.0.1", "--port", String(port)],
-  { stdio: ["ignore", "ignore", "inherit"] },
+  {
+    stdio: ["ignore", "ignore", "inherit"],
+  },
 );
 const base = `http://127.0.0.1:${port}`;
 

@@ -18,10 +18,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run lint
-      - run: npm run build
+      - run: npm run verify
         env:
-          MANUAL_DIR: /nonexistent
-          VERCEL: "1"
-      - run: npx tsc --noEmit
-      - run: npm run check:schemas
+          MANUAL_SOURCE: remote

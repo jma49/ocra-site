@@ -9,7 +9,6 @@ export type {
   Copy,
   FooterLinkId,
   PlanId,
-  StageKind,
   StepId,
 } from "./types";
 
@@ -32,5 +31,3 @@ const resolved = Object.fromEntries(
 export function getCopy(locale: Locale): Copy {
   return resolved[locale];
 }
-
-export type { CopySource };

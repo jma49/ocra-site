@@ -2,6 +2,11 @@
   "name": "ocra-site",
   "version": "0.0.0",
   "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.19"
+  },
+  "packageManager": "npm@11.19.1",
   "scripts": {
     "sync-manual": "node scripts/sync-manual.mjs",
     "predev": "npm run sync-manual",
@@ -9,37 +14,38 @@
     "prebuild": "npm run sync-manual",
     "build": "next build",
     "start": "next start",
-    "types:check": "next typegen && tsc --noEmit",
-    "lint": "biome check && node scripts/check-colors.mjs",
-    "format": "biome format --write",
+    "check": "biome check --error-on-warnings && node scripts/check-colors.mjs && knip",
+    "format": "biome check --write",
+    "typecheck": "next typegen && tsc --noEmit",
+    "check:schemas": "node scripts/check-schemas.mjs",
+    "verify": "npm run check && npm run build && npm run typecheck && npm run check:schemas",
     "visual:baseline": "playwright test --update-snapshots=all",
     "visual": "playwright test",
-    "deploy": "bash scripts/deploy.sh",
-    "check:colors": "node scripts/check-colors.mjs",
-    "check:schemas": "node scripts/check-schemas.mjs"
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
-    "@fontsource/maple-mono": "^5.3.0",
+    "@fontsource/maple-mono": "5.3.0",
     "fumadocs-core": "16.15.14",
     "fumadocs-mdx": "15.4.4",
     "fumadocs-ui": "npm:@fumadocs/base-ui@16.15.14",
-    "lucide-react": "^1.47.0",
+    "lucide-react": "1.48.0",
     "next": "16.3.8",
-    "next-themes": "^0.4.6",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "next-themes": "0.4.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "@biomejs/biome": "^2.5.14",
-    "@playwright/test": "^1.63.0",
-    "@tailwindcss/postcss": "^4.3.3",
-    "@types/mdx": "^2.0.14",
-    "@types/node": "^26.6.1",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "postcss": "^8.5.28",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "@axe-core/playwright": "4.13.0",
+    "@biomejs/biome": "2.5.14",
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/mdx": "2.0.14",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "knip": "6.39.0",
+    "postcss": "8.5.28",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2"
   }
 }

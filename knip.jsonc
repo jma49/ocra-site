@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "scripts/*.mjs",
+    "scripts/demo-video/*.mjs",
+    "tests/**/*.ts",
+    // Playwright injects it by path (playwright.config.ts, stylePath).
+    "tests/visual/stable.css"
+  ],
+  "project": ["**/*.{ts,tsx,mjs,css}"],
+  "ignore": ["scripts/demo-video/repo/**"],
+  // The layout loads Maple Mono's files by path (next/font/local), not by import.
+  "ignoreDependencies": ["@fontsource/maple-mono"],
+  // Rendering the optional demo video needs ffmpeg on the machine.
+  "ignoreBinaries": ["ffmpeg"]
+}

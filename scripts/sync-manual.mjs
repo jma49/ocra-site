@@ -19,12 +19,18 @@ import { dirname, join, resolve } from "node:path";
 const target = resolve("content/docs");
 const schemaTarget = resolve("public/schema");
 const SCHEMA_HOSTS = ["ocracloud.com", "ocra.majincheng.com"];
-// The maintainer's checkout is named ocra; a fresh clone is Open-CR-Agent.
-const localDir =
-  process.env.MANUAL_DIR ??
-  ["../ocra", "../Open-CR-Agent"]
-    .map((dir) => resolve(dir, "docs/manual"))
-    .find((dir) => existsSync(dir));
+// MANUAL_SOURCE=remote always fetches (CI, so both builds read main). Else
+// MANUAL_DIR, which must exist, or the engine checkout next to this one
+// (../ocra, the documented workspace layout), or a fetch when there is none.
+const remote = process.env.MANUAL_SOURCE === "remote";
+const localDir = remote
+  ? undefined
+  : process.env.MANUAL_DIR
+    ? resolve(process.env.MANUAL_DIR)
+    : [resolve("../ocra/docs/manual")].find((dir) => existsSync(dir));
+if (localDir && !existsSync(localDir)) {
+  throw new Error(`MANUAL_DIR ${localDir} does not exist`);
+}
 const repo =
   process.env.MANUAL_REPO ?? "https://github.com/jma49/Open-CR-Agent.git";
 const ref = process.env.MANUAL_REF ?? "main";
@@ -33,6 +39,11 @@ const ref = process.env.MANUAL_REF ?? "main";
 function copyFrom(dir, label) {
   rmSync(target, { recursive: true, force: true });
   cpSync(dir, target, { recursive: true });
+  for (const language of ["en", "zh"]) {
+    if (!existsSync(join(target, language))) {
+      throw new Error(`the manual from ${label} has no ${language}/ directory`);
+    }
+  }
   console.log(`[sync-manual] copied manual from ${label}`);
   copySchemas(join(dirname(dir), "schema"), label);
 }
@@ -54,7 +65,7 @@ function copySchemas(dir, label) {
   console.log(`[sync-manual] copied ${files.join(", ")} from ${label}`);
 }
 
-if (localDir && existsSync(localDir) && !process.env.VERCEL) {
+if (localDir) {
   copyFrom(localDir, localDir);
 } else {
   const checkout = mkdtempSync(join(tmpdir(), "ocra-manual-"));
@@ -71,11 +82,14 @@ if (localDir && existsSync(localDir) && !process.env.VERCEL) {
       cwd: checkout,
       stdio: "inherit",
     });
-  git("init", "--quiet");
-  git("remote", "add", "origin", repo);
-  git("sparse-checkout", "set", "docs/manual", "docs/schema");
-  git("fetch", "--quiet", "--depth=1", "--filter=blob:none", "origin", ref);
-  git("checkout", "--quiet", "FETCH_HEAD");
-  copyFrom(join(checkout, "docs/manual"), `${repo}@${ref}`);
-  rmSync(checkout, { recursive: true, force: true });
+  try {
+    git("init", "--quiet");
+    git("remote", "add", "origin", repo);
+    git("sparse-checkout", "set", "docs/manual", "docs/schema");
+    git("fetch", "--quiet", "--depth=1", "--filter=blob:none", "origin", ref);
+    git("checkout", "--quiet", "FETCH_HEAD");
+    copyFrom(join(checkout, "docs/manual"), `${repo}@${ref}`);
+  } finally {
+    rmSync(checkout, { recursive: true, force: true });
+  }
 }

@@ -5,7 +5,7 @@ import { SpiderMark } from "@/components/brand/spider-mark";
 
 // Plays the glitch burst once. The spider answers the pointer, so this runs
 // with Reduce motion on too; only the idle loops follow that setting.
-export function burst(el: Element | null) {
+function burst(el: Element | null) {
   if (!el) return;
   el.classList.remove("burst");
   void (el as HTMLElement).offsetWidth;

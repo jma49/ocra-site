@@ -6,8 +6,8 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 
 - Next.js (App Router) + [Fumadocs](https://fumadocs.dev) + Tailwind CSS, deployed on Vercel.
 - Two languages: English at `/`, Chinese at `/zh`. Every page and every string exists in both.
-- `npm run lint` (Biome), `npx tsc --noEmit`, `npm run build`. CI runs all three.
-- **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`; deploy only when the maintainer asks, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, through a logged-in Vercel CLI). Each deploy costs one build.
+- `npm run verify`: `check` (Biome with warnings as errors, the colour check, knip), the build, `typecheck` and the schema check. CI runs it; run it before every push.
+- **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`; deploy only when the maintainer asks, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, which must be on `origin/main`, through a logged-in, pinned Vercel CLI). Each deploy costs one build.
 
 | Path | Contents |
 |---|---|
@@ -26,8 +26,8 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 
 The user manual's source lives in the main repository under `docs/manual/{en,zh}`, next to the code it documents. `content/docs` is generated and git-ignored. Edit the manual in the main repository; this repository only renders it.
 
-- Locally the sync script reads `MANUAL_DIR`, else `../ocra/docs/manual` or `../Open-CR-Agent/docs/manual` (the default clone name), whichever exists.
-- On Vercel it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository).
+- Locally the sync script reads `MANUAL_DIR` (it must exist), else `../ocra/docs/manual`, else fetches as below. `MANUAL_SOURCE=remote` always fetches (CI).
+- On Vercel, and without a local checkout, it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository). It fails if the copy lacks `en/` or `zh/`.
 - The engine's JSON Schemas (`docs/schema/*.json`) are served at `/schema/<file>`, where their `$id` points. The sync refuses a schema whose `$id` is not this site's `/schema/<its file name>`, and CI's `npm run check:schemas` checks each one answers there after the build. Their v1 `$id`s use the old host `ocra.majincheng.com`, so its redirect to this site (path kept) must stay.
 - The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
@@ -58,7 +58,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 - **Ink, paper, aquamarine and pink.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); pink is only the second print plate (off-register edges, hover shadows, the spider's ghost) and never carries meaning or body text. Frosted glass for windows and panels; the halftone night, the corner webs and the soft light behind panels are the background effects.
 - **One hover language** (DESIGN.md, Motion): blocks lift up-left with a pink plate behind and an aquamarine one ahead; lines get a highlighter sweep. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
 - **Never resemble a competitor's visual signature**; borrow finish, not devices.
-- Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run lint` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
+- Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run check` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
 - Look at the result before calling a UI change done: `npm run build && npm run visual:baseline` before the change, `npm run build && npm run visual` after it (both languages, three widths, both themes, console errors; see Verification in `DESIGN.md`). A pull request that changes the look on purpose gets the `visual-change` label and lists the intended differences.
 

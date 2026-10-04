@@ -1,6 +1,5 @@
 import { i18n, type Locale } from "./i18n";
 
-export const appName = "ocra";
 export const docsRoute = "/docs";
 
 export const gitConfig = {
