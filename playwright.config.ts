@@ -23,6 +23,9 @@ export default defineConfig({
       ]
     : [["list"]],
   expect: {
+    // A full-page desktop home is 12,000 px tall; on CI's runners two stable
+    // frames of it can take longer than the default 5 s.
+    timeout: 20_000,
     toHaveScreenshot: {
       // Both sides render on the same machine, so pixels match exactly unless
       // something changed. The default threshold (0.2) let a token change
