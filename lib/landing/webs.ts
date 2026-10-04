@@ -5,7 +5,7 @@
 // server and the client draw the same web.
 import { itemAt } from "@/lib/item-at";
 
-export type Corner = "tl" | "tr" | "bl" | "br";
+type Corner = "tl" | "tr" | "bl" | "br";
 
 export interface Web {
   size: number;
@@ -33,7 +33,7 @@ function rng(seed: number) {
 
 const f = (v: number) => v.toFixed(1);
 
-export function orbWeb(
+function orbWeb(
   size: number,
   corner: Corner,
   seed: number,

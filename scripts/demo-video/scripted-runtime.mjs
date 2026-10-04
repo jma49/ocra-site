@@ -163,7 +163,10 @@ const runtime = {
     if (request.tier === "light") {
       await sleep(2_400, signal);
       const files = [...request.user.matchAll(/^\[(\d+)\] \S+ (\S+)/gm)].map(
-        (m) => ({ i: Number(m[1]), path: m[2] }),
+        (m) => ({
+          i: Number(m[1]),
+          path: m[2],
+        }),
       );
       const answer = [
         {

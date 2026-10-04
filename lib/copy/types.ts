@@ -1,11 +1,11 @@
 import type { CallRole, ExampleRun, FileId } from "@/lib/landing/example-run";
 
-export type StageKind = "code" | "model";
+type StageKind = "code" | "model";
 
 // Copy that quotes the recorded example run takes the run, so a new
 // recording changes lib/landing/example-run.ts only. getCopy resolves these
 // on the server: functions cannot be passed to client components.
-export type FromRun = (run: ExampleRun) => string;
+type FromRun = (run: ExampleRun) => string;
 
 type Resolved<T> = T extends FromRun
   ? string
