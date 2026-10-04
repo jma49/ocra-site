@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { SmallSpider } from "@/components/brand/spider-mark";
 import type { Copy } from "@/lib/copy";
 import { SplitHead } from "./heading";
-import { SessionCode, Suggestion } from "./session-code";
+import { FindingComment } from "./session-code";
 
 type State = "reported" | "fixed" | "dismissed";
 
@@ -50,27 +49,11 @@ export function Lifecycle({
               )}
               <div className="cmt">
                 <div className="main">
-                  <div className="cmt-h">
-                    <span className="av">
-                      <SmallSpider size={18} dark />
-                    </span>
-                    <span>
-                      <strong>ocra</strong> · <code>src/auth/session.ts</code>
-                    </span>
-                  </div>
-                  <SessionCode />
-                  <div className="cmt-b">
-                    <div className="tags">
-                      <span className="tag t-crit">critical</span>
-                      <span className="tag t-ok">verified</span>
-                      <span className="tag t-plain">
-                        correctness · b7d6c863
-                      </span>
-                    </div>
-                    <strong className="fg">{finding.findingTitle}</strong>{" "}
-                    {finding.findingBody}
-                    <Suggestion />
-                  </div>
+                  <FindingComment
+                    variant="thread"
+                    title={finding.findingTitle}
+                    body={finding.findingBody}
+                  />
                 </div>
                 {state === "dismissed" && (
                   <>

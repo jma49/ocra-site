@@ -2,41 +2,13 @@
 
 import { useState } from "react";
 import type { Copy } from "@/lib/copy";
+import { terminalLines } from "@/lib/landing/example-run";
 import { PrPane } from "./pr-pane";
 
 type Tab = "pr" | "terminal" | "cloud";
 
-// Lines from a real run of `ocra review --from main` on the demo repository
-// (scripts/demo-video: models scripted, everything else ocra's own code);
-// ⋮ marks lines left out.
-const TERMINAL: [string, "c" | "d" | "o" | "w" | ""][] = [
-  ["$ ocra review --from main", "c"],
-  [
-    "[ocra] Reviewing: Changes from main to HEAD\n[ocra] 4 file(s) selected, 1 excluded · risk tier: full\n[ocra] 2 bundle(s) (grouped)\n[ocra] 4 review task(s), 2 reviewer/bundle pair(s) skipped\n⋮",
-    "d",
-  ],
-  [
-    "[ocra] security-1 completed in 63.2s · 2 finding(s)\n[ocra] correctness-1 completed in 71.9s · 2 finding(s)",
-    "o",
-  ],
-  ["[ocra] Verified 3 finding(s), dropped 1 that the code disproves\n⋮", "d"],
-  ["Verdict: significant concerns\n\nsrc/auth/session.ts", ""],
-  [
-    "  critical   L42   Every session is treated as expired [verified] #b7d6c863",
-    "w",
-  ],
-  [
-    "    isExpired() compares expiresAt, stored in seconds, with Date.now() in milliseconds, so it is always true: loadSession() deletes every session and users are logged out right after signing in.\n    Suggestion: return session.expiresAt * 1000 < Date.now();\n",
-    "",
-  ],
-  [
-    "1 finding(s) (1 critical, 0 warning, 0 suggestion) · tokens: 315936 in (209152 cached), 9021 out, 8489 reasoning · $0.5134",
-    "d",
-  ],
-];
-
 // Sample data for the console picture; labelled as such under the window.
-const BARS = [
+const BARS: [number, number, number][] = [
   [3, 2, 1],
   [5, 2, 2],
   [2, 1, 1],
@@ -88,7 +60,7 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
         {tab === "pr" && <PrPane copy={copy.pr} />}
         {tab === "terminal" && (
           <pre className="term">
-            {TERMINAL.map(([text, tone]) => (
+            {terminalLines.map(([text, tone]) => (
               <span
                 key={text}
                 className={tone || undefined}

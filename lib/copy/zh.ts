@@ -1,6 +1,7 @@
-import type { Copy } from "./types";
+import { formatCount } from "@/lib/landing/example-run";
+import type { CopySource } from "./types";
 
-export const zh: Copy = {
+export const zh: CopySource = {
   announce: {
     label: "公告",
     text: "ocra Cloud 早期体验中：用 GitHub 登录，自带模型 key。",
@@ -32,15 +33,20 @@ export const zh: Copy = {
   window: {
     tabs: { pr: "Pull request", terminal: "终端", cloud: "ocra Cloud" },
     urls: {
-      pr: "pull request #812 · Keep sessions alive after sign-in",
-      terminal: "~/acme-app · ocra review --from main",
+      pr: (run) =>
+        `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
+      terminal: (run) => `${run.repo} · ${run.command}`,
       cloud: "ocra Cloud · 概览",
     },
     example:
       "示例运行：流水线、输出和结论都来自 ocra 本身；控制台显示的是示例数据。",
     pr: {
       title: "Keep sessions alive after sign-in",
-      meta: { into: "请求合并到", from: "来自", files: "改动 4 个文件" },
+      meta: {
+        into: "请求合并到",
+        from: "来自",
+        files: (run) => `改动 ${run.changedFiles} 个文件`,
+      },
       reviewing: "正在审查这个 PR",
       reviewed: "审查了这个 PR",
       replay: "重播",
@@ -52,10 +58,14 @@ export const zh: Copy = {
         cost: "花费",
       },
       values: {
-        reviewed: "2 组共 4 个文件 · 1 个被搁置（生成文件）",
-        tasks: "correctness、security · 2 个组合被跳过，均记录原因",
-        findings: "1 个 critical，已核实 · 1 个合并 · 1 个被证伪",
-        tokens: "输入 token（209,152 命中缓存）",
+        reviewed: (run) =>
+          `${run.bundles} 组共 ${run.changedFiles} 个文件 · ${run.files.filter((f) => !f.selected).length} 个被搁置（生成文件）`,
+        tasks: (run) =>
+          `correctness、security · ${run.skippedPairs} 个组合被跳过，均记录原因`,
+        findings: ({ outcome: o }) =>
+          `${o.verified} 个 critical，已核实 · ${o.merged} 个合并 · ${o.disproved} 个被证伪`,
+        tokens: (run) =>
+          `输入 token（${formatCount(run.usage.cached)} 命中缓存）`,
       },
       onLine: "第",
       quoteTip: "agent 引用了这一行 · ocra 在 diff 中找到了它",
@@ -69,7 +79,7 @@ export const zh: Copy = {
         reviewing: "ocra · 审查中",
         changes: "ocra · 要求修改",
         running: "ocra review · 运行中",
-        blocking: "ocra review · 1 个阻塞",
+        blocking: (run) => `ocra review · ${run.outcome.verified} 个阻塞`,
         why: {
           session: "已读 · auth 代码，full 档",
           login: "已读 · auth 代码",
@@ -96,8 +106,8 @@ export const zh: Copy = {
     emphasis: "模型只做判断。",
     body: "选文件、分组、定位行号和给出结论，都是有测试的代码。模型只负责分组、审查、核实和裁决，它的每个回答都先通过 schema 校验，才进入下一步。",
     legend: { code: "确定性", model: "需判断" },
-    steps: [
-      {
+    steps: {
+      select: {
         title: "只读值得读的文件",
         stages: [
           { name: "select", kind: "code" },
@@ -105,7 +115,7 @@ export const zh: Copy = {
         ],
         text: "二进制、锁文件、生成的代码和疑似密钥会被搁置，每个都记录原因。涉及 auth/、CI workflow 这类敏感路径的改动直接定为 full 档。",
       },
-      {
+      bundle: {
         title: "每组、每个审查员一个任务",
         stages: [
           { name: "bundle", kind: "model" },
@@ -113,7 +123,7 @@ export const zh: Copy = {
         ],
         text: "由轻量模型把该一起看的文件分成组。correctness 总会运行；security 和 performance 跳过文档和测试。--plan 能在调用模型之前列出全部任务。",
       },
-      {
+      review: {
         title: "每条意见都引用它说的代码",
         stages: [
           { name: "review", kind: "model" },
@@ -121,7 +131,7 @@ export const zh: Copy = {
         ],
         text: "每个隔离的 agent 用只读工具读取被审查的那个版本，最多执行 20 步。它引用代码，ocra 在 diff 里找到这段引用，把评论钉在那里。行号从来不由模型决定。",
       },
-      {
+      verify: {
         title: "只留下经得起重读的意见",
         stages: [
           { name: "filter", kind: "code" },
@@ -131,7 +141,7 @@ export const zh: Copy = {
         ],
         text: "核查去掉被代码证伪的意见；judge 合并同一根因，但不能去掉已确认的 critical。结论由代码计算。",
       },
-    ],
+    },
     figures: {
       read: "已读",
       setAside: "已搁置：生成文件",
@@ -148,7 +158,7 @@ export const zh: Copy = {
         merged: "并入 #1",
         disproved: "被代码证伪",
         verdict: "结论：存在重大问题",
-        critical: "1 个已核实的 critical",
+        critical: (run) => `${run.outcome.verified} 个已核实的 critical`,
       },
       claims: {
         sessions: "会话总被判为过期",
@@ -176,7 +186,12 @@ export const zh: Copy = {
     bill: {
       title: "每次尝试都有账单",
       body: "每个任务的 token 和花费，辅助调用也算在内。设置 maxCostUsd，运行到这个额度就停止花钱。",
-      rows: ["输入", "缓存", "输出和推理", "本次合计"],
+      rows: {
+        input: "输入",
+        cached: "缓存",
+        output: "输出和推理",
+        total: "本次合计",
+      },
     },
     fallback: {
       title: "一个模型倒下，下一个接手",
@@ -198,7 +213,7 @@ export const zh: Copy = {
         "维护者拒绝了它。ocra 不再报告，它也不再计入结论，除非它以更严重的级别再次出现。PR 的作者本人不能这样做。",
     },
     caption: "已引用 · 已核实",
-    reply: "这个 PR 先不修：已在 #812 跟踪。",
+    reply: (run) => `这个 PR 先不修：已在 #${run.pr.number} 跟踪。`,
     maintainer: "维护者",
     resolvedBot: "github-actions 解决了这个讨论",
     resolvedMaintainer: "维护者解决了这个讨论",
@@ -255,8 +270,8 @@ export const zh: Copy = {
     title: "开源核心，",
     emphasis: "需要时再托管。",
     body: "引擎保持 Apache-2.0，不需要账号也完整可用。ocra Cloud 早期体验期间免费，模型 key 由你自带。",
-    items: [
-      {
+    items: {
+      self: {
         state: "现已可用",
         name: "自托管",
         price: "免费",
@@ -269,7 +284,7 @@ export const zh: Copy = {
         ],
         cta: "阅读快速上手",
       },
-      {
+      cloud: {
         state: "早期体验",
         name: "ocra Cloud",
         price: "免费",
@@ -282,7 +297,7 @@ export const zh: Copy = {
         ],
         cta: "用 GitHub 登录",
       },
-      {
+      team: {
         state: "规划中",
         name: "团队版",
         price: "稍后",
@@ -296,7 +311,7 @@ export const zh: Copy = {
         cta: "关注路线图",
         planned: true,
       },
-    ],
+    },
     fine: "使用 ocra Cloud 时，你的改动会经过它的网关再到达你的模型服务商。控制台默认只保存计数，只有开启发现共享后，才会保存发现及其引用的代码。如果只能让模型服务商看到代码，请自托管：引擎是同一个。",
   },
   faq: {

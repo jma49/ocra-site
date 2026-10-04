@@ -20,6 +20,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `lib/copy/` | All landing page copy: `types.ts`, then `en.ts` and `zh.ts` with the same shape |
 | `scripts/sync-manual.mjs` | Copies the manual into `content/docs` before `dev` and `build` |
 | `scripts/demo-video/` | Records the example run (real ocra CLI, scripted model) that the landing page quotes; see its README |
+| `lib/landing/example-run.ts` | That run's numbers, files, finding and terminal lines: the only place the page takes them from |
 
 ## The manual is not written here
 
@@ -43,7 +44,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 ## Content rules
 
 - **Say only what is true today.** The project is early: no invented customers, logos, testimonials, statistics or benchmark results. Planned features are labeled as planned.
-- Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug. The landing page's example (the pull request and terminal in the hero window, the step pictures, the finding) is one recorded run from `scripts/demo-video/`; when ocra's output changes, record it again rather than editing the lines by hand.
+- Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug. The landing page's example (the pull request and terminal in the hero window, the step pictures, the finding) is one recorded run from `scripts/demo-video/`, and every number, file and line of it lives in `lib/landing/example-run.ts` (copy that quotes it is a function of the run). When ocra's output changes, record it again and update that one file rather than editing components or copy.
 - The design is original. The site may borrow the structure of other product pages but never their copy, visuals or branding.
 
 ## Design

@@ -1,6 +1,7 @@
-import type { Copy } from "./types";
+import { formatCount } from "@/lib/landing/example-run";
+import type { CopySource } from "./types";
 
-export const en: Copy = {
+export const en: CopySource = {
   announce: {
     label: "Announcement",
     text: "ocra Cloud is in early access. Sign in with GitHub and bring your own model key.",
@@ -32,8 +33,9 @@ export const en: Copy = {
   window: {
     tabs: { pr: "Pull request", terminal: "Terminal", cloud: "ocra Cloud" },
     urls: {
-      pr: "pull request #812 · Keep sessions alive after sign-in",
-      terminal: "~/acme-app · ocra review --from main",
+      pr: (run) =>
+        `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
+      terminal: (run) => `${run.repo} · ${run.command}`,
       cloud: "ocra Cloud · Overview",
     },
     example:
@@ -43,7 +45,7 @@ export const en: Copy = {
       meta: {
         into: "wants to merge into",
         from: "from",
-        files: "4 files changed",
+        files: (run) => `${run.changedFiles} files changed`,
       },
       reviewing: "is reviewing this pull request",
       reviewed: "reviewed this pull request",
@@ -56,10 +58,13 @@ export const en: Copy = {
         cost: "Cost",
       },
       values: {
-        reviewed: "4 files in 2 bundles · 1 set aside (generated)",
-        tasks: "correctness, security · 2 pairs skipped with a reason",
-        findings: "1 critical, verified · 1 merged · 1 disproved",
-        tokens: "tokens in (209,152 cached)",
+        reviewed: (run) =>
+          `${run.changedFiles} files in ${run.bundles} bundles · ${run.files.filter((f) => !f.selected).length} set aside (generated)`,
+        tasks: (run) =>
+          `correctness, security · ${run.skippedPairs} pairs skipped with a reason`,
+        findings: ({ outcome: o }) =>
+          `${o.verified} critical, verified · ${o.merged} merged · ${o.disproved} disproved`,
+        tokens: (run) => `tokens in (${formatCount(run.usage.cached)} cached)`,
       },
       onLine: "line",
       quoteTip: "the agent quoted this line · ocra found it in the diff",
@@ -73,7 +78,7 @@ export const en: Copy = {
         reviewing: "ocra · reviewing",
         changes: "ocra · changes requested",
         running: "ocra review · running",
-        blocking: "ocra review · 1 blocking",
+        blocking: (run) => `ocra review · ${run.outcome.verified} blocking`,
         why: {
           session: "read · auth code, full tier",
           login: "read · auth code",
@@ -113,8 +118,8 @@ export const en: Copy = {
     emphasis: "Models only for judgment.",
     body: "Selection, bundling, anchoring and the verdict are tested code. A model is asked to group files, review, verify and judge, and every answer is checked against a schema before it moves on.",
     legend: { code: "deterministic", model: "judgment" },
-    steps: [
-      {
+    steps: {
+      select: {
         title: "Only the files worth reading",
         stages: [
           { name: "select", kind: "code" },
@@ -122,7 +127,7 @@ export const en: Copy = {
         ],
         text: "Binaries, lock files, generated code and likely secrets are set aside, each with a recorded reason. Sensitive paths such as auth/ or CI workflows make the change full tier.",
       },
-      {
+      bundle: {
         title: "One task per group and reviewer",
         stages: [
           { name: "bundle", kind: "model" },
@@ -130,7 +135,7 @@ export const en: Copy = {
         ],
         text: "A light model groups files that belong together. Correctness always runs; security and performance skip docs and tests. --plan lists every task before a model is paid.",
       },
-      {
+      review: {
         title: "Findings quote the code they mean",
         stages: [
           { name: "review", kind: "model" },
@@ -138,7 +143,7 @@ export const en: Copy = {
         ],
         text: "An isolated agent reads the exact revision with read-only tools and stops after 20 steps. It quotes the code; ocra finds the quote in the diff and pins the comment there. The model never picks the line.",
       },
-      {
+      verify: {
         title: "Only what holds up on a second read",
         stages: [
           { name: "filter", kind: "code" },
@@ -148,7 +153,7 @@ export const en: Copy = {
         ],
         text: "A verifier drops what the code disproves. A judge merges the same root cause, but can never drop a confirmed critical. The verdict is computed in code.",
       },
-    ],
+    },
     figures: {
       read: "read",
       setAside: "set aside: generated",
@@ -165,7 +170,7 @@ export const en: Copy = {
         merged: "merged into #1",
         disproved: "disproved by the code",
         verdict: "Verdict: significant concerns",
-        critical: "1 verified critical",
+        critical: (run) => `${run.outcome.verified} verified critical`,
       },
       claims: {
         sessions: "Sessions always read as expired",
@@ -193,7 +198,12 @@ export const en: Copy = {
     bill: {
       title: "Every attempt shows its bill",
       body: "Tokens and dollars per task, helpers included. Set maxCostUsd and the run stops spending there.",
-      rows: ["input", "cached", "output and reasoning", "run total"],
+      rows: {
+        input: "input",
+        cached: "cached",
+        output: "output and reasoning",
+        total: "run total",
+      },
     },
     fallback: {
       title: "When a model falls over, the next takes the task",
@@ -219,7 +229,7 @@ export const en: Copy = {
         "A maintainer declined it. ocra stops reporting it and it no longer counts towards the verdict, unless it comes back more severe. The pull request's own author cannot do this.",
     },
     caption: "quoted · verified",
-    reply: "Won't fix in this PR: tracked in #812.",
+    reply: (run) => `Won't fix in this PR: tracked in #${run.pr.number}.`,
     maintainer: "maintainer",
     resolvedBot: "github-actions resolved this conversation",
     resolvedMaintainer: "maintainer resolved this conversation",
@@ -279,8 +289,8 @@ export const en: Copy = {
     title: "Open core.",
     emphasis: "Hosted when you want it.",
     body: "The engine stays Apache-2.0 and complete without an account. ocra Cloud is free while it is in early access; you bring the model key.",
-    items: [
-      {
+    items: {
+      self: {
         state: "available now",
         name: "Self-hosted",
         price: "Free",
@@ -293,7 +303,7 @@ export const en: Copy = {
         ],
         cta: "Read the quickstart",
       },
-      {
+      cloud: {
         state: "early access",
         name: "ocra Cloud",
         price: "Free",
@@ -306,7 +316,7 @@ export const en: Copy = {
         ],
         cta: "Sign in with GitHub",
       },
-      {
+      team: {
         state: "planned",
         name: "Team",
         price: "Later",
@@ -320,7 +330,7 @@ export const en: Copy = {
         cta: "Follow the roadmap",
         planned: true,
       },
-    ],
+    },
     fine: "With ocra Cloud your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing. If nothing but your provider may see the code, self-host: it is the same engine.",
   },
   faq: {

@@ -17,6 +17,9 @@ Re-record it when ocra's output changes:
 2. `scripts/demo-video/build-repo.sh` creates `.demo/acme-api` from `repo/`.
 3. `OCRA_CLI=../Open-CR-Agent/packages/cli/dist/main.js node scripts/demo-video/record.mjs`
    runs the review in real time (about 90 seconds) and writes `transcript.js`.
+   Copy what changed into `lib/landing/example-run.ts` (counts, usage, the
+   finding, the terminal lines): the landing page reads the run from there
+   and nowhere else.
    `DEMO_SPEED=40` is quicker for trying changes, but records the wrong pace.
 4. Put `Geist-Variable.woff2` and `GeistMono-Variable.woff2` (from
    [vercel/geist-font](https://github.com/vercel/geist-font), OFL) in

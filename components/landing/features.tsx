@@ -1,4 +1,5 @@
-import type { Copy } from "@/lib/copy";
+import type { BillRow, Copy } from "@/lib/copy";
+import { exampleRun, formatCount } from "@/lib/landing/example-run";
 import { Heading, withCode } from "./heading";
 
 // The real .ocra/rules.json shape (docs/manual/en/rules.mdx).
@@ -15,8 +16,13 @@ const RULES = `{
   ]
 }`;
 
-// Numbers from the recorded example run.
-const BILL = ["315,936", "209,152", "17,510", "$0.5134"];
+const { usage } = exampleRun;
+const BILL: [BillRow, string][] = [
+  ["input", formatCount(usage.input)],
+  ["cached", formatCount(usage.cached)],
+  ["output", formatCount(usage.output + usage.reasoning)],
+  ["total", `$${usage.dollars.toFixed(4)}`],
+];
 const TOOLS: [string, boolean][] = [
   ["read", true],
   ["search", true],
@@ -80,10 +86,10 @@ export function Features({ copy }: { copy: Copy["features"] }) {
             <h3>{copy.bill.title}</h3>
             <p>{withCode(copy.bill.body)}</p>
             <div className="vis2 bill">
-              {copy.bill.rows.map((row, i) => (
+              {BILL.map(([row, value]) => (
                 <div key={row}>
-                  <span>{row}</span>
-                  <span>{BILL[i]}</span>
+                  <span>{copy.bill.rows[row]}</span>
+                  <span>{value}</span>
                 </div>
               ))}
             </div>
