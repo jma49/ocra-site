@@ -9,6 +9,7 @@ import {
   terminalLines,
 } from "@/lib/landing/example-run";
 import { PrPane } from "./pr-pane";
+import { tabPattern } from "./tabs";
 
 type Tab = "pr" | "terminal" | "cloud";
 
@@ -51,6 +52,12 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
       icon: "M7 18h10a4 4 0 0 0 .6-8 6 6 0 0 0-11.4 1.5A3.3 3.3 0 0 0 7 18z",
     },
   ];
+  const t = tabPattern(
+    "window",
+    tabs.map((x) => x.id),
+    tab,
+    setTab,
+  );
   return (
     <div className="stage" id="product">
       <div className="win">
@@ -63,9 +70,9 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
           <span className="url">{copy.urls[tab]}</span>
           <span className="spacer" />
         </div>
-        {tab === "pr" && <PrPane copy={copy.pr} />}
+        {tab === "pr" && <PrPane copy={copy.pr} panel={t.panel("pr")} />}
         {tab === "terminal" && (
-          <pre className="term">
+          <pre className="term" {...t.panel("terminal")}>
             {terminalLines.map(([text, tone]) => (
               <span
                 key={text}
@@ -76,7 +83,7 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
           </pre>
         )}
         {tab === "cloud" && (
-          <div className="console">
+          <div className="console" {...t.panel("cloud")}>
             <aside>
               {copy.console.nav.map((item, i) => (
                 <span key={item} className={i ? undefined : "on"}>
@@ -129,15 +136,9 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
           </div>
         )}
       </div>
-      <div className="tabs" role="tablist">
-        {tabs.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            role="tab"
-            aria-selected={tab === t.id}
-            onClick={() => setTab(t.id)}
-          >
+      <div className="tabs" {...t.list}>
+        {tabs.map((x) => (
+          <button key={x.id} type="button" {...t.tab(x.id)}>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -146,9 +147,9 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
               strokeLinecap="round"
               aria-hidden="true"
             >
-              <path d={t.icon} />
+              <path d={x.icon} />
             </svg>
-            {t.label}
+            {x.label}
           </button>
         ))}
       </div>

@@ -423,7 +423,12 @@ export const en: CopySource = {
       },
     ],
   },
-  dock: { start: "Start with ocra Cloud", copy: "Copy", copied: "Copied" },
+  dock: {
+    label: "Get started",
+    start: "Start with ocra Cloud",
+    copy: "Copy",
+    copied: "Copied",
+  },
   notFound: {
     title: "Page not found",
     body: "The page you are looking for does not exist, or it moved.",

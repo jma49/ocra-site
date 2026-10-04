@@ -232,6 +232,6 @@ export interface CopySource {
       links: { id: FooterLinkId; label: string }[];
     }[];
   };
-  dock: { start: string; copy: string; copied: string };
+  dock: { label: string; start: string; copy: string; copied: string };
   notFound: { title: string; body: string; back: string };
 }

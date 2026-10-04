@@ -404,7 +404,12 @@ export const zh: CopySource = {
       },
     ],
   },
-  dock: { start: "开始使用 ocra Cloud", copy: "复制", copied: "已复制" },
+  dock: {
+    label: "开始使用",
+    start: "开始使用 ocra Cloud",
+    copy: "复制",
+    copied: "已复制",
+  },
   notFound: {
     title: "页面不存在",
     body: "你要找的页面不存在，或者已经移动。",
