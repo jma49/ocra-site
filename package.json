@@ -15,7 +15,8 @@
     "visual:baseline": "playwright test --update-snapshots=all",
     "visual": "playwright test",
     "deploy": "bash scripts/deploy.sh",
-    "check:colors": "node scripts/check-colors.mjs"
+    "check:colors": "node scripts/check-colors.mjs",
+    "check:schemas": "node scripts/check-schemas.mjs"
   },
   "dependencies": {
     "@fontsource/maple-mono": "^5.3.0",
