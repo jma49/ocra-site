@@ -300,7 +300,7 @@ export const en: Copy = {
         unit: "bring your own key",
         points: [
           "Sign in with GitHub; `ocra login` from any machine",
-          "Keys for 45 providers, encrypted and checked on save",
+          "Keys for 45 providers, encrypted, checked on save where the provider allows",
           "Usage, spend and review counts by day",
           "Default models chosen once, on the web",
         ],
