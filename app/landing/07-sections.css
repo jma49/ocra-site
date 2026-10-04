@@ -62,8 +62,8 @@
 }
 .snippet {
   margin: 0;
-  background: #0b0f0d;
-  color: rgb(255 255 255 / 0.85);
+  background: var(--night);
+  color: color-mix(in srgb, var(--white) 85%, transparent);
   border-radius: 12px;
   padding: 16px 18px;
   font-family: var(--font-mono);
@@ -75,7 +75,7 @@
   color: var(--aqua);
 }
 .snippet .c {
-  color: rgb(255 255 255 / 0.4);
+  color: color-mix(in srgb, var(--white) 40%, transparent);
 }
 .bill div,
 .toggles div {
@@ -208,7 +208,7 @@
 }
 .caption {
   position: absolute;
-  z-index: 3;
+  z-index: var(--z-float);
   right: -18px;
   top: -26px;
   transform: rotate(3deg);

@@ -1,7 +1,7 @@
 /* ---- The spider ---- */
 .hang {
   position: absolute;
-  z-index: 3;
+  z-index: var(--z-float);
   right: -9%;
   top: -230px;
   width: 200px;
@@ -36,7 +36,7 @@
   bottom: 120px;
   width: 2px;
   height: calc(900px + var(--lift, 0px));
-  background: rgb(244 242 234 / 0.75);
+  background: color-mix(in srgb, var(--on-night) 75%, transparent);
   transform: translateX(-1px);
   transition: height 0.7s cubic-bezier(0.34, 1.35, 0.5, 1);
 }
@@ -178,7 +178,7 @@
 .flash {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: var(--z-flash);
   pointer-events: none;
   background: linear-gradient(90deg, var(--pink) 0 50%, var(--aqua) 50% 100%);
   mix-blend-mode: screen;

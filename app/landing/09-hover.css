@@ -1,18 +1,6 @@
 /* ---- One hover language ----
    Blocks lift up-left and print a pink plate behind, an aquamarine one ahead.
    Lines get an aquamarine highlighter sweep from the left. Nothing else moves. */
-.home {
-  --hv-t: 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
-  --hv-shadow: 4px 4px 0 var(--pink), -2px -2px 0 var(--aqua);
-  --hv-mark: rgb(127 255 212 / 0.55);
-  --hv-row: rgb(127 255 212 / 0.26);
-}
-.dark .home {
-  --hv-mark: rgb(127 255 212 / 0.22);
-  --hv-row: rgb(127 255 212 / 0.12);
-}
-
-.home .btn,
 .card,
 .plan,
 .logo-tile,
@@ -28,11 +16,7 @@
     background-color var(--hv-t),
     color var(--hv-t);
 }
-.home .btn i {
-  transition: transform 0.3s ease;
-}
 @media (hover: hover) {
-  .home .btn:hover,
   .card:hover,
   .plan:hover,
   .logo-tile:hover,
@@ -55,11 +39,7 @@
   .pchip:hover {
     color: var(--text);
   }
-  .home .btn:hover i {
-    transform: translateX(3px);
-  }
 }
-.home .btn:active,
 .tabs button:active,
 .seg button:active,
 .replay:active,
@@ -133,7 +113,7 @@
   .nav .links a:hover,
   .nav-r .t:hover,
   .announce a:hover {
-    color: #fff;
+    color: var(--white);
   }
   .foot a:hover {
     color: var(--text);

@@ -17,13 +17,10 @@
   box-shadow:
     0 0 0 1px var(--glass-edge),
     inset 0 1px 0 var(--glass-hi),
-    0 24px 60px -30px rgb(12 20 17 / 0.35);
+    0 24px 60px -30px color-mix(in srgb, var(--glass-shadow) 35%, transparent);
 }
 .hero .win {
-  --glass: rgb(250 250 247 / 0.9);
-}
-.dark .hero .win {
-  --glass: rgb(18 24 21 / 0.62);
+  --glass: var(--glass-hero);
 }
 
 /* Something for the glass to blur: soft brand light behind the sections with panels. */
@@ -44,7 +41,7 @@
 .lifecycle::before {
   content: "";
   position: absolute;
-  z-index: -1;
+  z-index: var(--z-under);
   pointer-events: none;
   inset: -18% 0;
   opacity: var(--glow-o);
@@ -52,25 +49,41 @@
   background:
     radial-gradient(
       38% 42% at 78% 38%,
-      rgb(127 255 212 / 0.42),
+      color-mix(in srgb, var(--aqua) 42%, transparent),
       transparent 70%
     ),
-    radial-gradient(30% 36% at 62% 72%, rgb(255 61 127 / 0.2), transparent 70%);
+    radial-gradient(
+      30% 36% at 62% 72%,
+      color-mix(in srgb, var(--pink) 20%, transparent),
+      transparent 70%
+    );
 }
 #security::before,
 .lifecycle::before {
   background:
-    radial-gradient(36% 40% at 26% 55%, rgb(127 255 212 / 0.4), transparent 70%),
-    radial-gradient(28% 34% at 42% 78%, rgb(255 61 127 / 0.18), transparent 70%);
+    radial-gradient(
+      36% 40% at 26% 55%,
+      color-mix(in srgb, var(--aqua) 40%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      28% 34% at 42% 78%,
+      color-mix(in srgb, var(--pink) 18%, transparent),
+      transparent 70%
+    );
 }
 #plans::before {
   background:
     radial-gradient(
       30% 40% at 50% 46%,
-      rgb(127 255 212 / 0.36),
+      color-mix(in srgb, var(--aqua) 36%, transparent),
       transparent 70%
     ),
-    radial-gradient(26% 30% at 70% 62%, rgb(255 61 127 / 0.22), transparent 70%);
+    radial-gradient(
+      26% 30% at 70% 62%,
+      color-mix(in srgb, var(--pink) 22%, transparent),
+      transparent 70%
+    );
 }
 
 /* ---- Platforms and providers ---- */
@@ -136,8 +149,8 @@
   mask-image: linear-gradient(
     90deg,
     transparent,
-    #000 9%,
-    #000 91%,
+    var(--black) 9%,
+    var(--black) 91%,
     transparent
   );
 }

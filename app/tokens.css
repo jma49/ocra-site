@@ -1,0 +1,118 @@
+/* The design tokens (DESIGN.md), the only place a colour literal may appear
+   (scripts/check-colors.mjs). Everything else names a token, and derives
+   translucent variants with color-mix(). */
+
+:root {
+  /* Inks. */
+  --aqua: #7fffd4;
+  /* Aquamarine is too light for text on paper; the same hue, darkened to
+     about 5:1 contrast, carries it in the light theme. */
+  --aqua-ink: #0b7a5c;
+  --pink: #ff3d7f;
+  --night: #0b0f0e;
+  --night-2: #0e1311;
+  --on-night: #f4f2ea;
+  --on-night-2: #c3d6ce;
+  --on-night-3: #9fc1b5;
+  --night-line: rgb(230 241 236 / 0.14);
+  --white: #ffffff;
+  --black: #000000;
+
+  /* Paper. */
+  --paper: #f7f6f1;
+  --paper-2: #efede6;
+  --card: #ffffff;
+  --text: #111a17;
+  --text-2: #4a5550;
+  --text-3: #626b66;
+  --line: #e3e0d6;
+  --line-2: #d2cec2;
+
+  /* Review severities and code. */
+  --red: #b5301b;
+  --red-soft: #f8e4dd;
+  --amber: #a35a00;
+  --keyword: #6b3fa0;
+  --term-warn: #fbbf24;
+
+  /* The spider's body on a dark ground lifts so the silhouette reads. */
+  --spider-on-dark: #1d2a26;
+
+  /* Frosted glass. */
+  --glass: rgb(255 255 255 / 0.56);
+  --glass-soft: rgb(255 255 255 / 0.42);
+  --glass-inner: rgb(255 255 255 / 0.4);
+  --glass-line: rgb(255 255 255 / 0.7);
+  --glass-edge: rgb(17 26 23 / 0.08);
+  --glass-hi: rgb(255 255 255 / 0.85);
+  --glass-hero: rgb(250 250 247 / 0.9);
+  --glass-shadow: rgb(12 20 17);
+  --glass-blur: blur(22px) saturate(1.6);
+  --glow-o: 1;
+
+  /* Highlighter and hover plates (DESIGN.md, Motion). */
+  --marker: color-mix(in srgb, var(--aqua) 80%, transparent);
+  --hv-mark: color-mix(in srgb, var(--aqua) 55%, transparent);
+  --hv-row: color-mix(in srgb, var(--aqua) 26%, transparent);
+  --hv-t: 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --hv-shadow: 4px 4px 0 var(--pink), -2px -2px 0 var(--aqua);
+
+  /* Stacking, lowest first. */
+  --z-under: -1;
+  --z-over: 1;
+  --z-float: 3;
+  --z-flash: 4;
+  --z-tip: 5;
+  --z-nav: 60;
+  --z-dock: 70;
+
+  /* Fumadocs draws the manual's chrome from these. */
+  --color-fd-background: var(--paper);
+  --color-fd-foreground: var(--text);
+  --color-fd-muted: var(--paper-2);
+  --color-fd-muted-foreground: var(--text-2);
+  --color-fd-card: var(--paper-2);
+  --color-fd-card-foreground: var(--text);
+  --color-fd-popover: var(--paper);
+  --color-fd-popover-foreground: var(--text);
+  --color-fd-border: var(--line);
+  --color-fd-primary: var(--aqua-ink);
+  --color-fd-primary-foreground: var(--white);
+  --color-fd-secondary: var(--paper-2);
+  --color-fd-secondary-foreground: var(--text);
+  --color-fd-accent: color-mix(in srgb, var(--aqua) 22%, var(--paper));
+  --color-fd-accent-foreground: var(--text);
+  --color-fd-ring: var(--aqua-ink);
+}
+
+.dark {
+  --aqua-ink: var(--aqua);
+  --paper: #0c100e;
+  --paper-2: #121815;
+  --card: #141a17;
+  --text: #ecf1ee;
+  --text-2: #a6b1ab;
+  --text-3: #7d8781;
+  --line: #222a26;
+  --line-2: #2e3833;
+  --red: #ff7a5c;
+  --red-soft: #2a1713;
+  --amber: #f2ad4b;
+  --keyword: #c9a7ff;
+
+  --glass: rgb(24 31 28 / 0.5);
+  --glass-soft: rgb(30 38 34 / 0.42);
+  --glass-inner: rgb(255 255 255 / 0.04);
+  --glass-line: rgb(255 255 255 / 0.09);
+  --glass-edge: rgb(0 0 0 / 0.4);
+  --glass-hi: rgb(255 255 255 / 0.07);
+  --glass-hero: rgb(18 24 21 / 0.62);
+  --glow-o: 0.38;
+
+  --marker: color-mix(in srgb, var(--aqua) 30%, transparent);
+  --hv-mark: color-mix(in srgb, var(--aqua) 22%, transparent);
+  --hv-row: color-mix(in srgb, var(--aqua) 12%, transparent);
+
+  --color-fd-accent: color-mix(in srgb, var(--aqua) 12%, var(--paper));
+  --color-fd-primary-foreground: var(--night);
+}

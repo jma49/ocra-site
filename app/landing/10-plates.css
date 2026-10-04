@@ -3,7 +3,7 @@
   position: absolute;
   right: 12px;
   top: 50%;
-  z-index: 5;
+  z-index: var(--z-tip);
   white-space: nowrap;
   font: 500 11px var(--font-mono);
   background: var(--night);
@@ -59,7 +59,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: var(--z-under);
 }
 .plate,
 .plate em {
@@ -81,7 +81,7 @@
   mix-blend-mode: screen;
 }
 .plate-cut {
-  z-index: 1;
+  z-index: var(--z-over);
   background: var(--night);
   opacity: 0;
   clip-path: inset(var(--cy, 0) 0 calc(100% - var(--cy, 0px) - 0.16em) 0);

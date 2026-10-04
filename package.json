@@ -10,11 +10,12 @@
     "build": "next build",
     "start": "next start",
     "types:check": "next typegen && tsc --noEmit",
-    "lint": "biome check",
+    "lint": "biome check && node scripts/check-colors.mjs",
     "format": "biome format --write",
     "visual:baseline": "playwright test --update-snapshots=all",
     "visual": "playwright test",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "check:colors": "node scripts/check-colors.mjs"
   },
   "dependencies": {
     "@fontsource/maple-mono": "^5.3.0",

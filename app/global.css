@@ -1,11 +1,10 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
+@import "./tokens.css";
 @import "./docs.css";
 
-/* Monochrome, typography-led design. Colour carries meaning only: the
-   aquamarine brand for links, focus and "verified", and the review
-   severities. CJK text uses the system faces after Archivo. */
+/* CJK text uses the system faces after Archivo. */
 @theme {
   --font-sans:
     var(--font-archivo), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
@@ -13,139 +12,6 @@
   --font-mono:
     var(--font-maple), "Maple Mono NF", ui-monospace, SFMono-Regular, Menlo,
     monospace;
-
-  --text-display: 4rem;
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.045em;
-  --text-display-sm: 2.6rem;
-  --text-display-sm--line-height: 1.05;
-  --text-display-sm--letter-spacing: -0.045em;
-  --text-display-zh: 3.3rem;
-  --text-display-zh--line-height: 1.2;
-  --text-display-zh--letter-spacing: -0.02em;
-  --text-display-zh-sm: 2.3rem;
-  --text-display-zh-sm--line-height: 1.2;
-  --text-display-zh-sm--letter-spacing: -0.02em;
-  --text-headline: 2.4rem;
-  --text-headline--line-height: 1.15;
-  --text-headline--letter-spacing: -0.03em;
-  --text-headline-sm: 1.75rem;
-  --text-headline-sm--line-height: 1.15;
-  --text-headline-sm--letter-spacing: -0.03em;
-  --text-title: 1.25rem;
-  --text-title--line-height: 1.3;
-  --text-title--letter-spacing: -0.015em;
-  --text-lead: 1.05rem;
-  --text-lead--line-height: 1.625;
-}
-
-/* The tokens below as Tailwind colours (`text-fg-muted`, `border-border`),
-   under the same names as the CSS variables. */
-@theme inline {
-  --color-fg: var(--fg);
-  --color-fg-muted: var(--fg-muted);
-  --color-fg-subtle: var(--fg-subtle);
-  --color-bg: var(--bg);
-  --color-bg-subtle: var(--bg-subtle);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --color-brand: var(--brand);
-  --color-ink: var(--ink);
-  --color-panel: var(--panel);
-  --color-critical: var(--critical);
-  --color-warning: var(--warning);
-  --color-code-comment: var(--code-comment);
-  --color-code-keyword: var(--code-keyword);
-  --color-code-string: var(--code-string);
-  --color-term-bg: var(--term-bg);
-  --color-term-fg: var(--term-fg);
-  --color-term-strong: var(--term-strong);
-  --color-term-dim: var(--term-dim);
-  --color-term-label: var(--term-label);
-  --color-term-border: var(--term-border);
-  --color-term-border-strong: var(--term-border-strong);
-  --color-term-ok: var(--term-ok);
-  --color-term-warn: var(--term-warn);
-}
-
-:root {
-  --brand: #7fffd4;
-  /* Ink: text on the aquamarine, the night sections, the spider. */
-  --pink: #ff3d7f;
-  --ink: #0b0f0e;
-  /* Aquamarine is too light for text on white; the same hue, darkened to
-     about 5:1 contrast, carries it in the light theme. */
-  --accent: #0b7a5c;
-  --accent-soft: color-mix(in srgb, var(--brand) 32%, white);
-  /* Paper and ink, shared with the landing page. */
-  --bg: #f7f6f1;
-  --bg-subtle: #efede6;
-  --fg: #111a17;
-  --fg-muted: #4a5550;
-  --fg-subtle: #626b66;
-  --border: #e3e0d6;
-  --border-strong: #d2cec2;
-  --panel: #ffffff;
-  --panel-shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px rgb(0 0 0 / 0.06);
-  --critical: #b91c1c;
-  --warning: #d97706;
-  --code-comment: #737373;
-  --code-keyword: #7c3aed;
-  --code-string: #0b7a5c;
-  /* Terminals stay dark in both themes, so these are not redefined in .dark. */
-  --term-bg: #0a0a0a;
-  --term-fg: rgb(255 255 255 / 0.88);
-  --term-strong: #ffffff;
-  --term-dim: color-mix(in oklab, #ffffff 55%, transparent);
-  --term-label: #85858e;
-  --term-border: #27272a;
-  --term-border-strong: #3f3f46;
-  --term-ok: var(--brand);
-  --term-warn: #fbbf24;
-
-  --color-fd-background: var(--bg);
-  --color-fd-foreground: var(--fg);
-  --color-fd-muted: var(--bg-subtle);
-  --color-fd-muted-foreground: var(--fg-muted);
-  --color-fd-card: var(--bg-subtle);
-  --color-fd-card-foreground: var(--fg);
-  --color-fd-popover: var(--bg);
-  --color-fd-popover-foreground: var(--fg);
-  --color-fd-border: var(--border);
-  --color-fd-primary: var(--accent);
-  --color-fd-primary-foreground: #ffffff;
-  --color-fd-secondary: var(--bg-subtle);
-  --color-fd-secondary-foreground: var(--fg);
-  --color-fd-accent: color-mix(in srgb, var(--brand) 22%, var(--bg));
-  --color-fd-accent-foreground: var(--fg);
-  --color-fd-ring: var(--accent);
-}
-
-.dark {
-  --accent: var(--brand);
-  --accent-soft: color-mix(in srgb, var(--brand) 14%, transparent);
-  --bg: #0c100e;
-  --bg-subtle: #121815;
-  --fg: #ecf1ee;
-  --fg-muted: #a6b1ab;
-  --fg-subtle: #7d8781;
-  --border: #222a26;
-  --border-strong: #2e3833;
-  --panel: #141a17;
-  --panel-shadow:
-    0 0 0 1px rgb(255 255 255 / 0.02), 0 8px 32px rgb(0 0 0 / 0.5);
-  --critical: #f87171;
-  --warning: #fbbf24;
-  --code-comment: #71717a;
-  --code-keyword: #c4b5fd;
-  --code-string: var(--brand);
-
-  --color-fd-muted: var(--bg-subtle);
-  --color-fd-secondary: var(--bg-subtle);
-  --color-fd-accent: color-mix(in srgb, var(--brand) 12%, var(--bg));
-  --color-fd-primary-foreground: #04110c;
 }
 
 html {
@@ -153,7 +19,7 @@ html {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--brand) 45%, transparent);
+  background: color-mix(in srgb, var(--aqua) 45%, transparent);
 }
 
 /* The scroll-lock library sets these inline, so only !important overrides them. */
@@ -165,174 +31,76 @@ html > body[data-scroll-locked] {
 }
 
 .home-layout #nd-nav {
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--paper) 78%, transparent);
+  border-bottom: 1px solid var(--line);
   backdrop-filter: blur(12px) saturate(1.4);
   -webkit-backdrop-filter: blur(12px) saturate(1.4);
 }
 
-/* Chinese reads better with more leading than Latin text, and without the
-   tight tracking that suits Geist: it crowds CJK glyphs. */
+/* Chinese reads better with more leading than Latin text. */
 :lang(zh) .prose {
   line-height: 1.85;
 }
 
-:lang(zh) {
-  --text-headline--letter-spacing: -0.01em;
-  --text-headline--line-height: 1.3;
-  --text-headline-sm--letter-spacing: -0.01em;
-  --text-headline-sm--line-height: 1.3;
-  --text-title--letter-spacing: 0;
-  --text-lead--line-height: 1.85;
+/* ---- Buttons: the landing page's pills, also on the 404 page ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-stretch: 92%;
+  font-size: 15.5px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    transform var(--hv-t),
+    box-shadow var(--hv-t),
+    background-color var(--hv-t),
+    color var(--hv-t);
 }
-
-@layer components {
-  .home {
-    color: var(--fg);
-    background: var(--bg);
+.btn i {
+  font-style: normal;
+  transition: transform 0.3s ease;
+}
+.btn-dark {
+  background: var(--text);
+  color: var(--paper);
+}
+.btn-soft {
+  background: var(--glass-soft);
+  color: var(--text);
+  border-color: var(--line-2);
+  backdrop-filter: blur(8px);
+}
+.btn-brand {
+  background: var(--aqua);
+  color: var(--night);
+}
+.btn-sm {
+  height: 38px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+@media (hover: hover) {
+  .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--hv-shadow);
   }
-
-  .hero-glow {
-    background: radial-gradient(
-      closest-side,
-      color-mix(in srgb, var(--brand) 38%, transparent),
-      transparent
-    );
-    filter: blur(24px);
+  .btn:hover i {
+    transform: translateX(3px);
   }
-
-  .panel {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--panel);
-    box-shadow: var(--panel-shadow);
-  }
-
-  .panel-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    min-height: 40px;
-    padding: 0 0.9rem;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--fg-subtle);
-  }
-
-  /* Terminals stay dark in both themes. */
-  .terminal {
-    background: var(--term-bg);
-    color: var(--term-fg);
-  }
-
-  .panel-dark {
-    border-color: var(--term-border);
-    background: var(--term-bg);
-  }
-
-  .panel-dark .panel-bar {
-    border-color: var(--term-border);
-    color: var(--term-label);
-  }
-
-  .btn,
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    height: 2.5rem;
-    border-radius: 8px;
-    padding: 0 1rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition-property: background-color, border-color, opacity, scale;
-    transition-duration: 0.15s;
-    transition-timing-function: ease-out;
-  }
-
-  .btn:active,
-  .btn-outline:active {
-    scale: 0.96;
-  }
-
-  .btn {
-    background: var(--fg);
-    color: var(--bg);
-  }
-
-  @media (hover: hover) {
-    .btn:hover {
-      opacity: 0.88;
-    }
-
-    .btn-outline:hover {
-      background: var(--bg-subtle);
-      border-color: var(--fg-subtle);
-    }
-  }
-
-  .btn-outline {
-    border: 1px solid var(--border-strong);
-    color: var(--fg);
-  }
-
-  .btn-sm {
-    height: 1.75rem;
-    padding: 0 0.6rem;
-    font-size: 0.75rem;
-  }
-
-  .btn:focus-visible,
-  .btn-outline:focus-visible,
-  .focus-ring:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  /* A small numbered marker. */
-  .marker {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.3rem;
-    height: 1.3rem;
-    flex-shrink: 0;
-    border: 1px solid var(--border-strong);
-    border-radius: 9999px;
-    background: var(--bg);
-    color: var(--fg-muted);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-  }
-
-  .marker-brand {
-    border-color: transparent;
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-
-  .no-scrollbar {
-    scrollbar-width: none;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .severity-critical {
-    border: 1px solid color-mix(in srgb, var(--critical) 35%, transparent);
-    background: color-mix(in srgb, var(--critical) 10%, transparent);
-    color: var(--critical);
-  }
-
-  .verified {
-    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-    background: var(--accent-soft);
-    color: var(--accent);
+}
+.btn:active {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 var(--pink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover {
+    transform: none;
   }
 }
 
