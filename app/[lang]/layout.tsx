@@ -27,7 +27,7 @@ const meta = {
 
 // Every Vercel build, previews included, points canonical links at the
 // custom domain; SITE_URL overrides it.
-const PRODUCTION_URL = "https://ocra.majincheng.com";
+const PRODUCTION_URL = "https://ocracloud.com";
 
 function siteUrl(): string {
   if (process.env.SITE_URL) return process.env.SITE_URL;
