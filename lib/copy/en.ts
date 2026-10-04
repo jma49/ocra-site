@@ -2,6 +2,7 @@ import type { Copy } from "./types";
 
 export const en: Copy = {
   announce: {
+    label: "Announcement",
     text: "ocra Cloud is in early access. Sign in with GitHub and bring your own model key.",
     link: "What it stores",
   },

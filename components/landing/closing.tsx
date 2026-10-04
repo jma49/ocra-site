@@ -79,7 +79,7 @@ export function Footer({
           </div>
           {copy.columns.map((col) => (
             <div key={col.title}>
-              <h4>{col.title}</h4>
+              <h3>{col.title}</h3>
               <ul>
                 {col.links.map((l) => (
                   <li key={l.label}>
