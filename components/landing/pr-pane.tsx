@@ -9,17 +9,15 @@ import {
 } from "react";
 import { SmallSpider } from "@/components/brand/spider-mark";
 import type { Copy } from "@/lib/copy";
-import { FIX_EVENT } from "./hanging-spider";
-import { Line, Return, SessionCode } from "./session-code";
+import { Line, Return, SessionCode, Suggestion } from "./session-code";
 
-type State = "running" | "done" | "fixing" | "fixed";
+type State = "running" | "done";
 const STAGES = ["select", "bundle", "review", "verify", "verdict"];
 const TOKENS = 315936;
 const DOLLARS = 0.5134;
 
 // The pull request as ocra leaves it, replayed when it scrolls into view:
-// stages light up, the summary fills in, the cost counts up. "Commit
-// suggestion" applies the fix and ocra re-reviews and resolves the thread.
+// stages light up, the summary fills in, the cost counts up.
 export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
   const root = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
@@ -108,36 +106,23 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
     };
   }, [run, clear]);
 
-  const commit = () => {
-    clear();
-    setState("fixing");
-    later(1300, () => {
-      setState("fixed");
-      window.dispatchEvent(new Event(FIX_EVENT));
-    });
-  };
-
   const running = state === "running";
-  const fixed = state === "fixed";
-  const applied = state === "fixing" || fixed;
   const head = {
     running: copy.reviewing,
     done: copy.reviewed,
-    fixing: copy.rereviewing,
-    fixed: copy.rereviewed,
   }[state];
   const v = copy.values;
   const summary: [string, string][] = [
     [copy.rows.reviewed, v.reviewed],
     [copy.rows.tasks, v.tasks],
-    [copy.rows.findings, fixed ? v.findingsFixed : v.findings],
+    [copy.rows.findings, v.findings],
     [
       copy.rows.cost,
       `${tokens.toLocaleString("en-US")} ${v.tokens} · $${dollars.toFixed(4)}`,
     ],
   ];
   const s = copy.side;
-  const busy = running || state === "fixing";
+  const busy = running;
 
   return (
     <div ref={root} className="pr" data-state={state}>
@@ -198,11 +183,9 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
               ))}
               <i className="bar" />
             </div>
-            <div
-              className={`verdict${running ? " hide" : ""}${fixed ? " ok" : ""}`}
-            >
+            <div className={`verdict${running ? " hide" : ""}`}>
               <i />
-              {fixed ? copy.verdictFixed : copy.verdict}
+              {copy.verdict}
             </div>
             <table className="sum">
               <tbody>
@@ -225,13 +208,12 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
               <strong>ocra</strong> · <code>src/auth/session.ts</code>{" "}
               {copy.onLine} 42
             </span>
-            {fixed && <span className="resolved-chip">{copy.resolved}</span>}
           </div>
           <div className="fold">
             <div className="fold-in">
               <SessionCode>
-                <Line n={42} quoted className={applied ? "applied" : undefined}>
-                  <Return fixed={applied} />
+                <Line n={42} quoted>
+                  <Return />
                   <span className="qtip" role="tooltip">
                     {copy.quoteTip}
                   </span>
@@ -245,37 +227,17 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
                 </div>
                 <strong className="fg">{copy.findingTitle}</strong>{" "}
                 {copy.findingBody}
-                <div className="sugg">
-                  <div className="h">{copy.suggested}</div>
-                  <div className="d">
-                    - return session.expiresAt &lt; Date.now();
-                  </div>
-                  <div className="a">
-                    + return session.expiresAt * 1000 &lt; Date.now();
-                  </div>
-                  <div className="sugg-act">
-                    <button
-                      type="button"
-                      className="commit"
-                      disabled={state !== "done"}
-                      onClick={commit}
-                    >
-                      {copy.commit}
-                    </button>
-                    <span>{copy.commitHint}</span>
-                  </div>
-                </div>
+                <Suggestion />
               </div>
             </div>
           </div>
-          {fixed && <div className="resolved-line">{copy.resolvedLine}</div>}
         </div>
       </div>
       <aside className="pr-side">
         <p className="side-h">{s.reviewers}</p>
         <div className="chk">
           <SmallSpider size={18} />
-          {busy ? s.reviewing : fixed ? s.approved : s.changes}
+          {busy ? s.reviewing : s.changes}
         </div>
         <p className="side-h">{s.checks}</p>
         <div className="chk">
@@ -287,8 +249,8 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
           test
         </div>
         <div className="chk">
-          <i className={`dot ${busy ? "spin" : fixed ? "ok" : "bad"}`} />
-          {busy ? s.running : fixed ? s.passed : s.blocking}
+          <i className={`dot ${busy ? "spin" : "bad"}`} />
+          {busy ? s.running : s.blocking}
         </div>
         <p className="side-h">{s.files}</p>
         <div className="chk file" data-why={s.why.session}>

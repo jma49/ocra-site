@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SmallSpider } from "@/components/brand/spider-mark";
 import type { Copy } from "@/lib/copy";
 import { SplitHead } from "./heading";
-import { SessionCode } from "./session-code";
+import { SessionCode, Suggestion } from "./session-code";
 
 type State = "reported" | "fixed" | "dismissed";
 
@@ -69,15 +69,7 @@ export function Lifecycle({
                     </div>
                     <strong className="fg">{finding.findingTitle}</strong>{" "}
                     {finding.findingBody}
-                    <div className="sugg">
-                      <div className="h">{finding.suggested}</div>
-                      <div className="d">
-                        - return session.expiresAt &lt; Date.now();
-                      </div>
-                      <div className="a">
-                        + return session.expiresAt * 1000 &lt; Date.now();
-                      </div>
-                    </div>
+                    <Suggestion />
                   </div>
                 </div>
                 {state === "dismissed" && (

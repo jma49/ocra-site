@@ -20,7 +20,6 @@
 .tabs button,
 .seg button,
 .replay,
-.commit,
 .ib,
 .dock .copy {
   transition:
@@ -41,7 +40,6 @@
   .tabs button:hover,
   .seg button:hover,
   .replay:hover,
-  .commit:hover:not(:disabled),
   .ib:hover {
     transform: translate(-2px, -2px);
     box-shadow: var(--hv-shadow);
@@ -65,7 +63,6 @@
 .tabs button:active,
 .seg button:active,
 .replay:active,
-.commit:active,
 .ib:active {
   transform: translate(0, 0);
   box-shadow: 1px 1px 0 var(--pink);

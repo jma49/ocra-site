@@ -302,64 +302,14 @@
     )
     no-repeat;
 }
-.code .q.applied {
-  background: color-mix(in srgb, var(--aqua) 22%, transparent);
-  box-shadow: inset 3px 0 0 var(--aqua-ink);
-}
 .kw {
   color: var(--kw);
 }
-.sugg {
-  margin-top: 12px;
-  border: 1px solid var(--glass-line);
-  border-radius: 8px;
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: 12px;
+.sugg-line {
+  margin: 12px 0 0;
 }
-.sugg .h {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  color: var(--text-3);
-  padding: 6px 12px;
-  border-bottom: 1px solid var(--glass-line);
-}
-.sugg .d,
-.sugg .a {
-  padding: 3px 12px;
-  /* A suggestion is one line; it wraps on a phone rather than scrolling in a
-     box too small to scroll. */
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-.sugg .d {
-  background: color-mix(in srgb, var(--red) 8%, transparent);
-}
-.sugg .a {
-  background: color-mix(in srgb, var(--aqua) 26%, transparent);
-}
-.sugg-act {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-top: 1px solid var(--glass-line);
-  font: 12px var(--font-sans);
-  color: var(--text-3);
-}
-.commit {
-  border: 0;
-  border-radius: 8px;
-  padding: 7px 13px;
-  background: var(--night);
-  color: var(--on-night);
-  font-weight: 700;
-  font-size: 12.5px;
-  cursor: pointer;
-}
-.commit:disabled {
-  opacity: 0.5;
-  cursor: default;
+.sugg-line strong {
+  color: var(--text);
 }
 .replay {
   margin-left: auto;
@@ -427,18 +377,4 @@
 }
 .fold-in {
   min-height: 0;
-}
-.pr[data-state="fixed"] .fold {
-  grid-template-rows: 0fr;
-}
-.pr[data-state="fixed"] .finding {
-  opacity: 0.75;
-}
-.resolved-chip {
-  margin-left: auto;
-  font: 600 11px var(--font-mono);
-  color: var(--aqua-ink);
-  background: color-mix(in srgb, var(--aqua) 30%, transparent);
-  padding: 2px 8px;
-  border-radius: 999px;
 }

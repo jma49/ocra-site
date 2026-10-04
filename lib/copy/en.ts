@@ -47,11 +47,8 @@ export const en: Copy = {
       },
       reviewing: "is reviewing this pull request",
       reviewed: "reviewed this pull request",
-      rereviewing: "is re-reviewing the new push",
-      rereviewed: "re-reviewed the new push",
       replay: "Replay",
       verdict: "Verdict: significant concerns",
-      verdictFixed: "Verdict: no blocking findings",
       rows: {
         reviewed: "Reviewed",
         tasks: "Tasks",
@@ -62,7 +59,6 @@ export const en: Copy = {
         reviewed: "4 files in 2 bundles · 1 set aside (generated)",
         tasks: "correctness, security · 2 pairs skipped with a reason",
         findings: "1 critical, verified · 1 merged · 1 disproved",
-        findingsFixed: "0 open · 1 resolved by the fix",
         tokens: "tokens in (209,152 cached)",
       },
       onLine: "line",
@@ -70,22 +66,14 @@ export const en: Copy = {
       findingTitle: "Every session is treated as expired.",
       findingBody:
         "expiresAt is stored in seconds and compared with Date.now() in milliseconds, so users are logged out right after signing in.",
-      suggested: "Suggested change",
-      commit: "Commit suggestion",
-      commitHint: "try it: ocra re-reviews the new push",
-      resolved: "resolved",
-      resolvedLine:
-        "github-actions resolved this conversation · the quoted code is gone",
       side: {
         reviewers: "Reviewers",
         checks: "Checks",
         files: "Files",
         reviewing: "ocra · reviewing",
         changes: "ocra · changes requested",
-        approved: "ocra · approved",
         running: "ocra review · running",
         blocking: "ocra review · 1 blocking",
-        passed: "ocra review · passed",
         why: {
           session: "read · auth code, full tier",
           login: "read · auth code",
@@ -250,7 +238,7 @@ export const en: Copy = {
       },
       {
         title: "The smallest fix",
-        body: "A suggested change you can apply from the pull request, when there is one.",
+        body: "Written at the end of the comment as a suggestion, when there is one.",
       },
     ],
   },

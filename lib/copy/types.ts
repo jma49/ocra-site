@@ -37,11 +37,8 @@ export interface Copy {
       meta: { into: string; from: string; files: string };
       reviewing: string;
       reviewed: string;
-      rereviewing: string;
-      rereviewed: string;
       replay: string;
       verdict: string;
-      verdictFixed: string;
       rows: {
         reviewed: string;
         tasks: string;
@@ -52,28 +49,20 @@ export interface Copy {
         reviewed: string;
         tasks: string;
         findings: string;
-        findingsFixed: string;
         tokens: string;
       };
       onLine: string;
       quoteTip: string;
       findingTitle: string;
       findingBody: string;
-      suggested: string;
-      commit: string;
-      commitHint: string;
-      resolved: string;
-      resolvedLine: string;
       side: {
         reviewers: string;
         checks: string;
         files: string;
         reviewing: string;
         changes: string;
-        approved: string;
         running: string;
         blocking: string;
-        passed: string;
         why: { session: string; login: string; docs: string; lock: string };
       };
     };
