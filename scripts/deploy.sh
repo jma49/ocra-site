@@ -20,4 +20,6 @@ git archive HEAD | tar -x -C "$dir"
 cd "$dir"
 npx -y vercel link --yes --project "$project" --scope "$scope" >/dev/null
 rm -f .env.local
-npx -y vercel deploy --prod --yes --scope "$scope"
+# --force skips Vercel's build cache: a restored cache served the previous
+# manual after it changed on main (2026-10-04).
+npx -y vercel deploy --prod --yes --force --scope "$scope"
