@@ -38,7 +38,12 @@ export function Return({ fixed }: { fixed?: boolean }) {
 // in scripts/demo-video. Line 42 is the line the agent quoted.
 export function SessionCode({ children }: { children?: ReactNode }) {
   return (
-    <div className="code">
+    <figure
+      className="code"
+      aria-label="src/auth/session.ts"
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: code that scrolls sideways must take focus to scroll by keyboard
+      tabIndex={0}
+    >
       <Line n={41}>
         <Kw>export function</Kw> isExpired(session: Session) {"{"}
       </Line>
@@ -48,6 +53,6 @@ export function SessionCode({ children }: { children?: ReactNode }) {
         </Line>
       )}
       <Line n={43}>{"}"}</Line>
-    </div>
+    </figure>
   );
 }

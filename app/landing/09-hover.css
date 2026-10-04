@@ -111,7 +111,7 @@
 .foot a,
 .tlink,
 .announce a {
-  padding: 0 2px;
+  padding: 8px 2px;
   margin: 0 -2px;
 }
 .file {

@@ -45,13 +45,20 @@
   height: 200px;
 }
 @media (max-width: 760px) {
+  /* The spider hangs in the gap above the window and climbs within it, so it
+     never covers the hero copy or the buttons. */
+  .stage {
+    margin-top: 260px;
+  }
+  /* The anchor starts at the window's top (its margin collapses through the
+     anchor), so the spider is placed upward from there. */
   .hang {
     right: -2%;
-    top: -110px;
+    top: -150px;
     width: 120px;
   }
   .hang[data-high="true"] {
-    --lift: -120px;
+    --lift: -100px;
   }
   .yo,
   .hang .spider svg {

@@ -65,7 +65,7 @@ export function Works({ copy }: { copy: Copy["works"] }) {
     <section className="works">
       <div className="wrap works-grid">
         <div className="works-copy">
-          <h3>{copy.title}</h3>
+          <h2>{copy.title}</h2>
           <p>{copy.body}</p>
         </div>
         <div>

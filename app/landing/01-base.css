@@ -202,6 +202,27 @@
   font-size: 14px;
 }
 
+/* ---- Grids ----
+   Every layout grid starts as one column that may shrink below its content.
+   A plain `display: grid` sizes its implicit column to the widest child, so a
+   long code line widened cards past the phone's edge, where the page's
+   overflow-x: clip silently cut them off. Wider layouts set their columns
+   later in the cascade. */
+.split-head,
+.works-grid,
+.sync,
+.steps,
+.state-grid,
+.cards,
+.life,
+.sec-grid,
+.flow,
+.plans,
+.faq-grid,
+.fold {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* ---- Header ---- */
 .announce {
   text-align: center;
@@ -212,7 +233,14 @@
   border-bottom: 1px solid rgb(244 242 234 / 0.08);
 }
 .announce a {
+  display: inline-block;
+  padding: 8px 0;
   color: var(--aqua);
+}
+.nav > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 .nav-shell {
   position: sticky;

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/logo";
 import type { Copy } from "@/lib/copy";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
@@ -10,6 +10,31 @@ import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 // Announcement bar and the floating dark-glass nav of the landing page.
 export function SiteHeader({ copy, locale }: { copy: Copy; locale: string }) {
   const [open, setOpen] = useState(false);
+  const shell = useRef<HTMLDivElement>(null);
+
+  // The menu closes on a tap outside it, on Escape and once the page scrolls.
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    const outside = (e: PointerEvent) => {
+      if (!shell.current?.contains(e.target as Node)) close();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    const startY = scrollY;
+    const scrolled = () => {
+      if (Math.abs(scrollY - startY) > 40) close();
+    };
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("keydown", onKey);
+    addEventListener("scroll", scrolled, { passive: true });
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("keydown", onKey);
+      removeEventListener("scroll", scrolled);
+    };
+  }, [open]);
   const { resolvedTheme, setTheme } = useTheme();
   const n = copy.nav;
   const links = [
@@ -21,10 +46,10 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: string }) {
   ];
   return (
     <>
-      <div className="announce">
+      <aside className="announce" aria-label={copy.announce.label}>
         {copy.announce.text} <a href="#plans">{copy.announce.link} &rarr;</a>
-      </div>
-      <div className="nav-shell" data-open={open}>
+      </aside>
+      <div className="nav-shell" data-open={open} ref={shell}>
         <header className="nav">
           <Link href={localePath(locale, "/")} aria-label="ocra home">
             <Logo dark />

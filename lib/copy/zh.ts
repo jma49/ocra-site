@@ -2,6 +2,7 @@ import type { Copy } from "./types";
 
 export const zh: Copy = {
   announce: {
+    label: "公告",
     text: "ocra Cloud 早期体验中：用 GitHub 登录，自带模型 key。",
     link: "它保存什么",
   },

@@ -27,7 +27,11 @@ const TOOLS: [string, boolean][] = [
 
 function Json({ text }: { text: string }) {
   return (
-    <pre className="snippet">
+    <pre
+      className="snippet"
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: code that scrolls sideways must take focus to scroll by keyboard
+      tabIndex={0}
+    >
       <span className="c">{"// .ocra/rules.json\n"}</span>
       {text.split(/("[^"]*")/).map((part, i) =>
         part.startsWith('"') ? (

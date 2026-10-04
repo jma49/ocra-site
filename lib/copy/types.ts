@@ -3,7 +3,7 @@ export type StageKind = "code" | "model";
 // Every landing page string, in one shape per language. Code, file names,
 // reviewer names and tool names are identifiers and stay untranslated.
 export interface Copy {
-  announce: { text: string; link: string };
+  announce: { label: string; text: string; link: string };
   nav: {
     links: {
       how: string;

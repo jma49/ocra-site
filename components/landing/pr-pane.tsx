@@ -272,12 +272,12 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
         </div>
       </div>
       <aside className="pr-side">
-        <h5>{s.reviewers}</h5>
+        <p className="side-h">{s.reviewers}</p>
         <div className="chk">
           <SmallSpider size={18} />
           {busy ? s.reviewing : fixed ? s.approved : s.changes}
         </div>
-        <h5>{s.checks}</h5>
+        <p className="side-h">{s.checks}</p>
         <div className="chk">
           <i className="dot ok" />
           build
@@ -290,7 +290,7 @@ export function PrPane({ copy }: { copy: Copy["window"]["pr"] }) {
           <i className={`dot ${busy ? "spin" : fixed ? "ok" : "bad"}`} />
           {busy ? s.running : fixed ? s.passed : s.blocking}
         </div>
-        <h5>{s.files}</h5>
+        <p className="side-h">{s.files}</p>
         <div className="chk file" data-why={s.why.session}>
           src/auth/session.ts
         </div>

@@ -106,13 +106,13 @@
     display: block;
   }
 }
-.pr-side h5 {
+.pr-side .side-h {
   margin: 22px 0 8px;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-3);
 }
-.pr-side h5:first-child {
+.pr-side .side-h:first-child {
   margin-top: 0;
 }
 .chk {
@@ -265,6 +265,7 @@
   padding-left: 0;
 }
 .code {
+  margin: 0;
   font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.95;
@@ -326,8 +327,10 @@
 .sugg .d,
 .sugg .a {
   padding: 3px 12px;
-  white-space: pre;
-  overflow-x: auto;
+  /* A suggestion is one line; it wraps on a phone rather than scrolling in a
+     box too small to scroll. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .sugg .d {
   background: color-mix(in srgb, var(--red) 8%, transparent);
