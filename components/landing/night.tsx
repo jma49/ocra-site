@@ -23,7 +23,7 @@ export function Night({ variant }: { variant: "hero" | "final" }) {
             patternUnits="userSpaceOnUse"
             patternTransform="rotate(30)"
           >
-            <circle cx="7" cy="7" r="2.4" fill="#ff3d7f" />
+            <circle cx="7" cy="7" r="2.4" style={{ fill: "var(--pink)" }} />
           </pattern>
           <pattern
             id={`${id}-a`}
@@ -32,7 +32,7 @@ export function Night({ variant }: { variant: "hero" | "final" }) {
             patternUnits="userSpaceOnUse"
             patternTransform="rotate(30) translate(4 3)"
           >
-            <circle cx="7" cy="7" r="2" fill="#7fffd4" />
+            <circle cx="7" cy="7" r="2" style={{ fill: "var(--aqua)" }} />
           </pattern>
           <radialGradient
             id={`${id}-g`}
@@ -40,9 +40,21 @@ export function Night({ variant }: { variant: "hero" | "final" }) {
             cy={variant === "hero" ? "0.32" : "0.4"}
             r="0.75"
           >
-            <stop offset="0" stopColor="#fff" stopOpacity=".06" />
-            <stop offset=".55" stopColor="#fff" stopOpacity=".18" />
-            <stop offset="1" stopColor="#fff" stopOpacity=".6" />
+            <stop
+              offset="0"
+              style={{ stopColor: "var(--white)" }}
+              stopOpacity=".06"
+            />
+            <stop
+              offset=".55"
+              style={{ stopColor: "var(--white)" }}
+              stopOpacity=".18"
+            />
+            <stop
+              offset="1"
+              style={{ stopColor: "var(--white)" }}
+              stopOpacity=".6"
+            />
           </radialGradient>
           <mask id={`${id}-m`}>
             <rect width="1440" height="900" fill={`url(#${id}-g)`} />
@@ -87,9 +99,17 @@ function CornerWeb({ web }: { web: Web }) {
           cy={gy}
           r={size * 0.95}
         >
-          <stop offset="0" stopColor="#fff" />
-          <stop offset=".55" stopColor="#fff" stopOpacity=".85" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0" style={{ stopColor: "var(--white)" }} />
+          <stop
+            offset=".55"
+            style={{ stopColor: "var(--white)" }}
+            stopOpacity=".85"
+          />
+          <stop
+            offset="1"
+            style={{ stopColor: "var(--white)" }}
+            stopOpacity="0"
+          />
         </radialGradient>
         <mask id={mask}>
           <rect width={size} height={size} fill={`url(#${mask}-g)`} />

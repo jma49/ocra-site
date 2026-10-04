@@ -1,34 +1,8 @@
-/* The landing page (DESIGN.md, "Landing page"). Ink, paper, aquamarine and
-   pink; frosted glass panels over a faint print texture. Motion and hover
-   rules live in landing-motion.css. */
+/* The landing page (DESIGN.md, "Landing page"): paper with a faint print
+   texture under frosted glass panels. Tokens live in app/tokens.css, hover
+   rules in 09-hover.css. */
 
 .home {
-  --paper: #f7f6f1;
-  --paper-2: #efede6;
-  --card: #ffffff;
-  --text: #111a17;
-  --text-2: #4a5550;
-  --text-3: #626b66;
-  --line: #e3e0d6;
-  --line-2: #d2cec2;
-  --aqua: #7fffd4;
-  --aqua-ink: #0b7a5c;
-  --pink: #ff3d7f;
-  --night: #0b0f0e;
-  --on-night: #f4f2ea;
-  --marker: rgb(127 255 212 / 0.8);
-  --red: #b5301b;
-  --red-soft: #f8e4dd;
-  --amber: #a35a00;
-  --kw: #6b3fa0;
-  --glass: rgb(255 255 255 / 0.56);
-  --glass-soft: rgb(255 255 255 / 0.42);
-  --glass-inner: rgb(255 255 255 / 0.4);
-  --glass-line: rgb(255 255 255 / 0.7);
-  --glass-edge: rgb(17 26 23 / 0.08);
-  --glass-hi: rgb(255 255 255 / 0.85);
-  --glass-blur: blur(22px) saturate(1.6);
-  --glow-o: 1;
   background: var(--paper);
   background-image: radial-gradient(
     circle,
@@ -39,30 +13,6 @@
   color: var(--text);
   font-size: 16.5px;
   line-height: 1.6;
-}
-
-.dark .home {
-  --paper: #0c100e;
-  --paper-2: #121815;
-  --card: #141a17;
-  --text: #ecf1ee;
-  --text-2: #a6b1ab;
-  --text-3: #7d8781;
-  --line: #222a26;
-  --line-2: #2e3833;
-  --aqua-ink: #7fffd4;
-  --marker: rgb(127 255 212 / 0.3);
-  --red: #ff7a5c;
-  --red-soft: #2a1713;
-  --amber: #f2ad4b;
-  --kw: #c9a7ff;
-  --glass: rgb(24 31 28 / 0.5);
-  --glass-soft: rgb(30 38 34 / 0.42);
-  --glass-inner: rgb(255 255 255 / 0.04);
-  --glass-line: rgb(255 255 255 / 0.09);
-  --glass-edge: rgb(0 0 0 / 0.4);
-  --glass-hi: rgb(255 255 255 / 0.07);
-  --glow-o: 0.38;
 }
 
 .home ::selection {
@@ -125,8 +75,8 @@
 .home h2 em {
   font-style: italic;
   text-shadow:
-    -0.022em -0.012em 0 rgb(127 255 212 / 0.85),
-    0.022em 0.012em 0 rgb(255 61 127 / 0.7);
+    -0.022em -0.012em 0 color-mix(in srgb, var(--aqua) 85%, transparent),
+    0.022em 0.012em 0 color-mix(in srgb, var(--pink) 70%, transparent);
 }
 .home h3 {
   font-weight: 700;
@@ -164,44 +114,6 @@
   }
 }
 
-/* ---- Buttons ---- */
-.home .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 48px;
-  padding: 0 22px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-stretch: 92%;
-  font-size: 15.5px;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  text-decoration: none;
-}
-.home .btn i {
-  font-style: normal;
-}
-.home .btn-dark {
-  background: var(--text);
-  color: var(--paper);
-}
-.home .btn-soft {
-  background: var(--glass-soft);
-  color: var(--text);
-  border-color: var(--line-2);
-  backdrop-filter: blur(8px);
-}
-.home .btn-brand {
-  background: var(--aqua);
-  color: var(--night);
-}
-.home .btn-sm {
-  height: 38px;
-  padding: 0 16px;
-  font-size: 14px;
-}
-
 /* ---- Grids ----
    Every layout grid starts as one column that may shrink below its content.
    A plain `display: grid` sizes its implicit column to the widest child, so a
@@ -229,8 +141,8 @@
   font-size: 13.5px;
   padding: 10px 16px;
   background: var(--night);
-  color: rgb(244 242 234 / 0.78);
-  border-bottom: 1px solid rgb(244 242 234 / 0.08);
+  color: color-mix(in srgb, var(--on-night) 78%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--on-night) 8%, transparent);
 }
 .announce a {
   display: inline-block;
@@ -245,7 +157,7 @@
 .nav-shell {
   position: sticky;
   top: 12px;
-  z-index: 60;
+  z-index: var(--z-nav);
   padding: 0 12px;
   margin-top: 12px;
 }
@@ -259,26 +171,18 @@
   height: 58px;
   padding: 0 10px 0 18px;
   border-radius: 16px;
-  background: rgb(14 19 17 / 0.78);
-  border: 1px solid rgb(244 242 234 / 0.1);
+  background: color-mix(in srgb, var(--night-2) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--on-night) 10%, transparent);
   color: var(--on-night);
   backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 10px 30px -14px rgb(0 0 0 / 0.6);
-}
-.logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-weight: 900;
-  font-stretch: 80%;
-  font-size: 1.4rem;
-  letter-spacing: -0.03em;
+  box-shadow: 0 10px 30px -14px
+    color-mix(in srgb, var(--black) 60%, transparent);
 }
 .nav .links {
   display: none;
   gap: 28px;
   font-size: 14.5px;
-  color: rgb(244 242 234 / 0.7);
+  color: color-mix(in srgb, var(--on-night) 70%, transparent);
 }
 .nav-r {
   display: flex;
@@ -288,7 +192,7 @@
 .nav-r .t {
   display: none;
   font-size: 14.5px;
-  color: rgb(244 242 234 / 0.7);
+  color: color-mix(in srgb, var(--on-night) 70%, transparent);
   padding: 0 6px;
 }
 .ib {
@@ -297,9 +201,9 @@
   border-radius: 10px;
   display: grid;
   place-items: center;
-  border: 1px solid rgb(244 242 234 / 0.16);
+  border: 1px solid color-mix(in srgb, var(--on-night) 16%, transparent);
   background: transparent;
-  color: rgb(244 242 234 / 0.75);
+  color: color-mix(in srgb, var(--on-night) 75%, transparent);
   cursor: pointer;
 }
 .ib.menu {
@@ -321,15 +225,15 @@
   max-width: 74rem;
   margin: 8px auto 0;
   border-radius: 16px;
-  background: #0e1311;
+  background: var(--night-2);
   color: var(--on-night);
-  border: 1px solid rgb(244 242 234 / 0.1);
+  border: 1px solid color-mix(in srgb, var(--on-night) 10%, transparent);
   padding: 8px 18px;
 }
 .drawer a {
   display: block;
   padding: 13px 0;
-  border-bottom: 1px solid rgb(244 242 234 / 0.08);
+  border-bottom: 1px solid color-mix(in srgb, var(--on-night) 8%, transparent);
 }
 .drawer a:last-child {
   border-bottom: 0;

@@ -17,11 +17,15 @@
 }
 .plan.feat {
   background:
-    rgb(11 15 14 / 0.88)
-    radial-gradient(circle, rgb(127 255 212 / 0.22) 1.1px, transparent 1.5px) 0
-    0 / 11px 11px;
+    color-mix(in srgb, var(--night) 88%, transparent)
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--aqua) 22%, transparent) 1.1px,
+      transparent 1.5px
+    )
+    0 0 / 11px 11px;
   color: var(--on-night);
-  border: 1px solid rgb(255 255 255 / 0.1);
+  border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
   backdrop-filter: var(--glass-blur);
 }
 .plan .st {
@@ -43,7 +47,7 @@
   box-shadow: inset 0 0 0 1.5px var(--text-3);
 }
 .plan.feat .st {
-  color: #9fc1b5;
+  color: var(--on-night-3);
 }
 .plan.feat .st i {
   background: var(--aqua);
@@ -70,7 +74,7 @@
   font-size: 14px;
 }
 .plan.feat .price span {
-  color: #9fc1b5;
+  color: var(--on-night-3);
 }
 .plan ul {
   list-style: none;
@@ -83,8 +87,8 @@
   color: var(--text-2);
 }
 .plan.feat ul {
-  border-top-color: rgb(230 241 236 / 0.14);
-  color: #c3d6ce;
+  border-top-color: var(--night-line);
+  color: var(--on-night-2);
 }
 .plan li {
   display: grid;
@@ -244,7 +248,7 @@
   position: fixed;
   left: 50%;
   bottom: 18px;
-  z-index: 70;
+  z-index: var(--z-dock);
   transform: translate(-50%, 140%);
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   display: flex;
@@ -255,7 +259,8 @@
   background: var(--glass);
   backdrop-filter: blur(14px);
   border: 1px solid var(--line-2);
-  box-shadow: 0 14px 40px -16px rgb(0 0 0 / 0.4);
+  box-shadow: 0 14px 40px -16px
+    color-mix(in srgb, var(--black) 40%, transparent);
   max-width: calc(100vw - 24px);
 }
 .dock[data-shown="true"] {

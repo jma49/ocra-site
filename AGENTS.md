@@ -48,12 +48,12 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 
 ## Design
 
-`DESIGN.md` holds the design system: tokens, type scale, components, the mascot, and the migration in progress. Read it before any change to `app/`, `components/` or `app/global.css`. The rules that apply to every change:
+`DESIGN.md` holds the design system: tokens, type scale, components, the mascot, Read it before any change to `app/` or `components/`. The rules that apply to every change:
 
 - **Ink, paper, aquamarine and pink.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); pink is only the second print plate (off-register edges, hover shadows, the spider's ghost) and never carries meaning or body text. Frosted glass for windows and panels; the halftone night, the corner webs and the soft light behind panels are the background effects.
 - **One hover language** (DESIGN.md, Motion): blocks lift up-left with a pink plate behind and an aquamarine one ahead; lines get a highlighter sweep. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
 - **Never resemble a competitor's visual signature**; borrow finish, not devices.
-- Style through the tokens in `app/global.css` and `app/landing/01-base.css` only: no hex values or Tailwind palette colours in components. A token change edits `app/global.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
+- Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run lint` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
 - Look at the result before calling a UI change done: `npm run build && npm run visual:baseline` before the change, `npm run build && npm run visual` after it (both languages, three widths, both themes, console errors; see Verification in `DESIGN.md`). A pull request that changes the look on purpose gets the `visual-change` label and lists the intended differences.
 

@@ -303,7 +303,7 @@
     no-repeat;
 }
 .kw {
-  color: var(--kw);
+  color: var(--keyword);
 }
 .sugg-line {
   margin: 12px 0 0;

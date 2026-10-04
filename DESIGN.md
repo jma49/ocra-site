@@ -9,6 +9,11 @@ colors:
   pink: "#FF3D7F"
   night: "#0B0F0E"
   on-night: "#F4F2EA"
+  night-2: "#0E1311"
+  on-night-2: "#C3D6CE"
+  on-night-3: "#9FC1B5"
+  spider-on-dark: "#1D2A26"
+  term-warn: "#FBBF24"
   paper: "#F7F6F1"
   paper-2: "#EFEDE6"
   card: "#FFFFFF"
@@ -200,11 +205,26 @@ components:
   verified:
     backgroundColor: "{colors.night}"
     textColor: "{colors.aqua}"
+  nav-drawer:
+    backgroundColor: "{colors.night-2}"
+    textColor: "{colors.on-night}"
+  plan-featured:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.on-night-2}"
+  plan-featured-quiet:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.on-night-3}"
+  terminal-warning:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.term-warn}"
+  spider-eyes-on-night:
+    backgroundColor: "{colors.spider-on-dark}"
+    textColor: "{colors.aqua}"
 ---
 
 # Open-CR-Agent site
 
-The landing page, the manual and the 404 page share one look: ink and paper, aquamarine and pink, poster type, an original jumping spider printed off register, frosted glass panels. It borrows the finish of modern developer-tool sites and the print style of a comic, never another product's devices (see Do's and Don'ts). Values live in CSS: `app/global.css` (shared tokens and the Fumadocs mapping), `app/landing/` (the landing page, split by section) and `app/docs.css` (the manual). This file mirrors them and says how to use them; change both in the same commit. Content rules (what the site may claim) stay in `AGENTS.md`.
+The landing page, the manual and the 404 page share one look: ink and paper, aquamarine and pink, poster type, an original jumping spider printed off register, frosted glass panels. It borrows the finish of modern developer-tool sites and the print style of a comic, never another product's devices (see Do's and Don'ts). Values live in CSS: `app/tokens.css` (every colour, the stacking scale and the Fumadocs mapping, light and dark: the only file with colour literals, checked by `scripts/check-colors.mjs`), `app/global.css` (shared rules and the button), `app/landing/` (the landing page, split by section) and `app/docs.css` (the manual). This file mirrors them and says how to use them; change both in the same commit. Content rules (what the site may claim) stay in `AGENTS.md`.
 
 ## Colors
 
@@ -267,7 +287,7 @@ Pills for buttons, tabs and segmented controls; 5px for tags; 8px for small cont
 - **Don't resemble a competitor's visual signature** (Greptile's halftone animals, for one): borrow finish, not devices. Before showing a design, name the product it could be mistaken for, and change direction rather than recolour.
 - Don't use the pink as a text colour or to carry meaning.
 - Don't use pill badges, uppercase eyebrow labels, gradient-text headlines, rows of icon cards, slogans or rule-of-three copy.
-- Don't put hex values in components; use the tokens in `app/landing/01-base.css` and `app/global.css`.
+- Don't write a colour literal outside `app/tokens.css`; name a token, and derive translucent variants with `color-mix(in srgb, var(--token) N%, transparent)`. The standalone icons (`app/icon.svg`, `app/apple-icon.tsx`) are the exception.
 
 ## Known issues
 

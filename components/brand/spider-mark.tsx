@@ -3,10 +3,14 @@ import { useId } from "react";
 // The mark: an original jumping spider, front view, printed slightly off
 // register. Geometry is on a 64 grid; the ghosts and the glitch slice drop
 // out at small sizes, where only the ink silhouette and the eyes read.
-const AQUA = "#7fffd4";
-const PINK = "#ff3d7f";
-const INK = "#0b0f0e";
-const INK_ON_DARK = "#1d2a26";
+// Colours are tokens (app/tokens.css), set through style: SVG presentation
+// attributes do not resolve var().
+const AQUA = "var(--aqua)";
+const PINK = "var(--pink)";
+const INK = "var(--night)";
+const INK_ON_DARK = "var(--spider-on-dark)";
+const WHITE = "var(--white)";
+const BLACK = "var(--black)";
 
 type Point = [number, number];
 
@@ -44,7 +48,7 @@ function Silhouette({ fill }: { fill: string }) {
           <g
             // biome-ignore lint/suspicious/noArrayIndexKey: fixed geometry
             key={`${i}-${side}`}
-            stroke={fill}
+            style={{ stroke: fill }}
             strokeLinecap="round"
           >
             <path
@@ -58,9 +62,9 @@ function Silhouette({ fill }: { fill: string }) {
           </g>
         )),
       )}
-      <ellipse cx="32" cy="45.5" rx="11" ry="12.5" fill={fill} />
-      <path d="M27 35.5 Q32 38 37 35.5 L36 33 L28 33 Z" fill={fill} />
-      <circle cx="32" cy="26.5" r="11" fill={fill} />
+      <ellipse cx="32" cy="45.5" rx="11" ry="12.5" style={{ fill }} />
+      <path d="M27 35.5 Q32 38 37 35.5 L36 33 L28 33 Z" style={{ fill }} />
+      <circle cx="32" cy="26.5" r="11" style={{ fill }} />
     </g>
   );
 }
@@ -76,11 +80,11 @@ function Details({ id }: { id: string }) {
           patternUnits="userSpaceOnUse"
           patternTransform="rotate(45)"
         >
-          <circle cx="1.3" cy="1.3" r="0.62" fill={AQUA} />
+          <circle cx="1.3" cy="1.3" r="0.62" style={{ fill: AQUA }} />
         </pattern>
         <radialGradient id={`${id}g`} cx="0.5" cy="0.35" r="0.65">
-          <stop offset="0" stopColor="#fff" />
-          <stop offset="1" stopColor="#fff" stopOpacity="0" />
+          <stop offset="0" style={{ stopColor: WHITE }} />
+          <stop offset="1" style={{ stopColor: WHITE }} stopOpacity="0" />
         </radialGradient>
         <mask id={`${id}k`}>
           <ellipse cx="32" cy="45.5" rx="11" ry="12.5" fill={`url(#${id}g)`} />
@@ -94,12 +98,12 @@ function Details({ id }: { id: string }) {
         fill={`url(#${id}d)`}
         mask={`url(#${id}k)`}
       />
-      <circle cx="27" cy="25.5" r="4.7" fill={AQUA} />
-      <circle cx="37" cy="25.5" r="4.7" fill={AQUA} />
-      <circle cx="25.6" cy="23.8" r="1.3" fill="#fff" />
-      <circle cx="35.6" cy="23.8" r="1.3" fill="#fff" />
-      <circle cx="21.4" cy="20.2" r="1.45" fill={AQUA} />
-      <circle cx="42.6" cy="20.2" r="1.45" fill={AQUA} />
+      <circle cx="27" cy="25.5" r="4.7" style={{ fill: AQUA }} />
+      <circle cx="37" cy="25.5" r="4.7" style={{ fill: AQUA }} />
+      <circle cx="25.6" cy="23.8" r="1.3" style={{ fill: WHITE }} />
+      <circle cx="35.6" cy="23.8" r="1.3" style={{ fill: WHITE }} />
+      <circle cx="21.4" cy="20.2" r="1.45" style={{ fill: AQUA }} />
+      <circle cx="42.6" cy="20.2" r="1.45" style={{ fill: AQUA }} />
     </>
   );
 }
@@ -119,7 +123,7 @@ export function SpiderMark({
   // Offset of the aquamarine and pink plates; 0 prints one ink only.
   glitch?: number;
   slice?: boolean;
-  // Adds the classes the glitch keyframes in landing.css target.
+  // Adds the classes the glitch keyframes in app/landing/11-spider.css target.
   animated?: boolean;
   className?: string;
   label?: string;
@@ -162,8 +166,20 @@ export function SpiderMark({
         <>
           <defs>
             <mask id={`${id}m`}>
-              <rect x="-10" y="-10" width="84" height="84" fill="#fff" />
-              <rect x="-10" y="29.6" width="84" height="4.2" fill="#000" />
+              <rect
+                x="-10"
+                y="-10"
+                width="84"
+                height="84"
+                style={{ fill: WHITE }}
+              />
+              <rect
+                x="-10"
+                y="29.6"
+                width="84"
+                height="4.2"
+                style={{ fill: BLACK }}
+              />
             </mask>
             <clipPath id={`${id}c`}>
               <rect x="-10" y="29.6" width="84" height="4.2" />

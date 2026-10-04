@@ -4,10 +4,10 @@
    restyle it, through its element ids and the prose classes. */
 
 #nd-docs-layout {
-  background-color: var(--bg);
+  background-color: var(--paper);
   background-image: radial-gradient(
     circle,
-    color-mix(in srgb, var(--fg) 7%, transparent) 1px,
+    color-mix(in srgb, var(--text) 7%, transparent) 1px,
     transparent 1.4px
   );
   background-size: 18px 18px;
@@ -16,24 +16,28 @@
 /* Sidebar: dark glass in both themes, like the landing page's nav. */
 #nd-sidebar {
   --color-fd-card: transparent;
-  background: rgb(14 19 17 / 0.94);
-  color: rgb(244 242 234 / 0.78);
-  border-color: rgb(244 242 234 / 0.08);
+  background: color-mix(in srgb, var(--night-2) 94%, transparent);
+  color: color-mix(in srgb, var(--on-night) 78%, transparent);
+  border-color: color-mix(in srgb, var(--on-night) 8%, transparent);
   backdrop-filter: blur(16px) saturate(1.4);
   -webkit-backdrop-filter: blur(16px) saturate(1.4);
-  --color-fd-foreground: #f4f2ea;
-  --color-fd-muted-foreground: rgb(244 242 234 / 0.62);
-  --color-fd-border: rgb(244 242 234 / 0.1);
-  --color-fd-secondary: rgb(244 242 234 / 0.06);
-  --color-fd-muted: rgb(244 242 234 / 0.06);
-  --color-fd-accent: rgb(127 255 212 / 0.1);
-  --color-fd-accent-foreground: #f4f2ea;
-  --color-fd-primary: var(--brand);
+  --color-fd-foreground: var(--on-night);
+  --color-fd-muted-foreground: color-mix(
+    in srgb,
+    var(--on-night) 62%,
+    transparent
+  );
+  --color-fd-border: color-mix(in srgb, var(--on-night) 10%, transparent);
+  --color-fd-secondary: color-mix(in srgb, var(--on-night) 6%, transparent);
+  --color-fd-muted: color-mix(in srgb, var(--on-night) 6%, transparent);
+  --color-fd-accent: color-mix(in srgb, var(--aqua) 10%, transparent);
+  --color-fd-accent-foreground: var(--on-night);
+  --color-fd-primary: var(--aqua);
 }
 
 #nd-sidebar a[data-active="true"] {
-  background: rgb(127 255 212 / 0.14);
-  color: var(--brand);
+  background: color-mix(in srgb, var(--aqua) 14%, transparent);
+  color: var(--aqua);
   font-weight: 600;
 }
 
@@ -41,18 +45,18 @@
 #nd-sidebar [data-section] {
   font-weight: 700;
   font-stretch: 92%;
-  color: #f4f2ea;
+  color: var(--on-night);
 }
 
 #nd-sidebar kbd {
-  background: rgb(244 242 234 / 0.08);
-  border-color: rgb(244 242 234 / 0.14);
-  color: rgb(244 242 234 / 0.7);
+  background: color-mix(in srgb, var(--on-night) 8%, transparent);
+  border-color: color-mix(in srgb, var(--on-night) 14%, transparent);
+  color: color-mix(in srgb, var(--on-night) 70%, transparent);
 }
 
 #nd-sidebar button,
 #nd-sidebar input {
-  border-color: rgb(244 242 234 / 0.12);
+  border-color: color-mix(in srgb, var(--on-night) 12%, transparent);
 }
 
 /* Page title and headings. */
@@ -90,11 +94,11 @@
 }
 
 #nd-page figure.shiki {
-  background: rgb(11 15 14 / 0.92);
-  border: 1px solid rgb(255 255 255 / 0.08);
+  background: color-mix(in srgb, var(--night) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
   box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.06),
-    0 24px 60px -30px rgb(12 20 17 / 0.45);
+    inset 0 1px 0 color-mix(in srgb, var(--white) 6%, transparent),
+    0 24px 60px -30px color-mix(in srgb, var(--glass-shadow) 45%, transparent);
   backdrop-filter: blur(22px) saturate(1.6);
   -webkit-backdrop-filter: blur(22px) saturate(1.6);
 }
@@ -102,7 +106,7 @@
 #nd-page figure.shiki pre {
   --shiki-light: var(--shiki-dark);
   --shiki-light-bg: transparent;
-  color: rgb(255 255 255 / 0.86);
+  color: color-mix(in srgb, var(--white) 86%, transparent);
 }
 
 #nd-page figure.shiki span {
@@ -111,30 +115,30 @@
 
 #nd-page figure.shiki [data-title],
 #nd-page figure.shiki figcaption {
-  color: rgb(244 242 234 / 0.6);
-  border-color: rgb(255 255 255 / 0.08);
+  color: color-mix(in srgb, var(--on-night) 60%, transparent);
+  border-color: color-mix(in srgb, var(--white) 8%, transparent);
 }
 
 #nd-page .prose :not(pre) > code {
-  background: color-mix(in srgb, var(--brand) 18%, var(--panel));
-  border-color: color-mix(in srgb, var(--brand) 40%, transparent);
+  background: color-mix(in srgb, var(--aqua) 18%, var(--card));
+  border-color: color-mix(in srgb, var(--aqua) 40%, transparent);
 }
 
 /* Callouts, cards, tabs and tables are frosted panels. */
 #nd-page .glass,
 #nd-page .prose table {
-  background: color-mix(in srgb, var(--panel) 56%, transparent);
-  border-color: color-mix(in srgb, var(--panel) 70%, var(--border));
+  background: color-mix(in srgb, var(--card) 56%, transparent);
+  border-color: color-mix(in srgb, var(--card) 70%, var(--line));
   backdrop-filter: blur(22px) saturate(1.6);
   -webkit-backdrop-filter: blur(22px) saturate(1.6);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 60%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 60%, transparent);
 }
 
 .dark #nd-page .glass,
 .dark #nd-page .prose table {
-  background: rgb(24 31 28 / 0.5);
-  border-color: rgb(255 255 255 / 0.09);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+  background: var(--glass);
+  border-color: color-mix(in srgb, var(--white) 9%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 6%, transparent);
 }
 
 /* One hover language, as on the landing page.
@@ -143,8 +147,8 @@
 #nd-toc a,
 #nd-sidebar a {
   background-image: linear-gradient(
-    rgb(127 255 212 / 0.55),
-    rgb(127 255 212 / 0.55)
+    color-mix(in srgb, var(--aqua) 55%, transparent),
+    color-mix(in srgb, var(--aqua) 55%, transparent)
   );
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -157,8 +161,8 @@
 #nd-sidebar a {
   background-image: linear-gradient(
     90deg,
-    rgb(127 255 212 / 0.16),
-    rgb(127 255 212 / 0.16) 70%,
+    color-mix(in srgb, var(--aqua) 16%, transparent),
+    color-mix(in srgb, var(--aqua) 16%, transparent) 70%,
     transparent
   );
   background-size: 0% 100%;
@@ -167,14 +171,14 @@
 .dark #nd-page .prose :where(p, li, td, blockquote) > a,
 .dark #nd-toc a {
   background-image: linear-gradient(
-    rgb(127 255 212 / 0.24),
-    rgb(127 255 212 / 0.24)
+    color-mix(in srgb, var(--aqua) 24%, transparent),
+    color-mix(in srgb, var(--aqua) 24%, transparent)
   );
 }
 
 #nd-page .prose :where(p, li, td, blockquote) > a {
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--aqua-ink) 50%, transparent);
 }
 
 @media (hover: hover) {
@@ -185,7 +189,7 @@
 
   #nd-sidebar a:hover {
     background-size: 100% 100%;
-    color: #f4f2ea;
+    color: var(--on-night);
   }
 
   /* Blocks: lift up-left and print a pink plate behind, aquamarine ahead. */
@@ -194,7 +198,7 @@
     transform: translate(-2px, -2px);
     box-shadow:
       4px 4px 0 var(--pink),
-      -2px -2px 0 var(--brand);
+      -2px -2px 0 var(--aqua);
   }
 }
 
