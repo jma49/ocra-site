@@ -25,12 +25,25 @@ export function Line({
   );
 }
 
-export function Return({ fixed }: { fixed?: boolean }) {
+export function Return() {
   return (
     <>
       {"  "}
-      <Kw>return</Kw> session.expiresAt{fixed ? " * 1000" : ""} &lt; Date.now();
+      <Kw>return</Kw> session.expiresAt &lt; Date.now();
     </>
+  );
+}
+
+// The finding's suggestion as ocra posts it in the inline comment today: one
+// plain line after the reason (`**Suggestion:** …` in the engine's
+// packages/vcs-platform/src/render.ts). The label is the engine's own and is
+// English in every language. Committable suggestions are only on the roadmap.
+export function Suggestion() {
+  return (
+    <p className="sugg-line">
+      <strong>Suggestion:</strong> return session.expiresAt * 1000 &lt;
+      Date.now();
+    </p>
   );
 }
 

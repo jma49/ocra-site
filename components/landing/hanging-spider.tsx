@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { SpiderMark } from "@/components/brand/spider-mark";
 
 // Plays the glitch burst once. The spider answers the pointer, so this runs
@@ -13,21 +13,12 @@ export function burst(el: Element | null) {
   setTimeout(() => el.classList.remove("burst"), 600);
 }
 
-// The page's own event: the demo fix in the hero window landed.
-export const FIX_EVENT = "ocra:fix-landed";
-
 // The spider on its thread over the hero window. Click (or Enter) sends it up
 // the thread; again brings it back down. The thread shortens and lengthens
 // with it.
 export function HangingSpider({ up, down }: { up: string; down: string }) {
   const [high, setHigh] = useState(false);
   const spider = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onFix = () => setTimeout(() => burst(spider.current), 100);
-    window.addEventListener(FIX_EVENT, onFix);
-    return () => window.removeEventListener(FIX_EVENT, onFix);
-  }, []);
 
   const toggle = () => {
     burst(spider.current);

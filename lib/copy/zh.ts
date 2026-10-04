@@ -43,11 +43,8 @@ export const zh: Copy = {
       meta: { into: "请求合并到", from: "来自", files: "改动 4 个文件" },
       reviewing: "正在审查这个 PR",
       reviewed: "审查了这个 PR",
-      rereviewing: "正在复审新的推送",
-      rereviewed: "复审了新的推送",
       replay: "重播",
       verdict: "结论：存在重大问题",
-      verdictFixed: "结论：没有阻塞问题",
       rows: {
         reviewed: "审查范围",
         tasks: "任务",
@@ -58,7 +55,6 @@ export const zh: Copy = {
         reviewed: "2 组共 4 个文件 · 1 个被搁置（生成文件）",
         tasks: "correctness、security · 2 个组合被跳过，均记录原因",
         findings: "1 个 critical，已核实 · 1 个合并 · 1 个被证伪",
-        findingsFixed: "0 个待处理 · 1 个已被修复解决",
         tokens: "输入 token（209,152 命中缓存）",
       },
       onLine: "第",
@@ -66,21 +62,14 @@ export const zh: Copy = {
       findingTitle: "每个会话都被当成已过期。",
       findingBody:
         "expiresAt 以秒存储，却和以毫秒计的 Date.now() 比较，用户登录后会立刻被登出。",
-      suggested: "建议修改",
-      commit: "提交建议",
-      commitHint: "试一下：ocra 会复审新的推送",
-      resolved: "已解决",
-      resolvedLine: "github-actions 解决了这个讨论 · 被引用的代码已不存在",
       side: {
         reviewers: "审查者",
         checks: "检查",
         files: "文件",
         reviewing: "ocra · 审查中",
         changes: "ocra · 要求修改",
-        approved: "ocra · 已批准",
         running: "ocra review · 运行中",
         blocking: "ocra review · 1 个阻塞",
-        passed: "ocra review · 通过",
         why: {
           session: "已读 · auth 代码，full 档",
           login: "已读 · auth 代码",
@@ -223,7 +212,10 @@ export const zh: Copy = {
         body: "核查是否确认、哪个审查员发现的，以及一个跨推送不变的 id。",
       },
       { title: "为什么有问题", body: "用平实的话说明，并说清后果。" },
-      { title: "最小的修复", body: "有建议修改时，可以直接在 PR 里应用。" },
+      {
+        title: "最小的修复",
+        body: "有可行的修复时，以建议的形式写在评论末尾。",
+      },
     ],
   },
   security: {
