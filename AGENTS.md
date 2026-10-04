@@ -41,6 +41,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 - **Links in the manual:** relative links (`./github`) resolve against the page's URL, and the manual's index page is `/docs`, not `/docs/`, so from there `./github` would point to `/github` and 404. The index pages use absolute links per language (`/docs/github`, `/zh/docs/github`); other pages may use relative ones.
 - **404s:** unknown paths under a language go through `app/[lang]/[...rest]/page.tsx` to `app/[lang]/not-found.tsx`, which renders `components/not-found-page.tsx` in that language.
 - **Routes:** the landing page is `app/[lang]/(home)`, the manual `app/[lang]/docs/[[...slug]]`, with the source loaded in `lib/source.ts` from the generated `content/docs`.
+- **Metadata:** each page sets its own canonical and language alternates (`alternates()` in `lib/seo.ts`; x-default is English) and its Open Graph and Twitter tags (`social()`: Next replaces a parent's `openGraph` instead of merging it). `app/sitemap.ts` lists both languages of every page, `app/robots.ts` points to it, and `app/opengraph-image.tsx` is the one share card (excluded from the i18n middleware in `proxy.ts`, like the icons).
 
 ## Content rules
 

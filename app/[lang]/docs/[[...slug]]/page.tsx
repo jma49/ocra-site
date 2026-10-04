@@ -9,6 +9,9 @@ import { createRelativeLink } from "fumadocs-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";
+import { i18n } from "@/lib/i18n";
+import { localeParam } from "@/lib/locale-param";
+import { alternates, social } from "@/lib/seo";
 import { gitConfig, repoUrl } from "@/lib/shared";
 import { source } from "@/lib/source";
 
@@ -41,8 +44,22 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang, slug } = await params;
-  const page = source.getPage(slug, lang);
+  const { slug } = await params;
+  const locale = await localeParam(params);
+  const page = source.getPage(slug, locale);
   if (!page) notFound();
-  return { title: page.data.title, description: page.data.description };
+  const path = slug ? `/docs/${slug.join("/")}` : "/docs";
+  // A page missing in one language has no alternate there.
+  const languages = i18n.languages.filter((l) => source.getPage(slug, l));
+  return {
+    title: page.data.title,
+    description: page.data.description,
+    alternates: alternates(locale, path, languages),
+    ...social({
+      locale,
+      path,
+      title: page.data.title,
+      description: page.data.description,
+    }),
+  };
 }
