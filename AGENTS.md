@@ -26,6 +26,17 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 - On Vercel it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository).
 - The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
+## How the site uses Fumadocs
+
+Read this before touching routing, the docs layout or MDX; it saves reading `fumadocs-ui` and `fumadocs-core` from `node_modules`.
+
+- **Languages** (`lib/i18n.ts`): `en` and `zh`, `parser: "dir"`, `hideLocale: "default-locale"`. English has no prefix (`/docs/x`), Chinese does (`/zh/docs/x`).
+- **The prefix is hidden by a rewrite** (`proxy.ts`, Fumadocs' i18n middleware): `/docs/x` is served from the prerendered `/en/docs/x`. So on the server Next sees `/en/...` while the browser sees `/...`. `components/providers.tsx` hands Fumadocs a `FrameworkProvider` whose pathname drops the hidden `/en`, so active links and pagination match on both sides; without it React discards the server HTML (a hydration error on every English docs page, fixed in site #20). Keep any new pathname-dependent component behind that provider.
+- **MDX components** the manual may use are registered in `components/mdx.tsx`; register one there before the manual uses it, or the build fails.
+- **Links in the manual:** relative links (`./github`) resolve against the page's URL, and the manual's index page is `/docs`, not `/docs/`, so from there `./github` would point to `/github` and 404. The index pages use absolute links per language (`/docs/github`, `/zh/docs/github`); other pages may use relative ones.
+- **404s:** unknown paths under a language go through `app/[lang]/[...rest]/page.tsx` to `app/[lang]/not-found.tsx`, which renders `components/not-found-page.tsx` in that language.
+- **Routes:** the landing page is `app/[lang]/(home)`, the manual `app/[lang]/docs/[[...slug]]`, with the source loaded in `lib/source.ts` from the generated `content/docs`.
+
 ## Content rules
 
 - **Say only what is true today.** The project is early: no invented customers, logos, testimonials, statistics or benchmark results. Planned features are labeled as planned.
