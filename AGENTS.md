@@ -92,4 +92,4 @@ Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: chang
 - The author may merge after green CI and a self-review of the full diff.
 - [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, imperative, at most 72 characters.
 - **Commits must not include `Co-authored-by` trailers or any other co-author metadata.**
-- **Pull request titles, descriptions and comments must not include AI attribution.**
+- **Pull request titles, descriptions and comments must not include AI attribution** (the `/triage` disclaimer on an issue is disclosure, not attribution).
