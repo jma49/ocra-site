@@ -11,7 +11,17 @@ updates:
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
+    ignore:
+      # The types of the oldest Node.js line the site supports (engines: 22).
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
+      # fumadocs-ui is installed under an alias (npm:@fumadocs/base-ui),
+      # which Dependabot does not update, and it pins fumadocs-core exactly:
+      # a group PR fails npm ci until the alias is bumped to the same version
+      # in that PR by hand.
+      fumadocs:
+        patterns: ["fumadocs-*", "@fumadocs/*"]
       minor-and-patch:
         update-types: [minor, patch]
   - package-ecosystem: github-actions
