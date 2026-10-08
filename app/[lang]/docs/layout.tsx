@@ -1,5 +1,5 @@
-import { i18nProvider } from "fumadocs-ui/i18n";
-import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { i18nProvider } from "@fumadocs/base-ui/i18n";
+import { DocsLayout } from "@fumadocs/base-ui/layouts/docs";
 import type { ReactNode } from "react";
 import { Providers } from "@/components/providers";
 import { getCopy } from "@/lib/copy";

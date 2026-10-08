@@ -1,6 +1,6 @@
 "use client";
 
-import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { HomeLayout } from "@fumadocs/base-ui/layouts/home";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";

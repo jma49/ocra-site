@@ -33,7 +33,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 ## How the site uses Fumadocs
 
-Read this before touching routing, the docs layout or MDX; it saves reading `fumadocs-ui` and `fumadocs-core` from `node_modules`.
+Read this before touching routing, the docs layout or MDX; it saves reading `@fumadocs/base-ui` and `fumadocs-core` from `node_modules`.
 
 - **Languages** (`lib/i18n.ts`): `en` and `zh`, `parser: "dir"`, `hideLocale: "default-locale"`. English has no prefix (`/docs/x`), Chinese does (`/zh/docs/x`).
 - **The prefix is hidden by a rewrite** (`proxy.ts`, Fumadocs' i18n middleware): `/docs/x` is served from the prerendered `/en/docs/x`. So on the server Next sees `/en/...` while the browser sees `/...`. `components/providers.tsx` hands Fumadocs a `FrameworkProvider` whose pathname drops the hidden `/en`, so active links and pagination match on both sides; without it React discards the server HTML (a hydration error on every English docs page, fixed in site #20). Keep any new pathname-dependent component behind that provider.
