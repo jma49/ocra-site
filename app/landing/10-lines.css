@@ -1,0 +1,131 @@
+/* ---- Lines (DESIGN.md, "Lines") ----
+   Two hairline rails run down the page just outside the content column;
+   every chapter opens on a rule between them, marked with a cross where it
+   meets each rail. Grids of cards share their hairlines instead of floating
+   apart. */
+.landing {
+  position: relative;
+  --rail: max(12px, calc((100% - 76rem) / 2 + 20px));
+}
+.landing::before,
+.landing::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+  pointer-events: none;
+}
+.landing::before {
+  left: var(--rail);
+}
+.landing::after {
+  right: var(--rail);
+}
+.hero,
+.statement,
+.final {
+  z-index: var(--z-over);
+}
+/* On the night the rails go on, fainter. */
+.hero-night::before,
+.hero-night::after,
+.statement::before,
+.statement::after,
+.final::before,
+.final::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--on-night) 8%, transparent);
+  pointer-events: none;
+}
+.hero-night::before,
+.statement::before,
+.final::before {
+  left: var(--rail);
+}
+.hero-night::after,
+.statement::after,
+.final::after {
+  right: var(--rail);
+}
+
+.chapter,
+.chapter.tight-top {
+  padding: 96px 0;
+}
+@media (min-width: 900px) {
+  .chapter,
+  .chapter.tight-top {
+    padding: 120px 0;
+  }
+}
+.chapter::before,
+.chapter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+}
+.chapter::before {
+  left: var(--rail);
+  right: var(--rail);
+  height: 1px;
+  background: var(--line);
+}
+/* A cross where the rule meets each rail. */
+.chapter::after {
+  z-index: var(--z-over);
+  left: calc(var(--rail) - 4px);
+  right: calc(var(--rail) - 4px);
+  top: -4px;
+  height: 9px;
+  background:
+    linear-gradient(var(--text-3), var(--text-3)) left 4px top 0 / 1px 9px no-repeat,
+    linear-gradient(var(--text-3), var(--text-3)) left 0 top 4px / 9px 1px no-repeat,
+    linear-gradient(var(--text-3), var(--text-3)) right 4px top 0 / 1px 9px no-repeat,
+    linear-gradient(var(--text-3), var(--text-3)) right 0 top 4px / 9px 1px no-repeat;
+}
+
+/* ---- Grids that share their hairlines ---- */
+.cards,
+.plans {
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.card,
+.plan {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--paper);
+}
+.plan.feat {
+  background: var(--night);
+}
+.secure {
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+.thread .cmt {
+  box-shadow: none;
+}
+
+@media (max-width: 767px) {
+  .landing::before,
+  .landing::after,
+  .hero-night::before,
+  .hero-night::after,
+  .statement::before,
+  .statement::after,
+  .final::before,
+  .final::after {
+    display: none;
+  }
+}

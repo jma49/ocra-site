@@ -12,62 +12,209 @@
   align-items: center;
   gap: 8px;
 }
-.steps {
-  list-style: none;
-  margin: 28px 0 0;
-  padding: 0;
+/* The thread: one hairline down the steps; a square node where only code
+   runs, a ring where a model is asked. The step in focus fills its stretch
+   of the thread in aquamarine over the dwell time. */
+.node-key {
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--text-2);
+  background: var(--paper);
+}
+.node-key.m {
+  border-radius: 50%;
+  border-color: var(--aqua-ink);
+}
+.pipe {
   display: grid;
-  gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
 }
 @media (min-width: 980px) {
-  .steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .pipe {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 0;
   }
 }
-.step {
-  display: flex;
-  flex-direction: column;
-  border-radius: 16px;
-  padding: 26px 26px 0;
-  overflow: hidden;
+.pipe-steps {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-.step .k {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+.pipe-steps li {
+  position: relative;
+  padding: 0 32px 34px 44px;
 }
-.step .idx {
+.pipe-steps li:last-child {
+  padding-bottom: 0;
+}
+/* The thread itself, from node to node. */
+.pipe-steps li::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 18px;
+  bottom: -6px;
+  width: 1px;
+  background: var(--line-2);
+}
+.pipe-steps li:last-child::before {
+  display: none;
+}
+.pipe-steps li.done::before {
+  background: var(--aqua-ink);
+}
+.pipe-steps .fill {
+  position: absolute;
+  left: 12px;
+  top: 18px;
+  bottom: -6px;
+  width: 1px;
+  background: var(--aqua-ink);
+  transform-origin: top;
+  transform: scaleY(1);
+}
+.pipe[data-running="true"] .fill {
+  animation: thread var(--dwell) linear both;
+}
+.pipe-steps li:last-child .fill {
+  display: none;
+}
+@keyframes thread {
+  from {
+    transform: scaleY(0);
+  }
+}
+.node {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 13px;
+  height: 13px;
+  background: var(--paper);
+  border: 1.5px solid var(--line-2);
+  transition:
+    border-color var(--t),
+    background-color var(--t),
+    box-shadow var(--t);
+}
+[data-kind="model"] > .node {
+  border-radius: 50%;
+}
+.pipe-steps li.done > .node,
+.pipe-steps li.on > .node {
+  border-color: var(--aqua-ink);
+}
+.pipe-steps li.on > .node {
+  background: var(--aqua);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--aqua) 22%, transparent);
+}
+.pipe-steps h3 {
+  font-size: 1.25rem;
+}
+.pipe-steps h3 button {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  color: var(--text-3);
+  transition: color var(--t);
+}
+.pipe-steps h3 button:focus-visible {
+  outline: 2px solid var(--aqua-ink);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.pipe-steps li.on h3 button {
+  color: var(--text);
+}
+.pipe-steps .idx {
   font: 500 12px var(--font-mono);
   color: var(--text-3);
-  margin-right: 6px;
 }
-.step h3 {
-  margin-top: 18px;
-  font-size: 1.35rem;
-}
-.step p {
-  margin: 10px 0 0;
-  color: var(--text-2);
-  font-size: 15px;
-}
-.step-fig {
-  margin: 24px -26px 0;
-  padding: 0 26px 26px;
-  flex: 1;
+.pipe-steps .k {
   display: flex;
-  flex-direction: column;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.pipe-steps p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  color: var(--text-3);
+  max-width: 34rem;
+  transition: color var(--t);
+}
+.pipe-steps li.on p {
+  color: var(--text-2);
 }
 
-/* The pictures: an inset panel on the card. */
-.step-fig .panel {
-  flex: 1;
+/* The picture of the step in focus: one frame, the pictures stacked in it so
+   the frame keeps the tallest one's height. */
+.pipe-fig {
+  display: grid;
+  align-self: start;
+  border: 1px solid var(--line);
+  background: var(--card);
+  position: relative;
+}
+@media (min-width: 980px) {
+  .pipe-fig {
+    position: sticky;
+    top: 110px;
+  }
+}
+/* Crop marks at the frame's corners. */
+.pipe-fig::before,
+.pipe-fig::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  pointer-events: none;
+}
+.pipe-fig::before {
+  left: -8px;
+  top: -8px;
+  border-left: 1px solid var(--text-3);
+  border-top: 1px solid var(--text-3);
+}
+.pipe-fig::after {
+  right: -8px;
+  bottom: -8px;
+  border-right: 1px solid var(--text-3);
+  border-bottom: 1px solid var(--text-3);
+}
+.fig {
+  grid-area: 1 / 1;
+  padding: 22px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+.fig.on {
+  opacity: 1;
+  transform: none;
+}
+
+/* The pictures: a hairline panel inside the frame. */
+.fig .panel-b {
+  justify-content: flex-start;
+}
+.fig .panel {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: 12px;
+  border-radius: 0;
   background: var(--paper);
   box-shadow: none;
-  overflow: hidden;
 }
 .panel-h {
   display: flex;

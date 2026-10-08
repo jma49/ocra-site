@@ -5,7 +5,6 @@
 
 .card,
 .plan,
-.step,
 .logo-tile,
 .pchip {
   transition:
@@ -24,10 +23,8 @@
 }
 
 @media (hover: hover) {
-  .card:hover,
-  .plan:not(.feat):hover,
-  .step:hover {
-    transform: translateY(-2px);
+  .secure:hover,
+  .plan:not(.feat):hover {
     border-color: var(--line-2);
   }
   .logo-tile:hover,
@@ -92,10 +89,8 @@
   .mq.rev .mq-track {
     animation-duration: 108s;
   }
-  .card:hover,
-  .plan:hover,
-  .step:hover {
-    transform: none;
+  .pipe-steps .fill {
+    animation: none;
   }
   .fold,
   .silk-canvas {
@@ -176,14 +171,12 @@
 /* ---- A soft light follows the pointer across the surfaces ---- */
 .card,
 .plan,
-.step,
 .secure {
   position: relative;
   isolation: isolate;
 }
 .card::before,
 .plan::before,
-.step::before,
 .secure::before {
   content: "";
   position: absolute;
@@ -209,7 +202,6 @@
 @media (hover: hover) {
   .card:hover::before,
   .plan:hover::before,
-  .step:hover::before,
   .secure:hover::before {
     opacity: 1;
   }
