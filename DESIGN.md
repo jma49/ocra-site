@@ -250,12 +250,21 @@ One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mon
 - Content sits in a 76rem column with a 20px gutter (40px from 768px). Chapters: 112px vertical padding, 144px from 900px.
 - The page alternates night and paper: hero (night, the product window rising out of it onto the paper), platforms, pipeline, statement (night), features, lifecycle, security, plans, questions, final (night), footer.
 - Headings that share a row with a paragraph use `split-head`: heading left, paragraph right, aligned to the bottom.
-- The pipeline is a 2 by 2 grid of step cards, each with its picture; nothing is pinned or swapped on scroll.
+- The pipeline is one thread (`pipeline.tsx`): the four steps down a hairline, each on a node (a square where only code runs, a ring where a model is asked), with the picture of the step in focus in a framed panel beside them. The steps advance on their own (the thread fills in aquamarine over the dwell time) until the reader points at the section or picks a step; every step's text is always shown.
 - Must work at 390px wide without horizontal page scroll; wide code scrolls inside its panel.
+
+## Lines
+
+Line work carries the structure (`10-lines.css`):
+
+- Two hairline rails run down the page just outside the content column, fainter on the night; hidden below 768px.
+- Every chapter opens on a hairline between the rails, with a small cross where it meets each rail.
+- Grids of cards (features, plans) share their hairlines: no gaps, no radii, no shadows, one 1px line between neighbours.
+- The pipeline's thread and the figure frame's crop marks are the same hairline.
 
 ## Elevation and the night
 
-- **Surfaces on paper** are `card` with a 1px `line` hairline and one long soft shadow (`--lift`). Panels inside a surface are inset on `paper` with a hairline and no shadow. There is no frosted glass on paper and no glow behind sections.
+- **Surfaces on paper** are hairlines first: grids share their lines (see Lines); the product window and the lifecycle thread are `card` with a 1px `line` hairline, and only the window keeps a long soft shadow. Panels inside a surface are inset on `paper` with a hairline and no shadow. There is no frosted glass on paper and no glow behind sections.
 - **Ink glass** only where something moves behind it: the nav, the phone menu and the dock (`night-2` at about 90%, an 18px blur).
 - **Silk** (`components/landing/silk.tsx`, `silk-scene.tsx`): the night sections carry a WebGPU scene from [Shaders](https://shaders.com) (MIT): a few pinned threads of light (`Strands`) that drift slowly and stretch under the pointer (`Liquify`), with a faint grain and a vignette. The threads keep clear of the text: the hero's fall through the right half, the statement's and the final's lie low. The library loads only after a WebGPU adapter answers; until the scene has drawn, and in browsers without WebGPU, the CSS ground shows: the night with the silk's glow where the threads would be. Every `<Shader>` passes `disableTelemetry`: the library otherwise reports frame timings and the hostname to shaders.com.
 

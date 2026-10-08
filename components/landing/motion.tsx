@@ -7,7 +7,8 @@ const REVEAL = [
   ".split-head",
   ".legend",
   ".works-grid",
-  ".steps > li",
+  ".pipe-steps > li",
+  ".pipe-fig",
   ".state-grid",
   ".cards > article",
   ".life",
@@ -17,7 +18,7 @@ const REVEAL = [
   ".final .eyes-alive",
 ].join(",");
 // Surfaces that carry the pointer's spotlight.
-const SPOT = ".card, .plan, .step, .secure";
+const SPOT = ".card, .plan, .secure";
 
 // The landing page's motion in one island, so no section turns into a client
 // component for it:

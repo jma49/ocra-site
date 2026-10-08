@@ -10,7 +10,6 @@
    later in the cascade. */
 .split-head,
 .works-grid,
-.steps,
 .state-grid,
 .cards,
 .life,
@@ -147,8 +146,7 @@
 .plan,
 .secure,
 .panel,
-.thread .cmt,
-.step {
+.thread .cmt {
   background: var(--card);
   border: 1px solid var(--line);
   box-shadow: var(--lift);
