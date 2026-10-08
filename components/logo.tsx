@@ -1,7 +1,7 @@
 import { EyesMark, LookingEyes } from "@/components/brand/eyes-mark";
 
-// The eye row beside the wordmark. On a night ground (`dark`) the eyes take
-// the signal colour and, on the landing page, follow the pointer.
+// The eye row beside the wordmark. On a night ground (`dark`) the eyes are
+// white with dark pupils and, on the landing page, follow the pointer.
 export function Logo({ dark }: { dark?: boolean }) {
   return (
     <span className={dark ? "logo logo-dark" : "logo"}>

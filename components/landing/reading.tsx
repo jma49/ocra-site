@@ -40,19 +40,19 @@ function Code({ title }: { title: string }) {
 // by a light that follows the pointer (motion.tsx sets --lx and --ly), with
 // the line it commented on lit throughout. Three copies of the same text:
 // the dim page, the lit page shown only under the light, and the finding's
-// line alone.
+// line alone. Each copy sits in an untilted layer the size of the hero, so
+// the light's mask is in the same coordinates as the pointer; the code
+// inside is tilted.
 export function Reading({ title }: { title: string }) {
   return (
     <div className="reading" aria-hidden="true">
-      <div className="rcode dim">
-        <Code title={title} />
-      </div>
-      <div className="rcode lit">
-        <Code title={title} />
-      </div>
-      <div className="rcode bug">
-        <Code title={title} />
-      </div>
+      {(["dim", "lit", "bug"] as const).map((layer) => (
+        <div key={layer} className={`rlayer ${layer}`}>
+          <div className="rcode">
+            <Code title={title} />
+          </div>
+        </div>
+      ))}
       <div className="rbeam" />
     </div>
   );
