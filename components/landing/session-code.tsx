@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { EyesMark } from "@/components/brand/eyes-mark";
 import { exampleRun } from "@/lib/landing/example-run";
 
 const { finding } = exampleRun;
@@ -18,16 +17,30 @@ function Highlighted({ text }: { text: string }) {
   );
 }
 
-// The finding's suggestion as ocra posts it in the inline comment today: one
-// plain line after the reason (`**Suggestion:** …` in the engine's
-// packages/vcs-platform/src/render.ts). The label is the engine's own and is
-// English in every language. Committable suggestions are only on the roadmap.
+// The finding's suggestion as ocra posts it for this run: one plain line
+// after the reason (`**Suggestion:** …`, inlineBody in the engine's
+// packages/vcs-platform/src/render.ts). The engine adds a committable
+// suggestion block only for a structured fix, which this recording's
+// scripted model does not give. The label is the engine's own and is English
+// in every language.
 function Suggestion() {
   return (
-    <p className="sugg-line">
+    <p>
       <strong>Suggestion:</strong>
       {` ${finding.suggestion}`}
     </p>
+  );
+}
+
+// The GitHub Action posts as github-actions[bot]; its avatar is the Actions
+// mark, drawn here as a plain play glyph in a ring.
+export function BotAvatar({ small }: { small?: boolean }) {
+  return (
+    <span className={small ? "av av-sm" : "av"} aria-hidden="true">
+      <svg viewBox="0 0 16 16" width={small ? 10 : 13} height={small ? 10 : 13} aria-hidden="true">
+        <path d="M5.5 3.8v8.4L12 8z" fill="currentColor" />
+      </svg>
+    </span>
   );
 }
 
@@ -58,9 +71,11 @@ export function SessionCode({ tip }: { tip?: ReactNode }) {
   );
 }
 
-// ocra's inline comment on the finding. In the pull request it carries the
-// line number and folds open as the replay reaches it; in the lifecycle
-// thread it shows the fingerprint.
+// ocra's inline comment on the finding, as the engine writes it (inlineBody
+// in packages/vcs-platform/src/render.ts): the severity icon, the title,
+// severity, verification and reviewer on one line, the reason, then the
+// suggestion. GitHub shows the commented lines above it. In the pull request
+// it folds open as the replay reaches it.
 export function FindingComment({
   variant,
   title,
@@ -77,33 +92,32 @@ export function FindingComment({
   const content = (
     <>
       <SessionCode tip={tip} />
-      <div className="cmt-b">
-        <div className="tags">
-          <span className="tag t-crit">{finding.severity}</span>
-          <span className="tag t-ok">verified</span>
-          <span className="tag t-plain">
-            {variant === "thread"
-              ? `${finding.reviewer} · ${finding.fingerprint}`
-              : finding.reviewer}
-          </span>
+      <div className="cmt-row">
+        <BotAvatar />
+        <div className="md">
+          <p className="cmt-who">
+            <strong>github-actions</strong> <span className="bot">bot</span>
+          </p>
+          <p>
+            🔴 <strong>{title.replace(/[.。]$/, "")}</strong> · {finding.severity} · verified ·{" "}
+            {finding.reviewer}
+          </p>
+          <p>{body}</p>
+          <Suggestion />
         </div>
-        <strong className="fg ftitle">{title}</strong>
-        <span className="fbody">{body}</span>
-        <Suggestion />
       </div>
     </>
   );
   return (
     <>
-      <div className="cmt-h">
-        <span className="av">
-          <EyesMark size={16} />
-        </span>
-        <span>
-          <strong>ocra</strong> · <code>{finding.path}</code>
-          {onLine && ` ${onLine} ${finding.line}`}
-        </span>
-      </div>
+      <header className="cmt-h file-h">
+        <code>{finding.path}</code>
+        {onLine && (
+          <span>
+            {onLine} {finding.line}
+          </span>
+        )}
+      </header>
       {variant === "pr" ? (
         <div className="fold">
           <div className="fold-in">{content}</div>

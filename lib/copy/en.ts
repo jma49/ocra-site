@@ -55,21 +55,6 @@ export const en: CopySource = {
       reviewing: "is reviewing this pull request",
       reviewed: "reviewed this pull request",
       replay: "Replay",
-      verdict: "Verdict: significant concerns",
-      rows: {
-        reviewed: "Reviewed",
-        tasks: "Tasks",
-        findings: "Findings",
-        cost: "Cost",
-      },
-      values: {
-        reviewed: (run) =>
-          `${run.changedFiles} files in ${run.bundles} bundles · ${run.files.filter((f) => !f.selected).length} set aside (generated)`,
-        tasks: (run) => `correctness, security · ${run.skippedPairs} pairs skipped with a reason`,
-        findings: ({ outcome: o }) =>
-          `${o.verified} critical, verified · ${o.merged} merged · ${o.disproved} disproved`,
-        tokens: (run) => `tokens in (${formatCount(run.usage.cached)} cached)`,
-      },
       onLine: "line",
       quoteTip: "the agent quoted this line · ocra found it in the diff",
       findingTitle: "Every session is treated as expired.",

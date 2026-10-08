@@ -1,57 +1,44 @@
 "use client";
 
-import {
-  type CSSProperties,
-  type HTMLAttributes,
-  useCallback,
-  useEffect,
-  useReducer,
-  useRef,
-} from "react";
-import { EyesMark } from "@/components/brand/eyes-mark";
+import { type HTMLAttributes, useCallback, useEffect, useReducer, useRef } from "react";
 import type { Copy } from "@/lib/copy";
 import { exampleRun } from "@/lib/landing/example-run";
-import { FindingComment } from "./session-code";
+import { BotAvatar, FindingComment } from "./session-code";
 
-const STAGES = ["select", "bundle", "review", "verify", "verdict"];
-const { pr, files } = exampleRun;
-const TOKENS: number = exampleRun.usage.input;
-const DOLLARS: number = exampleRun.usage.dollars;
+const { pr, files, usage, outcome } = exampleRun;
+const excluded = files.filter((f) => !f.selected).length;
 
-// What the pane shows at one moment of the replay; `cost` is the share of
-// the run's cost counted up so far.
-interface Frame {
-  running: boolean;
-  stage: number;
-  rows: number;
-  finding: boolean;
-  cost: number;
-}
-
-const DONE: Frame = {
-  running: false,
-  stage: STAGES.length,
-  rows: 4,
-  finding: true,
-  cost: 1,
+// ocra's summary comment as the GitHub Action posts it for this run, from
+// renderSummary in the engine's packages/vcs-platform/src/render.ts. The
+// comment is the engine's own text, in English in every language, like the
+// inline comment's labels. Left out: the override hint and the run id, which
+// name a commit and a run this recording does not have.
+const SUMMARY = {
+  heading: "ocra review · 🛑 Significant concerns",
+  counts: `${outcome.verified} finding(s)`,
+  countsRest: "(1 critical, 0 warning, 0 suggestion) · risk tier",
+  disclaimer:
+    "The verdict is advice from language models that read the change itself, and can be swayed by text in it. Do not use it as a security gate.",
+  coverage: `${exampleRun.changedFiles} reviewed · 0 unchanged since the last review · 0 not reviewed · ${excluded} excluded · ${usage.input} in / ${usage.output} out tokens · $${usage.dollars.toFixed(4)}`,
 };
 
-// The replay as a table: at each time, what changes. The cost counts up
-// over COUNT_MS from the moment `count` is set.
-const COUNT_MS = 900;
-const TIMELINE: [number, Partial<Frame> & { count?: true }][] = [
-  [0, { running: true, stage: 0, rows: 0, finding: false, cost: 0 }],
-  [500, { rows: 1, stage: 1 }],
-  [1100, { rows: 2, stage: 2 }],
-  [1900, { finding: true, stage: 3 }],
-  [2600, { rows: 3, stage: 4 }],
-  [3100, { rows: 4, count: true }],
-  // The count runs on to 4000 ms; the verdict lands before it ends.
-  [3500, { running: false, stage: STAGES.length }],
+// What the pane shows at one moment of the replay.
+interface Frame {
+  running: boolean;
+  summary: boolean;
+  finding: boolean;
+}
+
+const DONE: Frame = { running: false, summary: true, finding: true };
+
+const TIMELINE: [number, Partial<Frame>][] = [
+  [0, { running: true, summary: false, finding: false }],
+  [1500, { running: false, summary: true }],
+  [2300, { finding: true }],
 ];
 
 // The pull request as ocra leaves it, replayed when it scrolls into view:
-// stages light up, the summary fills in, the cost counts up.
+// the check runs, then the summary and the inline comment arrive.
 export function PrPane({
   copy,
   panel,
@@ -60,29 +47,15 @@ export function PrPane({
   panel: HTMLAttributes<HTMLDivElement>;
 }) {
   const root = useRef<HTMLDivElement>(null);
-  const pending = useRef<{ timers: number[]; frame: number }>({
-    timers: [],
-    frame: 0,
-  });
+  const timers = useRef<number[]>([]);
   const [frame, update] = useReducer(
     (current: Frame, patch: Partial<Frame>) => ({ ...current, ...patch }),
     DONE,
   );
 
   const clear = useCallback(() => {
-    for (const t of pending.current.timers) clearTimeout(t);
-    cancelAnimationFrame(pending.current.frame);
-    pending.current = { timers: [], frame: 0 };
-  }, []);
-
-  const count = useCallback(() => {
-    const t0 = performance.now();
-    const step = (t: number) => {
-      const k = Math.min(1, (t - t0) / COUNT_MS);
-      update({ cost: 1 - (1 - k) ** 3 });
-      pending.current.frame = k < 1 ? requestAnimationFrame(step) : 0;
-    };
-    pending.current.frame = requestAnimationFrame(step);
+    for (const t of timers.current) clearTimeout(t);
+    timers.current = [];
   }, []);
 
   const run = useCallback(() => {
@@ -91,15 +64,11 @@ export function PrPane({
       update(DONE);
       return;
     }
-    for (const [ms, { count: counting, ...patch }] of TIMELINE) {
-      const apply = () => {
-        update(patch);
-        if (counting) count();
-      };
-      if (ms === 0) apply();
-      else pending.current.timers.push(window.setTimeout(apply, ms));
+    for (const [ms, patch] of TIMELINE) {
+      if (ms === 0) update(patch);
+      else timers.current.push(window.setTimeout(() => update(patch), ms));
     }
-  }, [clear, count]);
+  }, [clear]);
 
   useEffect(() => {
     const el = root.current;
@@ -121,95 +90,55 @@ export function PrPane({
     };
   }, [run, clear]);
 
-  const { running, stage, rows, finding } = frame;
-  const state = running ? "running" : "done";
-  const tokens = Math.round(TOKENS * frame.cost);
-  const dollars = DOLLARS * frame.cost;
-  const head = {
-    running: copy.reviewing,
-    done: copy.reviewed,
-  }[state];
-  const v = copy.values;
-  const summary: [string, string][] = [
-    [copy.rows.reviewed, v.reviewed],
-    [copy.rows.tasks, v.tasks],
-    [copy.rows.findings, v.findings],
-    [copy.rows.cost, `${tokens.toLocaleString("en-US")} ${v.tokens} · $${dollars.toFixed(4)}`],
-  ];
+  const { running, summary, finding } = frame;
   const s = copy.side;
-  const busy = running;
 
   return (
-    <div ref={root} className="pr" data-state={state} {...panel}>
+    <div ref={root} className="pr" data-state={running ? "running" : "done"} {...panel}>
       <div className="pr-main">
         <div className="pr-title">
           {copy.title} <span>#{pr.number}</span>
         </div>
         <div className="pr-meta">
+          <span className="pr-state">Open</span>
           {copy.meta.into} <code>{pr.base}</code> {copy.meta.from} <code>{pr.head}</code> ·{" "}
           {copy.meta.files}
         </div>
-        <div className="cmt">
-          <div className="cmt-h">
-            <span className="av">
-              <EyesMark size={16} />
-            </span>
+
+        <div className={running ? "event" : "event hide"} aria-hidden={!running}>
+          <span className="dot spin" />
+          <strong>ocra</strong> {copy.reviewing}
+        </div>
+
+        <article className={summary ? "cmt" : "cmt hide"}>
+          <header className="cmt-h">
+            <BotAvatar />
             <span>
-              <strong>ocra</strong> {head}
+              <strong>github-actions</strong> <span className="bot">bot</span> {copy.reviewed}
             </span>
-            {!busy && (
+            {!running && (
               <button type="button" className="replay" onClick={run}>
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  aria-hidden="true"
-                >
-                  <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
-                  <path d="M3 3v5h5" />
-                </svg>
                 {copy.replay}
               </button>
             )}
+          </header>
+          <div className="md">
+            <h4>{SUMMARY.heading}</h4>
+            <p>{exampleRun.summary}</p>
+            <p>
+              <strong>{SUMMARY.counts}</strong> {SUMMARY.countsRest} <code>{exampleRun.tier}</code>
+            </p>
+            <p>
+              <em>{SUMMARY.disclaimer}</em>
+            </p>
+            <details>
+              <summary>Coverage and cost</summary>
+              <p>{SUMMARY.coverage}</p>
+            </details>
           </div>
-          <div className="cmt-b">
-            <ol
-              className="track"
-              aria-hidden="true"
-              style={
-                {
-                  "--p": Math.min(stage, STAGES.length - 1) / (STAGES.length - 1),
-                } as CSSProperties
-              }
-            >
-              {STAGES.map((name, i) => (
-                <li key={name} className={i === stage ? "on" : i < stage ? "done" : undefined}>
-                  <i />
-                  {name}
-                </li>
-              ))}
-            </ol>
-            <div className={`verdict${running ? " hide" : ""}`}>
-              <i />
-              {copy.verdict}
-            </div>
-            <table className="sum">
-              <tbody>
-                {summary.map(([k, val], i) => (
-                  <tr key={k} className={i >= rows ? "hide" : undefined}>
-                    <td>{k}</td>
-                    <td>{val}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className={`cmt finding${finding ? "" : " hide"}`}>
+        </article>
+
+        <article className={`cmt finding${finding ? "" : " hide"}`}>
           <FindingComment
             variant="pr"
             title={copy.findingTitle}
@@ -221,15 +150,13 @@ export function PrPane({
               </span>
             }
           />
-        </div>
+        </article>
       </div>
       <aside className="pr-side">
         <p className="side-h">{s.reviewers}</p>
         <div className="chk">
-          <span className="av av-sm">
-            <EyesMark size={12} />
-          </span>
-          {busy ? s.reviewing : s.changes}
+          <BotAvatar small />
+          {running ? s.reviewing : s.changes}
         </div>
         <p className="side-h">{s.checks}</p>
         <div className="chk">
@@ -241,8 +168,8 @@ export function PrPane({
           test
         </div>
         <div className="chk">
-          {busy ? <i className="dot spin" /> : <CheckIcon state="bad" />}
-          {busy ? s.running : s.blocking}
+          {running ? <i className="dot spin" /> : <CheckIcon state="bad" />}
+          {running ? s.running : s.blocking}
         </div>
         <p className="side-h">{s.files}</p>
         {files

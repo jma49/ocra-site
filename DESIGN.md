@@ -255,18 +255,20 @@ One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mon
 
 ## Lines
 
-Line work carries the structure (`10-lines.css`):
+Use lines where they say something, never as decoration (the maintainer: "善用, 不是一味的用"):
 
-- Two hairline rails run down the page just outside the content column, fainter on the night; hidden below 768px.
-- Every chapter opens on a hairline between the rails, with a small cross where it meets each rail.
-- Grids of cards (features, plans) share their hairlines: no gaps, no radii, no shadows, one 1px line between neighbours.
-- The pipeline's thread and the figure frame's crop marks are the same hairline.
+- The pipeline's thread: the order of the steps and how far a run has got.
+- Grids of cards (features, plans) share their hairlines (`10-lines.css`), because the cards are parts of one whole.
+- Rows of tables and lists.
+
+No page rails, crosses, crop marks or rules between sections.
 
 ## Elevation and the night
 
 - **Surfaces on paper** are hairlines first: grids share their lines (see Lines); the product window and the lifecycle thread are `card` with a 1px `line` hairline, and only the window keeps a long soft shadow. Panels inside a surface are inset on `paper` with a hairline and no shadow. There is no frosted glass on paper and no glow behind sections.
 - **Ink glass** only where something moves behind it: the nav, the phone menu and the dock (`night-2` at about 90%, an 18px blur).
-- **Silk** (`components/landing/silk.tsx`, `silk-scene.tsx`): the night sections carry a WebGPU scene from [Shaders](https://shaders.com) (MIT): a few pinned threads of light (`Strands`) that drift slowly and stretch under the pointer (`Liquify`), with a faint grain and a vignette. The threads keep clear of the text: the hero's fall through the right half, the statement's and the final's lie low. The library loads only after a WebGPU adapter answers; until the scene has drawn, and in browsers without WebGPU, the CSS ground shows: the night with the silk's glow where the threads would be. Every `<Shader>` passes `disableTelemetry`: the library otherwise reports frame timings and the hostname to shaders.com.
+- **Reading light** (`components/landing/reading.tsx`): the hero's picture is the file ocra reviewed in the example run, the recorded demo repository's `src/auth/session.ts`, tilted and dim on the right of the night. A light that follows the pointer brings the code up to full brightness, and the line the finding quotes glows throughout with its severity beside it. The build fails if that file and the recording disagree on the quoted line. Hidden below 900px; the scanning beam stops under Reduce motion.
+- **Silk** (`components/landing/silk.tsx`, `silk-scene.tsx`): the statement band and the final call to action carry a WebGPU scene from [Shaders](https://shaders.com) (MIT): a few pinned threads of light (`Strands`) that drift slowly and stretch under the pointer (`Liquify`), with a faint grain and a vignette. The threads lie low, clear of the text. The library loads only after a WebGPU adapter answers; until the scene has drawn, and in browsers without WebGPU, the CSS ground shows: the night with the silk's glow where the threads would be. Every `<Shader>` passes `disableTelemetry`: the library otherwise reports frame timings and the hostname to shaders.com.
 
 ## Shapes
 
@@ -279,7 +281,7 @@ Line work carries the structure (`10-lines.css`):
 - **Favicon and Apple icon**: the aquamarine eye row on a night tile. **Share card**: the same tile beside the wordmark.
 - **Footer mark**: the eye row at 720px in `line`, cut off by the bottom of the page, peeking.
 - **Living eyes** (`LookingEyes`): the eye row with pupils that turn towards the pointer and a blink every few seconds; in the nav logo on the night and, large with a soft aquamarine halo, over the final call to action.
-- **Product window** (`product-window.tsx`, `pr-pane.tsx`): the example pull request, terminal and ocra Cloud console behind tabs. The pull request replays the review when it scrolls into view; each finding ends with its suggestion as a plain `Suggestion:` line, the way ocra posts it (no committable suggestion: ocra does not post GitHub suggestion blocks).
+- **Product window** (`product-window.tsx`, `pr-pane.tsx`): the example pull request, terminal and ocra Cloud console behind tabs. The pull request shows what ocra actually posts, as GitHub shows it: the summary comment and the inline comment from the engine's `render.ts`, posted by `github-actions` (the Action's identity), in the engine's English. No invented dashboards, progress tracks or banners. It replays when it scrolls into view: the check runs, then the comments arrive. The finding ends with a plain `Suggestion:` line because this recording's scripted model gives no structured fix; a committable suggestion block would need a new recording.
 - **Providers marquee** (`works.tsx`, `lib/landing/brand-icons.ts`): two rows of chips with single-colour 20px marks (LobeHub icons, MIT; Simple Icons, CC0), moving in opposite directions.
 - **Buttons** (`app/global.css`): `btn-brand` (aquamarine, the primary action), `btn-dark`, `btn-soft` (hairline on paper), `btn-ghost` (hairline on the night).
 - **Manual (MDX)**: `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`, which gives panels the `glass` class (now a card on paper) and cards the block hover. Register a component before the manual uses it, or the build fails.

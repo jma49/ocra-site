@@ -54,21 +54,6 @@ export const zh: CopySource = {
       reviewing: "正在审查这个 PR",
       reviewed: "审查了这个 PR",
       replay: "重播",
-      verdict: "结论：存在重大问题",
-      rows: {
-        reviewed: "审查范围",
-        tasks: "任务",
-        findings: "发现",
-        cost: "花费",
-      },
-      values: {
-        reviewed: (run) =>
-          `${run.bundles} 组共 ${run.changedFiles} 个文件 · ${run.files.filter((f) => !f.selected).length} 个被搁置（生成文件）`,
-        tasks: (run) => `correctness、security · ${run.skippedPairs} 个组合被跳过，均记录原因`,
-        findings: ({ outcome: o }) =>
-          `${o.verified} 个 critical，已核实 · ${o.merged} 个合并 · ${o.disproved} 个被证伪`,
-        tokens: (run) => `输入 token（${formatCount(run.usage.cached)} 命中缓存）`,
-      },
       onLine: "第",
       quoteTip: "agent 引用了这一行 · ocra 在 diff 中找到了它",
       findingTitle: "每个会话都被当成已过期。",

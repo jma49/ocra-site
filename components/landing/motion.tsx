@@ -26,7 +26,8 @@ const SPOT = ".card, .plan, .secure";
 //   grid (hidden only once this has run, so the page reads without
 //   JavaScript, and never under Reduce motion);
 // - a soft light follows the pointer across the surfaces;
-// - every eye row with `data-look` turns its pupils towards the pointer.
+// - every eye row with `data-look` turns its pupils towards the pointer;
+// - the hero's reading light follows the pointer.
 // The pointer effects answer the pointer, so they run under Reduce motion.
 export function LandingMotion() {
   useEffect(() => {
@@ -59,6 +60,7 @@ export function LandingMotion() {
     }
 
     const eyes = [...document.querySelectorAll<SVGElement>("[data-look]")];
+    const reading = document.querySelector<HTMLElement>(".reading");
     let raf = 0;
     let last: PointerEvent | undefined;
     const frame = () => {
@@ -74,6 +76,12 @@ export function LandingMotion() {
         const k = Math.min(1, d / (r.width * 2 + 120));
         el.style.setProperty("--px", ((dx / d) * k).toFixed(3));
         el.style.setProperty("--py", ((dy / d) * k).toFixed(3));
+      }
+      if (reading) {
+        const r = reading.getBoundingClientRect();
+        reading.style.setProperty("--lx", `${(x - r.left).toFixed(0)}px`);
+        reading.style.setProperty("--ly", `${(y - r.top).toFixed(0)}px`);
+        reading.dataset.live = "";
       }
       const spot = target instanceof Element ? target.closest<HTMLElement>(SPOT) : null;
       if (spot) {

@@ -10,25 +10,16 @@ import {
   Vignette,
 } from "shaders/react";
 
-export type SilkVariant = "hero" | "band" | "final";
+export type SilkVariant = "band" | "final";
 export type SilkColors = { night: string; silk: string; aqua: string; onNight: string };
 type Point = { x: number; y: number };
 
 // Where the threads are anchored, how many there are and how far they sway.
-// The hero's fall through the right half, clear of the headline; the band's
-// and the final's lie low under the text.
+// Both lie low under the text.
 const LAYOUT: Record<
   SilkVariant,
   { start: Point; end: Point; glow: Point; lines: number; amplitude: number; spread: number }
 > = {
-  hero: {
-    start: { x: 0.56, y: -0.05 },
-    end: { x: 1.05, y: 0.78 },
-    glow: { x: 0.78, y: 0.36 },
-    lines: 14,
-    amplitude: 0.7,
-    spread: 0.3,
-  },
   band: {
     start: { x: -0.05, y: 0.97 },
     end: { x: 1.05, y: 0.84 },

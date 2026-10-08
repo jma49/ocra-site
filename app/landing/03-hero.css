@@ -55,3 +55,119 @@
     margin-top: -170px;
   }
 }
+
+/* ---- The reading light (reading.tsx) ----
+   The reviewed file, tilted and dim on the right of the night; a light that
+   follows the pointer brings it up to full brightness; the commented line
+   glows throughout. Without a pointer the light rests just above that line. */
+.reading {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-under);
+  overflow: hidden;
+  pointer-events: none;
+  --lx: 66%;
+  --ly: 58%;
+  background:
+    radial-gradient(
+      50% 60% at 78% 60%,
+      color-mix(in srgb, var(--silk) 40%, transparent),
+      transparent 70%
+    ),
+    var(--night);
+}
+.rcode {
+  position: absolute;
+  right: -60px;
+  top: -640px;
+  width: 60%;
+  font: 400 17px / 1.8 var(--font-mono);
+  white-space: pre;
+  color: var(--on-night);
+  transform: perspective(1200px) rotateY(-14deg) rotateX(6deg);
+  transform-origin: right center;
+}
+.rcode.dim {
+  opacity: 0.2;
+  filter: blur(1.2px);
+}
+.rcode.lit {
+  text-shadow: 0 0 18px color-mix(in srgb, var(--aqua) 35%, transparent);
+  -webkit-mask-image: radial-gradient(
+    240px circle at var(--lx) var(--ly),
+    var(--black) 30%,
+    transparent 75%
+  );
+  mask-image: radial-gradient(
+    240px circle at var(--lx) var(--ly),
+    var(--black) 30%,
+    transparent 75%
+  );
+}
+.rn {
+  display: inline-block;
+  width: 3ch;
+  margin-right: 2ch;
+  text-align: right;
+  color: var(--on-night-3);
+}
+.rl.q {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--aqua) 14%, transparent),
+    transparent 80%
+  );
+  box-shadow: inset 2px 0 0 var(--aqua);
+}
+.rcode.bug .rl:not(.q) {
+  visibility: hidden;
+}
+.rcode.bug .rl.q {
+  color: var(--aqua);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--aqua) 55%, transparent);
+}
+.rcode:not(.bug) .rnote {
+  visibility: hidden;
+}
+.rnote {
+  margin-left: 2ch;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--aqua);
+  color: var(--night);
+  font-size: 13px;
+  text-shadow: none;
+}
+.rbeam {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 120px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--aqua) 6%, transparent),
+    transparent
+  );
+  animation: beam 7s linear infinite;
+}
+@keyframes beam {
+  from {
+    transform: translateY(-120px);
+  }
+  to {
+    transform: translateY(1100px);
+  }
+}
+@media (max-width: 899px) {
+  .rcode,
+  .rbeam {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rbeam {
+    animation: none;
+    display: none;
+  }
+}

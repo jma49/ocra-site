@@ -3,14 +3,14 @@ import type { Copy } from "@/lib/copy";
 import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath } from "@/lib/shared";
 import { ProductWindow } from "./product-window";
-import { Silk } from "./silk";
+import { Reading } from "./reading";
 
 export function Hero({ copy, locale }: { copy: Copy; locale: Locale }) {
   const h = copy.hero;
   return (
     <section className="hero" id="hero">
       <div className="hero-night">
-        <Silk variant="hero" />
+        <Reading title={copy.window.pr.findingTitle} />
         <div className="wrap hero-copy">
           {/* Two sentences, one line each, in every language. */}
           <h1 className="display">

@@ -79,19 +79,6 @@ export interface CopySource {
       reviewing: string;
       reviewed: string;
       replay: string;
-      verdict: string;
-      rows: {
-        reviewed: string;
-        tasks: string;
-        findings: string;
-        cost: string;
-      };
-      values: {
-        reviewed: FromRun;
-        tasks: FromRun;
-        findings: FromRun;
-        tokens: FromRun;
-      };
       onLine: string;
       quoteTip: string;
       findingTitle: string;
