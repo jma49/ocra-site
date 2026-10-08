@@ -401,7 +401,7 @@
 .md p {
   margin: 0 0 12px;
 }
-.md h4 {
+.md .md-h {
   margin: 0 0 12px;
   padding-bottom: 6px;
   border-bottom: 1px solid var(--line);

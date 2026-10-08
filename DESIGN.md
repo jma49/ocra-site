@@ -255,13 +255,12 @@ One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mon
 
 ## Lines
 
-Use lines where they say something, never as decoration (the maintainer: "善用, 不是一味的用"):
+Lines carry the structure of the paper sections, and only there (`10-lines.css`); the night sections carry none. Use them where they say something, never as filler (the maintainer: "善用, 不是一味的用"):
 
-- The pipeline's thread: the order of the steps and how far a run has got.
-- Grids of cards (features, plans) share their hairlines (`10-lines.css`), because the cards are parts of one whole.
+- Two hairline rails run down the page just outside the content column; every chapter opens on a hairline between them, with a small cross where it meets each rail. Hidden below 768px.
+- The pipeline's thread shows the order of the steps and how far a run has got; the picture beside it sits in a frame with crop marks.
+- Grids of cards (features, plans) share their hairlines, because the cards are parts of one whole.
 - Rows of tables and lists.
-
-No page rails, crosses, crop marks or rules between sections.
 
 ## Elevation and the night
 
