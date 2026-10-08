@@ -1,7 +1,7 @@
+import type { CSSProperties } from "react";
 import type { Copy } from "@/lib/copy";
 import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath } from "@/lib/shared";
-import { cjk } from "./heading";
 import { ProductWindow } from "./product-window";
 import { Silk } from "./silk";
 
@@ -12,11 +12,14 @@ export function Hero({ copy, locale }: { copy: Copy; locale: Locale }) {
       <div className="hero-night">
         <Silk variant="hero" />
         <div className="wrap hero-copy">
-          {/* Chinese display lines break explicitly before the emphasis (AGENTS.md). */}
+          {/* Two sentences, one line each, in every language. */}
           <h1 className="display">
-            {h.title}
-            {cjk(h.title) ? <br /> : " "}
-            <em>{h.emphasis}</em>
+            <span className="sr-only">{`${h.title} ${h.emphasis}`}</span>
+            <Words text={h.title} from={0} />
+            <br />
+            <em>
+              <Words text={h.emphasis} from={h.title.split(" ").length} />
+            </em>
           </h1>
           <p className="lede">{h.lede}</p>
           <div className="cta">
@@ -35,4 +38,20 @@ export function Hero({ copy, locale }: { copy: Copy; locale: Locale }) {
       </div>
     </section>
   );
+}
+
+// The headline rises in word by word (09-motion.css); Chinese, without
+// spaces, rises as one line. Screen readers read the hidden copy above,
+// whole, instead of the pieces.
+function Words({ text, from }: { text: string; from: number }) {
+  const words = text.includes(" ") ? text.split(" ") : [text];
+  return words.map((word, i) => (
+    // biome-ignore lint/suspicious/noArrayIndexKey: static copy, never reordered
+    <span key={i} aria-hidden="true">
+      {i > 0 && " "}
+      <span className="wd" style={{ "--i": from + i } as CSSProperties}>
+        {word}
+      </span>
+    </span>
+  ));
 }

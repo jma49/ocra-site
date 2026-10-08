@@ -5,6 +5,7 @@ import { Features } from "@/components/landing/features";
 import { Hero } from "@/components/landing/hero";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { Lifecycle } from "@/components/landing/lifecycle";
+import { LandingMotion } from "@/components/landing/motion";
 import { Plans } from "@/components/landing/plans";
 import { Security } from "@/components/landing/security";
 import { SiteHeader } from "@/components/landing/site-header";
@@ -40,6 +41,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       </main>
       <Footer copy={copy.footer} locale={lang} />
       <Dock copy={copy.dock} />
+      <LandingMotion />
     </>
   );
 }

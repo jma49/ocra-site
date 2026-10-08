@@ -34,3 +34,40 @@ export function EyesMark({ size = 32, className }: { size?: number; className?: 
     </svg>
   );
 }
+
+// The same eye row, alive: solid eyes with pupils that turn towards the
+// pointer and a blink now and then (components/landing/motion.tsx sets
+// --px and --py on the element with `data-look`; 09-motion.css moves the
+// pupils). Pupils and glints take their colours from CSS, so it needs a
+// ground to sit on: the night or the nav.
+const EYES: [number, number, number][] = [
+  [2.6, 4.6, SMALL],
+  [10.6, 8, BIG],
+  [21.4, 8, BIG],
+  [29.4, 4.6, SMALL],
+];
+
+export function LookingEyes({ size = 32, className }: { size?: number; className?: string }) {
+  return (
+    <svg
+      className={`eyes-alive ${className ?? ""}`}
+      data-look=""
+      width={size}
+      height={(size * 14) / 32}
+      viewBox={EYES_VIEWBOX}
+      aria-hidden="true"
+    >
+      <g className="lids">
+        {EYES.map(([cx, cy, r]) => (
+          <g key={cx}>
+            <circle cx={cx} cy={cy} r={r} className="eye" />
+            <g className="pupil">
+              <circle cx={cx} cy={cy} r={r * 0.56} className="iris" />
+              <circle cx={cx - r * 0.2} cy={cy - r * 0.22} r={r * 0.2} className="glint" />
+            </g>
+          </g>
+        ))}
+      </g>
+    </svg>
+  );
+}

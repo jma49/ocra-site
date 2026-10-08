@@ -3,7 +3,7 @@ import type { CopySource } from "./types";
 
 export const en: CopySource = {
   meta: {
-    title: "ocra — code review that reads before it comments",
+    title: "ocra — open-source code review that reads first",
     description:
       "Open-CR-Agent (ocra) runs specialized review agents inside a deterministic pipeline: grounded findings, anchored to the right line, built to be measured.",
   },
@@ -29,9 +29,9 @@ export const en: CopySource = {
     primary: "Primary",
   },
   hero: {
-    title: "Code review that reads",
-    emphasis: "before it comments.",
-    lede: "ocra splits a change into focused review tasks. Each agent can only read your repository, has to quote the code it means, and must survive a second read before it reaches your pull request.",
+    title: "Reads first.",
+    emphasis: "Comments last.",
+    lede: "Open-source AI code review for GitHub and GitLab. Its agents read your repository, quote the exact code they mean, and face a second read before anything reaches your pull request. When there is nothing worth saying, it says nothing.",
     cloud: "Start with ocra Cloud",
     selfHost: "Self-host, Apache-2.0",
     note: "Free during early access. Bring your own model key.",

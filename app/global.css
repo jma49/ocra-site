@@ -141,3 +141,42 @@ html > body[data-scroll-locked] {
 .logo-dark .logo-eyes {
   color: var(--aqua);
 }
+
+/* The living eye row (LookingEyes): pupils turn towards the pointer through
+   --px and --py, and the lids close for a moment every few seconds. */
+.eyes-alive {
+  overflow: visible;
+}
+.eyes-alive .eye {
+  fill: var(--aqua);
+}
+.eyes-alive .iris {
+  fill: var(--night);
+}
+.eyes-alive .glint {
+  fill: var(--on-night);
+}
+.eyes-alive .pupil {
+  transform: translate(calc(var(--px, 0) * 1.5px), calc(var(--py, 0) * 1.3px));
+  transition: transform 0.18s ease-out;
+}
+.eyes-alive .lids {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 6.5s infinite;
+}
+@keyframes blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  96.5% {
+    transform: scaleY(0.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyes-alive .lids {
+    animation: none;
+  }
+}

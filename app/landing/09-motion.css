@@ -102,3 +102,165 @@
     transition: none;
   }
 }
+
+/* ---- Entrance: the headline rises word by word out of a blur, then the
+   rest of the hero follows ---- */
+.display .wd {
+  display: inline-block;
+  animation: rise 1s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 120ms);
+}
+.hero .lede,
+.hero .cta,
+.hero .note {
+  animation: rise 1s var(--ease) both;
+}
+.hero .lede {
+  animation-delay: 0.55s;
+}
+.hero .cta {
+  animation-delay: 0.68s;
+}
+.hero .note {
+  animation-delay: 0.8s;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em);
+    filter: blur(10px);
+  }
+}
+.silk-canvas {
+  transform: scale(1.06);
+  transition:
+    opacity 1.6s ease,
+    transform 2.4s var(--ease);
+}
+.silk[data-state="drawn"] .silk-canvas {
+  transform: none;
+}
+
+/* ---- The window lies back and comes upright as it scrolls into view ---- */
+@supports (animation-timeline: view()) {
+  .hero-stage .stage {
+    transform-origin: 50% 0;
+    animation: upright linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 45%;
+  }
+  @keyframes upright {
+    from {
+      transform: perspective(1600px) rotateX(16deg) scale(0.94);
+    }
+    to {
+      transform: none;
+    }
+  }
+}
+
+/* ---- Reveal on scroll (motion.tsx), staggered within a grid ---- */
+.motion [data-reveal] {
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease),
+    filter 0.9s var(--ease);
+  transition-delay: calc(var(--ri, 0) * 90ms);
+}
+.motion [data-reveal=""] {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(6px);
+}
+
+/* ---- A soft light follows the pointer across the surfaces ---- */
+.card,
+.plan,
+.step,
+.secure {
+  position: relative;
+  isolation: isolate;
+}
+.card::before,
+.plan::before,
+.step::before,
+.secure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-under);
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--aqua) 14%, transparent),
+    transparent 60%
+  );
+}
+.plan.feat::before {
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--aqua) 18%, transparent),
+    transparent 60%
+  );
+}
+@media (hover: hover) {
+  .card:hover::before,
+  .plan:hover::before,
+  .step:hover::before,
+  .secure:hover::before {
+    opacity: 1;
+  }
+}
+
+/* ---- The primary button: a sheen crosses it on hover ---- */
+.btn-brand {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-brand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-under);
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    color-mix(in srgb, var(--white) 65%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+}
+@media (hover: hover) {
+  .btn-brand:hover::after {
+    transform: translateX(120%);
+    transition: transform 0.7s var(--ease);
+  }
+}
+
+/* ---- The eye row over the final call to action ---- */
+.final-eyes {
+  display: block;
+  margin: 0 auto 48px;
+  width: min(200px, 46vw);
+  height: auto;
+  filter: drop-shadow(0 0 28px color-mix(in srgb, var(--aqua) 35%, transparent));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .display .wd,
+  .hero .lede,
+  .hero .cta,
+  .hero .note {
+    animation: none;
+  }
+  .hero-stage .stage {
+    animation: none;
+  }
+  .silk-canvas {
+    transform: none;
+  }
+}

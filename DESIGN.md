@@ -269,6 +269,7 @@ One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mon
 - **Logo** (`components/logo.tsx`): the mark beside the wordmark, 620 weight, 110% width.
 - **Favicon and Apple icon**: the aquamarine eye row on a night tile. **Share card**: the same tile beside the wordmark.
 - **Footer mark**: the eye row at 720px in `line`, cut off by the bottom of the page, peeking.
+- **Living eyes** (`LookingEyes`): the eye row with pupils that turn towards the pointer and a blink every few seconds; in the nav logo on the night and, large with a soft aquamarine halo, over the final call to action.
 - **Product window** (`product-window.tsx`, `pr-pane.tsx`): the example pull request, terminal and ocra Cloud console behind tabs. The pull request replays the review when it scrolls into view; each finding ends with its suggestion as a plain `Suggestion:` line, the way ocra posts it (no committable suggestion: ocra does not post GitHub suggestion blocks).
 - **Providers marquee** (`works.tsx`, `lib/landing/brand-icons.ts`): two rows of chips with single-colour 20px marks (LobeHub icons, MIT; Simple Icons, CC0), moving in opposite directions.
 - **Buttons** (`app/global.css`): `btn-brand` (aquamarine, the primary action), `btn-dark`, `btn-soft` (hairline on paper), `btn-ghost` (hairline on the night).
@@ -277,9 +278,12 @@ One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mon
 
 ## Motion
 
-- **Hover**: surfaces rise 2px and their hairline darkens; links draw an underline; buttons shift their fill (the primary one gains a soft aquamarine ring). Nothing prints, glows or wobbles.
-- **What answers the pointer always runs**: the silk stretching under it, the replay and the hover states.
-- **Idle loops stop under Reduce motion**: the silk holds still (it still answers the pointer), the spinner stops. The providers marquee is the exception: it drifts at half speed (the maintainer wants it visible) and pauses on hover.
+All of it lives in `09-motion.css` and one client island, `components/landing/motion.tsx`.
+
+- **Entrance**: the hero headline rises word by word out of a blur, then the lede, the buttons and the note; the silk canvas settles in from a slight zoom once it has drawn.
+- **Scroll**: the product window lies back in perspective and comes upright as it scrolls into view (CSS scroll-driven animation where supported); headings, cards, plans and panels rise in from a blur as they enter, staggered within their grid.
+- **Pointer**: the silk stretches under it; a soft aquamarine light follows it across cards, steps, plans and the security panel; the eyes look at it; a sheen crosses the primary button on hover; surfaces rise 2px and their hairline darkens; links draw an underline.
+- **Reduce motion**: entrance, scroll animations, reveals, the blink and the silk's drift are off; nothing is ever hidden waiting for a reveal (the page is hidden only after the script has run, and only without Reduce motion). What answers the pointer still runs. The providers marquee drifts at half speed (the maintainer wants it visible) and pauses on hover.
 
 ## Do's and Don'ts
 
