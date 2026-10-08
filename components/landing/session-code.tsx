@@ -87,7 +87,8 @@ export function FindingComment({
               : finding.reviewer}
           </span>
         </div>
-        <strong className="fg">{title}</strong> {body}
+        <strong className="fg ftitle">{title}</strong>
+        <span className="fbody">{body}</span>
         <Suggestion />
       </div>
     </>
