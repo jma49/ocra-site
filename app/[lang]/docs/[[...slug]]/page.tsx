@@ -4,8 +4,8 @@ import {
   DocsPage,
   DocsTitle,
   EditOnGitHub,
-} from "fumadocs-ui/layouts/docs/page";
-import { createRelativeLink } from "fumadocs-ui/mdx";
+} from "@fumadocs/base-ui/layouts/docs/page";
+import { createRelativeLink } from "@fumadocs/base-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/components/mdx";

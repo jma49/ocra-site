@@ -1,7 +1,7 @@
 "use client";
 
+import { RootProvider } from "@fumadocs/base-ui/provider/base";
 import { FrameworkProvider } from "fumadocs-core/framework";
-import { RootProvider } from "fumadocs-ui/provider/base";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import type { ComponentProps } from "react";

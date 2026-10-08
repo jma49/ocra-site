@@ -1,8 +1,8 @@
-import { Callout as FdCallout } from "fumadocs-ui/components/callout";
-import { Cards, Card as FdCard } from "fumadocs-ui/components/card";
-import { Step, Steps } from "fumadocs-ui/components/steps";
-import { Tabs as FdTabs, Tab } from "fumadocs-ui/components/tabs";
-import defaultMdxComponents from "fumadocs-ui/mdx";
+import { Callout as FdCallout } from "@fumadocs/base-ui/components/callout";
+import { Cards, Card as FdCard } from "@fumadocs/base-ui/components/card";
+import { Step, Steps } from "@fumadocs/base-ui/components/steps";
+import { Tabs as FdTabs, Tab } from "@fumadocs/base-ui/components/tabs";
+import defaultMdxComponents from "@fumadocs/base-ui/mdx";
 import type { MDXComponents } from "mdx/types";
 import type { ComponentProps } from "react";
 

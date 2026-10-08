@@ -1,4 +1,4 @@
-import { i18nProvider } from "fumadocs-ui/i18n";
+import { i18nProvider } from "@fumadocs/base-ui/i18n";
 import type { Metadata } from "next";
 import { LazyNotFoundPage } from "@/components/not-found-lazy";
 import type { NotFoundPage } from "@/components/not-found-page";

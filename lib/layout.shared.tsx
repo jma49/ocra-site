@@ -1,5 +1,5 @@
-import { uiTranslations } from "fumadocs-ui/i18n";
-import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import { uiTranslations } from "@fumadocs/base-ui/i18n";
+import type { BaseLayoutProps } from "@fumadocs/base-ui/layouts/shared";
 import { Logo } from "@/components/logo";
 import { i18n, type Locale } from "./i18n";
 import { localePath, repoUrl } from "./shared";
