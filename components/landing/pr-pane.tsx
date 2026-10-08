@@ -177,22 +177,22 @@ export function PrPane({
             )}
           </div>
           <div className="cmt-b">
-            <div
-              className="stages"
+            <ol
+              className="track"
               aria-hidden="true"
               style={
                 {
-                  "--prog": `${(Math.min(stage + 1, STAGES.length) / STAGES.length) * 100}%`,
+                  "--p": Math.min(stage, STAGES.length - 1) / (STAGES.length - 1),
                 } as CSSProperties
               }
             >
               {STAGES.map((name, i) => (
-                <span key={name} className={i === stage ? "on" : i < stage ? "done" : undefined}>
+                <li key={name} className={i === stage ? "on" : i < stage ? "done" : undefined}>
+                  <i />
                   {name}
-                </span>
+                </li>
               ))}
-              <i className="bar" />
-            </div>
+            </ol>
             <div className={`verdict${running ? " hide" : ""}`}>
               <i />
               {copy.verdict}
@@ -233,15 +233,15 @@ export function PrPane({
         </div>
         <p className="side-h">{s.checks}</p>
         <div className="chk">
-          <i className="dot ok" />
+          <CheckIcon state="ok" />
           build
         </div>
         <div className="chk">
-          <i className="dot ok" />
+          <CheckIcon state="ok" />
           test
         </div>
         <div className="chk">
-          <i className={`dot ${busy ? "spin" : "bad"}`} />
+          {busy ? <i className="dot spin" /> : <CheckIcon state="bad" />}
           {busy ? s.running : s.blocking}
         </div>
         <p className="side-h">{s.files}</p>
@@ -258,5 +258,22 @@ export function PrPane({
           ))}
       </aside>
     </div>
+  );
+}
+
+// A check's status as GitHub draws it: a tick or a cross in a ring.
+function CheckIcon({ state }: { state: "ok" | "bad" }) {
+  return (
+    <svg className={`ci ${state}`} viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+      <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d={state === "ok" ? "M5 8.2l2 2 4-4.2" : "M5.6 5.6l4.8 4.8M10.4 5.6l-4.8 4.8"}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

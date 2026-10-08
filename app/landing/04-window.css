@@ -20,7 +20,7 @@
   height: 42px;
   padding: 0 16px;
   border-bottom: 1px solid var(--line);
-  background: var(--paper-2);
+  background: linear-gradient(var(--paper), var(--paper-2));
   font-size: 12.5px;
   color: var(--text-3);
 }
@@ -118,13 +118,27 @@
   }
 }
 .pr-side .side-h {
-  margin: 22px 0 8px;
-  font-size: 12px;
-  font-weight: 600;
+  margin: 0 0 10px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font: 500 11px var(--font-mono);
   color: var(--text-3);
 }
+.pr-side .side-h:not(:first-child) {
+  margin-top: 18px;
+}
 .pr-side .side-h:first-child {
-  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.ci {
+  flex: none;
+}
+.ci.ok {
+  color: var(--aqua-ink);
+}
+.ci.bad {
+  color: var(--red);
 }
 .chk {
   display: flex;
@@ -165,7 +179,7 @@
   text-decoration: line-through;
 }
 .pr-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 600;
   font-stretch: 104%;
   letter-spacing: -0.02em;
@@ -229,21 +243,25 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--red-soft);
+  color: var(--red);
   font-weight: 600;
-  color: var(--text);
-  font-size: 15px;
+  font-size: 14.5px;
 }
 .verdict i {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  background: var(--red);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 20%, transparent);
   display: block;
 }
 .sum {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 12px;
+  margin-top: 10px;
   font-size: 13.5px;
 }
 .sum td {
@@ -251,10 +269,14 @@
   border-top: 1px solid var(--line);
   vertical-align: top;
 }
+.sum tr:first-child td {
+  border-top: 0;
+}
 .sum td:first-child {
   color: var(--text-3);
-  width: 34%;
-  padding: 7px 12px 7px 0;
+  width: 30%;
+  padding: 8px 12px 8px 0;
+  font: 500 11.5px var(--font-mono);
 }
 .sum td:last-child {
   color: var(--text);
@@ -273,42 +295,72 @@
   font-size: 12px;
   cursor: pointer;
 }
-.stages {
+/* The pipeline as a track of nodes on one line, filling as it runs. */
+.track {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 2px 0 16px;
+  justify-content: space-between;
+  list-style: none;
+  margin: 2px 0 20px;
+  padding: 0;
   font: 500 11px var(--font-mono);
-}
-.stages span {
-  padding: 3px 9px;
-  border-radius: 6px;
-  border: 1px solid var(--line);
   color: var(--text-3);
-  transition:
-    color var(--t),
-    background-color var(--t),
-    border-color var(--t);
 }
-.stages span.on {
-  color: var(--night);
-  background: var(--aqua);
-  border-color: var(--aqua);
-}
-.stages span.done {
-  color: var(--aqua-ink);
-  border-color: color-mix(in srgb, var(--aqua-ink) 40%, transparent);
-}
-.stages .bar {
+.track::before,
+.track::after {
+  content: "";
   position: absolute;
-  left: 0;
-  bottom: -8px;
-  height: 2px;
-  width: var(--prog, 0%);
+  left: 6px;
+  top: 6px;
+  height: 1px;
+}
+.track::before {
+  right: 6px;
+  background: var(--line-2);
+}
+.track::after {
+  width: calc((100% - 12px) * var(--p, 1));
   background: var(--aqua-ink);
-  border-radius: 2px;
-  transition: width 0.5s ease;
+  transition: width 0.5s var(--ease);
+}
+.track li {
+  position: relative;
+  z-index: var(--z-over);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  transition: color var(--t);
+}
+.track li:first-child {
+  align-items: flex-start;
+}
+.track li:last-child {
+  align-items: flex-end;
+}
+.track i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1.5px solid var(--line-2);
+  transition:
+    background-color var(--t),
+    border-color var(--t),
+    box-shadow var(--t);
+}
+.track li.done,
+.track li.on {
+  color: var(--text);
+}
+.track li.done i {
+  background: var(--aqua-ink);
+  border-color: var(--aqua-ink);
+}
+.track li.on i {
+  background: var(--aqua);
+  border-color: var(--aqua-ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--aqua) 28%, transparent);
 }
 
 /* The replay: rows and the finding fade in; the finding folds open. */
@@ -423,4 +475,21 @@
 .file:hover::after {
   opacity: 1;
   transform: translate(0, -50%);
+}
+
+/* The finding: severity first, the claim as a title, the reason under it. */
+.ftitle {
+  display: block;
+  margin: 6px 0 4px;
+  font-size: 15.5px;
+  letter-spacing: -0.01em;
+}
+.fbody {
+  display: block;
+}
+.sugg-line {
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper);
 }
