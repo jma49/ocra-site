@@ -14,7 +14,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `app/[lang]/(home)` | Landing page |
 | `app/[lang]/docs` | Rendered user manual |
 | `components/landing/` | Landing page sections |
-| `components/brand/` | The spider mark |
+| `components/brand/` | The eye-row mark |
 | `app/landing/` | The landing page's styles, split by section (`index.css` imports them in order) |
 | `app/docs.css` | The manual's restyling of Fumadocs |
 | `lib/copy/` | All landing page copy: `types.ts`, then `en.ts` and `zh.ts` with the same shape |
@@ -38,7 +38,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 - **Languages** (`lib/i18n.ts`): `en` and `zh`, `parser: "dir"`, `hideLocale: "default-locale"`. English has no prefix (`/docs/x`), Chinese does (`/zh/docs/x`).
 - **The prefix is hidden by a rewrite** (`proxy.ts`, Fumadocs' i18n middleware): `/docs/x` is served from the prerendered `/en/docs/x`. So on the server Next sees `/en/...` while the browser sees `/...`. `components/providers.tsx` hands Fumadocs a `FrameworkProvider` whose pathname drops the hidden `/en`, so active links and pagination match on both sides; without it React discards the server HTML (a hydration error on every English docs page, fixed in site #20). Keep any new pathname-dependent component behind that provider.
 - **Providers by section:** Fumadocs' `RootProvider` (search, i18n UI, scroll lock) wraps only the manual (`app/[lang]/docs/layout.tsx`) and the 404 page; the landing page gets `next-themes` alone (`components/landing-theme.tsx`), with the same options (`lib/theme.ts`) so the theme carries across. The 404 page is loaded with `next/dynamic` (`components/not-found-lazy.tsx`) because every page under `[lang]` carries its boundary; importing it directly put Fumadocs into the landing page's bundle.
-- **Landing sections render on the server.** Client code is limited to small islands that hold state (`header-controls.tsx`, `lifecycle-states.tsx`, `step-sync.tsx`, the product window, the dock, the spiders); pass server-rendered markup to them as children rather than making a section a client component, and never pass the whole copy to one.
+- **Landing sections render on the server.** Client code is limited to small islands that hold state (`header-controls.tsx`, `lifecycle-states.tsx`, the statement's scrub, the product window, the dock, the silk); pass server-rendered markup to them as children rather than making a section a client component, and never pass the whole copy to one.
 - **MDX components** the manual may use are registered in `components/mdx.tsx`; register one there before the manual uses it, or the build fails.
 - **Links in the manual:** relative links (`./github`) resolve against the page's URL, and the manual's index page is `/docs`, not `/docs/`, so from there `./github` would point to `/github` and 404. The index pages use absolute links per language (`/docs/github`, `/zh/docs/github`); other pages may use relative ones.
 - **404s:** unknown paths under a language go through `app/[lang]/[...rest]/page.tsx` to `app/[lang]/not-found.tsx`, which renders `components/not-found-page.tsx` in that language.
@@ -55,8 +55,9 @@ Read this before touching routing, the docs layout or MDX; it saves reading `fum
 
 `DESIGN.md` holds the design system: tokens, type scale, components, the mascot, Read it before any change to `app/` or `components/`. The rules that apply to every change:
 
-- **Ink, paper, aquamarine and pink.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); pink is only the second print plate (off-register edges, hover shadows, the spider's ghost) and never carries meaning or body text. Frosted glass for windows and panels; the halftone night, the corner webs and the soft light behind panels are the background effects.
-- **One hover language** (DESIGN.md, Motion): blocks lift up-left with a pink plate behind and an aquamarine one ahead; lines get a highlighter sweep. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
+- **Ink, bone paper and one signal colour.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); there is no second accent. Cards on paper are hairlines and one soft shadow; ink glass only for the nav and the dock; the silk shader is the only background effect, on the night sections.
+- **Shaders** ([shaders.com](https://shaders.com), MIT) draws the silk. It loads only after a WebGPU adapter answers, the CSS ground is the fallback, and every `<Shader>` passes `disableTelemetry` (the library otherwise reports to shaders.com). Read `silk.tsx` before adding a scene.
+- **Restrained motion** (DESIGN.md, Motion): surfaces rise 2px, links underline. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
 - **Never resemble a competitor's visual signature**; borrow finish, not devices.
 - Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run check` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
@@ -93,3 +94,13 @@ Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: chang
 - [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, imperative, at most 72 characters.
 - **Commits must not include `Co-authored-by` trailers or any other co-author metadata.**
 - **Pull request titles, descriptions and comments must not include AI attribution** (the `/triage` disclaimer on an issue is disclosure, not attribution).
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

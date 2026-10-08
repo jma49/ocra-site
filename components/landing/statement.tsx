@@ -3,10 +3,11 @@
 import { useEffect, useRef } from "react";
 import type { Copy } from "@/lib/copy";
 import { Heading } from "./heading";
+import { Silk } from "./silk";
 
-// The manifesto: words brighten one by one as the paragraph scrolls through
-// the middle of the screen. Without JavaScript, or with Reduce motion on,
-// the paragraph is simply shown.
+// The manifesto, on the night: words brighten one by one as the paragraph
+// scrolls through the middle of the screen. Without JavaScript, or with
+// Reduce motion on, the paragraph is simply shown.
 export function Statement({ copy }: { copy: Copy["statement"] }) {
   const ref = useRef<HTMLParagraphElement>(null);
 
@@ -19,12 +20,12 @@ export function Statement({ copy }: { copy: Copy["statement"] }) {
     const update = () => {
       raf = 0;
       const r = el.getBoundingClientRect();
-      const start = innerHeight * 0.8;
-      const end = innerHeight * 0.45 - r.height;
+      const start = innerHeight * 0.85;
+      const end = innerHeight * 0.5 - r.height;
       const k = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
       const lit = k * words.length;
       words.forEach((w, i) => {
-        w.style.opacity = String(Math.min(1, Math.max(0.16, lit - i + 0.16)));
+        w.style.opacity = String(Math.min(1, Math.max(0.22, lit - i + 0.22)));
       });
     };
     const onScroll = () => {
@@ -41,7 +42,8 @@ export function Statement({ copy }: { copy: Copy["statement"] }) {
   // Chinese has no spaces: it brightens by character instead of by word.
   const parts = /\s/.test(copy.body) ? copy.body.split(/(\s+)/) : [...copy.body];
   return (
-    <section className="chapter tight-top">
+    <section className="statement">
+      <Silk variant="band" />
       <div className="wrap state-grid">
         <Heading title={copy.title} emphasis={copy.emphasis} />
         <p ref={ref} className="scrub">

@@ -1,8 +1,8 @@
 /* ---- Plans ---- */
 .plans {
   display: grid;
-  gap: 18px;
-  margin-top: 72px;
+  gap: 16px;
+  margin-top: 56px;
 }
 @media (min-width: 1000px) {
   .plans {
@@ -10,23 +10,15 @@
   }
 }
 .plan {
-  border-radius: 20px;
-  padding: 32px 30px;
+  border-radius: 18px;
+  padding: 30px 28px;
   display: flex;
   flex-direction: column;
 }
 .plan.feat {
-  background:
-    color-mix(in srgb, var(--night) 88%, transparent)
-    radial-gradient(
-      circle,
-      color-mix(in srgb, var(--aqua) 22%, transparent) 1.1px,
-      transparent 1.5px
-    )
-    0 0 / 11px 11px;
+  background: var(--night);
   color: var(--on-night);
-  border: 1px solid color-mix(in srgb, var(--white) 10%, transparent);
-  backdrop-filter: var(--glass-blur);
+  border-color: var(--night);
 }
 .plan .st {
   font-family: var(--font-mono);
@@ -53,8 +45,8 @@
   background: var(--aqua);
 }
 .plan h3 {
-  font-size: 1.7rem;
-  margin-top: 20px;
+  font-size: 1.5rem;
+  margin-top: 18px;
 }
 .price {
   display: flex;
@@ -63,10 +55,10 @@
   margin-top: 8px;
 }
 .price b {
-  font-weight: 800;
-  font-stretch: 80%;
-  font-size: 3.4rem;
-  letter-spacing: -0.03em;
+  font-weight: 560;
+  font-stretch: 110%;
+  font-size: 3rem;
+  letter-spacing: -0.05em;
   line-height: 1;
 }
 .price span {
@@ -78,7 +70,7 @@
 }
 .plan ul {
   list-style: none;
-  margin: 26px 0 32px;
+  margin: 24px 0 30px;
   padding: 22px 0 0;
   border-top: 1px solid var(--line);
   display: grid;
@@ -87,7 +79,7 @@
   color: var(--text-2);
 }
 .plan.feat ul {
-  border-top-color: var(--night-line);
+  border-top-color: color-mix(in srgb, var(--on-night) 12%, transparent);
   color: var(--on-night-2);
 }
 .plan li {
@@ -99,8 +91,8 @@
   content: "";
   width: 10px;
   height: 6px;
-  border-left: 1.8px solid var(--aqua-ink);
-  border-bottom: 1.8px solid var(--aqua-ink);
+  border-left: 1.6px solid var(--aqua-ink);
+  border-bottom: 1.6px solid var(--aqua-ink);
   transform: rotate(-45deg);
   margin-top: 0.5em;
 }
@@ -111,14 +103,17 @@
   margin-top: auto;
   align-self: flex-start;
 }
+.plan.feat .btn-soft {
+  color: var(--on-night);
+}
 .fine {
-  margin-top: 22px;
+  margin-top: 20px;
   font-size: 13.5px;
   color: var(--text-3);
   max-width: 52rem;
 }
 
-/* ---- FAQ, final, footer, dock ---- */
+/* ---- FAQ ---- */
 .faq-grid {
   display: grid;
   gap: 40px;
@@ -127,26 +122,29 @@
   .faq-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
     gap: 80px;
+    align-items: start;
+  }
+  .faq-grid > h2 {
+    position: sticky;
+    top: 120px;
   }
 }
 .faq details {
-  border-bottom: 1px solid var(--line);
-}
-.faq details:first-child {
   border-top: 1px solid var(--line);
 }
+.faq details:last-child {
+  border-bottom: 1px solid var(--line);
+}
 .faq summary {
-  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 0;
   cursor: pointer;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 24px;
-  gap: 16px;
-  padding: 22px 16px;
-  margin: 0 -16px;
-  border-radius: 10px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  font-stretch: 96%;
+  list-style: none;
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: -0.012em;
 }
 .faq summary::-webkit-details-marker {
   display: none;
@@ -156,110 +154,131 @@
   font-family: var(--font-mono);
   font-weight: 400;
   color: var(--text-3);
-  text-align: right;
-  transition: transform 0.3s ease;
+  transition: transform var(--t);
 }
 .faq details[open] summary::after {
   transform: rotate(45deg);
 }
 .faq details p {
-  margin: -6px 0 24px;
+  margin: -6px 0 22px;
   color: var(--text-2);
+  max-width: 44rem;
 }
+
+/* ---- Final call to action: the night, with its silk ---- */
 .final {
   position: relative;
-  text-align: center;
-  padding: 140px 0 150px;
-  overflow: hidden;
   isolation: isolate;
   color: var(--on-night);
+  padding: 160px 0;
+  text-align: center;
 }
-.final h2 {
-  font-size: clamp(3rem, 7.4vw, 7rem);
-  max-width: 15ch;
+@media (min-width: 900px) {
+  .final {
+    padding: 220px 0;
+  }
+}
+.final .display {
+  font-size: clamp(2.4rem, 5.6vw, 4.8rem);
+  max-width: 18ch;
   margin: 0 auto;
 }
-:lang(zh) .final h2 {
-  font-size: clamp(2.4rem, 5.6vw, 5rem);
+:lang(zh) .final .display {
   max-width: none;
 }
-.big {
-  width: min(300px, 60vw);
-  margin: 0 auto 28px;
+.final .cta {
+  justify-content: center;
 }
-.big svg {
-  width: 100%;
-  height: auto;
-}
+
+/* ---- Footer ---- */
 .foot {
-  padding: 64px 0 0;
-  font-size: 14.5px;
+  padding: 88px 0 0;
   border-top: 1px solid var(--line);
   overflow: hidden;
 }
 .foot-grid {
   display: grid;
-  gap: 40px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px 24px;
 }
 @media (min-width: 900px) {
   .foot-grid {
-    grid-template-columns: 2fr repeat(4, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr));
   }
 }
-.foot-grid > div:first-child > a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+.foot-grid > div:first-child {
+  grid-column: 1 / -1;
+}
+@media (min-width: 900px) {
+  .foot-grid > div:first-child {
+    grid-column: auto;
+  }
 }
 .foot h3 {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-3);
-  margin: 0 0 14px;
+  letter-spacing: 0;
 }
 .foot ul {
   list-style: none;
-  margin: 0;
+  margin: 14px 0 0;
   padding: 0;
   display: grid;
-  gap: 10px;
+  gap: 4px;
+  font-size: 14.5px;
+}
+.foot ul a {
+  display: inline-block;
+  padding: 4px 0;
   color: var(--text-2);
 }
 .tagline {
-  color: var(--text-2);
-  max-width: 20rem;
   margin: 16px 0 0;
+  color: var(--text-2);
+  font-size: 14.5px;
+  max-width: 22rem;
 }
-.wordmark {
-  font-weight: 900;
-  font-stretch: 68%;
-  font-size: clamp(6rem, 25vw, 23rem);
-  line-height: 0.78;
-  letter-spacing: -0.02em;
-  text-align: center;
-  margin-top: 72px;
-  user-select: none;
-  text-shadow:
-    -0.012em -0.008em 0 var(--aqua),
-    0.016em 0.01em 0 var(--pink);
+/* The eye row, large and cut off by the page's edge: the last thing on it. */
+.foot-mark {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  margin-top: 96px;
+  height: 90px;
+  color: var(--line);
 }
+.foot-mark svg {
+  width: min(100%, 720px);
+  height: auto;
+  flex: none;
+}
+@media (min-width: 900px) {
+  .foot-mark {
+    height: 170px;
+  }
+}
+
+/* ---- Dock ---- */
 .dock {
   position: fixed;
   left: 50%;
   bottom: 18px;
   z-index: var(--z-dock);
   transform: translate(-50%, 140%);
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.5s var(--ease);
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
-  border-radius: 999px;
-  background: var(--glass);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--line-2);
-  box-shadow: 0 14px 40px -16px color-mix(in srgb, var(--black) 40%, transparent);
+  gap: 4px;
+  padding: 5px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--night-2) 82%, transparent);
+  color: var(--on-night);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid color-mix(in srgb, var(--on-night) 10%, transparent);
+  box-shadow: 0 18px 44px -18px color-mix(in srgb, var(--black) 60%, transparent);
   max-width: calc(100vw - 24px);
 }
 .dock[data-shown="true"] {
@@ -276,14 +295,14 @@
 }
 .dock code {
   font-size: 12.5px;
-  color: var(--text-2);
+  color: var(--on-night-2);
   padding: 0 12px;
   white-space: nowrap;
 }
 .dock .copy {
   border: 0;
   background: transparent;
-  color: var(--text-3);
+  color: var(--on-night-2);
   font-size: 12.5px;
   cursor: pointer;
   min-height: 36px;
@@ -293,16 +312,5 @@
   .dock code,
   .dock .copy {
     display: inline;
-  }
-}
-
-/* Motion and hover on the landing page.
-   Policy (DESIGN.md, "Motion"): what answers the pointer always runs, smaller
-   under Reduce motion; idle loops stop under Reduce motion, except the
-   providers marquee, which drifts at half speed and pauses on hover. */
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
   }
 }

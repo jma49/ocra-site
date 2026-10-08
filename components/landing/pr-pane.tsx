@@ -8,7 +8,7 @@ import {
   useReducer,
   useRef,
 } from "react";
-import { SmallSpider } from "@/components/brand/spider-mark";
+import { EyesMark } from "@/components/brand/eyes-mark";
 import type { Copy } from "@/lib/copy";
 import { exampleRun } from "@/lib/landing/example-run";
 import { FindingComment } from "./session-code";
@@ -152,7 +152,7 @@ export function PrPane({
         <div className="cmt">
           <div className="cmt-h">
             <span className="av">
-              <SmallSpider size={18} dark />
+              <EyesMark size={16} />
             </span>
             <span>
               <strong>ocra</strong> {head}
@@ -226,7 +226,9 @@ export function PrPane({
       <aside className="pr-side">
         <p className="side-h">{s.reviewers}</p>
         <div className="chk">
-          <SmallSpider size={18} />
+          <span className="av av-sm">
+            <EyesMark size={12} />
+          </span>
           {busy ? s.reviewing : s.changes}
         </div>
         <p className="side-h">{s.checks}</p>

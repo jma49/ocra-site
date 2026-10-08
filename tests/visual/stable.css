@@ -19,10 +19,9 @@
   animation: none !important;
 }
 
-/* The hanging spider answers the pointer and sits half off the hero's edge;
-   a few of its pixels differed between two consecutive screenshots. Its box
-   keeps its place; only the drawing is hidden. */
-.hang .yo {
-  /* biome-ignore lint/complexity/noImportantStyles: hides the spider for screenshots */
-  visibility: hidden !important;
+/* The silk is drawn by the GPU where there is one; screenshots record the
+   CSS ground under it, which is what browsers without WebGPU show. */
+.silk-canvas {
+  /* biome-ignore lint/complexity/noImportantStyles: hides the shader canvas for screenshots */
+  display: none !important;
 }

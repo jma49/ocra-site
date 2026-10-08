@@ -1,13 +1,10 @@
 /* The landing page's styles, in cascade order; see DESIGN.md, "Landing page". */
 @import "./01-base.css";
-@import "./02-night.css";
-@import "./03-window.css";
-@import "./04-window-states.css";
-@import "./05-glass.css";
+@import "./02-header.css";
+@import "./03-hero.css";
+@import "./04-window.css";
+@import "./05-silk.css";
 @import "./06-how.css";
 @import "./07-sections.css";
-@import "./08-plans.css";
-@import "./09-hover.css";
-@import "./10-plates.css";
-@import "./11-spider.css";
-@import "./12-loops.css";
+@import "./08-closing.css";
+@import "./09-motion.css";

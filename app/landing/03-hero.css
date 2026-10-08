@@ -1,0 +1,57 @@
+/* ---- Hero: the night with its silk, then the product window rising out
+   of it onto the paper ---- */
+.hero {
+  position: relative;
+}
+.hero-night {
+  position: relative;
+  isolation: isolate;
+  background: var(--night);
+  color: var(--on-night);
+  /* Pulled up under the announcement-free nav so the night starts at the top. */
+  margin-top: -66px;
+  padding: 196px 0 300px;
+}
+.hero-copy {
+  position: relative;
+  max-width: 76rem;
+}
+.hero .display {
+  max-width: 15ch;
+  color: var(--on-night);
+}
+.hero .display em,
+.final .display em {
+  color: var(--aqua);
+}
+:lang(zh) .hero .display {
+  max-width: none;
+}
+.hero .lede {
+  max-width: 36rem;
+  margin-top: 32px;
+  color: var(--on-night-2);
+}
+.cta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 36px;
+}
+.note {
+  margin: 16px 0 0;
+  font-size: 13px;
+  color: var(--on-night-3);
+}
+.hero-stage {
+  position: relative;
+  margin-top: -232px;
+}
+@media (max-width: 760px) {
+  .hero-night {
+    padding: 150px 0 220px;
+  }
+  .hero-stage {
+    margin-top: -170px;
+  }
+}

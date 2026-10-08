@@ -4,8 +4,7 @@ import type { ReactNode } from "react";
 // emphasis directly.
 export const cjk = (text: string) => /[\u3000-\u9fff\uff00-\uffef]$/.test(text);
 
-// Section headings: a plain sentence and an emphasised tail, set in the
-// brand colour and printed slightly off register.
+// Section headings in two tones: a plain sentence and its tail, set quieter.
 export function Heading({
   title,
   emphasis,

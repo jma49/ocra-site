@@ -35,7 +35,6 @@ export const en: CopySource = {
     cloud: "Start with ocra Cloud",
     selfHost: "Self-host, Apache-2.0",
     note: "Free during early access. Bring your own model key.",
-    poke: { up: "Send the spider up", down: "Let the spider down" },
   },
   window: {
     tabs: { pr: "Pull request", terminal: "Terminal", cloud: "ocra Cloud" },

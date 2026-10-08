@@ -40,65 +40,70 @@ html > body[data-scroll-locked] {
   line-height: 1.85;
 }
 
-/* ---- Buttons: the landing page's pills, also on the 404 page ---- */
+/* ---- Buttons: the landing page's, also on the 404 page ---- */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 48px;
-  padding: 0 22px;
-  border-radius: 999px;
-  font-weight: 700;
-  font-stretch: 92%;
-  font-size: 15.5px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: 15px;
+  letter-spacing: -0.01em;
   border: 1px solid transparent;
   white-space: nowrap;
   text-decoration: none;
   transition:
-    transform var(--hv-t),
-    box-shadow var(--hv-t),
-    background-color var(--hv-t),
-    color var(--hv-t);
+    background-color var(--t),
+    border-color var(--t),
+    color var(--t),
+    box-shadow var(--t);
 }
 .btn i {
   font-style: normal;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s var(--ease);
 }
 .btn-dark {
   background: var(--text);
   color: var(--paper);
 }
 .btn-soft {
-  background: var(--glass-soft);
+  background: transparent;
   color: var(--text);
   border-color: var(--line-2);
-  backdrop-filter: blur(8px);
 }
 .btn-brand {
   background: var(--aqua);
   color: var(--night);
 }
+.btn-ghost {
+  background: color-mix(in srgb, var(--on-night) 4%, transparent);
+  color: var(--on-night);
+  border-color: color-mix(in srgb, var(--on-night) 20%, transparent);
+}
 .btn-sm {
-  height: 38px;
-  padding: 0 16px;
+  height: 36px;
+  padding: 0 14px;
   font-size: 14px;
+  border-radius: 9px;
 }
 @media (hover: hover) {
-  .btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: var(--hv-shadow);
-  }
   .btn:hover i {
     transform: translateX(3px);
   }
-}
-.btn:active {
-  transform: translate(0, 0);
-  box-shadow: 1px 1px 0 var(--pink);
-}
-@media (prefers-reduced-motion: reduce) {
-  .btn:hover {
-    transform: none;
+  .btn-dark:hover {
+    background: color-mix(in srgb, var(--text) 86%, var(--paper));
+  }
+  .btn-soft:hover {
+    border-color: var(--text-3);
+  }
+  .btn-brand:hover {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--aqua) 22%, transparent);
+  }
+  .btn-ghost:hover {
+    border-color: color-mix(in srgb, var(--on-night) 45%, transparent);
   }
 }
 
@@ -118,14 +123,21 @@ html > body[data-scroll-locked] {
   }
 }
 
-/* The wordmark beside the spider, everywhere the logo appears. */
+/* The eye row beside the wordmark, everywhere the logo appears. */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  font-weight: 900;
-  font-stretch: 80%;
-  font-size: 1.4rem;
-  letter-spacing: -0.03em;
+  gap: 10px;
+  font-weight: 620;
+  font-stretch: 110%;
+  font-size: 1.3rem;
+  letter-spacing: -0.045em;
   white-space: nowrap;
+}
+.logo-eyes {
+  color: var(--text);
+  margin-top: 1px;
+}
+.logo-dark .logo-eyes {
+  color: var(--aqua);
 }

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { SmallSpider } from "@/components/brand/spider-mark";
+import { EyesMark } from "@/components/brand/eyes-mark";
 import { exampleRun } from "@/lib/landing/example-run";
 
 const { finding } = exampleRun;
@@ -96,7 +96,7 @@ export function FindingComment({
     <>
       <div className="cmt-h">
         <span className="av">
-          <SmallSpider size={18} dark />
+          <EyesMark size={16} />
         </span>
         <span>
           <strong>ocra</strong> · <code>{finding.path}</code>

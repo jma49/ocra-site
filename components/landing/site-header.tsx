@@ -5,7 +5,7 @@ import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 import { MenuButton, NavShell, ThemeToggle } from "./header-controls";
 
-// Announcement bar and the floating dark-glass nav of the landing page.
+// Announcement bar and the nav of the landing page, ink glass over the night.
 export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
   const n = copy.nav;
   const links = [

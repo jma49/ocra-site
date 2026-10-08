@@ -1,12 +1,11 @@
 import Link from "next/link";
+import { EyesMark } from "@/components/brand/eyes-mark";
 import { Logo } from "@/components/logo";
 import type { Copy, FooterLinkId } from "@/lib/copy";
 import { type Locale, otherLocale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
-import { BigSpider } from "./hanging-spider";
-import { Heading } from "./heading";
-import { Night } from "./night";
-import { PlatedHeading } from "./plated-heading";
+import { cjk, Heading } from "./heading";
+import { Silk } from "./silk";
 
 export function Faq({ copy }: { copy: Copy["faq"] }) {
   return (
@@ -29,16 +28,18 @@ export function Faq({ copy }: { copy: Copy["faq"] }) {
 export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale }) {
   return (
     <section className="final" id="final">
-      <Night variant="final" />
-      <div className="flash late" aria-hidden="true" />
+      <Silk variant="final" />
       <div className="wrap">
-        <BigSpider />
-        <PlatedHeading as="h2" title={copy.title} emphasis={copy.emphasis} />
+        <h2 className="display">
+          {copy.title}
+          {cjk(copy.title) ? <br /> : " "}
+          <em>{copy.emphasis}</em>
+        </h2>
         <div className="cta">
-          <a className="btn btn-dark" href={cloudUrl}>
+          <a className="btn btn-brand" href={cloudUrl}>
             {copy.cloud} <i>&rarr;</i>
           </a>
-          <a className="btn btn-soft" href={localePath(locale, "/docs")}>
+          <a className="btn btn-ghost" href={localePath(locale, "/docs")}>
             {copy.manual}
           </a>
         </div>
@@ -94,8 +95,8 @@ export function Footer({ copy, locale }: { copy: Copy["footer"]; locale: Locale 
             </div>
           ))}
         </div>
-        <div className="wordmark" aria-hidden="true">
-          ocra
+        <div className="foot-mark" aria-hidden="true">
+          <EyesMark size={320} />
         </div>
       </div>
     </footer>
