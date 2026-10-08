@@ -29,9 +29,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 40px;
-  margin-top: 40px;
-  padding-top: 40px;
-  border-top: 1px solid var(--line);
+  margin-top: 48px;
 }
 @media (min-width: 980px) {
   .pipe {
@@ -168,27 +166,6 @@
     position: sticky;
     top: 110px;
   }
-}
-/* Crop marks at the frame's corners. */
-.pipe-fig::before,
-.pipe-fig::after {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  pointer-events: none;
-}
-.pipe-fig::before {
-  left: -8px;
-  top: -8px;
-  border-left: 1px solid var(--text-3);
-  border-top: 1px solid var(--text-3);
-}
-.pipe-fig::after {
-  right: -8px;
-  bottom: -8px;
-  border-right: 1px solid var(--text-3);
-  border-bottom: 1px solid var(--text-3);
 }
 .fig {
   grid-area: 1 / 1;

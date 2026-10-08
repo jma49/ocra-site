@@ -46,7 +46,13 @@ export const exampleRun = {
     reasoning: 8_489,
     dollars: 0.5134,
   },
+  // The judge's summary, which opens ocra's summary comment.
+  summary:
+    "The change adds session expiry and logout, but isExpired() mixes seconds and milliseconds, so every session is treated as expired and users are logged out right after signing in. Fix the unit mismatch before merging.",
+  tier: "full",
   finding: {
+    // The title as the run reported it; the page's copy translates it.
+    title: "Every session is treated as expired",
     path: "src/auth/session.ts",
     line: 42,
     severity: "critical",

@@ -13,7 +13,7 @@ type Scene = ComponentType<{
 
 const token = (style: CSSStyleDeclaration, name: string) => style.getPropertyValue(name).trim();
 
-// The night behind the hero, the statement and the final call to action.
+// The night behind the statement and the final call to action.
 // The CSS ground (05-silk.css) is the whole picture until a WebGPU adapter
 // answers; only then is the shader library loaded, and its canvas fades in
 // over the ground once it has drawn. Browsers without WebGPU, and the

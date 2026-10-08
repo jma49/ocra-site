@@ -7,13 +7,6 @@
   z-index: var(--z-under);
   overflow: hidden;
   pointer-events: none;
-  background:
-    radial-gradient(
-      60% 55% at 72% 34%,
-      color-mix(in srgb, var(--silk) 55%, transparent),
-      transparent 70%
-    ),
-    var(--night);
 }
 .silk-band {
   background:
