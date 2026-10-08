@@ -35,7 +35,6 @@ export const zh: CopySource = {
     cloud: "开始使用 ocra Cloud",
     selfHost: "自托管，Apache-2.0",
     note: "早期体验期间免费，自带模型 key。",
-    poke: { up: "让蜘蛛爬上去", down: "让蜘蛛下来" },
   },
   window: {
     tabs: { pr: "Pull request", terminal: "终端", cloud: "ocra Cloud" },

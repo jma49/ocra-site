@@ -1,16 +1,9 @@
-/* The manual in the landing page's language: paper and ink, Archivo on its
-   width axis, Maple Mono for code, frosted panels and the same two hover
-   styles (DESIGN.md, "Manual"). Fumadocs draws the layout; these rules only
+/* The manual in the landing page's language: bone paper and ink, Archivo
+   set wide, Maple Mono for code, hairline panels (DESIGN.md, "Manual"). Fumadocs draws the layout; these rules only
    restyle it, through its element ids and the prose classes. */
 
 #nd-docs-layout {
   background-color: var(--paper);
-  background-image: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--text) 7%, transparent) 1px,
-    transparent 1.4px
-  );
-  background-size: 18px 18px;
 }
 
 /* Sidebar: dark glass in both themes, like the landing page's nav. */
@@ -39,8 +32,8 @@
 
 #nd-sidebar p,
 #nd-sidebar [data-section] {
-  font-weight: 700;
-  font-stretch: 92%;
+  font-weight: 600;
+  font-stretch: 104%;
   color: var(--on-night);
 }
 
@@ -57,24 +50,24 @@
 
 /* Page title and headings. */
 #nd-page h1 {
-  font-weight: 900;
-  font-stretch: 75%;
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
+  font-weight: 560;
+  font-stretch: 110%;
+  font-size: clamp(2.2rem, 3.6vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
   text-wrap: balance;
 }
 
 #nd-page .prose h2 {
-  font-weight: 800;
-  font-stretch: 86%;
-  font-size: 1.9rem;
-  letter-spacing: -0.025em;
+  font-weight: 580;
+  font-stretch: 106%;
+  font-size: 1.75rem;
+  letter-spacing: -0.035em;
 }
 
 #nd-page .prose h3 {
-  font-weight: 700;
-  font-stretch: 92%;
+  font-weight: 600;
+  font-stretch: 104%;
   letter-spacing: -0.015em;
 }
 
@@ -94,7 +87,7 @@
   border: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--white) 6%, transparent),
-    0 24px 60px -30px color-mix(in srgb, var(--glass-shadow) 45%, transparent);
+    0 24px 60px -30px color-mix(in srgb, var(--shadow-ink) 45%, transparent);
   backdrop-filter: blur(22px) saturate(1.6);
   -webkit-backdrop-filter: blur(22px) saturate(1.6);
 }
@@ -120,21 +113,12 @@
   border-color: color-mix(in srgb, var(--aqua) 40%, transparent);
 }
 
-/* Callouts, cards, tabs and tables are frosted panels. */
+/* Callouts, cards, tabs and tables are cards on the paper. */
 #nd-page .glass,
 #nd-page .prose table {
-  background: color-mix(in srgb, var(--card) 56%, transparent);
-  border-color: color-mix(in srgb, var(--card) 70%, var(--line));
-  backdrop-filter: blur(22px) saturate(1.6);
-  -webkit-backdrop-filter: blur(22px) saturate(1.6);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 60%, transparent);
-}
-
-.dark #nd-page .glass,
-.dark #nd-page .prose table {
-  background: var(--glass);
-  border-color: color-mix(in srgb, var(--white) 9%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 6%, transparent);
+  background: var(--card);
+  border-color: var(--line);
+  box-shadow: var(--lift);
 }
 
 /* One hover language, as on the landing page.
@@ -188,21 +172,17 @@
     color: var(--on-night);
   }
 
-  /* Blocks: lift up-left and print a pink plate behind, aquamarine ahead. */
-  #nd-page .block-hover:hover,
-  #nd-page figure.shiki button:hover {
-    transform: translate(-2px, -2px);
-    box-shadow:
-      4px 4px 0 var(--pink),
-      -2px -2px 0 var(--aqua);
+  /* Blocks: rise a little; the hairline darkens. */
+  #nd-page .block-hover:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-2);
   }
 }
 
-#nd-page .block-hover,
-#nd-page figure.shiki button {
+#nd-page .block-hover {
   transition:
-    transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform var(--t),
+    border-color var(--t);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,13 +1,11 @@
 import type { Copy, StepId } from "@/lib/copy";
 import { SplitHead, withCode } from "./heading";
 import { howFigures } from "./how-figures";
-import { StepSync } from "./step-sync";
 
 const STEPS: StepId[] = ["select", "bundle", "review", "verify"];
 
-// The four steps of a review. On wide screens the picture for the step in
-// the middle of the viewport sits in a sticky panel; on narrow ones each
-// picture follows its step.
+// The four steps of a review side by side, each with its picture of the
+// same example change, so the whole pipeline reads in one screen.
 export function HowItWorks({ copy }: { copy: Copy["how"] }) {
   const figures = howFigures(copy.figures);
   return (
@@ -24,35 +22,26 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
             {copy.legend.model}
           </span>
         </div>
-        <StepSync>
-          <div className="steps">
-            {STEPS.map((id, i) => {
-              const step = copy.steps[id];
-              return (
-                <div key={id} data-i={i} className={i ? "step" : "step on"}>
-                  <div className="k">
-                    {String(i + 1).padStart(2, "0")}
-                    {step.stages.map((s) => (
-                      <span key={s.name} className={s.kind === "model" ? "chip m" : "chip"}>
-                        {s.name}
-                      </span>
-                    ))}
-                  </div>
-                  <h3>{step.title}</h3>
-                  <p>{withCode(step.text)}</p>
-                  <div className="inline-vis">{figures[id]}</div>
+        <ol className="steps">
+          {STEPS.map((id, i) => {
+            const step = copy.steps[id];
+            return (
+              <li key={id} className="step">
+                <div className="k">
+                  <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+                  {step.stages.map((s) => (
+                    <span key={s.name} className={s.kind === "model" ? "chip m" : "chip"}>
+                      {s.name}
+                    </span>
+                  ))}
                 </div>
-              );
-            })}
-          </div>
-          <div className="sticky" inert>
-            {STEPS.map((id, i) => (
-              <div key={id} className={i ? "vis" : "vis on"}>
-                {figures[id]}
-              </div>
-            ))}
-          </div>
-        </StepSync>
+                <h3>{step.title}</h3>
+                <p>{withCode(step.text)}</p>
+                <div className="step-fig">{figures[id]}</div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

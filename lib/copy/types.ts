@@ -68,7 +68,6 @@ export interface CopySource {
     cloud: string;
     selfHost: string;
     note: string;
-    poke: { up: string; down: string };
   };
   window: {
     tabs: { pr: string; terminal: string; cloud: string };

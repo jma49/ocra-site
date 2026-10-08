@@ -1,0 +1,44 @@
+/* ---- Silk: the night's ground and the shader canvas over it ----
+   The ground is the whole picture without WebGPU: the night with the silk's
+   glow where the threads would be. The canvas fades in once it has drawn. */
+.silk {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-under);
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      60% 55% at 72% 34%,
+      color-mix(in srgb, var(--silk) 55%, transparent),
+      transparent 70%
+    ),
+    var(--night);
+}
+.silk-band {
+  background:
+    radial-gradient(
+      55% 70% at 28% 72%,
+      color-mix(in srgb, var(--silk) 45%, transparent),
+      transparent 70%
+    ),
+    var(--night);
+}
+.silk-final {
+  background:
+    radial-gradient(
+      60% 60% at 50% 58%,
+      color-mix(in srgb, var(--silk) 55%, transparent),
+      transparent 70%
+    ),
+    var(--night);
+}
+.silk-canvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.silk[data-state="drawn"] .silk-canvas {
+  opacity: 1;
+}

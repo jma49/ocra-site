@@ -55,7 +55,7 @@ function Json({ text }: { text: string }) {
 
 export function Features({ copy }: { copy: Copy["features"] }) {
   return (
-    <section className="chapter tight-top features">
+    <section className="chapter features">
       <div className="wrap">
         <Heading title={copy.title} emphasis={copy.emphasis} className="narrow" />
         <div className="cards">

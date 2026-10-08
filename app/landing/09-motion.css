@@ -1,0 +1,104 @@
+/* Motion and hover on the landing page (DESIGN.md, "Motion"): surfaces
+   rise a little and their hairline darkens; links draw an underline; the
+   silk answers the pointer. Idle loops stop under Reduce motion, except the
+   providers marquee, which drifts at half speed and pauses on hover. */
+
+.card,
+.plan,
+.step,
+.logo-tile,
+.pchip {
+  transition:
+    transform var(--t),
+    border-color var(--t),
+    box-shadow var(--t);
+}
+.tlink,
+.foot ul a,
+.announce a {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--t);
+}
+
+@media (hover: hover) {
+  .card:hover,
+  .plan:not(.feat):hover,
+  .step:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-2);
+  }
+  .logo-tile:hover,
+  .pchip:hover {
+    border-color: var(--line-2);
+    color: var(--text);
+  }
+  .tlink:hover,
+  .foot ul a:hover,
+  .announce a:hover {
+    text-decoration-color: currentColor;
+  }
+  .foot ul a:hover {
+    color: var(--text);
+  }
+  .nav .links a:hover,
+  .nav-r .t:hover {
+    color: var(--on-night);
+    background: color-mix(in srgb, var(--on-night) 7%, transparent);
+  }
+  .ib:hover {
+    color: var(--on-night);
+    border-color: color-mix(in srgb, var(--on-night) 30%, transparent);
+  }
+  .tabs button:not([aria-selected="true"]):hover,
+  .seg button:not([aria-selected="true"]):hover {
+    color: var(--text);
+    background: var(--paper-2);
+  }
+  .replay:hover {
+    color: var(--text);
+    border-color: var(--text-3);
+  }
+  .faq summary:hover {
+    color: var(--aqua-ink);
+  }
+}
+
+.mq-track {
+  animation: mq 46s linear infinite;
+}
+.mq.rev .mq-track {
+  animation-duration: 54s;
+  animation-direction: reverse;
+}
+.mq-wrap:hover .mq-track {
+  animation-play-state: paused;
+}
+@keyframes mq {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot.spin {
+    animation: none;
+  }
+  .mq-track {
+    animation-duration: 92s;
+  }
+  .mq.rev .mq-track {
+    animation-duration: 108s;
+  }
+  .card:hover,
+  .plan:hover,
+  .step:hover {
+    transform: none;
+  }
+  .fold,
+  .silk-canvas {
+    transition: none;
+  }
+}

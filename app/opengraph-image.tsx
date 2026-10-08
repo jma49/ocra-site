@@ -8,7 +8,7 @@ export const contentType = "image/png";
 
 const svg = readFileSync(join(process.cwd(), "app/icon.svg"), "utf8");
 
-// The share card: the favicon's spider on the night, the wordmark beside it.
+// The share card: the favicon's eye row on the night, the wordmark beside it.
 // One card for both languages; it carries no sentence to translate.
 export default function OpenGraphImage() {
   return new ImageResponse(
@@ -20,8 +20,8 @@ export default function OpenGraphImage() {
         alignItems: "center",
         justifyContent: "center",
         gap: 56,
-        background: "#0b0f0e",
-        color: "#f4f2ea",
+        background: "#090c0b",
+        color: "#edf1ec",
       }}
     >
       {/* biome-ignore lint/performance/noImgElement: ImageResponse renders plain elements, not next/image */}
