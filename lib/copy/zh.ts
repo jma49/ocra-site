@@ -3,7 +3,7 @@ import type { CopySource } from "./types";
 
 export const zh: CopySource = {
   meta: {
-    title: "ocra — 先读懂代码，再开口的代码审查",
+    title: "ocra — 先读懂，再开口的开源代码审查",
     description:
       "Open-CR-Agent（ocra）在确定性的流水线里运行专项审查 agent：意见有据可查，落在正确的行上，为评测而生。",
   },
@@ -29,9 +29,9 @@ export const zh: CopySource = {
     primary: "主导航",
   },
   hero: {
-    title: "先读懂代码，",
-    emphasis: "再开口的代码审查。",
-    lede: "ocra 把一次改动拆成几个聚焦的审查任务。每个 agent 只能读你的仓库，必须引用它说的那段代码，还要经得起第二遍复核，才能出现在你的 PR 里。",
+    title: "先读懂，",
+    emphasis: "再开口。",
+    lede: "开源的 AI 代码审查，支持 GitHub 和 GitLab。agent 先读你的仓库，引用它所指的那段代码，再经过第二遍复核，才会出现在你的 PR 里。没有值得说的，就什么都不说。",
     cloud: "开始使用 ocra Cloud",
     selfHost: "自托管，Apache-2.0",
     note: "早期体验期间免费，自带模型 key。",

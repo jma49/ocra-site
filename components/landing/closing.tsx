@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EyesMark } from "@/components/brand/eyes-mark";
+import { EyesMark, LookingEyes } from "@/components/brand/eyes-mark";
 import { Logo } from "@/components/logo";
 import type { Copy, FooterLinkId } from "@/lib/copy";
 import { type Locale, otherLocale } from "@/lib/i18n";
@@ -30,6 +30,7 @@ export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale })
     <section className="final" id="final">
       <Silk variant="final" />
       <div className="wrap">
+        <LookingEyes size={200} className="final-eyes" />
         <h2 className="display">
           {copy.title}
           {cjk(copy.title) ? <br /> : " "}

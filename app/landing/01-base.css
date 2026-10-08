@@ -119,10 +119,13 @@
   line-height: 1.18;
   font-weight: 650;
 }
-/* Chinese display lines are set per line (AGENTS.md): small enough that the
-   longer line, nine characters, fits a phone. */
+/* Chinese display lines are set per line (AGENTS.md), sized so the longest
+   line fits a phone. */
 :lang(zh) .display {
-  font-size: clamp(2.1rem, 9.2vw, 5.2rem);
+  font-size: clamp(2.6rem, 13vw, 6rem);
+}
+:lang(zh) .final .display {
+  font-size: clamp(2.1rem, 8.6vw, 4.4rem);
 }
 
 .split-head {
