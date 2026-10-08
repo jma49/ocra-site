@@ -148,7 +148,7 @@ html > body[data-scroll-locked] {
   overflow: visible;
 }
 .eyes-alive .eye {
-  fill: var(--aqua);
+  fill: var(--on-night);
 }
 .eyes-alive .iris {
   fill: var(--night);

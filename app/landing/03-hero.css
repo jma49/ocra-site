@@ -87,21 +87,25 @@
   transform: perspective(1200px) rotateY(-14deg) rotateX(6deg);
   transform-origin: right center;
 }
-.rcode.dim {
-  opacity: 0.2;
+.rlayer {
+  position: absolute;
+  inset: 0;
+}
+.rlayer.dim {
+  opacity: 0.14;
   filter: blur(1.2px);
 }
-.rcode.lit {
+.rlayer.lit {
   text-shadow: 0 0 18px color-mix(in srgb, var(--aqua) 35%, transparent);
   -webkit-mask-image: radial-gradient(
-    240px circle at var(--lx) var(--ly),
-    var(--black) 30%,
-    transparent 75%
+    300px circle at var(--lx) var(--ly),
+    var(--black) 35%,
+    transparent 78%
   );
   mask-image: radial-gradient(
-    240px circle at var(--lx) var(--ly),
-    var(--black) 30%,
-    transparent 75%
+    300px circle at var(--lx) var(--ly),
+    var(--black) 35%,
+    transparent 78%
   );
 }
 .rn {
@@ -119,14 +123,14 @@
   );
   box-shadow: inset 2px 0 0 var(--aqua);
 }
-.rcode.bug .rl:not(.q) {
+.rlayer.bug .rl:not(.q) {
   visibility: hidden;
 }
-.rcode.bug .rl.q {
+.rlayer.bug .rl.q {
   color: var(--aqua);
   text-shadow: 0 0 22px color-mix(in srgb, var(--aqua) 55%, transparent);
 }
-.rcode:not(.bug) .rnote {
+.rlayer:not(.bug) .rnote {
   visibility: hidden;
 }
 .rnote {
@@ -137,6 +141,17 @@
   color: var(--night);
   font-size: 13px;
   text-shadow: none;
+}
+/* The light itself: a soft glow under the pointer. */
+.reading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px circle at var(--lx) var(--ly),
+    color-mix(in srgb, var(--aqua) 9%, transparent),
+    transparent 70%
+  );
 }
 .rbeam {
   position: absolute;
