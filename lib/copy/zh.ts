@@ -1,4 +1,3 @@
-import { formatCount } from "@/lib/landing/example-run";
 import type { CopySource } from "./types";
 
 export const zh: CopySource = {
