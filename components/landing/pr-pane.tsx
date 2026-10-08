@@ -123,7 +123,7 @@ export function PrPane({
             )}
           </header>
           <div className="md">
-            <h4>{SUMMARY.heading}</h4>
+            <p className="md-h">{SUMMARY.heading}</p>
             <p>{exampleRun.summary}</p>
             <p>
               <strong>{SUMMARY.counts}</strong> {SUMMARY.countsRest} <code>{exampleRun.tier}</code>
