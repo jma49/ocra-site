@@ -22,7 +22,8 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
       </aside>
       <NavShell>
         <header className="nav">
-          <Link href={localePath(locale, "/")} aria-label={copy.nav.home}>
+          {/* The page itself: nothing to prefetch. */}
+          <Link href={localePath(locale, "/")} aria-label={copy.nav.home} prefetch={false}>
             <Logo dark />
           </Link>
           <nav className="links" aria-label={copy.nav.primary}>

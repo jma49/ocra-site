@@ -23,6 +23,17 @@ test.describe("on a short screen", () => {
   });
 });
 
+test("the logo does not prefetch the page it is on", async ({ page }) => {
+  const prefetches: string[] = [];
+  page.on("request", (request) => {
+    const url = new URL(request.url());
+    if (url.searchParams.has("_rsc")) prefetches.push(url.pathname);
+  });
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.waitForTimeout(500);
+  expect(prefetches.filter((path) => path === "/")).toEqual([]);
+});
+
 test.describe("with motion", () => {
   test.use({ reducedMotion: "no-preference" });
 
