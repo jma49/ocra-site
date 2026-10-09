@@ -23,7 +23,7 @@ export const zh: CopySource = {
     signIn: "登录",
     start: "开始使用 ocra Cloud",
     menu: "打开菜单",
-    theme: "切换深浅色",
+    theme: "深色模式",
     home: "ocra 首页",
     primary: "主导航",
   },

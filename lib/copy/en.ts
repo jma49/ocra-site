@@ -23,7 +23,7 @@ export const en: CopySource = {
     signIn: "Sign in",
     start: "Start with ocra Cloud",
     menu: "Open menu",
-    theme: "Toggle colour theme",
+    theme: "Dark theme",
     home: "ocra home",
     primary: "Primary",
   },
