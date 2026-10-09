@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Copy } from "@/lib/copy";
 import { cloudUrl } from "@/lib/shared";
 
@@ -13,6 +13,8 @@ const FAR = "100000px";
 export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
   const [shown, setShown] = useState(false);
   const [copied, setCopied] = useState(false);
+  const copiedTimer = useRef(0);
+  useEffect(() => () => clearTimeout(copiedTimer.current), []);
 
   // Observers instead of a scroll handler: no layout reads per scroll event.
   // Each root is stretched far past one edge of the viewport so that its
@@ -58,7 +60,8 @@ export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
     try {
       await navigator.clipboard.writeText(INSTALL);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
+      clearTimeout(copiedTimer.current);
+      copiedTimer.current = window.setTimeout(() => setCopied(false), 1600);
     } catch {
       setCopied(false);
     }
