@@ -21,12 +21,9 @@ function useVisiblePathname(): string {
   return pathname.startsWith(`${hiddenPrefix}/`) ? pathname.slice(hiddenPrefix.length) : pathname;
 }
 
-// Fumadocs hands links plain anchor props; Next's Link needs an href.
-function FrameworkLink({
-  href = "#",
-  ref: _ref,
-  ...props
-}: ComponentProps<"a"> & { prefetch?: boolean }) {
+// Fumadocs hands links plain anchor props; Next's Link needs an href. The
+// ref goes through: the sidebar scrolls its active link into view by it.
+function FrameworkLink({ href = "#", ...props }: ComponentProps<"a"> & { prefetch?: boolean }) {
   return <Link href={href} {...props} />;
 }
 
