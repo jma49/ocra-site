@@ -178,15 +178,11 @@ export const en: CopySource = {
     body: "A reviewer that comments on everything gets ignored. ocra stays quiet unless it can quote the code, say what it checked, and survive a second read. Style, speculation and unchanged code are out of scope for every reviewer. Reporting nothing is a valid outcome.",
   },
   features: {
-    title: "Built to be trusted with",
-    emphasis: "a real repository.",
+    title: "Your rules, your budget,",
+    emphasis: "your models.",
     rules: {
       title: "Your team's rules, without writing a plugin",
       body: "Put review rules in `.ocra/rules.json` on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
-    },
-    write: {
-      title: "No agent can write",
-      body: "Read, diff and search. Everything else is off before the first request.",
     },
     bill: {
       title: "Every attempt shows its bill",

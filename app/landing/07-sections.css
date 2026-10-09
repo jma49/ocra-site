@@ -129,11 +129,15 @@
   .cards {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
-  .c-wide {
-    grid-column: span 4;
+  .card.c-full {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    column-gap: 40px;
+    align-items: start;
   }
-  .c-narrow {
-    grid-column: span 2;
+  .c-full .vis2 {
+    padding-top: 0;
   }
   .c-half {
     grid-column: span 3;
@@ -148,7 +152,8 @@
 .card h3 {
   font-size: 1.3rem;
 }
-.card > p {
+.card > p,
+.card-text > p {
   margin: 10px 0 0;
   color: var(--text-2);
   font-size: 15px;
@@ -174,8 +179,7 @@
 .snippet .c {
   color: var(--on-night-3);
 }
-.bill div,
-.toggles div {
+.bill div {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -189,32 +193,6 @@
   border-bottom: 0;
   color: var(--text);
   font-weight: 500;
-}
-.toggles div:last-child {
-  border-bottom: 0;
-}
-.sw {
-  width: 30px;
-  height: 17px;
-  border-radius: 99px;
-  background: var(--line-2);
-  position: relative;
-}
-.sw::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background: var(--card);
-}
-.sw.on {
-  background: var(--aqua-ink);
-}
-.sw.on::after {
-  left: 15px;
 }
 .chain {
   display: flex;

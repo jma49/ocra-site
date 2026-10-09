@@ -23,13 +23,6 @@ const BILL: [BillRow, string][] = [
   ["output", formatCount(usage.output + usage.reasoning)],
   ["total", `$${usage.dollars.toFixed(4)}`],
 ];
-const TOOLS: [string, boolean][] = [
-  ["read", true],
-  ["search", true],
-  ["edit", false],
-  ["shell", false],
-  ["web", false],
-];
 
 function Json({ text }: { text: string }) {
   return (
@@ -59,23 +52,13 @@ export function Features({ copy }: { copy: Copy["features"] }) {
       <div className="wrap">
         <Heading title={copy.title} emphasis={copy.emphasis} className="narrow" />
         <div className="cards">
-          <article className="card c-wide">
-            <h3>{copy.rules.title}</h3>
-            <p>{withCode(copy.rules.body)}</p>
+          <article className="card c-full">
+            <div className="card-text">
+              <h3>{copy.rules.title}</h3>
+              <p>{withCode(copy.rules.body)}</p>
+            </div>
             <div className="vis2">
               <Json text={RULES} />
-            </div>
-          </article>
-          <article className="card c-narrow">
-            <h3>{copy.write.title}</h3>
-            <p>{copy.write.body}</p>
-            <div className="vis2 toggles">
-              {TOOLS.map(([name, on]) => (
-                <div key={name}>
-                  {name}
-                  <span className={on ? "sw on" : "sw"} />
-                </div>
-              ))}
             </div>
           </article>
           <article className="card c-half">
