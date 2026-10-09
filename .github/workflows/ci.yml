@@ -30,4 +30,4 @@ jobs:
   # proposes the next release.
   commits:
     if: github.event_name == 'pull_request'
-    uses: jma49/Open-CR-Agent/.github/workflows/commits.yml@82a3f1183a3177e9efa401d87eb95dea495ef619 # v0.6.0
+    uses: jma49/Open-CR-Agent/.github/workflows/commits.yml@a9c8b91f456ceef4b93806332c293ffb0adf2261 # main after v0.6.0 (job.workflow_sha)
