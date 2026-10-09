@@ -103,3 +103,21 @@ test("the landing page does not load the manual's styles", async ({ page }) => {
   expect(sheets.length).toBeGreaterThan(0);
   expect(sheets.filter((css) => css.includes("#nd-sidebar")).length).toBe(0);
 });
+
+// The providers' marks are most of the page's markup, and the page carries
+// its markup twice (HTML and the React payload). They come from one sprite
+// instead, which the browser caches across pages and languages.
+test("the brand marks come from a cached sprite", async ({ request }) => {
+  const html = await (await request.get("/")).text();
+  expect(html.includes("<symbol")).toBe(false);
+  const used = [...html.matchAll(/<use href="\/icons\.svg#([\w-]+)"/g)].map((m) => m[1]);
+  expect(used.length).toBeGreaterThan(20);
+
+  const sprite = await request.get("/icons.svg");
+  expect(sprite.status()).toBe(200);
+  expect(sprite.headers()["content-type"]).toContain("image/svg+xml");
+  const symbols = new Set(
+    [...(await sprite.text()).matchAll(/<symbol id="([\w-]+)"/g)].map((m) => m[1]),
+  );
+  expect(used.filter((id) => !symbols.has(id))).toEqual([]);
+});
