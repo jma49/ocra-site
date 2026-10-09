@@ -13,7 +13,9 @@ const sans = Archivo({
 // cut down to the characters code on the site uses (scripts/subset-mono.py).
 // Not preloaded: no code is part of the first paint on a phone, and a
 // preload competes with the stylesheet and Archivo on a slow link. The face
-// loads once code is on screen; the fallback shows until then.
+// loads once code is on screen. Until then the next monospace face in
+// --font-mono (global.css) shows, not next/font's size-adjusted Arial, so
+// the columns of code keep their width when the face swaps in.
 const mono = localFont({
   src: [
     { path: "../assets/fonts/ocra-mono-400.woff2", weight: "400" },
@@ -21,6 +23,7 @@ const mono = localFont({
   ],
   variable: "--font-maple",
   preload: false,
+  adjustFontFallback: false,
 });
 
 // The class that defines both font variables, for an <html> element.
