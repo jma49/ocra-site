@@ -116,6 +116,7 @@ test("the brand marks come from a cached sprite", async ({ request }) => {
   const sprite = await request.get("/icons.svg");
   expect(sprite.status()).toBe(200);
   expect(sprite.headers()["content-type"]).toContain("image/svg+xml");
+  expect(sprite.headers()["cache-control"]).toMatch(/\bmax-age=\d+/);
   const symbols = new Set(
     [...(await sprite.text()).matchAll(/<symbol id="([\w-]+)"/g)].map((m) => m[1]),
   );
