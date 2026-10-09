@@ -237,7 +237,7 @@ The landing page, the manual and the 404 page share one look: ink and bone paper
 
 ## Typography
 
-One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mono** for every terminal, code sample, file name and stage name (maintainer's rule), from `@fontsource/maple-mono`. Chinese falls through to the system faces.
+One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mono** for every terminal, code sample, file name and stage name (maintainer's rule), from `@fontsource/maple-mono`, cut down to the characters code on the site uses and renamed as its licence requires (`scripts/subset-mono.py`, `assets/fonts/`). Only Archivo is preloaded; the code face loads once code is on screen. Chinese falls through to the system faces.
 
 - **Display** (hero and final call to action): 560 weight, 112% width, tight tracking, sentence case. The emphasised tail is aquamarine on the night. Chinese display lines use the system face, a smaller size so the longer line fits a phone, and break explicitly before the emphasis.
 - **Headline** (section headings): 560 weight, 108% width, in two tones: the sentence in `text`, its tail in `text-3` (aquamarine on the night). No italics, no outlines, no offset prints.

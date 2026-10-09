@@ -80,3 +80,14 @@ test.describe("with motion", () => {
     expect(new Set(opacities)).toEqual(new Set(["1"]));
   });
 });
+
+// Preloads compete with the stylesheet and the first text for a slow link.
+// Only Archivo, which sets every heading and paragraph, is worth that; the
+// code face loads when code is on screen.
+for (const path of ["/", "/docs/quickstart"]) {
+  test(`${path} preloads one font`, async ({ request }) => {
+    const html = await (await request.get(path)).text();
+    const preloads = html.match(/<link[^>]+as="font"[^>]*>/g) ?? [];
+    expect(preloads).toHaveLength(1);
+  });
+}
