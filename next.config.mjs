@@ -2,9 +2,46 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
+// Scripts may be inline: every prerendered page carries its own inline React
+// Server Components payload (self.__next_f.push), besides next-themes' and
+// the 404 page's constant scripts. Hashes would have to list each page's
+// payload, and a hash in the list makes browsers ignore 'unsafe-inline';
+// nonces need a render per request, which gives up the prerendered,
+// CDN-cached pages. The policy still stops scripts, styles, fonts and
+// requests from other origins, plugins, <base> rewrites and framing.
+// React needs eval in development only. The silk's shader library tests once
+// whether eval is allowed and takes its eval-free path when it is not; the
+// browser reports that test as a violation, and the silk still draws.
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'none'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+].join("; ");
+
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: contentSecurityPolicy },
+          // frame-ancestors, for browsers that predate it.
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+    ];
+  },
   experimental: {
     // One static 404 for every path the site does not have
     // (app/global-not-found.tsx): the root layout is app/[lang]/layout.tsx,
