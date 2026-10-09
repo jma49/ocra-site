@@ -28,7 +28,7 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 
 - Locally the sync script reads `MANUAL_DIR` (it must exist), else `../ocra/docs/manual`, else fetches as below. `MANUAL_SOURCE=remote` always fetches (CI).
 - On Vercel, and without a local checkout, it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository). It fails if the copy lacks `en/` or `zh/`.
-- The engine's JSON Schemas (`docs/schema/*.json`) are served at `/schema/<file>`, where their `$id` points. The sync refuses a schema whose `$id` is not this site's `/schema/<its file name>`, and CI's `npm run check:schemas` checks each one answers there after the build. Their v1 `$id`s use the old host `ocra.majincheng.com`, so its redirect to this site (path kept) must stay.
+- The engine's JSON Schemas (`docs/schema/*.json`) are served at `/schema/<file>`, where their `$id` points, to any origin (CORS) and cached for a day (`next.config.mjs`). The sync refuses a schema whose `$id` is not this site's `/schema/<its file name>`, and CI's `npm run check:schemas` checks each one answers there after the build. Their v1 `$id`s use the old host `ocra.majincheng.com`, so its redirect to this site (path kept) must stay.
 - The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
 ## How the site uses Fumadocs

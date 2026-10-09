@@ -58,6 +58,16 @@ const config = {
         source: "/api/search",
         headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=31536000" }],
       },
+      {
+        // The engine's JSON Schemas answer at their own $id, which editors
+        // and validators on any origin fetch. They change only with a deploy,
+        // which empties the CDN; a day in the browser.
+        source: "/schema/:file",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Cache-Control", value: "public, max-age=86400, s-maxage=31536000" },
+        ],
+      },
     ];
   },
   experimental: {
