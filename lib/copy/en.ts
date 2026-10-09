@@ -4,7 +4,7 @@ export const en: CopySource = {
   meta: {
     title: "ocra — open-source code review that reads first",
     description:
-      "Open-CR-Agent (ocra) runs specialized review agents inside a deterministic pipeline: grounded findings, anchored to the right line, built to be measured.",
+      "ocra is open-source AI code review built for pull requests you do not trust. Its findings quote the code they mean and face a second read before they reach your pull request.",
   },
   announce: {
     label: "Announcement",
@@ -107,8 +107,8 @@ export const en: CopySource = {
     local: "Local branches",
   },
   how: {
-    title: "Plain code for what must not go wrong.",
-    emphasis: "Models only for judgment.",
+    title: "Every answer a model gives",
+    emphasis: "is checked before it moves on.",
     body: "Selection, bundling, anchoring and the verdict are tested code. A model is asked to group files, review, verify and judge, and every answer is checked against a schema before it moves on.",
     legend: { code: "deterministic", model: "judgment" },
     steps: {

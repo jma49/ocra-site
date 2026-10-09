@@ -4,7 +4,7 @@ export const zh: CopySource = {
   meta: {
     title: "ocra — 先读懂，再开口的开源代码审查",
     description:
-      "Open-CR-Agent（ocra）在确定性的流水线里运行专项审查 agent：意见有据可查，落在正确的行上，为评测而生。",
+      "ocra 是专为不可信 PR 设计的开源 AI 代码审查：每条意见都引用它所指的代码，并经过第二遍核查，才会出现在你的 PR 里。",
   },
   announce: {
     label: "公告",
@@ -93,8 +93,8 @@ export const zh: CopySource = {
     local: "本地分支",
   },
   how: {
-    title: "不能出错的部分交给普通代码，",
-    emphasis: "模型只做判断。",
+    title: "模型给出的每个回答，",
+    emphasis: "都先经过检查才往下走。",
     body: "选文件、分组、定位行号和给出结论，都是有测试的代码。模型只负责分组、审查、核实和裁决，它的每个回答都先通过 schema 校验，才进入下一步。",
     legend: { code: "确定性", model: "需判断" },
     steps: {
