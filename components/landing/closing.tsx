@@ -78,7 +78,7 @@ export function Footer({ copy, locale }: { copy: Copy["footer"]; locale: Locale 
       <div className="wrap">
         <div className="foot-grid">
           <div>
-            <Link href={localePath(locale, "/")}>
+            <Link href={localePath(locale, "/")} prefetch={false}>
               <Logo />
             </Link>
             <p className="tagline">{copy.tagline}</p>
