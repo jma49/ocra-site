@@ -14,7 +14,7 @@
     "prebuild": "npm run sync-manual",
     "build": "next build",
     "start": "next start",
-    "check": "biome check --error-on-warnings && node scripts/check-colors.mjs && knip",
+    "check": "biome check --error-on-warnings && node scripts/check-colors.mjs && node scripts/check-agents.mjs && knip",
     "format": "biome check --write",
     "typecheck": "next typegen && tsc --noEmit",
     "check:schemas": "node scripts/check-schemas.mjs",
