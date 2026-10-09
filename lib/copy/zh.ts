@@ -40,7 +40,7 @@ export const zh: CopySource = {
     urls: {
       pr: (run) => `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
       terminal: (run) => `${run.repo} · ${run.command}`,
-      cloud: "ocra Cloud · 概览",
+      cloud: "ocra Cloud · 活动",
     },
     example: "示例运行：流水线、输出和结论都来自 ocra 本身；控制台显示的也是这次运行。",
     pr: {
@@ -75,7 +75,7 @@ export const zh: CopySource = {
     },
     console: {
       nav: ["概览", "活动", "审查", "模型 key", "默认模型", "CLI 会话", "设置"],
-      stats: { reviews: "近 14 天审查", requests: "请求数", spend: "花费" },
+      stats: { input: "输入 token", requests: "请求数", spend: "花费" },
       roles: {
         review: "审查任务",
         grouping: "文件分组",

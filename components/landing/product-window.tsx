@@ -8,24 +8,14 @@ import { tabPattern } from "./tabs";
 
 type Tab = "pr" | "terminal" | "cloud";
 
-// The console after the run above: one review, its model calls by role.
-// Fourteen days; the run is on the last.
-const DAYS = Array.from({ length: 14 }, (_, i) => `day-${i + 1}`);
-const TODAY = DAYS.at(-1);
+// The console's Activity page after the run above: every model request it
+// made, in pipeline order, each bar sized by its input tokens.
 const { calls, usage } = exampleRun;
-const ROLES: CallRole[] = ["review", "grouping", "verification", "judge"];
-const byRole = ROLES.map((role) => {
-  const of = calls.filter((call) => call.role === role);
-  return {
-    role,
-    model: of.find((call) => call.model)?.model,
-    count: of.length,
-    input: of.reduce((sum, call) => sum + call.input, 0),
-  };
-});
-const count = (...roles: CallRole[]) => calls.filter((call) => roles.includes(call.role)).length;
-// The chart stacks three shades: review tasks, grouping, and the checks.
-const SEGMENTS = [count("review"), count("grouping"), count("verification", "judge")];
+const STAGE_ORDER: CallRole[] = ["grouping", "review", "verification", "judge"];
+const requests = STAGE_ORDER.flatMap((role) => calls.filter((call) => call.role === role));
+const maxInput = Math.max(...calls.map((call) => call.input));
+// The nav item the page shows: Activity.
+const ACTIVE_NAV = 1;
 
 export function ProductWindow({ copy }: { copy: Copy["window"] }) {
   const [tab, setTab] = useState<Tab>("pr");
@@ -90,7 +80,7 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
           <div className="console" {...t.panel("cloud")}>
             <aside>
               {copy.console.nav.map((item, i) => (
-                <span key={item} className={i ? undefined : "on"}>
+                <span key={item} className={i === ACTIVE_NAV ? "on" : undefined}>
                   {item}
                 </span>
               ))}
@@ -98,37 +88,30 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
             <div className="m">
               <div className="stats">
                 <div className="stat">
-                  <small>{copy.console.stats.reviews}</small>
-                  <b>1</b>
-                </div>
-                <div className="stat">
                   <small>{copy.console.stats.requests}</small>
                   <b>{calls.length}</b>
+                </div>
+                <div className="stat">
+                  <small>{copy.console.stats.input}</small>
+                  <b>{formatCount(usage.input)}</b>
                 </div>
                 <div className="stat">
                   <small>{copy.console.stats.spend}</small>
                   <b>${usage.dollars.toFixed(4)}</b>
                 </div>
               </div>
-              <div className="bars" aria-hidden="true">
-                {DAYS.map((day) => (
-                  <i key={day} style={{ height: day === TODAY ? calls.length * 9 : 0 }}>
-                    {day === TODAY &&
-                      SEGMENTS.map((n, i) => (
-                        // biome-ignore lint/suspicious/noArrayIndexKey: fixed segments
-                        <b key={i} style={{ flex: n }} />
-                      ))}
-                  </i>
-                ))}
-              </div>
-              <div className="rows">
-                {byRole.map((r) => (
-                  <div key={r.role}>
+              <div className="reqs">
+                {requests.map((call, i) => (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: fixed list of recorded calls
+                  <div key={i} data-role={call.role}>
                     <span>
-                      {copy.console.roles[r.role]}
-                      {r.model && ` · ${r.model}`}
+                      {copy.console.roles[call.role]}
+                      {call.model && ` · ${call.model}`}
                     </span>
-                    <span>{formatCount(r.input)} in</span>
+                    <span className="bar" aria-hidden="true">
+                      <i style={{ width: `${(call.input / maxInput) * 100}%` }} />
+                    </span>
+                    <span>{formatCount(call.input)} in</span>
                     <span>200</span>
                   </div>
                 ))}

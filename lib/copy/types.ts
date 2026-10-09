@@ -98,7 +98,7 @@ export interface CopySource {
     };
     console: {
       nav: string[];
-      stats: { reviews: string; requests: string; spend: string };
+      stats: { requests: string; input: string; spend: string };
       roles: Record<CallRole, string>;
     };
   };
