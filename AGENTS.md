@@ -56,7 +56,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `@fu
 `DESIGN.md` holds the design system: tokens, type scale, components, the mascot, Read it before any change to `app/` or `components/`. The rules that apply to every change:
 
 - **Ink, bone paper and one signal colour.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); there is no second accent. Cards on paper are hairlines and one soft shadow; ink glass only for the nav and the dock; the silk shader is the only background effect, on the night sections.
-- **Shaders** ([shaders.com](https://shaders.com), MIT) draws the silk. It loads only after a WebGPU adapter answers, the CSS ground is the fallback, and every `<Shader>` passes `disableTelemetry` (the library otherwise reports to shaders.com). Read `silk.tsx` before adding a scene.
+- **Shaders** ([shaders.com](https://shaders.com), MIT) draws the silk. It loads only as its section nears the viewport and a WebGPU adapter answers, never under Save-Data, low memory or on a phone; the CSS ground is the fallback, and every `<Shader>` passes `disableTelemetry` (the library otherwise reports to shaders.com). Read `silk.tsx` before adding a scene.
 - **Restrained motion** (DESIGN.md, Motion): surfaces rise 2px, links underline. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
 - **Never resemble a competitor's visual signature**; borrow finish, not devices.
 - Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run check` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
