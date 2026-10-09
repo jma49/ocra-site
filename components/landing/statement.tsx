@@ -7,7 +7,8 @@ import { Silk } from "./silk";
 
 // The manifesto, on the night: words brighten one by one as the paragraph
 // scrolls through the middle of the screen. Without JavaScript, or with
-// Reduce motion on, the paragraph is simply shown.
+// Reduce motion on, the paragraph is simply shown. The page's scroll is
+// followed only while the paragraph is within a screen of the viewport.
 export function Statement({ copy }: { copy: Copy["statement"] }) {
   const ref = useRef<HTMLParagraphElement>(null);
 
@@ -15,6 +16,7 @@ export function Statement({ copy }: { copy: Copy["statement"] }) {
     const el = ref.current;
     if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const words = [...el.querySelectorAll<HTMLElement>(".w")];
+    const shown = words.map(() => "");
     el.dataset.scrub = "on";
     let raf = 0;
     const update = () => {
@@ -25,15 +27,30 @@ export function Statement({ copy }: { copy: Copy["statement"] }) {
       const k = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
       const lit = k * words.length;
       words.forEach((w, i) => {
-        w.style.opacity = String(Math.min(1, Math.max(0.22, lit - i + 0.22)));
+        const opacity = String(Math.min(1, Math.max(0.22, lit - i + 0.22)));
+        if (opacity === shown[i]) return;
+        shown[i] = opacity;
+        w.style.opacity = opacity;
       });
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
     };
     update();
-    addEventListener("scroll", onScroll, { passive: true });
+    const near = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          update();
+          addEventListener("scroll", onScroll, { passive: true });
+        } else {
+          removeEventListener("scroll", onScroll);
+        }
+      },
+      { rootMargin: "100% 0px" },
+    );
+    near.observe(el);
     return () => {
+      near.disconnect();
       removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };

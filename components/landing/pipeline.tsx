@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, type ReactNode, useEffect, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
 
 export type PipelineStep = {
   id: string;
@@ -13,24 +13,32 @@ const DWELL_MS = 5200;
 
 // The pipeline as one thread: four steps down a line, each a node (a square
 // when only code runs, a ring when a model is asked), and beside it the
-// picture of the step in focus. The steps advance on their own until the
-// reader points at the section or picks a step; under Reduce motion they
-// wait for the reader. Every step's text is always shown; only the picture
-// changes.
+// picture of the step in focus. The steps advance on their own while the
+// section is on screen, until the reader points at it or picks a step; under
+// Reduce motion they wait for the reader. Every step's text is always shown;
+// only the picture changes.
 export function Pipeline({ steps, figures }: { steps: PipelineStep[]; figures: ReactNode[] }) {
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(false);
   const [held, setHeld] = useState(false);
+  const [seen, setSeen] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setAuto(!matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const el = root.current;
+    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    setAuto(true);
+    const io = new IntersectionObserver(([entry]) => setSeen(!!entry?.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
+  const running = auto && seen && !held;
   useEffect(() => {
-    if (!auto || held) return;
+    if (!running) return;
     const t = setTimeout(() => setActive((active + 1) % steps.length), DWELL_MS);
     return () => clearTimeout(t);
-  }, [auto, held, active, steps.length]);
+  }, [running, active, steps.length]);
 
   const pick = (i: number) => {
     setActive(i);
@@ -40,8 +48,9 @@ export function Pipeline({ steps, figures }: { steps: PipelineStep[]; figures: R
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: pausing the auto-advance is a convenience; the buttons are the controls
     <div
+      ref={root}
       className="pipe"
-      data-running={auto && !held}
+      data-running={running}
       style={{ "--dwell": `${DWELL_MS}ms` } as CSSProperties}
       onPointerEnter={() => setHeld(true)}
       onPointerLeave={() => setHeld(false)}
