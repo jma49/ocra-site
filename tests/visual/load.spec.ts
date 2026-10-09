@@ -91,3 +91,15 @@ for (const path of ["/", "/docs/quickstart"]) {
     expect(preloads).toHaveLength(1);
   });
 }
+
+// The manual's stylesheet (Fumadocs' preset and its restyling, about 95 KB)
+// blocks rendering; the landing page uses none of it.
+test("the landing page does not load the manual's styles", async ({ page }) => {
+  const sheets: string[] = [];
+  page.on("response", async (response) => {
+    if (response.request().resourceType() === "stylesheet") sheets.push(await response.text());
+  });
+  await page.goto("/", { waitUntil: "networkidle" });
+  expect(sheets.length).toBeGreaterThan(0);
+  expect(sheets.filter((css) => css.includes("#nd-sidebar")).length).toBe(0);
+});

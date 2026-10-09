@@ -1,0 +1,23 @@
+/* The landing page and the 404 page. The manual's stylesheet (manual.css)
+   carries Fumadocs' preset, about 100 KB these pages never use. */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./global.css";
+
+/* Fumadocs' base layer (@fumadocs/base-ui/css/lib/base.css), which the
+   manual gets with its preset: these pages were drawn on it. Copied rather
+   than imported, because that file brings the preset's theme along. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-fd-border, currentColor);
+  }
+
+  body {
+    background-color: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+  }
+}

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { LandingTheme } from "@/components/landing-theme";
+import "../../site.css";
 import "../../landing/index.css";
 
 // The landing page draws its own header and footer (components/landing);

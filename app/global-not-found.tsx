@@ -7,7 +7,7 @@ import { getCopy } from "@/lib/copy";
 import { htmlLang, i18n, type Locale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/seo";
 import { localePath } from "@/lib/shared";
-import "./global.css";
+import "./site.css";
 
 // One title for both languages: the page is the same for every path.
 export const metadata: Metadata = { metadataBase: new URL(siteUrl()), title: "404 · ocra" };
