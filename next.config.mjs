@@ -12,6 +12,9 @@ const withMDX = createMDX();
 // React needs eval in development only. The silk's shader library tests once
 // whether eval is allowed and takes its eval-free path when it is not; the
 // browser reports that test as a violation, and the silk still draws.
+// No third-party script loads today. Vercel Analytics and Speed Insights
+// would be same-origin; the preview toolbar (vercel.live) would need
+// allowing, and previews are off (vercel.json).
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
