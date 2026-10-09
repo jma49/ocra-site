@@ -405,5 +405,6 @@ export const en: CopySource = {
     title: "Page not found",
     body: "The page you are looking for does not exist, or it moved.",
     back: "Back to the home page",
+    manual: "Read the manual",
   },
 };

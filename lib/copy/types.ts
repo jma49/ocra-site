@@ -218,5 +218,5 @@ export interface CopySource {
     }[];
   };
   dock: { label: string; start: string; copy: string; copied: string };
-  notFound: { title: string; body: string; back: string };
+  notFound: { title: string; body: string; back: string; manual: string };
 }

@@ -387,5 +387,6 @@ export const zh: CopySource = {
     title: "页面不存在",
     body: "你要找的页面不存在，或者已经移动。",
     back: "返回首页",
+    manual: "阅读手册",
   },
 };
