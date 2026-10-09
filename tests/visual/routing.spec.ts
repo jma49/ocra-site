@@ -51,6 +51,34 @@ test("/favicon.ico is an icon", async ({ request }) => {
   expect(response.headers()["content-type"]).toBe("image/x-icon");
 });
 
+// Files answer before English paths are rewritten under /en.
+for (const path of [
+  "/icon.svg",
+  "/apple-icon",
+  "/opengraph-image",
+  "/robots.txt",
+  "/sitemap.xml",
+]) {
+  test(`${path} answers`, async ({ request }) => {
+    const response = await request.get(path, { maxRedirects: 0 });
+    expect(response.status()).toBe(200);
+  });
+}
+
+// English has no prefix; its prefixed address is a permanent redirect,
+// with no cookie.
+for (const [from, to] of Object.entries({
+  "/en": "/",
+  "/en/docs/quickstart": "/docs/quickstart",
+})) {
+  test(`${from} redirects to ${to}`, async ({ request }) => {
+    const response = await request.get(from, { maxRedirects: 0 });
+    expect(response.status()).toBe(308);
+    expect(response.headers().location).toBe(to);
+    expect(response.headers()["set-cookie"]).toBeUndefined();
+  });
+}
+
 // One static page answers for both languages; it reads the language from
 // the path.
 for (const [path, lang] of Object.entries({

@@ -11,6 +11,26 @@ const config = {
     // so there is no layout outside the languages to build it from.
     globalNotFound: true,
   },
+  // English has no prefix (lib/i18n.ts, hideLocale: "default-locale"). Fixed
+  // rules here run in the router, ahead of the CDN cache; a proxy.ts doing
+  // the same costs a function invocation on every request.
+  async redirects() {
+    return [
+      // On its own, /:path* would answer /en with an empty Location.
+      { source: "/en", destination: "/", permanent: true },
+      { source: "/en/:path+", destination: "/:path+", permanent: true },
+    ];
+  },
+  async rewrites() {
+    return {
+      // The home page before the files: on Vercel a rewrite of / after them
+      // would lose the .rsc suffix of a client navigation's request.
+      beforeFiles: [{ source: "/", destination: "/en" }],
+      // Any other path after the files, so the icons, the share card, the
+      // sitemap, robots.txt, the search API and public/ answer first.
+      afterFiles: [{ source: "/:path((?!(?:en|zh)(?:/|$)).+)", destination: "/en/:path" }],
+    };
+  },
 };
 
 export default withMDX(config);
