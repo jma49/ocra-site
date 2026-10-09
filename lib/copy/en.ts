@@ -40,7 +40,7 @@ export const en: CopySource = {
     urls: {
       pr: (run) => `pull request #${run.pr.number} · Keep sessions alive after sign-in`,
       terminal: (run) => `${run.repo} · ${run.command}`,
-      cloud: "ocra Cloud · Overview",
+      cloud: "ocra Cloud · Activity",
     },
     example:
       "An example run: the pipeline, output and verdict are ocra's own; the console shows the same run.",
@@ -86,12 +86,12 @@ export const en: CopySource = {
         "Settings",
       ],
       stats: {
-        reviews: "Reviews, 14 days",
+        input: "Input tokens",
         requests: "Requests",
         spend: "Spend",
       },
       roles: {
-        review: "review tasks",
+        review: "review task",
         grouping: "file grouping",
         verification: "verification",
         judge: "judge",
