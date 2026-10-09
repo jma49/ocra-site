@@ -18,7 +18,8 @@
     "format": "biome check --write",
     "typecheck": "next typegen && tsc --noEmit",
     "check:schemas": "node scripts/check-schemas.mjs",
-    "verify": "npm run check && npm run build && npm run typecheck && npm run check:schemas",
+    "check:glyphs": "node scripts/check-mono-glyphs.mjs",
+    "verify": "npm run check && npm run build && npm run typecheck && npm run check:schemas && npm run check:glyphs",
     "visual:baseline": "playwright test --update-snapshots=all",
     "visual": "playwright test",
     "deploy": "bash scripts/deploy.sh"
