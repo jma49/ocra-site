@@ -5,21 +5,26 @@ import type { Copy } from "@/lib/copy";
 import { cloudUrl } from "@/lib/shared";
 
 const INSTALL = "npm install -g @open-cr-agent/cli";
+const FAR = "100000px";
 
-// Follows the reader once the hero has scrolled away, and steps aside for the
-// final call to action, which repeats the same choice.
+// Follows the reader once the hero has scrolled away, and steps aside from the
+// plans on, which carry the same choice themselves (as does the final call to
+// action), so it never sits over a price.
 export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
   const [shown, setShown] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Observers instead of a scroll handler: no layout reads per scroll event.
-  // The hero counts as gone once it is above the viewport; the final call
-  // to action counts as near once its top enters the bottom tenth.
+  // Each root is stretched far past one edge of the viewport so that its
+  // answer flips at a single line, whichever way the page moves and however
+  // far a jump (a nav link, Home) skips: the hero is gone once its bottom is
+  // above the viewport, and the plans are reached once their top is above
+  // the bottom tenth.
   useEffect(() => {
     const hero = document.getElementById("hero");
-    const final = document.getElementById("final");
-    if (!hero || !final) return;
-    const state = { heroGone: false, finalNear: false };
+    const plans = document.getElementById("plans");
+    if (!hero || !plans) return;
+    const state = { heroGone: false, plansReached: false };
     const watch = (
       el: HTMLElement,
       rootMargin: string,
@@ -29,7 +34,7 @@ export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
         ([entry]) => {
           if (!entry) return;
           update(entry);
-          setShown(state.heroGone && !state.finalNear);
+          setShown(state.heroGone && !state.plansReached);
         },
         { rootMargin },
       );
@@ -37,11 +42,11 @@ export function Dock({ copy: labels }: { copy: Copy["dock"] }) {
       return io;
     };
     const observers = [
-      watch(hero, "0px", (e) => {
-        state.heroGone = !e.isIntersecting && e.boundingClientRect.bottom < 0;
+      watch(hero, `0px 0px ${FAR} 0px`, (e) => {
+        state.heroGone = !e.isIntersecting;
       }),
-      watch(final, "0px 0px -10% 0px", (e) => {
-        state.finalNear = e.isIntersecting || e.boundingClientRect.top < 0;
+      watch(plans, `${FAR} 0px -10% 0px`, (e) => {
+        state.plansReached = e.isIntersecting;
       }),
     ];
     return () => {
