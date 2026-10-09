@@ -97,12 +97,12 @@ export function MenuButton({ label }: { label: string }) {
   );
 }
 
-export function ThemeToggle({ label }: { label: string }) {
+export function ThemeToggle({ label, className }: { label: string; className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   return (
     <button
       type="button"
-      className="ib"
+      className={className ? `ib ${className}` : "ib"}
       aria-label={label}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
     >

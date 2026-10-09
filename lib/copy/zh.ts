@@ -21,7 +21,7 @@ export const zh: CopySource = {
     },
     github: "GitHub",
     signIn: "登录",
-    start: "免费开始",
+    start: "开始使用 ocra Cloud",
     menu: "打开菜单",
     theme: "切换深浅色",
     home: "ocra 首页",
@@ -281,7 +281,7 @@ export const zh: CopySource = {
           "按天统计用量、花费和审查次数",
           "在网页上一次选好默认模型",
         ],
-        cta: "用 GitHub 登录",
+        cta: "开始使用 ocra Cloud",
       },
       team: {
         state: "规划中",

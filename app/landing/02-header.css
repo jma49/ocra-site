@@ -107,8 +107,27 @@
   padding: 13px 0;
   border-bottom: 1px solid color-mix(in srgb, var(--on-night) 8%, transparent);
 }
-.drawer a:last-child {
+.drawer a:last-of-type {
   border-bottom: 0;
+}
+/* The header's full call to action leaves no room on the narrowest phones;
+   there the theme toggle moves into the menu. */
+.drawer-theme {
+  display: none;
+}
+@media (max-width: 419px) {
+  .nav-r .theme-bar {
+    display: none;
+  }
+  .drawer a:last-of-type {
+    border-bottom: 1px solid color-mix(in srgb, var(--on-night) 8%, transparent);
+  }
+  .drawer-theme {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
 }
 .nav-shell[data-open="true"] .drawer {
   display: block;

@@ -39,7 +39,7 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
             <a className="t" href={cloudUrl}>
               {n.signIn}
             </a>
-            <ThemeToggle label={n.theme} />
+            <ThemeToggle label={n.theme} className="theme-bar" />
             <a className="btn btn-brand btn-sm" href={cloudUrl}>
               {n.start}
             </a>
@@ -54,6 +54,10 @@ export function SiteHeader({ copy, locale }: { copy: Copy; locale: Locale }) {
               </a>
             ),
           )}
+          <div className="drawer-theme">
+            <span aria-hidden="true">{n.theme}</span>
+            <ThemeToggle label={n.theme} />
+          </div>
         </div>
       </NavShell>
     </>
