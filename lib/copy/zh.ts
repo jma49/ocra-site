@@ -93,8 +93,8 @@ export const zh: CopySource = {
     local: "本地分支",
   },
   how: {
-    title: "模型给出的每个回答，",
-    emphasis: "都先经过检查才往下走。",
+    title: "模型作答，",
+    emphasis: "代码核对。",
     body: "选文件、分组、定位行号和给出结论，都是有测试的代码。模型只负责分组、审查、核实和裁决，它的每个回答都先通过 schema 校验，才进入下一步。",
     legend: { code: "确定性", model: "需判断" },
     steps: {
