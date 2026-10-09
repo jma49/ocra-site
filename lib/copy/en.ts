@@ -21,7 +21,7 @@ export const en: CopySource = {
     },
     github: "GitHub",
     signIn: "Sign in",
-    start: "Start free",
+    start: "Start with ocra Cloud",
     menu: "Open menu",
     theme: "Toggle colour theme",
     home: "ocra home",
@@ -299,7 +299,7 @@ export const en: CopySource = {
           "Usage, spend and review counts by day",
           "Default models chosen once, on the web",
         ],
-        cta: "Sign in with GitHub",
+        cta: "Start with ocra Cloud",
       },
       team: {
         state: "planned",
