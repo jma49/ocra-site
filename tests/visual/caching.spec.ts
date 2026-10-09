@@ -53,3 +53,14 @@ test("a JSON Schema can be fetched from any origin and cached", async ({ request
   expect(response.headers()["access-control-allow-origin"]).toBe("*");
   expect(browserMaxAge(response.headers())).toBeGreaterThan(0);
 });
+
+test("every sitemap entry says when it last changed", async ({ request }) => {
+  const xml = await (await request.get("/sitemap.xml")).text();
+  const entries = xml.match(/<url>[\s\S]*?<\/url>/g) ?? [];
+  expect(entries.length).toBeGreaterThan(2);
+  for (const entry of entries) {
+    const lastmod = /<lastmod>([^<]+)<\/lastmod>/.exec(entry)?.[1];
+    expect(lastmod, entry).toBeDefined();
+    expect(Date.parse(lastmod ?? "")).toBeLessThanOrEqual(Date.now());
+  }
+});
