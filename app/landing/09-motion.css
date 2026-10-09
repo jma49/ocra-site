@@ -99,7 +99,9 @@
 }
 
 /* ---- Entrance: the headline rises word by word out of a blur, then the
-   rest of the hero follows ---- */
+   rest of the hero follows. Nothing fades in from opacity 0: text at 0 does
+   not count as painted, and the lede is the largest text on a phone, so a
+   fade held its largest contentful paint back by a second. ---- */
 .display .wd {
   display: inline-block;
   animation: rise 1s var(--ease) both;
@@ -121,7 +123,6 @@
 }
 @keyframes rise {
   from {
-    opacity: 0;
     transform: translateY(0.4em);
     filter: blur(10px);
   }

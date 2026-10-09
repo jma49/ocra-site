@@ -56,3 +56,27 @@ test("the silk keeps its CSS ground for a visitor saving data", async ({ page })
   await page.waitForTimeout(1500);
   expect(await adapterRequests(page)).toBe(0);
 });
+
+// The largest text on a phone is the lede. Text at opacity 0 does not count
+// as painted, so an entrance that fades it in holds back the page's largest
+// contentful paint until the fade starts.
+test.describe("with motion", () => {
+  test.use({ reducedMotion: "no-preference" });
+
+  test("the hero's copy is painted from the first frame", async ({ page }) => {
+    await page.goto("/");
+    const opacities = await page.evaluate(() =>
+      [...document.querySelectorAll(".display .wd, .hero .lede, .hero .cta, .hero .note")].map(
+        (el) => {
+          for (const animation of el.getAnimations()) {
+            animation.pause();
+            animation.currentTime = 0;
+          }
+          return getComputedStyle(el).opacity;
+        },
+      ),
+    );
+    expect(opacities.length).toBeGreaterThan(3);
+    expect(new Set(opacities)).toEqual(new Set(["1"]));
+  });
+});
