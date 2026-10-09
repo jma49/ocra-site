@@ -7,7 +7,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 - Next.js (App Router) + [Fumadocs](https://fumadocs.dev) + Tailwind CSS, deployed on Vercel.
 - Two languages: English at `/`, Chinese at `/zh`. Every page and every string exists in both.
 - `npm run verify`: `check` (Biome with warnings as errors, the colour check, knip), the build, `typecheck`, the schema check and the code face's glyph check. CI runs it; run it before every push.
-- **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`; deploy only when the maintainer asks, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, which must be on `origin/main`, through a logged-in, pinned Vercel CLI). Each deploy costs one build.
+- **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`. Deploy as Working with agents says, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, which must be on `origin/main`, through a logged-in, pinned Vercel CLI), then open the changed pages live. Each deploy costs one build.
 
 | Path | Contents |
 |---|---|
@@ -29,7 +29,6 @@ The user manual's source lives in the main repository under `docs/manual/{en,zh}
 - Locally the sync script reads `MANUAL_DIR` (it must exist), else `../ocra/docs/manual`, else fetches as below. `MANUAL_SOURCE=remote` always fetches (CI).
 - On Vercel, and without a local checkout, it fetches `MANUAL_REPO` at `MANUAL_REF` (default: `main` of the public main repository). It fails if the copy lacks `en/` or `zh/`.
 - The engine's JSON Schemas (`docs/schema/*.json`) are served at `/schema/<file>`, where their `$id` points, to any origin (CORS) and cached for a day (`next.config.mjs`). The sync refuses a schema whose `$id` is not this site's `/schema/<its file name>`, and CI's `npm run check:schemas` checks each one answers there after the build. Their v1 `$id`s use the old host `ocra.majincheng.com`, so its redirect to this site (path kept) must stay.
-- The manual may use the MDX components registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`). Register a component here before the manual uses it, or the site build fails.
 
 ## How the site uses Fumadocs
 
@@ -39,7 +38,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `@fu
 - **The prefix is hidden by a rewrite** (`next.config.mjs`): `/docs/x` is served from the prerendered `/en/docs/x`, so on the server Next sees `/en/...` while the browser sees `/...`. `components/providers.tsx` hands Fumadocs a `FrameworkProvider` whose pathname drops the hidden `/en`, so active links and pagination match on both sides; without it React discards the server HTML (a hydration error on every English docs page, fixed in site #20). Keep any new pathname-dependent component behind that provider. `/en/...` redirects permanently to `/...`. `/` is rewritten before the files, so that a client navigation home gets `/en.rsc` on Vercel; any other path after them, so the icons, the sitemap, the search API and `public/` answer first. No `proxy.ts`: it would run a function ahead of the CDN cache on every request.
 - **Providers by section:** Fumadocs' `RootProvider` (search, i18n UI, scroll lock) wraps only the manual (`app/[lang]/docs/layout.tsx`); the landing page and the 404 page get `next-themes` alone (`components/landing-theme.tsx`), with the same options (`lib/theme.ts`) so the theme carries across. Search is static: `app/api/search` is the index of both languages, built once at build time; the dialog fetches it on the first search and filters it by the page's language (`type: "static"` in `providers.tsx`). Nothing runs per keystroke.
 - **Landing sections render on the server.** Client code is limited to small islands that hold state (`header-controls.tsx`, `lifecycle-states.tsx`, the statement's scrub, the product window's tabs and its pull request replay (the panes render on the server), the dock, the silk, `motion.tsx` for reveals, the spotlight and the eyes); pass server-rendered markup to them as children rather than making a section a client component, and never pass the whole copy to one.
-- **MDX components** the manual may use are registered in `components/mdx.tsx`; register one there before the manual uses it, or the build fails.
+- **MDX components** the manual may use are registered in `components/mdx.tsx` (`Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`); register one there before the manual uses it, or the build fails.
 - **Links in the manual:** relative links (`./github`) resolve against the page's URL, and the manual's index page is `/docs`, not `/docs/`, so from there `./github` would point to `/github` and 404. The index pages use absolute links per language (`/docs/github`, `/zh/docs/github`); other pages may use relative ones.
 - **404s:** only generated params exist (`dynamicParams = false` on `app/[lang]/layout.tsx` and the docs page), so any unknown path, language or manual page gets one page prerendered at build time, `app/global-not-found.tsx` (`experimental.globalNotFound`), and nothing is rendered or cached on demand: anyone can ask for any path (`tests/visual/routing.spec.ts`). It holds both languages; an inline script picks one from the path before paint and sets `<html lang>`.
 - **Routes:** the landing page is `app/[lang]/(home)`, the manual `app/[lang]/docs/[[...slug]]`, with the source loaded in `lib/source.ts` from the generated `content/docs`.
@@ -53,47 +52,48 @@ Read this before touching routing, the docs layout or MDX; it saves reading `@fu
 
 ## Design
 
-`DESIGN.md` holds the design system: tokens, type scale, components, the mascot, Read it before any change to `app/` or `components/`. The rules that apply to every change:
+`DESIGN.md` holds the design system: tokens, type scale, components. Read it before any change to `app/` or `components/`. The rules that apply to every change:
 
 - **Ink, bone paper and one signal colour.** Aquamarine carries the brand and meaning (links, focus, "verified", emphasis); there is no second accent. Cards on paper are hairlines and one soft shadow; ink glass only for the nav and the dock; the silk shader is the only background effect, on the night sections.
 - **Shaders** ([shaders.com](https://shaders.com), MIT) draws the silk. It loads only as its section nears the viewport and a WebGPU adapter answers, never under Save-Data, low memory or on a phone; the CSS ground is the fallback, and every `<Shader>` passes `disableTelemetry` (the library otherwise reports to shaders.com). Read `silk.tsx` before adding a scene.
 - **Restrained motion** (DESIGN.md, Motion): surfaces rise 2px, links underline. Pointer-driven motion always runs; idle loops stop under Reduce motion, except the providers marquee.
 - **Never resemble a competitor's visual signature**; borrow finish, not devices.
-- Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run check` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md`.
+- Style through the tokens in `app/tokens.css` only: no colour literal anywhere else (`npm run check` fails on one) and no Tailwind palette colours. A token change edits `app/tokens.css` and `DESIGN.md` in the same commit; run `npx @google/design.md lint DESIGN.md` (not in CI).
 - Chinese headings get their own sizes and explicit line breaks; do not rely on automatic balancing for CJK.
-- Look at the result before calling a UI change done: `npm run build && npm run visual:baseline` before the change, `npm run build && npm run visual` after it (both languages, three widths, both themes, console errors; see Verification in `DESIGN.md`). A pull request that changes the look on purpose gets the `visual-change` label and lists the intended differences.
+- Look at the result before calling a UI change done: `npm run build && npm run visual:baseline` before the change, `npm run build && npm run visual` after it (both languages, three widths, both themes, console errors; see Verification in `DESIGN.md`). A pull request that changes the look on purpose gets the `visual-change` label (the `visual` workflow then passes on a difference) and lists the intended differences.
 
 ## Code style
 
 - The code is the documentation: no large comment blocks; comment only a non-obvious "why".
-- No source file over 500 lines.
+- No source file over 500 lines (no check: watch it in review).
 - Changes must work in light and dark mode and at phone width (390 px) without horizontal page scroll.
 
 ## Handoff
 
-- The state of the project, the site included, is kept in `handoff.md` in the maintainers' private repository `jma49/ocra-internal` (cloned as `../ocra-internal`). Update it at the end of every task or batch of work, before reporting it done, without being asked. Never put such notes in this public repository.
+- Maintainers keep the project's state, the site's included, in `../ocra-internal/handoff.md` and update it at the end of every task or batch of work, as Working with agents says. Never put such notes in this public repository.
 
 ## Working with agents
 
-Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: change all three together.
+Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: change all three together. Each repository's AGENTS check compares this section's SHA-256 with the one it expects and keeps the file under 150 lines.
 
 - **One owner per issue queue, one worktree per session.** Never edit a checkout another session is using.
-- **The maintainer runs production:** deploys, production database writes and secret-store changes. Prepare the exact command and a dry-run result, then hand off.
+- **Agents deploy ocra-site and ocra-cloud,** only committed `origin/main` with green CI, from a clean temporary worktree, with the repository's `npm run deploy`. Before a deploy that applies D1 migrations, record a Time Travel bookmark (`npx wrangler d1 time-travel info ocra-cloud`). Afterwards check the live result and report what went out: commit, migrations, bookmark.
+- **The maintainer keeps** secret-store changes, account, billing and plan settings, and production database writes outside migrations: prepare the exact command, then hand off.
 - **A critical Dependabot alert is a P0:** fix or pin it the same day.
 - **Validate what you act on, after normalising it** (`new URL()`, path resolution), never only the raw input.
 - **Uniqueness and currency live in the database** (`UNIQUE`, `ON CONFLICT`, compare-and-set), never in check-then-write code.
-- **A fix's test fails on the old code on an assertion,** not on a module the fix adds (`scripts/fails-without.sh` refuses that).
+- **A fix's test fails on the old code on an assertion,** not on a module the fix adds (in ocra, `scripts/fails-without.sh` refuses that).
 - **Shapes the CLI and ocra Cloud share live in `@open-cr-agent/cloud-contract`;** never retype them.
 - **Show only what exists:** mocks, demos and the landing use shipped behaviour and recorded or synthetic data, never the maintainer's accounts, numbers, keys or budget.
-- **Keep AGENTS.md under 150 lines:** a rule names the check that enforces it; stories go to `../ocra-internal/pitfalls.md`.
+- **Private notes are for maintainers** with access to `jma49/ocra-internal` (`../ocra-internal`): `git pull --rebase` before editing it, commit and push right after, rebase on a conflict. A session without write access puts its handoff in its final report instead.
+- **Keep AGENTS.md under 150 lines:** a rule a check enforces names that check; stories go to `../ocra-internal/pitfalls.md`.
 
 ## Git workflow
 
 - `main` is always deployable. Work on `<type>/<short-kebab-description>` branches, merge through pull requests with rebase, and delete the branch afterwards.
 - The author may merge after green CI and a self-review of the full diff.
 - [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, imperative, at most 72 characters.
-- **Commits must not include `Co-authored-by` trailers or any other co-author metadata.**
-- **Pull request titles, descriptions and comments must not include AI attribution** (the `/triage` disclaimer on an issue is disclosure, not attribution).
+- **No AI attribution:** no `Co-authored-by` or other co-author metadata in commits, no tool footer in pull request titles, descriptions or comments (the `/triage` disclaimer on an issue is disclosure, not attribution). CI's `commits` job checks commits and the description.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
