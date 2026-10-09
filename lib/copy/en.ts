@@ -107,8 +107,8 @@ export const en: CopySource = {
     local: "Local branches",
   },
   how: {
-    title: "Every answer a model gives",
-    emphasis: "is checked before it moves on.",
+    title: "A model answers.",
+    emphasis: "Code checks the answer.",
     body: "Selection, bundling, anchoring and the verdict are tested code. A model is asked to group files, review, verify and judge, and every answer is checked against a schema before it moves on.",
     legend: { code: "deterministic", model: "judgment" },
     steps: {
