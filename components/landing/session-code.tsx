@@ -3,6 +3,7 @@ import { exampleRun } from "@/lib/landing/example-run";
 
 const { finding } = exampleRun;
 const KEYWORDS = /(export function|return)/;
+const INDENT = /^\s*/;
 
 function Highlighted({ text }: { text: string }) {
   return text.split(KEYWORDS).map((part, i) =>
@@ -45,8 +46,10 @@ export function BotAvatar({ small }: { small?: boolean }) {
 }
 
 // The example bug around the line the agent quoted, from the recorded run.
-// `tip` is shown on the quoted line.
-export function SessionCode({ tip }: { tip?: ReactNode }) {
+// `tip` is shown on the quoted line. With `withFix`, the suggestion follows
+// the quoted line as the line that replaces it, shown only in the fixed state
+// of the lifecycle (data-in).
+export function SessionCode({ tip, withFix }: { tip?: ReactNode; withFix?: boolean }) {
   return (
     <figure
       className="code"
@@ -57,7 +60,7 @@ export function SessionCode({ tip }: { tip?: ReactNode }) {
       {finding.code.map((text, i) => {
         const n = finding.firstLine + i;
         const quoted = n === finding.line;
-        return (
+        const line = (
           <div key={n} className={quoted ? "l q" : "l"}>
             <span className="n">{n}</span>
             <span className="src">
@@ -66,6 +69,16 @@ export function SessionCode({ tip }: { tip?: ReactNode }) {
             </span>
           </div>
         );
+        if (!quoted || !withFix) return line;
+        return [
+          line,
+          <div key={`${n}-fix`} className="l add" data-in="fixed">
+            <span className="n">{n}</span>
+            <span className="src">
+              <Highlighted text={`${INDENT.exec(text)?.[0] ?? ""}${finding.suggestion}`} />
+            </span>
+          </div>,
+        ];
       })}
     </figure>
   );
@@ -82,16 +95,18 @@ export function FindingComment({
   body,
   onLine,
   tip,
+  withFix,
 }: {
   variant: "pr" | "thread";
   title: string;
   body: string;
   onLine?: string;
   tip?: ReactNode;
+  withFix?: boolean;
 }) {
   const content = (
     <>
-      <SessionCode tip={tip} />
+      <SessionCode tip={tip} withFix={withFix} />
       <div className="cmt-row">
         <BotAvatar />
         <div className="md">
@@ -102,8 +117,10 @@ export function FindingComment({
             🔴 <strong>{title.replace(/[.。]$/, "")}</strong> · {finding.severity} · verified ·{" "}
             {finding.reviewer}
           </p>
-          <p>{body}</p>
-          <Suggestion />
+          <div className="cmt-detail">
+            <p>{body}</p>
+            <Suggestion />
+          </div>
         </div>
       </div>
     </>

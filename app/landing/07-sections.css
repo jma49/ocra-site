@@ -275,6 +275,24 @@
 .life[data-s="dismissed"] [data-in]:not([data-in~="dismissed"]) {
   display: none;
 }
+/* Fixed: the quoted line gives way to the suggestion. Fixed or dismissed,
+   the thread is resolved and folds to its title, as GitHub folds it. */
+.life[data-s="fixed"] .code .q {
+  background: color-mix(in srgb, var(--red) 7%, transparent);
+  cursor: default;
+}
+.life[data-s="fixed"] .code .q .src {
+  background: none;
+  color: var(--text-3);
+  text-decoration: line-through;
+}
+.code .add {
+  background: color-mix(in srgb, var(--aqua-ink) 10%, transparent);
+  box-shadow: inset 2px 0 0 var(--aqua-ink);
+}
+.life:not([data-s="reported"]) .cmt-detail {
+  display: none;
+}
 .extra {
   display: flex;
   align-items: center;
