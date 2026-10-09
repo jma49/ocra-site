@@ -10,9 +10,9 @@ import { clientScriptProps, themeOptions } from "@/lib/theme";
 
 const hiddenPrefix = `/${i18n.defaultLanguage}`;
 
-// The middleware serves /docs/x from the prerendered /en/docs/x, so on the
-// server Next reports the rewritten path while the browser reports the
-// visible one. Stripping the hidden default-language prefix gives both the
+// A rewrite (next.config.mjs) serves /docs/x from the prerendered /en/docs/x,
+// so on the server Next reports the rewritten path while the browser reports
+// the visible one. Stripping the hidden default-language prefix gives both the
 // same path, which keeps Fumadocs' active links and pagination identical
 // on server and client (otherwise React discards the server HTML).
 function useVisiblePathname(): string {

@@ -20,8 +20,6 @@ const server = spawn("npx", ["next", "start", "--hostname", "127.0.0.1", "--port
 });
 const base = `http://127.0.0.1:${port}`;
 
-// Polls a schema rather than /: without the locale cookie a browser keeps,
-// next start answers / with a redirect loop.
 async function ready() {
   for (let i = 0; i < 120; i++) {
     try {
