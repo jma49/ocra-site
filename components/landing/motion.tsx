@@ -19,12 +19,16 @@ const REVEAL = [
 ].join(",");
 // Surfaces that carry the pointer's spotlight.
 const SPOT = ".card, .plan, .secure";
+// How far the reading light reaches past the pointer (03-hero.css). Beyond
+// it the light is outside the hero, and moving it would only repaint.
+const REACH = 320;
 
 // The landing page's motion in one island, so no section turns into a client
 // component for it:
 // - sections and cards rise in as they scroll into view, staggered within a
 //   grid (hidden only once this has run, so the page reads without
-//   JavaScript, and never under Reduce motion);
+//   JavaScript, never under Reduce motion, and never once on screen: the
+//   script may run after the reader has scrolled);
 // - a soft light follows the pointer across the surfaces;
 // - every eye row with `data-look` turns its pupils towards the pointer;
 // - the hero's reading light follows the pointer.
@@ -35,7 +39,9 @@ export function LandingMotion() {
     const cleanups: (() => void)[] = [];
 
     if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const items = [...document.querySelectorAll<HTMLElement>(REVEAL)];
+      const items = [...document.querySelectorAll<HTMLElement>(REVEAL)].filter(
+        (el) => el.getBoundingClientRect().top >= innerHeight,
+      );
       for (const el of items) {
         const siblings = el.parentElement ? [...el.parentElement.children] : [];
         el.style.setProperty("--ri", String(Math.max(0, siblings.indexOf(el))));
@@ -63,6 +69,7 @@ export function LandingMotion() {
     const reading = document.querySelector<HTMLElement>(".reading");
     let raf = 0;
     let last: PointerEvent | undefined;
+    let light = "";
     const frame = () => {
       raf = 0;
       if (!last) return;
@@ -79,9 +86,18 @@ export function LandingMotion() {
       }
       if (reading) {
         const r = reading.getBoundingClientRect();
-        reading.style.setProperty("--lx", `${(x - r.left).toFixed(0)}px`);
-        reading.style.setProperty("--ly", `${(y - r.top).toFixed(0)}px`);
-        reading.dataset.live = "";
+        const lx = x - r.left;
+        const ly = y - r.top;
+        const away = lx < -REACH || ly < -REACH || lx > r.width + REACH || ly > r.height + REACH;
+        // Out of reach the light parks in one place, so moving the pointer
+        // elsewhere on the page changes nothing.
+        const [px, py] = away ? [-REACH, -REACH] : [Math.round(lx), Math.round(ly)];
+        if (`${px} ${py}` !== light) {
+          light = `${px} ${py}`;
+          reading.style.setProperty("--lx", `${px}px`);
+          reading.style.setProperty("--ly", `${py}px`);
+          reading.dataset.live = "";
+        }
       }
       const spot = target instanceof Element ? target.closest<HTMLElement>(SPOT) : null;
       if (spot) {

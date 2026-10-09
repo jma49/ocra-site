@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
 
 // How the landing page's islands and the manual's sidebar behave. The
 // comparison job runs these tests against the base branch while it records
@@ -83,4 +83,48 @@ test.describe("with motion", () => {
     await page.mouse.wheel(0, 200);
     await expect.poll(() => firstWord.evaluate((w) => getComputedStyle(w).opacity)).toBe("1");
   });
+
+  test("a reveal never hides what is already on screen", async ({ page }) => {
+    await page.addInitScript(() => {
+      const hidden: string[] = [];
+      (window as unknown as { hiddenOnScreen: string[] }).hiddenOnScreen = hidden;
+      new MutationObserver((records) => {
+        for (const { target } of records) {
+          if (!(target instanceof HTMLElement) || target.dataset.reveal !== "") continue;
+          const r = target.getBoundingClientRect();
+          if (r.top < innerHeight && r.bottom > 0) hidden.push(target.className);
+        }
+      }).observe(document, { attributes: true, attributeFilter: ["data-reveal"], subtree: true });
+    });
+    await page.goto("/#plans", { waitUntil: "networkidle" });
+    await expect(page.locator("html.motion")).toHaveCount(1);
+    const hidden = await page.evaluate(
+      () => (window as unknown as { hiddenOnScreen: string[] }).hiddenOnScreen,
+    );
+    expect(hidden).toEqual([]);
+  });
+
+  test("a reveal does not blur", async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    const waiting = page.locator('[data-reveal=""]').first();
+    await expect(waiting).toHaveCount(1);
+    expect(await waiting.evaluate((el) => getComputedStyle(el).filter)).toBe("none");
+  });
+});
+
+const light = (page: Page) =>
+  page.locator(".reading").evaluate((el) => (el as HTMLElement).style.getPropertyValue("--lx"));
+
+test("the reading light rests while the pointer is elsewhere on the page", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  await page.mouse.move(900, 300);
+  await expect.poll(() => light(page)).not.toBe("");
+  await page.mouse.wheel(0, 4000);
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(3000);
+  await page.mouse.move(400, 300);
+  await page.waitForTimeout(200);
+  const parked = await light(page);
+  await page.mouse.move(800, 500);
+  await page.waitForTimeout(200);
+  expect(await light(page)).toBe(parked);
 });
