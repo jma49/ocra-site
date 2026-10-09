@@ -97,14 +97,20 @@ export function MenuButton({ label }: { label: string }) {
   );
 }
 
+// A toggle for the dark theme: pressed while it is on. The theme is known
+// only in the browser, so until then the button states nothing.
 export function ThemeToggle({ label, className }: { label: string; className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const dark = resolvedTheme === "dark";
   return (
     <button
       type="button"
       className={className ? `ib ${className}` : "ib"}
       aria-label={label}
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      aria-pressed={mounted ? dark : undefined}
+      onClick={() => setTheme(dark ? "light" : "dark")}
     >
       <svg
         width="16"

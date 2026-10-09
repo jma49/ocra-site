@@ -34,6 +34,15 @@ test("the logo does not prefetch the page it is on", async ({ page }) => {
   expect(prefetches.filter((path) => path === "/")).toEqual([]);
 });
 
+test("the theme toggle says whether the dark theme is on", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  const toggle = page.locator(".nav-r button.theme-bar");
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("html")).toHaveClass(/\bdark\b/);
+});
+
 test.describe("with motion", () => {
   test.use({ reducedMotion: "no-preference" });
 
