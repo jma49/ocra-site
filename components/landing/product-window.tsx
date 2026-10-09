@@ -50,6 +50,23 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
   );
   return (
     <div className="stage" id="product">
+      <div className="tabs" {...t.list}>
+        {tabs.map((x) => (
+          <button key={x.id} type="button" {...t.tab(x.id)}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d={x.icon} />
+            </svg>
+            {x.label}
+          </button>
+        ))}
+      </div>
       <div className="win">
         <div className="win-bar">
           <span className="dots" aria-hidden="true">
@@ -119,23 +136,6 @@ export function ProductWindow({ copy }: { copy: Copy["window"] }) {
             </div>
           </div>
         )}
-      </div>
-      <div className="tabs" {...t.list}>
-        {tabs.map((x) => (
-          <button key={x.id} type="button" {...t.tab(x.id)}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              <path d={x.icon} />
-            </svg>
-            {x.label}
-          </button>
-        ))}
       </div>
       <p className="example-note">{copy.example}</p>
     </div>
