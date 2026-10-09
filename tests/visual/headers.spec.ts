@@ -41,11 +41,14 @@ async function underPolicy(page: Page, path: string) {
   const violations: string[] = [];
   await page.exposeFunction("reportViolation", (v: string) => violations.push(v));
   await page.addInitScript(() => {
-    document.addEventListener("securitypolicyviolation", (e) =>
+    document.addEventListener("securitypolicyviolation", (e) => {
+      // The silk's shader library tests once whether eval is allowed, where
+      // WebGPU exists; the refusal is expected (next.config.mjs).
+      if (e.blockedURI === "eval" && e.violatedDirective.startsWith("script-src")) return;
       (window as unknown as { reportViolation(v: string): void }).reportViolation(
         `${e.violatedDirective} ${e.blockedURI}`,
-      ),
-    );
+      );
+    });
   });
   page.on("console", (message) => {
     if (/Content Security Policy/i.test(message.text())) violations.push(message.text());
