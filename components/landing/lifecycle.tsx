@@ -27,6 +27,7 @@ export function Lifecycle({
                 <div className="main">
                   <FindingComment
                     variant="thread"
+                    withFix
                     title={finding.findingTitle}
                     body={finding.findingBody}
                   />
