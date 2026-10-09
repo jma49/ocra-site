@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
@@ -23,7 +25,9 @@ jobs:
           MANUAL_SOURCE: remote
 
   # Conventional Commits and no AI attribution, with the engine's own checks
-  # (AGENTS.md, Working with agents).
+  # (AGENTS.md, Working with agents). Pinned to an engine release, so a push
+  # to the engine's main does not change this repository's CI; Dependabot
+  # proposes the next release.
   commits:
     if: github.event_name == 'pull_request'
-    uses: jma49/Open-CR-Agent/.github/workflows/commits.yml@main
+    uses: jma49/Open-CR-Agent/.github/workflows/commits.yml@82a3f1183a3177e9efa401d87eb95dea495ef619 # v0.6.0
