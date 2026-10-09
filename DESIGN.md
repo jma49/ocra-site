@@ -291,7 +291,7 @@ Lines carry the structure of the paper sections, and only there (`10-lines.css`)
 All of it lives in `09-motion.css` and one client island, `components/landing/motion.tsx`.
 
 - **Entrance**: the hero headline rises word by word out of a blur, then the lede, the buttons and the note; the silk canvas settles in from a slight zoom once it has drawn.
-- **Scroll**: the product window lies back in perspective and comes upright as it scrolls into view (CSS scroll-driven animation where supported); headings, cards, plans and panels rise in from a blur as they enter, staggered within their grid.
+- **Scroll**: the product window lies back in perspective and comes upright as it scrolls into view (CSS scroll-driven animation where supported); headings, cards, plans and panels rise in as they enter, staggered within their grid (opacity and transform only; whatever is already on screen when the script runs stays as it is).
 - **Pointer**: the silk stretches under it; a soft aquamarine light follows it across cards, steps, plans and the security panel; the eyes look at it; a sheen crosses the primary button on hover; surfaces rise 2px and their hairline darkens; links draw an underline.
 - **Reduce motion**: entrance, scroll animations, reveals, the blink and the silk's drift are off; nothing is ever hidden waiting for a reveal (the page is hidden only after the script has run, and only without Reduce motion). What answers the pointer still runs. The providers marquee drifts at half speed (the maintainer wants it visible) and pauses on hover.
 

@@ -154,18 +154,18 @@
   }
 }
 
-/* ---- Reveal on scroll (motion.tsx), staggered within a grid ---- */
+/* ---- Reveal on scroll (motion.tsx), staggered within a grid ----
+   Opacity and transform only: a blur over whole grids repaints them on
+   every frame of the reveal, which a low-end phone shows while scrolling. */
 .motion [data-reveal] {
   transition:
     opacity 0.9s var(--ease),
-    transform 0.9s var(--ease),
-    filter 0.9s var(--ease);
+    transform 0.9s var(--ease);
   transition-delay: calc(var(--ri, 0) * 90ms);
 }
 .motion [data-reveal=""] {
   opacity: 0;
   transform: translateY(28px);
-  filter: blur(6px);
 }
 
 /* ---- A soft light follows the pointer across the surfaces ---- */
