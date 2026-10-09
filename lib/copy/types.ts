@@ -150,7 +150,6 @@ export interface CopySource {
     title: string;
     emphasis: string;
     rules: { title: string; body: string };
-    write: { title: string; body: string };
     bill: {
       title: string;
       body: string;
