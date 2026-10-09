@@ -42,3 +42,14 @@ for (const { path, query, results } of searches) {
     await expect(page).toHaveURL((url) => results.test(url.pathname));
   });
 }
+
+// The JSON Schemas are the targets of their own $id: editors and validators
+// on other origins fetch them, and they change only with a deploy.
+test("a JSON Schema can be fetched from any origin and cached", async ({ request }) => {
+  const response = await request.get("/schema/config.v1.json", {
+    headers: { Origin: "https://example.com" },
+  });
+  expect(response.status()).toBe(200);
+  expect(response.headers()["access-control-allow-origin"]).toBe("*");
+  expect(browserMaxAge(response.headers())).toBeGreaterThan(0);
+});
