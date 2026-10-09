@@ -38,6 +38,9 @@ export function Providers({ theme, ...props }: ComponentProps<typeof RootProvide
       <RootProvider
         {...props}
         theme={{ ...themeOptions, ...theme, scriptProps: clientScriptProps }}
+        // app/api/search serves the whole index, prebuilt; the dialog fetches
+        // it once and filters it by the page's language in the browser.
+        search={{ options: { type: "static" } }}
       />
     </FrameworkProvider>
   );

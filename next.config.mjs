@@ -51,6 +51,13 @@ const config = {
         source: "/icons.svg",
         headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=31536000" }],
       },
+      {
+        // The manual's search index (app/api/search/route.ts), prebuilt and
+        // fetched on the first search; an hour in the browser, so a deploy
+        // that moves a page reaches returning readers soon.
+        source: "/api/search",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, s-maxage=31536000" }],
+      },
     ];
   },
   experimental: {
