@@ -6,6 +6,7 @@ import { getCopy } from "@/lib/copy";
 import { baseOptions, translations } from "@/lib/layout.shared";
 import { localeParam } from "@/lib/locale-param";
 import { source } from "@/lib/source";
+import "../../manual.css";
 
 export default async function Layout({
   params,

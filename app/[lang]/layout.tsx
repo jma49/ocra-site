@@ -5,7 +5,6 @@ import { getCopy } from "@/lib/copy";
 import { htmlLang, i18n } from "@/lib/i18n";
 import { localeParam } from "@/lib/locale-param";
 import { siteUrl, social } from "@/lib/seo";
-import "../global.css";
 
 export async function generateMetadata({
   params,

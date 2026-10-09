@@ -1,8 +1,5 @@
-@import "tailwindcss";
-@import "@fumadocs/base-ui/css/neutral.css";
-@import "@fumadocs/base-ui/css/preset.css";
-@import "./tokens.css";
-@import "./docs.css";
+/* Rules every page shares, after Tailwind and the tokens: imported by the
+   landing page's stylesheet (site.css) and the manual's (manual.css). */
 
 /* CJK text uses the system faces after Archivo. */
 @theme {
