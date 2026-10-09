@@ -35,6 +35,13 @@ html > body[data-scroll-locked] {
   -webkit-backdrop-filter: blur(12px) saturate(1.4);
 }
 
+/* The 404 page holds both languages (app/global-not-found.tsx); once its
+   script has marked <html> with the visitor's language, only that one shows. */
+html[data-locale="en"] .not-found [data-locale="zh"],
+html[data-locale="zh"] .not-found [data-locale="en"] {
+  display: none;
+}
+
 /* Chinese reads better with more leading than Latin text. */
 :lang(zh) .prose {
   line-height: 1.85;

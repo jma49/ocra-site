@@ -35,6 +35,9 @@ export default async function Page({ params }: Props) {
   );
 }
 
+// Only the manual's pages exist; any other slug is the static 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return source.generateParams("slug", "lang");
 }

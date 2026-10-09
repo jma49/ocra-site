@@ -47,6 +47,17 @@ for (const path of ["/", "/zh"]) {
   });
 }
 
+// The 404 page renders outside the site's layouts (app/global-not-found.tsx).
+for (const path of ["/this-page-does-not-exist", "/zh/this-page-does-not-exist"]) {
+  test(`axe ${path}`, async ({ page }) => {
+    await page.goto(path, { waitUntil: "networkidle" });
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    expect(
+      violations.map((v) => `${v.id} ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`),
+    ).toEqual([]);
+  });
+}
+
 test("tabs move with the arrow keys", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   const tabs = page.locator("#product [role=tab]");
