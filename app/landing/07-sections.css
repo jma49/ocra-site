@@ -283,7 +283,7 @@
 }
 .life[data-s="fixed"] .code .q .src {
   background: none;
-  color: var(--text-3);
+  color: var(--text-2);
   text-decoration: line-through;
 }
 .code .add {
