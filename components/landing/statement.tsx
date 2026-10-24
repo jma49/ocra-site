@@ -1,81 +1,32 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import type { Copy } from "@/lib/copy";
-import { Heading } from "./heading";
-import { Silk } from "./silk";
+import { Marked } from "./pen/marks";
+import { Lines, Section } from "./section";
 
-// The manifesto, on the night: words brighten one by one as the paragraph
-// scrolls through the middle of the screen. Without JavaScript, or with
-// Reduce motion on, the paragraph is simply shown. The page's scroll is
-// followed only while the paragraph is within a screen of the viewport.
+// Quiet by design: the first night band, pure typography (sections.md §5).
+// Stub from package F: the three out-of-scope words are struck once when the
+// list is half in view; P adds the scroll-scrubbed strike (motion.md §7).
 export function Statement({ copy }: { copy: Copy["statement"] }) {
-  const ref = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const words = [...el.querySelectorAll<HTMLElement>(".w")];
-    const shown = words.map(() => "");
-    el.dataset.scrub = "on";
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const r = el.getBoundingClientRect();
-      const start = innerHeight * 0.85;
-      const end = innerHeight * 0.5 - r.height;
-      const k = Math.min(1, Math.max(0, (start - r.top) / (start - end)));
-      const lit = k * words.length;
-      words.forEach((w, i) => {
-        const opacity = String(Math.min(1, Math.max(0.22, lit - i + 0.22)));
-        if (opacity === shown[i]) return;
-        shown[i] = opacity;
-        w.style.opacity = opacity;
-      });
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    const near = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          update();
-          addEventListener("scroll", onScroll, { passive: true });
-        } else {
-          removeEventListener("scroll", onScroll);
-        }
-      },
-      { rootMargin: "100% 0px" },
-    );
-    near.observe(el);
-    return () => {
-      near.disconnect();
-      removeEventListener("scroll", onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  // Chinese has no spaces: it brightens by character instead of by word.
-  const parts = /\s/.test(copy.body) ? copy.body.split(/(\s+)/) : [...copy.body];
   return (
-    <section className="statement">
-      <Silk variant="band" />
-      <div className="wrap state-grid">
-        <Heading title={copy.title} emphasis={copy.emphasis} />
-        <p ref={ref} className="scrub">
-          {parts.map((p, i) =>
-            /^\s+$/.test(p) ? (
-              p
-            ) : (
-              // biome-ignore lint/suspicious/noArrayIndexKey: static copy, never reordered
-              <span key={i} className="w">
-                {p}
-              </span>
-            ),
-          )}
-        </p>
+    <Section ground="night" className="quiet">
+      <div className="wrap quiet-grid">
+        <h2 className="t-statement">
+          <Lines lines={copy.lines} />
+        </h2>
+        <div className="quiet-side">
+          <p className="t-statement-body">{copy.lead}</p>
+          <ul className="oos" data-pen="on" data-pen-once="0.5">
+            {copy.outOfScope.map((word, i) => (
+              <li key={word} className="t-struck">
+                <Marked kind="strike" at={i * 350}>
+                  {word}
+                </Marked>
+              </li>
+            ))}
+          </ul>
+          <p className="t-body quiet-caption">{copy.caption}</p>
+          <p className="t-mono quiet-proof">{copy.proof}</p>
+        </div>
       </div>
-    </section>
+    </Section>
   );
 }

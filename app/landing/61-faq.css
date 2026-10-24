@@ -1,0 +1,40 @@
+/* FAQ: the sticky H2 beside six native details (package C). F's stub. */
+.home .faq {
+  padding-block: var(--pad);
+}
+.home .faq-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 40px;
+  align-items: start;
+}
+.home .faq-title {
+  grid-column: 1 / span 5;
+}
+.home .faq-list {
+  grid-column: 6 / -1;
+}
+.home .faq-list details {
+  border-bottom: 1px solid var(--line);
+}
+.home .faq-list summary {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  cursor: pointer;
+  list-style: none;
+}
+.home .faq-list summary::-webkit-details-marker {
+  display: none;
+}
+.home .faq-list p {
+  max-width: 60ch;
+  padding-bottom: 20px;
+}
+@media (max-width: 1199px) {
+  .home .faq-title,
+  .home .faq-list {
+    grid-column: 1 / -1;
+  }
+}

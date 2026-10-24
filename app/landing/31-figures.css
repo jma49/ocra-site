@@ -1,0 +1,122 @@
+/* The four story figures and the verdict row (package S). F's stub. */
+.home .fig-body {
+  display: grid;
+  gap: 16px;
+  padding: 24px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.home .fig-head {
+  color: var(--ink-3);
+}
+.home .fig-files li,
+.home .fig-claims li {
+  display: grid;
+  grid-template-columns: 20px auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  border-bottom: 1px solid var(--line);
+}
+.home .fig-files .ink-code {
+  font-size: 13px;
+  color: var(--ink);
+}
+.home .fig-why {
+  text-align: right;
+  color: var(--ink-3);
+}
+.home .fig-tier,
+.home .fig-plan {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  padding: 12px 20px;
+  border-radius: var(--r-ctl);
+  background: var(--sheet-2);
+}
+.home .fig-tier .ink-code {
+  font-weight: 500;
+  color: var(--ink);
+}
+.home .fig-matrix {
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.home .fig-matrix th,
+.home .fig-matrix td {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-weight: 400;
+  white-space: nowrap;
+}
+.home .fig-matrix th .t-small {
+  display: block;
+  color: var(--ink-3);
+}
+.home .fig-l42 {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: var(--ink-3);
+}
+.home .fig-l42 .mk-host {
+  color: var(--ink);
+}
+.home .fig-found {
+  color: var(--pen);
+}
+.home .fig-quote {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--sheet-2);
+  color: var(--ink);
+}
+.home .fig-claims {
+  position: relative;
+}
+.home .fig-claims li {
+  grid-template-columns: 20px 28px minmax(0, 1fr) auto;
+  min-height: 3.5rem;
+}
+.home .fig-claim {
+  display: grid;
+  font-weight: 500;
+  color: var(--ink);
+}
+.home .fig-reason {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.home .fig-verdict {
+  color: var(--ink);
+}
+.home .fig-critical {
+  margin-top: -8px;
+  font-weight: 500;
+  color: var(--pen);
+}
+.home .phone-only {
+  display: none;
+}
+@media (max-width: 599px) {
+  .home .fig-body {
+    padding: 16px;
+  }
+  .home .wide-only {
+    display: none;
+  }
+  .home .phone-only {
+    display: inline;
+  }
+  .home .fig-files li {
+    grid-template-columns: 20px minmax(0, 1fr);
+  }
+  .home .fig-why {
+    grid-column: 2;
+    text-align: left;
+  }
+}

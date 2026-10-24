@@ -1,0 +1,70 @@
+/* Footer: continues the final band (bottom corners), the logo and tagline,
+   four link columns, 44 × 44 px links (package C). F's stub. */
+.home .foot {
+  margin-bottom: 12px;
+  padding-bottom: 48px;
+  border-radius: 0 0 var(--r-band) var(--r-band);
+  background: var(--night);
+  color: var(--on-night);
+}
+.home .foot-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 40px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line-night);
+}
+.home .foot-brand {
+  grid-column: 1 / span 4;
+}
+.home .foot-brand .t-small {
+  margin-top: 12px;
+  color: var(--on-night-2);
+}
+.home .foot-logo {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+.home .foot-cols {
+  grid-column: 5 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+.home .foot-cols h2 {
+  margin-bottom: 8px;
+}
+.home .foot-cols a {
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 15px;
+  color: var(--on-night-2);
+  text-decoration: none;
+  transition: color 150ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .foot-cols a:hover {
+    color: var(--on-night);
+  }
+}
+@media (max-width: 1199px) {
+  .home .foot-brand,
+  .home .foot-cols {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 599px) {
+  .home .foot {
+    margin-bottom: 8px;
+    border-radius: 0 0 20px 20px;
+  }
+  .home .foot-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,95 @@
+/* Plans: the three-line head beside the plan ledger, its states, the Cloud
+   row on a sheet, the fine print (package C). F's stub. */
+.home .plans {
+  padding-block: var(--pad);
+}
+.home .plans-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 48px;
+  align-items: start;
+}
+.home .plans-head {
+  grid-column: 1 / span 4;
+}
+.home .plans-head .t-body {
+  margin-top: 24px;
+}
+.home .plans-ledger {
+  grid-column: 5 / -1;
+}
+.home .plan {
+  display: grid;
+  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+.home .plan.sheet {
+  padding: 20px 24px;
+  border-bottom: 0;
+}
+.home .plan-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+.home .plan-shape {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.home .plan[data-plan="cloud"] .plan-shape {
+  background: linear-gradient(90deg, var(--ink) 50%, transparent 50%);
+  box-shadow: inset 0 0 0 1.3px var(--ink);
+}
+.home .plan[data-plan="team"] .plan-shape {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.3px var(--ink);
+}
+.home .plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.home .plan[data-plan="team"] .price {
+  color: var(--ink-3);
+}
+.home .plan > .btn {
+  grid-column: 1 / span 2;
+  justify-self: start;
+}
+.home .plan-points {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 24px;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.home .plans-fine {
+  max-width: 60ch;
+  margin-top: 28px;
+  color: var(--ink-2);
+}
+@media (max-width: 1199px) {
+  .home .plans-head,
+  .home .plans-ledger {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 599px) {
+  .home .plan {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home .plan-points {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home .plan .btn {
+    width: 100%;
+  }
+}

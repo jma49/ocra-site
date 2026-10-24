@@ -18,10 +18,3 @@
   /* biome-ignore lint/complexity/noImportantStyles: overrides the marquee animation for screenshots */
   animation: none !important;
 }
-
-/* The silk is drawn by the GPU where there is one; screenshots record the
-   CSS ground under it, which is what browsers without WebGPU show. */
-.silk-canvas {
-  /* biome-ignore lint/complexity/noImportantStyles: hides the shader canvas for screenshots */
-  display: none !important;
-}

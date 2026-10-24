@@ -1,0 +1,95 @@
+/* Works: the small H2, body and platform tiles beside the provider index,
+   its "45" and the marquee with its pause button (package P). F's stub. */
+.home .works {
+  padding-block: 96px var(--pad);
+}
+.home .works-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 56px;
+  align-items: start;
+}
+.home .works-copy {
+  grid-column: 1 / span 5;
+}
+.home .works-index {
+  grid-column: 6 / -1;
+  min-width: 0;
+}
+.home .works-copy .t-body {
+  max-width: 34rem;
+  margin-top: 16px;
+}
+.home .works-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+.home .works-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 64px;
+  padding: 0 16px;
+  border-radius: var(--r-ctl);
+}
+.home .works-tile svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+.home .works-gauge {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.home .works-gauge .t-h4 {
+  color: var(--ink-2);
+}
+.home .works-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, var(--ink) 8%, var(--ink) 92%, transparent);
+}
+.home .works-chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: var(--r-ctl);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.home .works-chip svg {
+  width: 20px;
+  height: 20px;
+  color: var(--ink-2);
+}
+.home .works-more {
+  margin-top: 16px;
+  color: var(--ink-3);
+}
+@media (max-width: 1199px) {
+  .home .works-copy,
+  .home .works-index {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 599px) {
+  .home .works-tile {
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    height: 72px;
+    padding: 0 8px;
+    font-size: 13px;
+    text-align: center;
+  }
+}

@@ -11,8 +11,9 @@ import {
   useState,
 } from "react";
 
-// The header's only client state: the phone menu and the theme. The rest of
-// the header is rendered on the server and passed in.
+// The header's only client state: the phone menu, the theme, the ground the
+// bar follows and the promotion of its call to action. The bar and the
+// drawer are rendered on the server and passed in.
 
 const Menu = createContext<{
   open: boolean;
@@ -20,12 +21,77 @@ const Menu = createContext<{
   button: RefObject<HTMLButtonElement | null>;
 } | null>(null);
 
+// The ground under the bar's middle: a 2 px band 38 px from the top, where
+// the sticky bar's centre sits. Above every section (the announce line) the
+// page's own ground shows.
+function useGround(): string {
+  const [ground, setGround] = useState("paper");
+  useEffect(() => {
+    const targets = [
+      ...document.querySelectorAll<HTMLElement>("main section[data-ground], footer[data-ground]"),
+    ];
+    const under = new Set<HTMLElement>();
+    let io: IntersectionObserver | undefined;
+    let height = 0;
+    const build = () => {
+      io?.disconnect();
+      under.clear();
+      height = innerHeight;
+      io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            const el = e.target as HTMLElement;
+            if (e.isIntersecting) under.add(el);
+            else under.delete(el);
+          }
+          const last = [...under].pop();
+          setGround(last?.dataset.ground ?? "paper");
+        },
+        { rootMargin: `-38px 0px -${Math.max(0, height - 40)}px 0px` },
+      );
+      for (const t of targets) io.observe(t);
+    };
+    build();
+    // Mobile toolbars change the height by a few px while scrolling; only a
+    // real resize rebuilds the band.
+    const resized = () => {
+      if (Math.abs(innerHeight - height) > 40) build();
+    };
+    addEventListener("resize", resized, { passive: true });
+    return () => {
+      io?.disconnect();
+      removeEventListener("resize", resized);
+    };
+  }, []);
+  return ground;
+}
+
+// The call to action turns primary once the hero's sentinel (after its note)
+// has scrolled above the top.
+function usePromoted(): boolean {
+  const [promoted, setPromoted] = useState(false);
+  useEffect(() => {
+    const sentinel = document.querySelector("[data-promote-sentinel]");
+    if (!sentinel) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e) setPromoted(!e.isIntersecting && e.boundingClientRect.top < 0);
+    });
+    io.observe(sentinel);
+    return () => io.disconnect();
+  }, []);
+  return promoted;
+}
+
+// The sticky header: the bar (logo, links, controls) and the phone drawer.
 // The menu closes on a tap outside it, on a link in it, on Escape (focus
-// returns to its button) and once the page scrolls.
-export function NavShell({ children }: { children: ReactNode }) {
+// returns to its button) and once the page scrolls 40 px; the scroll
+// listener exists only while it is open.
+export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const shell = useRef<HTMLDivElement>(null);
+  const shell = useRef<HTMLElement>(null);
   const button = useRef<HTMLButtonElement>(null);
+  const ground = useGround();
+  const promoted = usePromoted();
 
   useEffect(() => {
     if (!open) return;
@@ -54,44 +120,41 @@ export function NavShell({ children }: { children: ReactNode }) {
 
   return (
     <Menu value={{ open, toggle: () => setOpen((o) => !o), button }}>
-      {/* biome-ignore lint/a11y/noStaticElementInteractions lint/a11y/useKeyWithClickEvents: closes the menu after a link inside it is followed; the links themselves are the controls */}
-      <div
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: closes the menu after a link inside it is followed; the links themselves are the controls */}
+      <header
         className="nav-shell"
-        data-open={open}
+        data-open={open || undefined}
         ref={shell}
         onClick={(e) => {
-          if ((e.target as Element).closest(".drawer a")) setOpen(false);
+          if ((e.target as Element).closest("#site-menu a")) setOpen(false);
         }}
       >
-        {children}
-      </div>
+        <div className="nav" data-on={ground} data-promoted={promoted || undefined}>
+          {bar}
+        </div>
+        <div className="drawer" id="site-menu">
+          {drawer}
+        </div>
+      </header>
     </Menu>
   );
 }
 
-export function MenuButton({ label }: { label: string }) {
+export function MenuButton({ labels }: { labels: { open: string; close: string } }) {
   const menu = useContext(Menu);
+  const open = menu?.open ?? false;
   return (
     <button
       type="button"
       ref={menu?.button}
-      className="ib menu"
-      aria-label={label}
-      aria-expanded={menu?.open ?? false}
+      className="ib nav-menu"
+      aria-label={open ? labels.close : labels.open}
+      aria-expanded={open}
       aria-controls="site-menu"
       onClick={menu?.toggle}
     >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        aria-hidden="true"
-      >
-        <path d="M4 7h16M4 12h16M4 17h16" />
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+        <path d={open ? "M6 6l12 12M18 6L6 18" : "M4 8h16M4 16h16"} />
       </svg>
     </button>
   );
@@ -108,21 +171,20 @@ export function ThemeToggle({ label, className }: { label: string; className?: s
     <button
       type="button"
       className={className ? `ib ${className}` : "ib"}
+      data-theme-toggle=""
       aria-label={label}
       aria-pressed={mounted ? dark : undefined}
       onClick={() => setTheme(dark ? "light" : "dark")}
     >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        aria-hidden="true"
-      >
-        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+      <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          className="theme-moon"
+          d="M20.5 13.6A8.5 8.5 0 1 1 10.4 3.5a6.6 6.6 0 0 0 10.1 10.1z"
+        />
+        <g className="theme-sun">
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6" />
+        </g>
       </svg>
     </button>
   );

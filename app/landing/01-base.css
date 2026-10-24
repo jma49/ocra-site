@@ -1,194 +1,454 @@
-/* The landing page (DESIGN.md, "Landing page"): bone paper and ink, one
-   signal colour, hairlines instead of glass. Tokens live in app/tokens.css,
-   hover and loops in 09-motion.css. */
+/* The landing page's base: the display fallback face, the page, the wrap,
+   grounds and bands, the type scale (DESIGN.md, Type) and the small shared
+   pieces (skip link, focus, links). Shared; sections style only their own
+   classes. Everything is scoped under .home: after a client navigation from
+   the manual its stylesheet stays loaded. */
 
-/* ---- Grids ----
-   Every layout grid starts as one column that may shrink below its content.
-   A plain `display: grid` sizes its implicit column to the widest child, so a
-   long code line widened cards past the phone's edge, where the page's
-   overflow-x: clip silently cut them off. Wider layouts set their columns
-   later in the cascade. */
-.split-head,
-.works-grid,
-.state-grid,
-.cards,
-.life,
-.sec-grid,
-.flow,
-.plans,
-.faq-grid {
-  grid-template-columns: minmax(0, 1fr);
+/* Until Archivo arrives, display lines fall to a local narrow face rather
+   than next/font's Arial-based "Archivo Fallback" (about 1.45 times wider
+   than the condensed set). "Archivo" is next/font's emitted family name.
+   size-adjust is tuned so the H1 line's fallback width is within 6 % of
+   Archivo's (checked with the font request blocked). */
+@font-face {
+  font-family: "Ocra Narrow";
+  src:
+    local("Arial Narrow"), local("ArialNarrow"), local("HelveticaNeue-CondensedBold"),
+    local("Roboto Condensed");
+  font-weight: 100 900;
+  size-adjust: 87%;
 }
 
 .home {
+  --font-display: "Archivo", "Ocra Narrow", "Archivo Fallback", var(--font-sans);
+  --gutter: 40px;
+  --gap: 56px;
+  --pad: 120px;
+  --pad-band: 128px;
   background: var(--paper);
-  color: var(--text);
-  font-size: 16.5px;
-  line-height: 1.6;
+  color: var(--ink);
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
 }
-.home ::selection {
-  background: var(--aqua);
-  color: var(--night);
-}
-.home code {
-  font-family: var(--font-mono);
-  font-size: 0.86em;
-}
-.home :focus-visible {
-  outline: 2px solid var(--aqua-ink);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-.landing {
+.home .landing {
   overflow-x: clip;
 }
-.wrap {
-  width: 100%;
-  max-width: 76rem;
-  margin: 0 auto;
-  padding: 0 20px;
+.home [id] {
+  scroll-margin-top: 84px;
 }
-@media (min-width: 768px) {
-  .wrap {
-    padding: 0 40px;
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.home) {
+    scroll-behavior: smooth;
   }
 }
-.chapter {
-  position: relative;
-  padding: 112px 0;
-}
-@media (min-width: 900px) {
-  .chapter {
-    padding: 144px 0;
+@media (max-width: 1199px) {
+  .home {
+    --gap: 40px;
+    --pad: 104px;
+    --pad-band: 104px;
   }
 }
-.chapter.tight-top {
-  padding-top: 0;
+@media (max-width: 1023px) {
+  .home {
+    --gutter: 32px;
+    --gap: 32px;
+  }
+}
+@media (max-width: 599px) {
+  .home {
+    --gutter: 20px;
+    --gap: 20px;
+    --pad: 72px;
+    --pad-band: 72px;
+  }
 }
 
-/* ---- Type: Archivo set wide and calm; headings in two tones ---- */
-.home h1,
-.home h2,
-.home h3 {
-  margin: 0;
+.home .wrap {
+  width: 100%;
+  max-width: calc(1280px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+/* The 12-column grid; tracks never grow past their share. */
+.home .cols {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+}
+
+/* ---- Grounds and bands ---- */
+.home [data-ground="paper"] {
+  background: var(--paper);
+  color: var(--ink);
+}
+.home [data-ground="paper-2"] {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+.home [data-ground="stone"] {
+  background: var(--stone);
+  color: var(--ink);
+}
+.home [data-ground="night"] {
+  --focus: var(--on-night);
+  background: var(--night);
+  color: var(--on-night);
+}
+/* Inset bands: rounded, 12 px from the page's edges, no ring in either
+   theme. In dark they are raised slabs (night is lighter than the page). */
+.home .band {
+  margin-inline: 12px;
+  border-radius: var(--r-band);
+  overflow: clip;
+}
+@media (max-width: 599px) {
+  .home .band {
+    margin-inline: 8px;
+    border-radius: 20px;
+  }
+}
+
+/* ---- Type ---- */
+.home :where(h1, h2, h3, h4) {
   text-wrap: balance;
 }
-.home h2 {
-  font-size: clamp(2rem, 3.6vw, 3.25rem);
-  line-height: 1.04;
-  font-weight: 560;
-  font-stretch: 108%;
-  letter-spacing: -0.038em;
-}
-.home h2.narrow {
-  max-width: 44rem;
-}
-.home h2 em,
-.home h1 em {
-  font-style: normal;
-  color: var(--text-3);
-}
-.home h3 {
-  font-weight: 600;
-  font-stretch: 104%;
-  letter-spacing: -0.022em;
-  line-height: 1.2;
-}
-.home p {
+.home :where(p, li, dd, figcaption) {
   text-wrap: pretty;
 }
-.display {
-  font-size: clamp(2.7rem, 7vw, 6.2rem);
-  line-height: 0.98;
-  font-weight: 560;
-  font-stretch: 112%;
-  letter-spacing: -0.048em;
+.home
+  :where(
+    .t-display,
+    .t-statement,
+    .t-band,
+    .t-final,
+    .t-h2,
+    .t-h2s,
+    .t-h3,
+    .t-gauge,
+    .t-figure,
+    .t-verdict,
+    .t-struck
+  ) {
+  font-family: var(--font-display);
+  font-weight: 520;
 }
-.lede {
-  font-size: 1.12rem;
-  color: var(--text-2);
-  margin: 0;
+.home :where(.t-gauge, .t-figure, .t-verdict) {
+  font-variant-numeric: tabular-nums;
 }
-.fg {
-  color: var(--text);
+.home .t-display {
+  font-stretch: 64%;
+  font-size: clamp(4rem, 1.4rem + 10vw, 6.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.012em;
 }
-:lang(zh) .home h2,
-:lang(zh) .display {
+@media (min-width: 1024px) {
+  .home .t-display {
+    font-size: min(9.25rem, 11.6cqi);
+    line-height: 0.84;
+  }
+}
+.home .t-statement {
+  font-stretch: 62%;
+  font-size: clamp(4.75rem, 2.61rem + 8.76vw, 10.5rem);
+  line-height: 0.86;
   letter-spacing: -0.01em;
-  line-height: 1.18;
-  font-weight: 650;
 }
-/* Chinese display lines are set per line (AGENTS.md), sized so the longest
-   line fits a phone. */
-:lang(zh) .display {
-  font-size: clamp(2.6rem, 13vw, 6rem);
+.home .t-band {
+  font-stretch: 62%;
+  font-size: clamp(3.25rem, 1.29rem + 8.04vw, 8.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
 }
-:lang(zh) .final .display {
-  font-size: clamp(2.1rem, 8.6vw, 4.4rem);
+.home .t-final {
+  font-stretch: 62%;
+  font-size: clamp(3rem, 1.18rem + 7.5vw, 7.375rem);
+  line-height: 0.88;
+  letter-spacing: -0.012em;
 }
-
-.split-head {
-  display: grid;
-  gap: 24px;
+.home .t-h2 {
+  font-stretch: 68%;
+  font-size: clamp(2.625rem, 1.84rem + 3.24vw, 4.75rem);
+  line-height: 0.94;
+  letter-spacing: -0.01em;
 }
-@media (min-width: 960px) {
-  .split-head {
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    align-items: end;
-    gap: 72px;
+.home .t-h2s {
+  font-stretch: 82%;
+  font-size: clamp(1.75rem, 1.47rem + 1.14vw, 2.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.012em;
+}
+.home .t-h3 {
+  font-stretch: 82%;
+  font-size: clamp(1.4375rem, 1.32rem + 0.476vw, 1.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+.home .t-h4 {
+  font-weight: 560;
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+.home .t-gauge {
+  font-stretch: 62%;
+  font-size: clamp(4.5rem, 3.39rem + 4.57vw, 7.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+}
+.home .t-figure {
+  font-stretch: 62%;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+}
+.home .t-figure.l42 {
+  font-size: clamp(4.5rem, 3.76rem + 3.05vw, 6.5rem);
+}
+.home .t-figure.dollar {
+  font-size: clamp(3.75rem, 2.91rem + 3.43vw, 6rem);
+}
+.home .t-figure.price {
+  font-stretch: 66%;
+  font-size: clamp(3rem, 2.63rem + 1.52vw, 4rem);
+}
+/* The verdict's finished state; story figure 4 plays it from 100 %. */
+.home .t-verdict {
+  font-stretch: 66%;
+  font-size: clamp(1.375rem, 0.625rem + 2.34vw, 2.5rem);
+  line-height: 1;
+}
+.home .t-struck {
+  font-stretch: 66%;
+  font-size: clamp(2.625rem, 1.93rem + 2.86vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+.home .t-lede {
+  font-size: clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  color: var(--ink-2);
+}
+.home .t-body {
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.home .t-statement-body {
+  font-size: clamp(1.1875rem, 1.07rem + 0.476vw, 1.5rem);
+  line-height: 1.42;
+  letter-spacing: -0.01em;
+}
+.home .t-small {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.home .t-kicker {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--ink-2);
+}
+.home .t-note {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+.home .t-mono {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+/* Secondary text takes the night's own tones. */
+.home [data-ground="night"] :is(.t-lede, .t-body, .t-small) {
+  color: var(--on-night-2);
+}
+.home [data-ground="night"] .t-kicker {
+  color: var(--on-night-3);
+}
+@media (max-width: 599px) {
+  .home .t-h4 {
+    font-size: 17px;
+  }
+  .home .t-body {
+    font-size: 16px;
+  }
+  .home .t-small {
+    font-size: 13.5px;
+  }
+  .home .t-note {
+    font-size: 11px;
+  }
+  .home .t-mono {
+    font-size: 12px;
   }
 }
 
-/* ---- Surfaces: card on paper, hairline, one long soft shadow ---- */
-.surface,
-.win,
-.card,
-.plan,
-.secure,
-.panel,
-.thread .cmt {
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: var(--lift);
+/* Headings in explicit lines (<Lines>): one block per line, never wrapped;
+   a display line is clipped at its container, never painted over a
+   neighbour, if a fallback face runs wide. `data-inline` sets the lines on
+   one line from 1024 or 1200 px. */
+.home .lines {
+  display: block;
+}
+.home .lines .l {
+  display: block;
+  white-space: nowrap;
+  overflow-x: clip;
+  max-inline-size: 100%;
+}
+@media (min-width: 1024px) {
+  .home .lines[data-inline="1024"] {
+    white-space: nowrap;
+    overflow-x: clip;
+  }
+  .home .lines[data-inline="1024"] .l {
+    display: inline;
+  }
+}
+@media (min-width: 1200px) {
+  .home .lines[data-inline="1200"] {
+    white-space: nowrap;
+    overflow-x: clip;
+  }
+  .home .lines[data-inline="1200"] .l {
+    display: inline;
+  }
 }
 
-/* ---- Small parts shared by the sections ---- */
-.chip {
+/* Chinese: the system face, weight 600, no width axis and no tracking; its
+   levers are size and the explicit line breaks. */
+.home
+  :lang(zh)
+  :is(.t-display, .t-statement, .t-band, .t-final, .t-h2, .t-h2s, .t-h3, .t-struck, .t-verdict) {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-stretch: 100%;
+  letter-spacing: 0;
+}
+.home :lang(zh) .t-h2s {
+  word-break: keep-all;
+}
+.home :lang(zh) .t-display {
+  font-size: clamp(4.75rem, 2.4rem + 9.6vw, 7.5rem);
+  line-height: 1.06;
+}
+@media (min-width: 1024px) {
+  .home :lang(zh) .t-display {
+    font-size: min(9.25rem, 12cqi);
+    line-height: 1.04;
+  }
+}
+.home :lang(zh) .t-statement {
+  font-size: clamp(4rem, 2.51rem + 6.1vw, 8rem);
+  line-height: 1.08;
+}
+.home :lang(zh) .t-band {
+  font-size: clamp(3rem, 1.66rem + 5.48vw, 6.5rem);
+  line-height: 1.12;
+}
+.home :lang(zh) .t-final {
+  font-size: clamp(3rem, 2.07rem + 3.81vw, 5.5rem);
+  line-height: 1.14;
+}
+.home :lang(zh) .t-h2 {
+  font-size: clamp(2.125rem, 1.52rem + 2.48vw, 3.75rem);
+  line-height: 1.15;
+}
+.home :lang(zh) .t-h2s {
+  font-size: clamp(1.5rem, 1.27rem + 0.952vw, 2.125rem);
+  line-height: 1.3;
+}
+.home :lang(zh) .t-h3 {
+  font-size: clamp(1.25rem, 1.16rem + 0.381vw, 1.5rem);
+  line-height: 1.3;
+}
+.home :lang(zh) .t-struck {
+  font-size: clamp(2.25rem, 1.69rem + 2.29vw, 3.75rem);
+  line-height: 1.2;
+}
+.home :lang(zh) .t-verdict {
+  font-size: clamp(1.25rem, 0.6rem + 2vw, 2.125rem);
+}
+.home :lang(zh) .t-lede {
+  font-size: 18px;
+  line-height: 1.85;
+  letter-spacing: 0;
+}
+.home :lang(zh) .t-body {
+  font-size: 16px;
+  line-height: 1.8;
+}
+.home :lang(zh) .t-statement-body {
+  font-size: 21px;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+@media (max-width: 599px) {
+  .home :lang(zh) .t-lede {
+    font-size: 16.5px;
+  }
+  .home :lang(zh) .t-body {
+    font-size: 15.5px;
+  }
+  .home :lang(zh) .t-statement-body {
+    font-size: 17.5px;
+  }
+}
+
+/* ---- Skip link, focus, links ---- */
+.home .skip {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: calc(var(--z-nav) + 1);
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: var(--r-ctl);
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  translate: 0 -200%;
+}
+.home .skip:focus-visible {
+  translate: none;
+}
+.home :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.home .code:focus-visible,
+.home pre:focus-visible {
+  outline-offset: -2px;
+}
+/* A link in prose: ink, a 1 px underline at 30 %, full on hover. */
+.home .link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+/* Tailwind's preflight sets every svg to display: block; the arrow sits in
+   a line of text. */
+.home .arrow-glyph {
   display: inline-block;
-  font: 500 11px var(--font-mono);
-  padding: 2px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--line-2);
-  color: var(--text-2);
-  white-space: nowrap;
+  flex: none;
+  vertical-align: -0.06em;
 }
-.chip.m {
-  border-color: color-mix(in srgb, var(--aqua-ink) 45%, transparent);
-  background: color-mix(in srgb, var(--aqua) 18%, transparent);
-  color: var(--aqua-ink);
+.home .link .arrow-glyph {
+  margin-inline-start: 0.3em;
 }
-.tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-.tag {
+.home :where(code) {
   font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 2px 7px;
-  border-radius: 5px;
-  white-space: nowrap;
-}
-.t-crit {
-  background: var(--red-soft);
-  color: var(--red);
-}
-.t-ok {
-  background: color-mix(in srgb, var(--aqua) 26%, transparent);
-  color: var(--aqua-ink);
-}
-.t-plain {
-  color: var(--text-3);
-  padding-left: 0;
+  font-size: 0.9em;
 }

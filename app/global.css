@@ -14,7 +14,7 @@ html {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--aqua) 45%, transparent);
+  background: var(--select);
 }
 
 /* The scroll-lock library sets these inline, so only !important overrides them. */
@@ -23,13 +23,6 @@ html > body[data-scroll-locked] {
   margin-right: 0px !important;
   /* biome-ignore lint/complexity/noImportantStyles: overrides inline styles */
   --removed-body-scroll-bar-size: 0px !important;
-}
-
-.home-layout #nd-nav {
-  background: color-mix(in srgb, var(--paper) 78%, transparent);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(12px) saturate(1.4);
-  -webkit-backdrop-filter: blur(12px) saturate(1.4);
 }
 
 /* The 404 page holds both languages (app/global-not-found.tsx); once its
@@ -48,102 +41,97 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  height: 46px;
+  height: 48px;
   padding: 0 20px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-stretch: 104%;
+  border: 0;
+  border-radius: var(--r-ctl);
+  font-family: inherit;
+  font-weight: 500;
   font-size: 15px;
-  letter-spacing: -0.01em;
-  border: 1px solid transparent;
+  line-height: 1;
   white-space: nowrap;
   text-decoration: none;
+  cursor: pointer;
   transition:
-    background-color var(--t),
-    border-color var(--t),
-    color var(--t),
-    box-shadow var(--t);
+    background-color 150ms var(--e-std),
+    box-shadow 150ms var(--e-std),
+    color 150ms var(--e-std),
+    transform 120ms var(--e-std);
 }
-.btn i {
-  font-style: normal;
-  transition: transform 0.3s var(--ease);
+.btn .arrow-glyph {
+  transition: transform 250ms var(--e-enter);
 }
-.btn-dark {
-  background: var(--text);
+.btn-primary {
+  background: var(--ink);
   color: var(--paper);
 }
-.btn-soft {
+.btn-quiet {
   background: transparent;
-  color: var(--text);
-  border-color: var(--line-2);
-}
-.btn-brand {
-  background: var(--aqua);
-  color: var(--night);
-}
-.btn-ghost {
-  background: color-mix(in srgb, var(--on-night) 4%, transparent);
-  color: var(--on-night);
-  border-color: color-mix(in srgb, var(--on-night) 20%, transparent);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-2);
 }
 .btn-sm {
-  height: 36px;
+  height: 38px;
   padding: 0 14px;
   font-size: 14px;
-  border-radius: 9px;
+}
+[data-ground="night"] .btn-primary {
+  background: var(--on-night);
+  color: var(--night);
+}
+[data-ground="night"] .btn-quiet {
+  color: var(--on-night);
+  box-shadow: inset 0 0 0 1px var(--line-night-2);
+}
+.btn:active {
+  transform: scale(0.98);
 }
 @media (hover: hover) {
-  .btn:hover i {
+  .btn:hover .arrow-glyph {
     transform: translateX(3px);
   }
-  .btn-dark:hover {
-    background: color-mix(in srgb, var(--text) 86%, var(--paper));
+  .btn-primary:hover {
+    background: color-mix(in srgb, var(--ink) 86%, var(--paper));
   }
-  .btn-soft:hover {
-    border-color: var(--text-3);
+  .btn-quiet:hover {
+    background: var(--tint);
+    box-shadow: inset 0 0 0 1px var(--ink-3);
   }
-  .btn-brand:hover {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--aqua) 22%, transparent);
+  [data-ground="night"] .btn-primary:hover {
+    background: color-mix(in srgb, var(--on-night) 86%, var(--night));
   }
-  .btn-ghost:hover {
-    border-color: color-mix(in srgb, var(--on-night) 45%, transparent);
+  [data-ground="night"] .btn-quiet:hover {
+    background: color-mix(in srgb, var(--on-night) 6%, transparent);
+    box-shadow: inset 0 0 0 1px var(--on-night-3);
+  }
+}
+@media (max-width: 599px) {
+  .btn-sm {
+    height: 44px;
   }
 }
 
-@keyframes caret {
-  50% {
-    opacity: 0;
-  }
-}
-
-.caret {
-  animation: caret 1s steps(1) infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .caret {
-    animation: none;
-  }
-}
-
-/* The eye row beside the wordmark, everywhere the logo appears. */
+/* The eye row beside the wordmark, everywhere the logo appears: the eyes
+   take the text colour, so the logo follows the ground it sits on. */
 .logo {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-weight: 620;
-  font-stretch: 110%;
-  font-size: 1.3rem;
-  letter-spacing: -0.045em;
+  font-weight: 540;
+  font-stretch: var(--wordmark-stretch);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.03em;
   white-space: nowrap;
 }
 .logo-eyes {
-  color: var(--text);
+  color: currentColor;
   margin-top: 1px;
 }
 .logo-dark .logo-eyes {
-  color: var(--aqua);
+  color: var(--on-night);
 }
 
 /* The living eye row (LookingEyes): pupils turn towards the pointer through

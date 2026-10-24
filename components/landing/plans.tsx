@@ -1,11 +1,13 @@
-import type { Copy, PlanId } from "@/lib/copy";
+import type { Copy } from "@/lib/copy";
+import type { PlanId } from "@/lib/copy/sections/plans";
 import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
-import { SplitHead, withCode } from "./heading";
+import { ArrowGlyph, Lines, Section, withCode } from "./section";
 
-const PLANS: PlanId[] = ["self", "cloud", "team"];
-const FEATURED: PlanId = "cloud";
+const PLANS: readonly PlanId[] = ["self", "cloud", "team"];
 
+// Open core, hosted when you want it: a ledger of plans beside a three-line
+// head (sections.md §9). Stub from package F; C builds it out.
 export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale }) {
   const links: Record<PlanId, string> = {
     self: localePath(locale, "/docs/quickstart"),
@@ -13,41 +15,48 @@ export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale })
     team: `${repoUrl}/blob/main/docs/roadmap.md`,
   };
   return (
-    <section className="chapter tight-top" id="plans">
-      <div className="wrap">
-        <SplitHead title={copy.title} emphasis={copy.emphasis} body={copy.body} />
-        <div className="plans">
+    <Section id="plans" ground="paper" className="plans">
+      <div className="wrap plans-grid">
+        <div className="plans-head">
+          <h2 className="t-h2">
+            <Lines lines={copy.lines} />
+          </h2>
+          <p className="t-body">{copy.body}</p>
+        </div>
+        <div className="plans-ledger">
           {PLANS.map((id) => {
             const p = copy.items[id];
-            const featured = id === FEATURED;
             return (
-              <article key={id} className={featured ? "plan feat" : "plan"}>
-                <div className={p.planned ? "st pl" : "st"}>
-                  <i />
+              <article key={id} className={id === "cloud" ? "plan sheet" : "plan"} data-plan={id}>
+                <p className="plan-state t-small">
+                  <span className="plan-shape" aria-hidden="true" />
                   {p.state}
-                </div>
-                <h3>{p.name}</h3>
-                <div className="price">
-                  <b>{p.price}</b>
-                  <span>{p.unit}</span>
-                </div>
-                <ul>
-                  {p.points.map((pt) => (
-                    <li key={pt}>
-                      <span>{withCode(pt)}</span>
-                    </li>
+                </p>
+                <h3 className="t-h3">{p.name}</h3>
+                <p className="plan-price">
+                  <span className="t-figure price">{p.price}</span>
+                  <span className="t-small">{p.unit}</span>
+                </p>
+                <a
+                  className={id === "cloud" ? "btn btn-primary" : "btn btn-quiet"}
+                  href={links[id]}
+                >
+                  {p.cta}
+                  {id === "cloud" && <ArrowGlyph />}
+                </a>
+                <ul className="plan-points">
+                  {p.points.map((point) => (
+                    <li key={point}>{withCode(point)}</li>
                   ))}
                 </ul>
-                <a className={featured ? "btn btn-brand" : "btn btn-soft"} href={links[id]}>
-                  {p.cta}
-                  {featured && <i>&rarr;</i>}
-                </a>
               </article>
             );
           })}
+          <p className="t-small plans-fine" id="plans-fine">
+            {copy.fine}
+          </p>
         </div>
-        <p className="fine">{copy.fine}</p>
       </div>
-    </section>
+    </Section>
   );
 }

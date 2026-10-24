@@ -1,93 +1,117 @@
 /* The design tokens (DESIGN.md), the only place a colour literal may appear
    (scripts/check-colors.mjs). Everything else names a token, and derives
-   translucent variants with color-mix(). */
+   translucent variants with color-mix(). Ink, neutral paper, a stone desk
+   and one pen: the pen marks only where ocra acts on the reviewed change. */
 
 :root {
-  /* Ink and the one signal colour. */
-  --aqua: #7fffd4;
-  /* Aquamarine is too light for text on paper; the same hue, darkened to
-     about 5:1 contrast, carries it in the light theme. */
-  --aqua-ink: #0b7a5c;
-  /* The silk's shadow side in the shader scenes. */
-  --silk: #1e5c4b;
-  --night: #090c0b;
-  --night-2: #101513;
-  --night-3: #161d1a;
-  --on-night: #edf1ec;
-  --on-night-2: #b3c1bb;
-  --on-night-3: #7f8d87;
+  /* Grounds, lowest first: page, band, desk, sheet, inset. */
+  --paper: #f7f7f7;
+  --paper-2: #ededed;
+  --stone: #bdbdbd;
+  --sheet: #ffffff;
+  --sheet-2: #f2f2f2;
+  --night: #1a1a1a;
+  --night-2: #262626;
+
+  /* Ink: text, the primary button and every UI state. */
+  --ink: #141414;
+  --ink-2: #4a4a4a;
+  --ink-3: #666666;
+  --line: #e0e0e0;
+  --line-2: #c4c4c4;
+  --on-night: #f2f2f2;
+  --on-night-2: #bababa;
+  --on-night-3: #969696;
+
+  /* The pen (cinnabar), the one signal. Never UI chrome. */
+  --pen: #bd2718;
+  --pen-night: #fd545f;
+  /* Behind inserted code only: red on an insertion cannot read as a deletion. */
+  --pen-wash: #fbe6e2;
+  /* Warning severity only. */
+  --amber: #935508;
+
+  /* color-mix() helpers for shadows and rings only. */
   --white: #ffffff;
   --black: #000000;
 
-  /* Bone paper. */
-  --paper: #f4f3ee;
-  --paper-2: #eceae3;
-  --card: #fbfaf7;
-  --text: #0e1412;
-  --text-2: #49534e;
-  --text-3: #66706b;
-  --line: #e0ded5;
-  --line-2: #cbc8bc;
+  /* Derived. */
+  --line-night: color-mix(in srgb, var(--on-night) 12%, transparent);
+  --line-night-2: color-mix(in srgb, var(--on-night) 22%, transparent);
+  --tint: color-mix(in srgb, var(--ink) 6%, transparent);
+  --read: color-mix(in srgb, var(--ink) 6%, transparent);
+  --focus: var(--ink);
+  --select: color-mix(in srgb, var(--ink) 16%, transparent);
 
-  /* Review severities and code. */
-  --red: #b5301b;
-  --red-soft: #f6e2db;
-  --amber: #a35a00;
-  --keyword: #6b3fa0;
-  --term-warn: #fbbf24;
+  /* The one shadow: sheets on a desk, the thread, the gate tile, the drawer. */
+  --float:
+    0 24px 60px -22px color-mix(in srgb, var(--black) 16%, transparent),
+    0 6px 18px -10px color-mix(in srgb, var(--black) 8%, transparent);
 
-  /* Elevation: a hairline and one long, soft shadow. */
-  --shadow-ink: #0c1411;
-  --lift:
-    0 1px 0 color-mix(in srgb, var(--white) 70%, transparent) inset,
-    0 30px 60px -36px color-mix(in srgb, var(--shadow-ink) 34%, transparent);
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --t: 0.22s var(--ease);
+  /* Curves (motion.md §1); no other timing function in landing code. */
+  --e-enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --e-std: cubic-bezier(0.4, 0, 0.2, 1);
+  --e-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Radii, concentric: outer = inner + padding. */
+  --r-chip: 6px;
+  --r-tab: 7px;
+  --r-ctl: 10px;
+  --r-sheet: 14px;
+  --r-card: 16px;
+  --r-band: 28px;
+
+  /* The wordmark's width: one token, so it can return to 100 % in one line. */
+  --wordmark-stretch: 78%;
 
   /* Stacking, lowest first. */
   --z-under: -1;
   --z-over: 1;
   --z-tip: 5;
   --z-nav: 60;
-  --z-dock: 70;
 
-  /* Fumadocs draws the manual's chrome from these. */
+  /* Fumadocs draws the manual's chrome from these. The pen is never the
+     manual's link, primary or active colour: only critical callouts. */
   --color-fd-background: var(--paper);
-  --color-fd-foreground: var(--text);
+  --color-fd-foreground: var(--ink);
   --color-fd-muted: var(--paper-2);
-  --color-fd-muted-foreground: var(--text-2);
-  --color-fd-card: var(--card);
-  --color-fd-card-foreground: var(--text);
-  --color-fd-popover: var(--paper);
-  --color-fd-popover-foreground: var(--text);
+  --color-fd-muted-foreground: var(--ink-2);
+  --color-fd-card: var(--sheet);
+  --color-fd-card-foreground: var(--ink);
+  --color-fd-popover: var(--sheet);
+  --color-fd-popover-foreground: var(--ink);
   --color-fd-border: var(--line);
-  --color-fd-primary: var(--aqua-ink);
-  --color-fd-primary-foreground: var(--white);
+  --color-fd-primary: var(--ink);
+  --color-fd-primary-foreground: var(--paper);
   --color-fd-secondary: var(--paper-2);
-  --color-fd-secondary-foreground: var(--text);
-  --color-fd-accent: color-mix(in srgb, var(--aqua) 22%, var(--paper));
-  --color-fd-accent-foreground: var(--text);
-  --color-fd-ring: var(--aqua-ink);
+  --color-fd-secondary-foreground: var(--ink);
+  --color-fd-accent: var(--tint);
+  --color-fd-accent-foreground: var(--ink);
+  --color-fd-ring: var(--ink);
+  --color-fd-error: var(--pen);
+  --color-fd-warning: var(--amber);
 }
 
+/* Dark: a designed layer order, lighter is higher (page < band < desk <
+   sheet < inset); night bands are raised slabs above the page. */
 .dark {
-  --aqua-ink: var(--aqua);
-  --paper: #0b0f0d;
-  --paper-2: #111614;
-  --card: #131916;
-  --text: #ebf0ec;
-  --text-2: #a5b0aa;
-  --text-3: #7c8781;
-  --line: #1f2723;
-  --line-2: #2c3631;
-  --red: #ff7a5c;
-  --red-soft: #2a1713;
-  --amber: #f2ad4b;
-  --keyword: #c9a7ff;
-  --lift:
-    0 1px 0 color-mix(in srgb, var(--white) 5%, transparent) inset,
-    0 30px 60px -36px color-mix(in srgb, var(--black) 80%, transparent);
-
-  --color-fd-accent: color-mix(in srgb, var(--aqua) 12%, var(--paper));
-  --color-fd-primary-foreground: var(--night);
+  --paper: #121212;
+  --paper-2: #181818;
+  --stone: #1e1e1e;
+  --sheet: #232323;
+  --sheet-2: #2a2a2a;
+  --night: #262626;
+  --night-2: #313131;
+  --ink: #ededed;
+  --ink-2: #b4b4b4;
+  --ink-3: #969696;
+  --line: #2e2e2e;
+  --line-2: #404040;
+  --on-night-3: #a3a3a3;
+  --pen: #fd545f;
+  --pen-wash: #331b1a;
+  --amber: #efad48;
+  --float:
+    0 0 0 1px color-mix(in srgb, var(--white) 6%, transparent),
+    0 24px 60px -22px color-mix(in srgb, var(--black) 60%, transparent);
 }

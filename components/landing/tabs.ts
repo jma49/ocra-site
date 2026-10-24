@@ -3,18 +3,19 @@ import type { HTMLAttributes, KeyboardEvent } from "react";
 const tabId = (prefix: string, id: string) => `${prefix}-tab-${id}`;
 const panelId = (prefix: string, id: string) => `${prefix}-panel-${id}`;
 
-// A tab panel's attributes: it names the tab that labels it. They depend on
-// nothing but the ids, so a panel rendered on the server can carry them.
-export const tabPanel = (prefix: string, id: string) =>
-  ({
-    id: panelId(prefix, id),
-    role: "tabpanel",
-    "aria-labelledby": tabId(prefix, id),
-  }) satisfies HTMLAttributes<HTMLElement>;
+// An inactive stacked variant (a tab panel, a lifecycle state, a story
+// figure): out of the tab order and the accessibility tree, and hidden
+// (03-objects.css: visibility: hidden) but still in its grid cell, so the
+// tallest variant keeps sizing the cell and nothing moves on a switch.
+export const inactive = (off: boolean) =>
+  (off ? { inert: true, "data-inactive": "" } : {}) satisfies HTMLAttributes<HTMLElement> & {
+    "data-inactive"?: string;
+  };
 
-// The ARIA tabs pattern for a small fixed set: the selected tab is the one
-// in the tab order, the arrow keys, Home and End move between tabs and
-// select them, and the panel names the tab that labels it.
+// The ARIA tabs pattern for a small fixed set whose panels are all
+// rendered: the selected tab is the one in the tab order; the arrow keys,
+// Home and End move between tabs and select them; every tab controls its
+// panel; every panel names its tab, and the unselected ones are inactive.
 export function tabPattern<Id extends string>(
   prefix: string,
   ids: readonly Id[],
@@ -39,17 +40,23 @@ export function tabPattern<Id extends string>(
     document.getElementById(tabId(prefix, id))?.focus();
   };
   return {
-    list: { role: "tablist", onKeyDown } satisfies HTMLAttributes<HTMLElement>,
+    // The tablist, named (`label`: what the tabs choose between).
+    list: (label: string) =>
+      ({ role: "tablist", "aria-label": label, onKeyDown }) satisfies HTMLAttributes<HTMLElement>,
     tab: (id: Id) =>
       ({
         id: tabId(prefix, id),
         role: "tab",
         "aria-selected": id === selected,
-        // Only the selected panel is rendered.
-        "aria-controls": id === selected ? panelId(prefix, id) : undefined,
+        "aria-controls": panelId(prefix, id),
         tabIndex: id === selected ? 0 : -1,
         onClick: () => select(id),
       }) satisfies HTMLAttributes<HTMLElement>,
-    panel: (id: Id) => tabPanel(prefix, id),
+    panel: (id: Id) => ({
+      id: panelId(prefix, id),
+      role: "tabpanel",
+      "aria-labelledby": tabId(prefix, id),
+      ...inactive(id !== selected),
+    }),
   };
 }

@@ -1,0 +1,281 @@
+/* The announce line, the sticky nav bar and its drawer (DESIGN.md, Nav).
+   The bar follows the ground under it (`data-on`, set by NavShell) and
+   promotes its call to action after the hero (`data-promoted`). Shared. */
+
+.home .announce p {
+  padding: 9.5px 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink-2);
+}
+.home .announce a {
+  padding-block: 12px;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  transition: text-decoration-color 150ms var(--e-std);
+}
+.home .announce a .arrow-glyph {
+  margin-inline-start: 0.3em;
+}
+@media (hover: hover) {
+  .home .announce a:hover {
+    text-decoration-color: var(--ink);
+  }
+}
+@media (max-width: 599px) {
+  .home .announce p {
+    font-size: 13px;
+    padding: 9px 20px;
+  }
+}
+
+/* ---- The bar ---- */
+.home .nav-shell {
+  position: sticky;
+  top: 10px;
+  z-index: var(--z-nav);
+}
+.home .nav {
+  --nav-g: var(--paper);
+  /* Paper grounds have no glass: near-opaque, so text never shows through. */
+  --nav-o: 96%;
+  --nav-t: var(--ink);
+  --nav-a: var(--ink-2);
+  --nav-l: color-mix(in srgb, var(--ink) 8%, transparent);
+  --cta-g: color-mix(in srgb, var(--nav-t) 8%, transparent);
+  --cta-t: var(--nav-t);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: calc(100% - 24px);
+  max-width: 1240px;
+  height: 56px;
+  margin-inline: auto;
+  padding: 0 8px 0 16px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--nav-g) var(--nav-o), transparent);
+  box-shadow: inset 0 0 0 1px var(--nav-l);
+  color: var(--nav-t);
+  transition:
+    background-color 300ms var(--e-std),
+    box-shadow 300ms var(--e-std),
+    color 300ms var(--e-std);
+}
+.home .nav[data-on="paper-2"] {
+  --nav-g: var(--paper-2);
+}
+.home .nav[data-on="stone"] {
+  --nav-g: var(--stone);
+  --nav-o: 94%;
+  --nav-a: var(--ink);
+}
+.home .nav[data-on="night"] {
+  --nav-g: var(--night-2);
+  --nav-o: 92%;
+  --nav-t: var(--on-night);
+  --nav-a: var(--on-night-2);
+  --nav-l: var(--line-night);
+  --focus: var(--on-night);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.home .nav[data-promoted] {
+  --cta-g: var(--ink);
+  --cta-t: var(--paper);
+}
+.home .nav[data-promoted][data-on="night"] {
+  --cta-g: var(--on-night);
+  --cta-t: var(--night);
+}
+
+.home .nav-logo {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding-inline-end: 6px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 8px;
+}
+.home .nav-links {
+  margin-inline-start: 18px;
+}
+.home .nav-links ul {
+  display: flex;
+  gap: 2px;
+}
+.home .nav-links a,
+.home .nav-a {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 11px;
+  border-radius: var(--r-tab);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--nav-a);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 150ms var(--e-std),
+    color 150ms var(--e-std);
+}
+.home .nav-r {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-inline-start: auto;
+}
+.home .ib {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--nav-a, var(--ink-2));
+  cursor: pointer;
+  transition:
+    background-color 150ms var(--e-std),
+    color 150ms var(--e-std);
+}
+.home .ib svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+html:not(.dark) .home .theme-sun,
+.dark .home .theme-moon {
+  display: none;
+}
+.home .nav-cta {
+  margin-inline-start: 6px;
+  background: var(--cta-g);
+  color: var(--cta-t);
+  transition:
+    background-color 300ms var(--e-std),
+    color 300ms var(--e-std),
+    transform 120ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .nav-links a:hover,
+  .home .nav-a:hover,
+  .home .ib:hover {
+    background: color-mix(in srgb, var(--nav-t, var(--ink)) 7%, transparent);
+    color: var(--nav-t, var(--ink));
+  }
+  .home .nav-cta:hover {
+    background: color-mix(in srgb, var(--nav-t) 13%, transparent);
+  }
+  .home .nav[data-promoted] .nav-cta:hover {
+    background: color-mix(in srgb, var(--cta-g) 86%, var(--cta-t));
+  }
+}
+.home .nav-menu {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .home .nav-links,
+  .home .nav-a {
+    display: none;
+  }
+  .home .nav-menu {
+    display: inline-grid;
+  }
+}
+@media (max-width: 599px) {
+  .home .nav {
+    height: 52px;
+    padding-inline-start: 12px;
+  }
+  .home .nav-theme {
+    display: none;
+  }
+  .home .ib {
+    width: 44px;
+    height: 44px;
+  }
+  .home .nav-cta {
+    padding-inline: 12px;
+  }
+}
+
+/* ---- The drawer ---- */
+.home .drawer {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  display: none;
+  width: calc(100% - 24px);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--sheet);
+  box-shadow: var(--float);
+  color: var(--ink);
+}
+.home .nav-shell[data-open] .drawer {
+  display: block;
+}
+.home .drawer ul {
+  display: grid;
+}
+.home .drawer li a {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 17px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.home .drawer-theme {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  margin-top: 4px;
+  padding: 0 4px 0 12px;
+  border-top: 1px solid var(--line);
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.home .drawer-theme .ib {
+  --nav-a: var(--ink-2);
+  --nav-t: var(--ink);
+}
+.home .drawer-cta {
+  width: 100%;
+  margin-top: 8px;
+}
+@media (hover: hover) {
+  .home .drawer li a:hover {
+    background: var(--tint);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home .nav-shell[data-open] .drawer {
+    animation: drawer-in 260ms var(--e-enter);
+  }
+}
+@keyframes drawer-in {
+  from {
+    clip-path: inset(0 0 100% 0 round 12px);
+  }
+  to {
+    clip-path: inset(0 round 12px);
+  }
+}

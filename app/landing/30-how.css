@@ -1,0 +1,83 @@
+/* How it works: the head, legend and caption, the meter row, the story grid
+   in reading order, steps and numerals, the pinned, unpinned and reduced
+   layouts (package S). F's stub: unpinned, text beside its figure. */
+.home .how {
+  padding-block: var(--pad);
+}
+.home .how-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 24px;
+  align-items: end;
+}
+.home .how-head > :first-child {
+  grid-column: 1 / span 7;
+}
+.home .how-head .t-kicker {
+  margin-bottom: 16px;
+}
+.home .how-aside {
+  grid-column: 8 / -1;
+  display: grid;
+  gap: 16px;
+}
+.home .how-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.home .how-example {
+  color: var(--ink-3);
+}
+.home .story {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 56px;
+  margin-top: 56px;
+}
+.home .step {
+  grid-column: 1 / span 5;
+  padding-top: 24px;
+}
+.home .fig {
+  grid-column: 6 / -1;
+  min-width: 0;
+  margin: 0;
+}
+.home .step h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.home .step-n {
+  font-family: var(--font-display);
+  font-weight: 520;
+  font-stretch: 62%;
+  font-size: 64px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.home .step-stages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0;
+}
+@media (max-width: 1199px) {
+  .home .how-head > :first-child,
+  .home .how-aside,
+  .home .step,
+  .home .fig {
+    grid-column: 1 / -1;
+  }
+  .home .story {
+    row-gap: 24px;
+  }
+}
+@media (max-width: 599px) {
+  .home .step-n {
+    font-size: 46px;
+  }
+}
