@@ -2,124 +2,136 @@
 
 import { useEffect } from "react";
 
-// What reveals as it scrolls in, and in what order within its group.
-const REVEAL = [
-  ".split-head",
-  ".legend",
-  ".works-grid",
-  ".pipe-steps > li",
-  ".pipe-fig",
-  ".state-grid",
-  ".cards > article",
-  ".life",
-  ".secure",
-  ".plans > article",
-  ".faq-grid",
-  ".final .eyes-alive",
-].join(",");
-// Surfaces that carry the pointer's spotlight.
-const SPOT = ".card, .plan, .secure";
-// How far the reading light reaches past the pointer (03-hero.css). Beyond
-// it the light is outside the hero, and moving it would only repaint.
-const REACH = 320;
-
-// The landing page's motion in one island, so no section turns into a client
-// component for it:
-// - sections and cards rise in as they scroll into view, staggered within a
-//   grid (hidden only once this has run, so the page reads without
-//   JavaScript, never under Reduce motion, and never once on screen: the
-//   script may run after the reader has scrolled);
-// - a soft light follows the pointer across the surfaces;
-// - every eye row with `data-look` turns its pupils towards the pointer;
-// - the hero's reading light follows the pointer.
-// The pointer effects answer the pointer, so they run under Reduce motion.
+// The landing page's shared motion, in one island so no section turns into a
+// client component for it (motion.md §2, §6, §9, §12):
+// - `html.hy` once hydrated. The gating script in the root layout's <head>
+//   added `html.mo` before the first paint (with motion allowed) and drops
+//   it after 4 s if this never runs, so every pre-play state is released.
+//   This never adds `mo` itself: a pre-play state never flashes after paint.
+// - `[data-pen-once]` roots get `.on` once 45 % visible, which draws their
+//   marks once (04-pen.css). `data-pen-once="0.5"` sets another threshold;
+//   `data-pen-once="timeline"` is skipped where scroll timelines draw it
+//   instead (the quiet band's struck words).
+// - `--vh`, the viewport height the pinned story sizes from, re-measured
+//   only when the width changes (toolbars and full-page captures change the
+//   height alone).
+// - The final band's eyes follow the pointer while the band is within a
+//   viewport of the screen, and blink only while it is in view (`.awake`).
+//   Pointer-driven, so it runs under Reduce motion too; the blink does not.
 export function LandingMotion() {
   useEffect(() => {
     const root = document.documentElement;
+    root.classList.add("hy");
     const cleanups: (() => void)[] = [];
 
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const items = [...document.querySelectorAll<HTMLElement>(REVEAL)].filter(
-        (el) => el.getBoundingClientRect().top >= innerHeight,
-      );
-      for (const el of items) {
-        const siblings = el.parentElement ? [...el.parentElement.children] : [];
-        el.style.setProperty("--ri", String(Math.max(0, siblings.indexOf(el))));
-        el.dataset.reveal = "";
-      }
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!e.isIntersecting) continue;
-            (e.target as HTMLElement).dataset.reveal = "in";
-            io.unobserve(e.target);
-          }
-        },
-        { rootMargin: "0px 0px -8% 0px" },
-      );
-      for (const el of items) io.observe(el);
-      root.classList.add("motion");
-      cleanups.push(() => {
-        io.disconnect();
-        root.classList.remove("motion");
-      });
-    }
-
-    const eyes = [...document.querySelectorAll<SVGElement>("[data-look]")];
-    const reading = document.querySelector<HTMLElement>(".reading");
-    let raf = 0;
-    let last: PointerEvent | undefined;
-    let light = "";
-    const frame = () => {
-      raf = 0;
-      if (!last) return;
-      const { clientX: x, clientY: y, target } = last;
-      for (const el of eyes) {
-        const r = el.getBoundingClientRect();
-        const dx = x - (r.left + r.width / 2);
-        const dy = y - (r.top + r.height / 2);
-        const d = Math.hypot(dx, dy) || 1;
-        // Full turn once the pointer is a few eye-widths away.
-        const k = Math.min(1, d / (r.width * 2 + 120));
-        el.style.setProperty("--px", ((dx / d) * k).toFixed(3));
-        el.style.setProperty("--py", ((dy / d) * k).toFixed(3));
-      }
-      if (reading) {
-        const r = reading.getBoundingClientRect();
-        const lx = x - r.left;
-        const ly = y - r.top;
-        const away = lx < -REACH || ly < -REACH || lx > r.width + REACH || ly > r.height + REACH;
-        // Out of reach the light parks in one place, so moving the pointer
-        // elsewhere on the page changes nothing.
-        const [px, py] = away ? [-REACH, -REACH] : [Math.round(lx), Math.round(ly)];
-        if (`${px} ${py}` !== light) {
-          light = `${px} ${py}`;
-          reading.style.setProperty("--lx", `${px}px`);
-          reading.style.setProperty("--ly", `${py}px`);
-          reading.dataset.live = "";
-        }
-      }
-      const spot = target instanceof Element ? target.closest<HTMLElement>(SPOT) : null;
-      if (spot) {
-        const r = spot.getBoundingClientRect();
-        spot.style.setProperty("--mx", `${(x - r.left).toFixed(0)}px`);
-        spot.style.setProperty("--my", `${(y - r.top).toFixed(0)}px`);
-      }
+    let width = innerWidth;
+    const resized = () => {
+      if (innerWidth === width) return;
+      width = innerWidth;
+      root.style.setProperty("--vh", `${innerHeight}px`);
     };
-    const move = (e: PointerEvent) => {
-      last = e;
-      if (!raf) raf = requestAnimationFrame(frame);
-    };
-    addEventListener("pointermove", move, { passive: true });
-    cleanups.push(() => {
-      removeEventListener("pointermove", move);
-      cancelAnimationFrame(raf);
-    });
+    addEventListener("resize", resized, { passive: true });
+    cleanups.push(() => removeEventListener("resize", resized));
 
+    cleanups.push(penOnce());
+    cleanups.push(finalEyes());
     return () => {
       for (const c of cleanups) c();
     };
   }, []);
 
   return null;
+}
+
+function penOnce(): () => void {
+  const timeline = CSS.supports("animation-timeline: view()");
+  const observers = new Map<number, IntersectionObserver>();
+  for (const el of document.querySelectorAll<HTMLElement>("[data-pen-once]")) {
+    const value = el.dataset.penOnce;
+    if (value === "timeline" && timeline) continue;
+    const threshold = Number(value) || 0.45;
+    let io = observers.get(threshold);
+    if (!io) {
+      io = new IntersectionObserver(
+        (entries, self) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add("on");
+            self.unobserve(e.target);
+          }
+        },
+        { threshold, rootMargin: "0px 0px -6% 0px" },
+      );
+      observers.set(threshold, io);
+    }
+    io.observe(el);
+  }
+  return () => {
+    for (const io of observers.values()) io.disconnect();
+  };
+}
+
+// Travel of each pupil, in viewBox units: the big eyes and the small ones.
+const TRAVEL_BIG = 1.55;
+const TRAVEL_SMALL = 0.62;
+
+function finalEyes(): () => void {
+  const band = document.querySelector<HTMLElement>("#final");
+  const pupils = [...document.querySelectorAll<SVGGElement>(".final-eyes .pupil")];
+  if (!band || pupils.length === 0) return () => {};
+  const eyes = pupils.map((pupil) => {
+    const r = Number(pupil.querySelector(".iris")?.getAttribute("r") ?? 0);
+    return { pupil, travel: r > 2 ? TRAVEL_BIG : TRAVEL_SMALL, x: 0, y: 0, tx: 0, ty: 0 };
+  });
+
+  let raf = 0;
+  let last = 0;
+  const frame = (now: number) => {
+    const dt = last ? now - last : 16.7;
+    last = now;
+    const k = 1 - (1 - 0.16) ** (dt / 16.7);
+    let moving = false;
+    for (const eye of eyes) {
+      eye.x += (eye.tx - eye.x) * k;
+      eye.y += (eye.ty - eye.y) * k;
+      if (Math.abs(eye.tx - eye.x) > 0.01 || Math.abs(eye.ty - eye.y) > 0.01) moving = true;
+      eye.pupil.style.setProperty("--px", eye.x.toFixed(3));
+      eye.pupil.style.setProperty("--py", eye.y.toFixed(3));
+    }
+    raf = moving ? requestAnimationFrame(frame) : 0;
+    if (!raf) last = 0;
+  };
+  const move = (e: PointerEvent) => {
+    for (const eye of eyes) {
+      const r = eye.pupil.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      const d = Math.hypot(dx, dy) || 1;
+      const reach = Math.min(1, d / 420) * eye.travel;
+      eye.tx = (dx / d) * reach;
+      eye.ty = (dy / d) * reach * 0.8;
+    }
+    if (!raf) raf = requestAnimationFrame(frame);
+  };
+
+  let listening = false;
+  const near = new IntersectionObserver(
+    ([e]) => {
+      if (e?.isIntersecting && !listening) addEventListener("pointermove", move, { passive: true });
+      if (!e?.isIntersecting && listening) removeEventListener("pointermove", move);
+      listening = !!e?.isIntersecting;
+    },
+    { rootMargin: "100% 0px" },
+  );
+  const seen = new IntersectionObserver(([e]) =>
+    band.classList.toggle("awake", !!e?.isIntersecting),
+  );
+  near.observe(band);
+  seen.observe(band);
+  return () => {
+    near.disconnect();
+    seen.disconnect();
+    removeEventListener("pointermove", move);
+    cancelAnimationFrame(raf);
+  };
 }

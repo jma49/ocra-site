@@ -1,0 +1,254 @@
+/* Code as GitHub shows it in a pull request (CodeRows, InkCode): rows on a
+   sheet in Maple at line-height 1.75, numbers, signs, folds with the hunk
+   header, the anchored row's reading band, and the reader rail. --fs is the
+   code size in px; the pen's dash-drawn marks read it for their stroke
+   (04-pen.css). Shared. */
+
+/* ---- Code rows (CodeRows) ---- */
+.home .code {
+  --fs: 13.5;
+  position: relative;
+  padding-block: 0.6em;
+  background: var(--sheet);
+  font-family: var(--font-mono);
+  font-size: calc(var(--fs) * 1px);
+  line-height: 1.75;
+  color: var(--ink);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+@media (max-width: 1439px) {
+  .home .code {
+    --fs: 13;
+  }
+}
+@media (max-width: 599px) {
+  .home .code {
+    --fs: 11.5;
+  }
+}
+@media (max-width: 379px) {
+  .home .code {
+    --fs: 10.5;
+  }
+}
+.home .code .ln {
+  --pt: 0em;
+  --pb: 0em;
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px 40px 16px minmax(0, 1fr);
+  align-items: baseline;
+  width: max-content;
+  min-width: 100%;
+  padding-inline-end: 16px;
+  transition: background-color 150ms var(--e-std);
+}
+.home .code:not([data-reader]) .ln {
+  grid-template-columns: 40px 16px minmax(0, 1fr);
+}
+.home .code .ln > code,
+.home .code .ln > .ln-ink {
+  grid-row: 1;
+  grid-column: -2 / -1;
+}
+.home .code .ln > code {
+  font-size: inherit;
+  white-space: pre;
+}
+.home .code .ln > code b {
+  font-weight: 500;
+}
+.home .code .ln > code i {
+  font-style: normal;
+  color: var(--ink-3);
+}
+.home .code .ln-n {
+  grid-row: 1;
+  padding-inline-end: 10px;
+  font-size: 0.89em;
+  text-align: right;
+  color: var(--ink-3);
+  user-select: none;
+  transition: color 300ms var(--e-std);
+}
+.home .code .ln-s {
+  grid-row: 1;
+  text-align: center;
+  color: var(--ink-3);
+  user-select: none;
+}
+.home .code[data-reader] .ln-n {
+  grid-column: 2;
+}
+.home .code[data-reader] .ln-s {
+  grid-column: 3;
+}
+.home .code:not([data-reader]) .ln-n {
+  grid-column: 1;
+}
+.home .code:not([data-reader]) .ln-s {
+  grid-column: 2;
+}
+/* The row that carries notes: room above and below, never wrapped. */
+.home .code .ln[data-hot] {
+  --pt: 1.4em;
+  --pb: 1.7em;
+  padding-block: var(--pt) var(--pb);
+}
+/* The anchored row: the neutral reading band (never a pink row: it is an
+   added line), its number in ink. */
+.home .code .ln[data-anchor] {
+  background: var(--read);
+}
+.home .code .ln[data-anchor] .ln-n {
+  color: var(--ink);
+}
+@media (hover: hover) {
+  .home .code .ln:not([data-anchor]):hover {
+    background: var(--tint);
+  }
+}
+/* Folds: the lines GitHub leaves out; the first carries the hunk header. */
+.home .code .ln-fold {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: max-content;
+  min-width: 100%;
+  margin-block: 2px;
+  padding: 0 16px 0 56px;
+  border-block: 1px solid var(--line);
+  background: var(--sheet-2);
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--ink-3);
+  font-variant-ligatures: none;
+}
+.home .code[data-reader] .ln-fold {
+  padding-inline-start: 96px;
+}
+.home .code .ln-custom {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  min-height: 1.75em;
+  width: max-content;
+  min-width: 100%;
+}
+.home .code .ln-custom .ln-c {
+  grid-column: 2;
+}
+/* Marks that span rows (an Arrow), in em of the code from the first row. */
+.home .code .code-ink {
+  --code-ch: 1ch;
+  position: absolute;
+  inset: 0.6em 0 auto 0;
+  pointer-events: none;
+}
+@media (max-width: 599px) {
+  .home .code .ln {
+    grid-template-columns: 28px 24px 10px minmax(0, 1fr);
+    padding-inline-end: 10px;
+  }
+  .home .code:not([data-reader]) .ln {
+    grid-template-columns: 24px 10px minmax(0, 1fr);
+  }
+  .home .code .ln-n {
+    padding-inline-end: 4px;
+  }
+  .home .code .ln-fold {
+    padding-inline: 34px 10px;
+  }
+  .home .code[data-reader] .ln-fold {
+    padding-inline-start: 62px;
+  }
+  .home .code .ln-custom {
+    grid-template-columns: 28px minmax(0, 1fr);
+  }
+  /* Rows the pen does not mark may wrap, with a hanging indent. */
+  .home .code .ln:not([data-hot]) > code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    padding-inline-start: 2ch;
+    text-indent: -2ch;
+  }
+  .home .code .ln:not([data-hot]) {
+    width: auto;
+  }
+  .home .code .ln[data-hide="phone"] {
+    display: none;
+  }
+}
+@media (min-width: 600px) {
+  .home .code .ln[data-hide="wide"] {
+    display: none;
+  }
+}
+
+/* ---- The reader rail ---- */
+.home .code .ln-rail {
+  grid-row: 1;
+  grid-column: 1;
+  align-self: stretch;
+  position: relative;
+}
+.home .code .rd {
+  position: absolute;
+  left: 4px;
+  top: 0.875em;
+  translate: 0 -50%;
+  display: block;
+  line-height: 0;
+  opacity: 0;
+  color: var(--ink);
+}
+.home .code .rd svg {
+  display: block;
+  width: 32px;
+  height: auto;
+}
+/* At rest only the anchored row's eyes show: parked, looking at Date.now(). */
+.home .code .ln[data-anchor] .rd {
+  opacity: 1;
+}
+.home .is-reader {
+  --px: 0.8;
+  --py: 0.3;
+}
+.home .is-reader .eye,
+.home .is-reader .iris {
+  fill: var(--ink);
+}
+.home .is-reader .glint {
+  fill: var(--sheet);
+}
+.home .is-reader .pupil {
+  transition: none;
+}
+.home .is-reader .lids {
+  animation: none;
+}
+@media (max-width: 599px) {
+  .home .code .rd {
+    left: 2px;
+  }
+  .home .code .rd svg {
+    width: 24px;
+  }
+}
+
+/* ---- Maple text the pen marks (InkCode) ---- */
+.home .ink-code {
+  position: relative;
+  display: inline-grid;
+  font-family: var(--font-mono);
+  line-height: 1.75;
+  white-space: pre;
+  vertical-align: baseline;
+}
+.home .ink-code > * {
+  grid-area: 1 / 1;
+}
+.home .ink-code > code {
+  font-size: inherit;
+}

@@ -1,0 +1,42 @@
+/* Quiet by design: the night band, the statement, the struck words with
+   their scroll timeline and its fallback, caption and proof (package P).
+   F's stub. */
+.home .quiet {
+  padding-block: var(--pad-band);
+}
+.home .quiet-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 64px;
+  row-gap: 48px;
+  align-items: start;
+}
+.home .quiet .t-statement {
+  grid-column: 1 / span 7;
+}
+.home .quiet-side {
+  grid-column: 8 / -1;
+  padding-top: 0.4em;
+}
+.home .oos {
+  display: grid;
+  margin-top: 40px;
+  color: var(--on-night-2);
+}
+.home .quiet-caption {
+  margin-top: 24px;
+}
+.home .quiet-proof {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--on-night-3);
+}
+@media (max-width: 1199px) {
+  .home .quiet-grid {
+    column-gap: var(--gap);
+  }
+  .home .quiet .t-statement,
+  .home .quiet-side {
+    grid-column: 1 / -1;
+  }
+}

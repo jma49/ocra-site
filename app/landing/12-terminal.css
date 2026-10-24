@@ -1,0 +1,24 @@
+/* The terminal pane and its typing (package H). F's stub below. */
+.home .term {
+  margin: 0;
+  padding: 16px 18px 18px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.home .term-c {
+  font-weight: 500;
+}
+.home .term-d {
+  color: var(--ink-3);
+}
+.home .term-o {
+  color: var(--ink-2);
+}
+.home .term-w {
+  color: var(--pen);
+  font-weight: 500;
+}

@@ -17,7 +17,7 @@ export default function AppleIcon() {
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
-        background: "#090c0b",
+        background: "#1A1A1A",
       }}
     >
       {/* biome-ignore lint/performance/noImgElement: ImageResponse renders plain elements, not next/image */}

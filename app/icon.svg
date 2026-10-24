@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
 <title>ocra</title>
-<rect width="64" height="64" rx="15" fill="#090c0b"/>
+<rect width="64" height="64" rx="15" fill="#1A1A1A"/>
 <g transform="translate(3.2 17.6) scale(1.8)">
-<circle cx="2.6" cy="4.6" r="2.2" fill="#edf1ec"/>
-<circle cx="2.6" cy="4.6" r="1.23" fill="#090c0b"/>
-<circle cx="2.16" cy="4.12" r="0.44" fill="#edf1ec"/>
-<circle cx="10.6" cy="8" r="5" fill="#edf1ec"/>
-<circle cx="10.6" cy="8" r="2.8" fill="#090c0b"/>
-<circle cx="9.6" cy="6.9" r="1" fill="#edf1ec"/>
-<circle cx="21.4" cy="8" r="5" fill="#edf1ec"/>
-<circle cx="21.4" cy="8" r="2.8" fill="#090c0b"/>
-<circle cx="20.4" cy="6.9" r="1" fill="#edf1ec"/>
-<circle cx="29.4" cy="4.6" r="2.2" fill="#edf1ec"/>
-<circle cx="29.4" cy="4.6" r="1.23" fill="#090c0b"/>
-<circle cx="28.96" cy="4.12" r="0.44" fill="#edf1ec"/>
+<circle cx="2.6" cy="4.6" r="2.2" fill="#F2F2F2"/>
+<circle cx="2.6" cy="4.6" r="1.23" fill="#1A1A1A"/>
+<circle cx="2.16" cy="4.12" r="0.44" fill="#F2F2F2"/>
+<circle cx="10.6" cy="8" r="5" fill="#F2F2F2"/>
+<circle cx="10.6" cy="8" r="2.8" fill="#1A1A1A"/>
+<circle cx="9.6" cy="6.9" r="1" fill="#F2F2F2"/>
+<circle cx="21.4" cy="8" r="5" fill="#F2F2F2"/>
+<circle cx="21.4" cy="8" r="2.8" fill="#1A1A1A"/>
+<circle cx="20.4" cy="6.9" r="1" fill="#F2F2F2"/>
+<circle cx="29.4" cy="4.6" r="2.2" fill="#F2F2F2"/>
+<circle cx="29.4" cy="4.6" r="1.23" fill="#1A1A1A"/>
+<circle cx="28.96" cy="4.12" r="0.44" fill="#F2F2F2"/>
 </g>
 </svg>

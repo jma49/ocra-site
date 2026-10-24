@@ -1,0 +1,100 @@
+/* Lifecycle: the 6/6 composition, tabs and pause, the conversation thread
+   and its states, the caption, the state note and the anatomy (package L).
+   F's stub. */
+.home .lifecycle {
+  padding-block: var(--pad);
+}
+.home .life-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 48px;
+  align-items: start;
+}
+.home .life-object {
+  grid-column: 1 / span 6;
+}
+.home .life-text {
+  grid-column: 7 / -1;
+}
+.home .life-thread {
+  box-shadow: var(--float);
+}
+.home .life-thread-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.home .life-thread-head strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.home .life-thread-head code {
+  font-weight: 500;
+  color: var(--ink);
+}
+.home .life-status {
+  margin-inline-start: auto;
+  color: var(--ink);
+}
+.home .life-title {
+  padding: 12px 16px 4px;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.home .life-title strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.home .life-event {
+  padding: 4px 16px;
+  color: var(--ink-3);
+}
+.home .life-event:last-child {
+  padding-bottom: 16px;
+}
+.home .life-cap {
+  margin-top: 12px;
+  color: var(--ink-2);
+}
+.home .life-text .t-kicker {
+  margin-bottom: 16px;
+}
+.home .life-text .t-body {
+  margin-top: 24px;
+}
+.home .life-note {
+  margin-top: 32px;
+  color: var(--ink);
+}
+.home .life-anatomy {
+  margin-top: 32px;
+}
+.home .life-anatomy li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  column-gap: 14px;
+  padding-block: 14px;
+  border-top: 1px solid var(--line);
+}
+.home .life-anatomy .key-glyph {
+  margin-top: 4px;
+}
+.home .life-anatomy p {
+  grid-column: 2;
+  color: var(--ink-2);
+}
+@media (max-width: 1199px) {
+  .home .life-object,
+  .home .life-text {
+    grid-column: 1 / -1;
+  }
+  .home .life-text {
+    order: -1;
+  }
+}

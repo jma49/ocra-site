@@ -2,12 +2,16 @@ import { Archivo } from "next/font/google";
 import localFont from "next/font/local";
 
 // Latin faces; Chinese falls through to the system fonts in global.css.
-// Archivo's width axis carries the whole type scale: condensed black for
-// posters, semi-condensed for headings, normal width for text.
+// Archivo's width axis carries the whole type scale: a condensed display
+// (62–82 %) for headings and figures, normal width for text. The only
+// preloaded face. Until it arrives the display lines fall back to a narrow
+// local face ("Ocra Narrow", app/landing/01-base.css), not this Arial-based
+// fallback, which is about 1.45 times wider than the condensed set.
 const sans = Archivo({
   subsets: ["latin"],
   axes: ["wdth"],
   variable: "--font-archivo",
+  display: "swap",
 });
 // Every terminal and code sample is set in Maple Mono (maintainer's rule),
 // cut down to the characters code on the site uses (scripts/subset-mono.py).

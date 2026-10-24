@@ -46,17 +46,17 @@ function NotFoundText({ locale }: { locale: Locale }) {
   const { title, body, back, manual } = getCopy(locale).notFound;
   return (
     <section lang={htmlLang[locale]} data-locale={locale}>
-      <p className="font-mono text-sm text-(--aqua-ink)">404</p>
+      <p className="font-mono text-sm text-(--ink)">404</p>
       <h1 className="mt-4 text-[2.4rem] leading-[1.15] font-semibold tracking-[-0.03em]">
         {title}
       </h1>
-      <p className="mt-4 text-(--text-2)">{body}</p>
+      <p className="mt-4 text-(--ink-2)">{body}</p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <a href={localePath(locale, "/")} className="btn btn-dark">
+        <a href={localePath(locale, "/")} className="btn btn-primary">
           <ArrowLeft className="size-4" />
           {back}
         </a>
-        <a href={localePath(locale, "/docs")} className="btn btn-soft">
+        <a href={localePath(locale, "/docs")} className="btn btn-quiet">
           {manual}
         </a>
       </div>

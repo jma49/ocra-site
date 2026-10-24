@@ -1,318 +1,394 @@
 ---
 version: alpha
 name: Open-CR-Agent site
-description: Ink, bone paper and one signal colour. Archivo set wide in two tones, a jumping spider's eye row for a mark, silk drawn on the GPU over the night.
+description: Ink, neutral paper, a stone desk and one pen. A condensed Archivo display over normal-width text, Maple Mono for real data, a jumping spider's eye row for a mark, and a cinnabar pen that marks only where ocra acts on the reviewed change.
 colors:
-  primary: "#0B7A5C"
-  aqua: "#7FFFD4"
-  aqua-ink: "#0B7A5C"
-  silk: "#1E5C4B"
-  night: "#090C0B"
-  night-2: "#101513"
-  night-3: "#161D1A"
-  on-night: "#EDF1EC"
-  on-night-2: "#B3C1BB"
-  on-night-3: "#7F8D87"
-  term-warn: "#FBBF24"
-  paper: "#F4F3EE"
-  paper-2: "#ECEAE3"
-  card: "#FBFAF7"
-  text: "#0E1412"
-  text-2: "#49534E"
-  text-3: "#66706B"
-  line: "#E0DED5"
-  line-2: "#CBC8BC"
-  red: "#B5301B"
-  red-soft: "#F6E2DB"
-  amber: "#A35A00"
-  keyword: "#6B3FA0"
-  shadow-ink: "#0C1411"
-  paper-dark: "#0B0F0D"
-  paper-2-dark: "#111614"
-  card-dark: "#131916"
-  text-dark: "#EBF0EC"
-  text-2-dark: "#A5B0AA"
-  text-3-dark: "#7C8781"
-  line-dark: "#1F2723"
-  line-2-dark: "#2C3631"
-  red-dark: "#FF7A5C"
-  red-soft-dark: "#2A1713"
-  amber-dark: "#F2AD4B"
-  keyword-dark: "#C9A7FF"
+  primary: "#141414"
+  signal: "#BD2718"
+  paper: "#F7F7F7"
+  paper-2: "#EDEDED"
+  stone: "#BDBDBD"
+  sheet: "#FFFFFF"
+  sheet-2: "#F2F2F2"
+  night: "#1A1A1A"
+  night-2: "#262626"
+  ink: "#141414"
+  ink-2: "#4A4A4A"
+  ink-3: "#666666"
+  line: "#E0E0E0"
+  line-2: "#C4C4C4"
+  on-night: "#F2F2F2"
+  on-night-2: "#BABABA"
+  on-night-3: "#969696"
+  pen: "#BD2718"
+  pen-night: "#FD545F"
+  pen-wash: "#FBE6E2"
+  amber: "#935508"
+  white: "#FFFFFF"
+  black: "#000000"
+  paper-dark: "#121212"
+  paper-2-dark: "#181818"
+  stone-dark: "#1E1E1E"
+  sheet-dark: "#232323"
+  sheet-2-dark: "#2A2A2A"
+  night-dark: "#262626"
+  night-2-dark: "#313131"
+  ink-dark: "#EDEDED"
+  ink-2-dark: "#B4B4B4"
+  ink-3-dark: "#969696"
+  line-dark: "#2E2E2E"
+  line-2-dark: "#404040"
+  on-night-3-dark: "#A3A3A3"
+  pen-dark: "#FD545F"
+  pen-wash-dark: "#331B1A"
+  amber-dark: "#EFAD48"
 typography:
   display:
     fontFamily: Archivo
-    fontSize: 6.2rem
-    fontWeight: 560
-    lineHeight: 0.98
-    letterSpacing: -0.048em
+    fontSize: 9.25rem
+    fontWeight: 520
+    lineHeight: 0.84
+    letterSpacing: -0.012em
   display-zh:
     fontFamily: PingFang SC
-    fontSize: 5.2rem
-    fontWeight: 650
-    lineHeight: 1.18
-  headline:
-    fontFamily: Archivo
-    fontSize: 3.25rem
-    fontWeight: 560
-    lineHeight: 1.04
-    letterSpacing: -0.038em
-  title:
-    fontFamily: Archivo
-    fontSize: 1.35rem
+    fontSize: 9.25rem
     fontWeight: 600
-    lineHeight: 1.2
-    letterSpacing: -0.022em
+    lineHeight: 1.04
   statement:
     fontFamily: Archivo
-    fontSize: 2.15rem
-    fontWeight: 450
-    lineHeight: 1.3
-    letterSpacing: -0.022em
+    fontSize: 10.5rem
+    fontWeight: 520
+    lineHeight: 0.86
+    letterSpacing: -0.01em
+  band:
+    fontFamily: Archivo
+    fontSize: 8.5rem
+    fontWeight: 520
+    lineHeight: 0.88
+    letterSpacing: -0.01em
+  final:
+    fontFamily: Archivo
+    fontSize: 7.375rem
+    fontWeight: 520
+    lineHeight: 0.88
+    letterSpacing: -0.012em
+  headline:
+    fontFamily: Archivo
+    fontSize: 4.75rem
+    fontWeight: 520
+    lineHeight: 0.94
+    letterSpacing: -0.01em
+  headline-zh:
+    fontFamily: PingFang SC
+    fontSize: 3.75rem
+    fontWeight: 600
+    lineHeight: 1.15
+  headline-small:
+    fontFamily: Archivo
+    fontSize: 2.5rem
+    fontWeight: 520
+    lineHeight: 1.06
+    letterSpacing: -0.012em
+  title:
+    fontFamily: Archivo
+    fontSize: 1.75rem
+    fontWeight: 520
+    lineHeight: 1.12
+    letterSpacing: -0.01em
+  gauge:
+    fontFamily: Archivo
+    fontSize: 7.5rem
+    fontWeight: 520
+    lineHeight: 0.8
+    letterSpacing: -0.02em
+  figure:
+    fontFamily: Archivo
+    fontSize: 6.5rem
+    fontWeight: 520
+    lineHeight: 0.9
+    letterSpacing: -0.01em
+  verdict:
+    fontFamily: Archivo
+    fontSize: 2.5rem
+    fontWeight: 520
+    lineHeight: 1
   lead:
     fontFamily: Archivo
-    fontSize: 1.12rem
+    fontSize: 1.1875rem
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.55
+    letterSpacing: -0.005em
   body:
     fontFamily: Archivo
-    fontSize: 1.03rem
+    fontSize: 1.03125rem
     fontWeight: 400
     lineHeight: 1.6
   caption:
     fontFamily: Archivo
-    fontSize: 0.81rem
+    fontSize: 0.875rem
     fontWeight: 400
     lineHeight: 1.5
+  note:
+    fontFamily: Archivo
+    fontSize: 0.75rem
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: 0.01em
+  code:
+    fontFamily: Maple Mono
+    fontSize: 0.84375rem
+    fontWeight: 400
+    lineHeight: 1.75
   mono:
     fontFamily: Maple Mono
-    fontSize: 0.78rem
+    fontSize: 0.78125rem
     fontWeight: 400
-    lineHeight: 1.9
+    lineHeight: 1.4
 rounded:
-  tag: 5px
   chip: 6px
-  control: 9px
-  button: 10px
-  inner: 12px
-  window: 14px
+  tab: 7px
+  control: 10px
+  sheet: 14px
   card: 16px
-  plan: 18px
+  band: 28px
 spacing:
   gutter: 20px
-  gutter-md: 40px
-  content-max: 76rem
-  chapter-y: 112px
-  chapter-y-md: 144px
-  control-height: 46px
-  control-height-sm: 36px
+  gutter-md: 32px
+  gutter-lg: 40px
+  content-max: 1280px
+  section-y: 72px
+  section-y-md: 104px
+  section-y-lg: 120px
+  control-height: 48px
+  control-height-sm: 38px
 components:
   page:
     backgroundColor: "{colors.paper}"
-    textColor: "{colors.text}"
+    textColor: "{colors.ink}"
     typography: "{typography.body}"
   page-dark:
     backgroundColor: "{colors.paper-dark}"
-    textColor: "{colors.text-dark}"
+    textColor: "{colors.ink-dark}"
+  page-2:
+    backgroundColor: "{colors.paper-2}"
+    textColor: "{colors.ink}"
+  page-2-dark:
+    backgroundColor: "{colors.paper-2-dark}"
+    textColor: "{colors.ink-dark}"
+  sheet:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.sheet}"
+  sheet-dark:
+    backgroundColor: "{colors.sheet-dark}"
+    textColor: "{colors.ink-dark}"
+  sheet-inset:
+    backgroundColor: "{colors.sheet-2}"
+    textColor: "{colors.ink}"
+    typography: "{typography.mono}"
+  sheet-inset-dark:
+    backgroundColor: "{colors.sheet-2-dark}"
+    textColor: "{colors.ink-dark}"
+  desk:
+    backgroundColor: "{colors.stone}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.band}"
+  desk-dark:
+    backgroundColor: "{colors.stone-dark}"
+    textColor: "{colors.ink-dark}"
+  desk-secondary:
+    backgroundColor: "{colors.stone}"
+    textColor: "{colors.ink-2}"
+  desk-secondary-dark:
+    backgroundColor: "{colors.stone-dark}"
+    textColor: "{colors.ink-2-dark}"
+  secondary-text:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink-2}"
+    typography: "{typography.lead}"
+  secondary-text-dark:
+    backgroundColor: "{colors.paper-dark}"
+    textColor: "{colors.ink-2-dark}"
+  quiet-text:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink-3}"
+    typography: "{typography.caption}"
+  quiet-text-dark:
+    backgroundColor: "{colors.paper-dark}"
+    textColor: "{colors.ink-3-dark}"
+  quiet-text-band:
+    backgroundColor: "{colors.paper-2}"
+    textColor: "{colors.ink-3}"
+  quiet-text-band-dark:
+    backgroundColor: "{colors.paper-2-dark}"
+    textColor: "{colors.ink-3-dark}"
   night:
     backgroundColor: "{colors.night}"
     textColor: "{colors.on-night}"
-    typography: "{typography.display}"
+    typography: "{typography.statement}"
+    rounded: "{rounded.band}"
+  night-dark:
+    backgroundColor: "{colors.night-dark}"
+    textColor: "{colors.on-night}"
   night-secondary:
     backgroundColor: "{colors.night}"
+    textColor: "{colors.on-night-2}"
+  night-secondary-dark:
+    backgroundColor: "{colors.night-dark}"
     textColor: "{colors.on-night-2}"
   night-quiet:
     backgroundColor: "{colors.night}"
     textColor: "{colors.on-night-3}"
-  night-emphasis:
-    backgroundColor: "{colors.night}"
-    textColor: "{colors.aqua}"
-  secondary-text:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.text-2}"
-    typography: "{typography.lead}"
-  secondary-text-dark:
-    backgroundColor: "{colors.paper-dark}"
-    textColor: "{colors.text-2-dark}"
-  quiet-text:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.text-3}"
-    typography: "{typography.caption}"
-  quiet-text-dark:
-    backgroundColor: "{colors.paper-dark}"
-    textColor: "{colors.text-3-dark}"
-  link:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.aqua-ink}"
-  link-dark:
-    backgroundColor: "{colors.paper-dark}"
-    textColor: "{colors.aqua}"
-  button:
-    backgroundColor: "{colors.text}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.button}"
-    height: "{spacing.control-height}"
-  button-brand:
-    backgroundColor: "{colors.aqua}"
-    textColor: "{colors.night}"
-    rounded: "{rounded.button}"
-  card:
-    backgroundColor: "{colors.card}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.card}"
-  card-dark:
-    backgroundColor: "{colors.card-dark}"
-    textColor: "{colors.text-dark}"
-  panel-inner:
-    backgroundColor: "{colors.paper-2}"
-    textColor: "{colors.text}"
-  panel-inner-dark:
-    backgroundColor: "{colors.paper-2-dark}"
-    textColor: "{colors.text-dark}"
-  tag-critical:
-    backgroundColor: "{colors.red-soft}"
-    textColor: "{colors.red}"
-    typography: "{typography.mono}"
-    rounded: "{rounded.tag}"
-  tag-critical-dark:
-    backgroundColor: "{colors.red-soft-dark}"
-    textColor: "{colors.red-dark}"
-  code-on-night:
-    backgroundColor: "{colors.night}"
+  night-quiet-dark:
+    backgroundColor: "{colors.night-dark}"
+    textColor: "{colors.on-night-3-dark}"
+  night-raised:
+    backgroundColor: "{colors.night-2}"
     textColor: "{colors.on-night}"
-    typography: "{typography.mono}"
-    rounded: "{rounded.inner}"
-  code-keyword:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.keyword}"
-  code-keyword-dark:
-    backgroundColor: "{colors.paper-dark}"
-    textColor: "{colors.keyword-dark}"
-  rule:
-    backgroundColor: "{colors.line}"
-    textColor: "{colors.text}"
-  rule-strong:
-    backgroundColor: "{colors.line-2}"
-    textColor: "{colors.text-2}"
-  rule-dark:
-    backgroundColor: "{colors.line-dark}"
-    textColor: "{colors.text-dark}"
-  rule-strong-dark:
-    backgroundColor: "{colors.line-2-dark}"
-    textColor: "{colors.text-2-dark}"
+  night-raised-dark:
+    backgroundColor: "{colors.night-2-dark}"
+    textColor: "{colors.on-night}"
+  pen-on-sheet:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.signal}"
+    typography: "{typography.note}"
+  pen-on-sheet-dark:
+    backgroundColor: "{colors.sheet-dark}"
+    textColor: "{colors.pen-dark}"
+  pen-on-wash:
+    backgroundColor: "{colors.pen-wash}"
+    textColor: "{colors.pen}"
+    typography: "{typography.code}"
+  pen-on-wash-dark:
+    backgroundColor: "{colors.pen-wash-dark}"
+    textColor: "{colors.pen-dark}"
+  pen-mark-night:
+    backgroundColor: "{colors.night}"
+    textColor: "{colors.pen-night}"
+  pen-mark-night-dark:
+    backgroundColor: "{colors.night-dark}"
+    textColor: "{colors.pen-night}"
   warning-text:
     backgroundColor: "{colors.paper}"
     textColor: "{colors.amber}"
   warning-text-dark:
     backgroundColor: "{colors.paper-dark}"
     textColor: "{colors.amber-dark}"
-  nav-drawer:
-    backgroundColor: "{colors.night-2}"
-    textColor: "{colors.on-night}"
-  terminal-warning:
-    backgroundColor: "{colors.night}"
-    textColor: "{colors.term-warn}"
-  silk-glow:
-    backgroundColor: "{colors.silk}"
-    textColor: "{colors.on-night}"
-  surface-raised:
-    backgroundColor: "{colors.night-3}"
-    textColor: "{colors.on-night}"
+  rule:
+    backgroundColor: "{colors.line}"
+    textColor: "{colors.ink}"
+  rule-dark:
+    backgroundColor: "{colors.line-dark}"
+    textColor: "{colors.ink-dark}"
+  rule-strong:
+    backgroundColor: "{colors.line-2}"
+    textColor: "{colors.ink}"
+  rule-strong-dark:
+    backgroundColor: "{colors.line-2-dark}"
+    textColor: "{colors.ink-dark}"
+  button:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.paper}"
+    rounded: "{rounded.control}"
+    height: "{spacing.control-height}"
+  button-dark:
+    backgroundColor: "{colors.ink-dark}"
+    textColor: "{colors.paper-dark}"
+  button-on-night:
+    backgroundColor: "{colors.on-night}"
+    textColor: "{colors.night}"
+    rounded: "{rounded.control}"
+  button-on-night-dark:
+    backgroundColor: "{colors.on-night}"
+    textColor: "{colors.night-dark}"
   shadow:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.shadow-ink}"
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.black}"
 ---
 
 # Open-CR-Agent site
 
-The landing page, the manual and the 404 page share one look: ink and bone paper, one signal colour, Archivo set wide in two tones, a jumping spider's eye row for a mark, and silk drawn on the GPU over the night sections. The rule behind every choice is restraint: one effect per section, hairlines instead of glass on paper, nothing that moves unless it means something or answers the pointer. Values live in CSS: `app/tokens.css` (every colour, the elevation, the stacking scale and the Fumadocs mapping, light and dark: the only file with colour literals, checked by `scripts/check-colors.mjs`), `app/global.css` (shared rules, buttons, the logo; `app/site.css` loads it for the landing and 404 pages, `app/manual.css` for the manual with Fumadocs' preset), `app/landing/` (the landing page, split by section) and `app/docs.css` (the manual). This file mirrors them and says how to use them; change both in the same commit. Content rules (what the site may claim) stay in `AGENTS.md`.
+The landing page, the manual and the 404 page share one look: ink on neutral paper, a stone desk under every product view, a condensed Archivo display over normal-width text, Maple Mono wherever a string is real data, a jumping spider's eye row for a mark, and one cinnabar pen. The idea is a careful reader marking up a change: the eye row reads first, the pen marks only where ocra acts on the reviewed change, the comment lands last. Values live in CSS: `app/tokens.css` (every colour, the shadow, the curves, the radii and the Fumadocs mapping, light and dark: the only file with colour literals, checked by `scripts/check-colors.mjs`), `app/global.css` (buttons, the logo, the living eyes; loaded by `app/site.css` for the landing and 404 pages and by `app/manual.css` for the manual), `app/landing/` (the landing page: shared files 01–05, then one or two files per section) and `app/docs.css` (the manual). This file mirrors them and says how to use them; change both in the same commit. Content rules (what the site may claim) stay in `AGENTS.md`.
 
 ## Colors
 
-- **Ink and paper** carry the page. `night` is the hero, the statement band, the final call to action, terminals and code blocks in both themes; `paper` is everything else, plain, without texture. Text is `text`, `text-2` for body copy, `text-3` for labels and for the quiet half of a headline.
-- **Aquamarine** is the one signal: the eyes of the mark, the emphasised half of a headline on the night, the primary button, links, "verified", the active pipeline stage. On paper, text uses `aqua-ink` (about 5:1); on night and in the dark theme, `aqua` itself.
-- **Silk** (`silk`) is aquamarine's shadow side, used only by the shader scenes and their CSS ground.
-- **Review severities** (`red` for critical, `amber` for warning) and diff lines are the only other colours. There is no second accent.
-- The dark theme swaps paper for `paper-dark`; night sections are the same in both themes.
+- **Ink and neutral paper** carry the page: `paper` is the page, `paper-2` the alternate band (how it works, lifecycle, FAQ), `ink` the text, `ink-2` body copy and ledes, `ink-3` captions, line numbers and meta. Every grey is neutral (chroma 0): no ivory, no blue.
+- **Stone** is a neutral concrete mid-tone: the desk under every product view (hero, story figures) and the security band. On stone, text is `ink` or `ink-2` only (`ink-3` and the pen fall under 4.5 : 1 there).
+- **Sheets** (`sheet`, insets `sheet-2`) are the objects on a desk or a band: code, the thread, the gate tile, the Cloud plan row.
+- **Night** (`night`, raised surface `night-2`; text `on-night`, `on-night-2`, `on-night-3`) is two inset bands: the statement and the final band with the footer.
+- **The pen** (`pen`, cinnabar, OKLCH h 30 light / h 21 dark) is the one signal. It marks only where ocra acts on the reviewed change: a finding, a quote, an anchor, a strike through what was set aside, skipped, disproved, refused or out of scope, a tick for what was read or verified, the bottom line of a bill or verdict, ocra's verdict mark. **Never UI chrome** (navigation, tabs, progress, step numbers, the meter, plan states, selection, focus, links), never our own marketing claims. On night it is `pen-night` and draws marks only, never text. It never writes on stone: there it writes on a sheet laid on the stone. `pen-wash` sits only behind inserted code (`* 1000`): a red row would read as a deleted line.
+- **Amber** is warning severity only. There is no second accent, no decorative gradient, no glow.
+- **Dark** is designed, not inverted: lighter is higher (page `#121212` < band < desk < sheet < inset), each object carries its edge (the desk an inset 6 % white ring, sheets the `--float` ring), and the night bands are raised slabs (`#262626`) with no ring. Every text pair is at least 4.5 : 1 in both themes (the components above).
+- **The manual** maps Fumadocs to the same tokens: primary, ring and links are ink; the sidebar is night glass with its active link `on-night`, a tint and a 2 px bar; `--color-fd-error` is the pen (critical callouts only) and `--color-fd-warning` amber.
 
 ## Typography
 
-One family, **Archivo**, on its width axis, loaded with `next/font`; **Maple Mono** for every terminal, code sample, file name and stage name (maintainer's rule), from `@fontsource/maple-mono`, cut down to the characters code on the site uses and renamed as its licence requires (`scripts/subset-mono.py`, `assets/fonts/`). Only Archivo is preloaded; the code face loads once code is on screen, and the next monospace face stands in until then. `npm run check:glyphs` fails if the manual or the landing page uses a character the cut dropped. Chinese falls through to the system faces.
+One family, **Archivo**, in two widths (`next/font`, the only preloaded face, `display: swap`): a **condensed display** (one weight, 520, at 62–82 % width) for headings and figures, and **normal-width text** for everything else. **Maple Mono** (`@fontsource/maple-mono`, cut down to the characters the site uses and renamed as its licence requires: `scripts/subset-mono.py`, `assets/fonts/`; `npm run check:glyphs` fails on a dropped character) sets only real data: code, paths, stage names, tool names, task ids, tokens, dollars, flags. A paraphrase is never set in Maple. Chinese falls through to the system faces at weight 600.
 
-- **Display** (hero and final call to action): 560 weight, 112% width, tight tracking, sentence case. The emphasised tail is aquamarine on the night. Chinese display lines use the system face, a smaller size so the longer line fits a phone, and break explicitly before the emphasis.
-- **Headline** (section headings): 560 weight, 108% width, in two tones: the sentence in `text`, its tail in `text-3` (aquamarine on the night). No italics, no outlines, no offset prints.
-- **Title** (cards, steps, plans, questions): 600 weight, 104% width.
-- **Statement**: the manifesto paragraph on the night, 450 weight, words brightening as it scrolls.
-- Headings balance; paragraphs use `text-wrap: pretty`.
+- **Display** `.t-display` (the H1): one line across the container from 1024 px (`min(9.25rem, 11.6cqi)`, 148 px at 1440), two lines below. `.t-statement`, `.t-band`, `.t-final`: the two night bands' and the security band's headings, at 62 %. `.t-h2` (68 %), `.t-h2s` (82 %, works), `.t-h3` (82 %), `.t-h4` (100 %, 560). Figures: `.t-gauge` (the 45), `.t-figure` (`L42`, `$0.5134`, prices), `.t-verdict`, `.t-struck`.
+- **Text**: `.t-lede`, `.t-body`, `.t-statement-body`, `.t-small`, `.t-kicker` (how it works and lifecycle only), `.t-note` (the pen's words), `.t-mono`; code rows at 13.5 / 13 / 11.5 / 10.5 px, always line-height 1.75.
+- Headings are explicit lines in one tone (`<Lines>`): one block per line, joined with a space in English and nothing in Chinese. No two-tone headings, no italics, no uppercase, no positive tracking above 13 px; sentence case; balanced headings, pretty paragraphs; tabular numerals on figures and ledgers.
+- **Fallback**: until Archivo arrives, display lines use "Ocra Narrow", a local narrow face (`size-adjust` tuned to within 6 % of Archivo's width), not the Arial-based fallback; every display line is clipped at its container, never painted over a neighbour.
+- **Arrows**: `→` is not in Archivo's latin subset, so Archivo text uses `<ArrowGlyph />`; Maple text keeps the character.
+- **Chinese**: its own sizes and explicit breaks (`先读懂，再开口。` one line from 1024 px); engine output (the terminal, the GitHub comment, claim titles, task ids) stays English, with a gloss outside the chrome.
 
 ## Layout
 
-- Content sits in a 76rem column with a 20px gutter (40px from 768px). Chapters: 112px vertical padding, 144px from 900px.
-- The page alternates night and paper: hero (night, the product window rising out of it onto the paper), platforms, pipeline, statement (night), features, lifecycle, security, plans, questions, final (night), footer.
-- Headings that share a row with a paragraph use `split-head`: heading left, paragraph right, aligned to the bottom.
-- The pipeline is one thread (`pipeline.tsx`): the four steps down a hairline, each on a node (a square where only code runs, a ring where a model is asked), with the picture of the step in focus in a framed panel beside them. The steps advance on their own (the thread fills in aquamarine over the dwell time) until the reader points at the section or picks a step; every step's text is always shown.
-- Must work at 390px wide without horizontal page scroll; wide code scrolls inside its panel.
+- `.wrap`: 1280 px of content with a 40 px gutter (32 px from 600 to 1023, 20 px below). 12 columns, gap 56 px from 1200, 40 px from 1024, 32 tablet, 20 phone; every track `minmax(0, 1fr)`.
+- **One desktop breakpoint, 1200 px**, for every split; 1024–1199 has its own one-column layouts, never a squeezed split.
+- Section padding 120 px from 1200, 104 from 600, 72 below; the bands 128 / 104 / 72. Anchors land 84 px below the top (`scroll-margin-top`), clear of the sticky nav.
+- Order and grounds: announce and nav, hero (paper, stone desk), works (paper), how it works (paper-2), quiet by design (night band), features (paper), lifecycle (paper-2), security (stone band), plans (paper), FAQ (paper-2), final (night band) and the footer that continues it. Every section has its own head and composition (`sections.md`); kickers only where the H2 does not say it.
+- Page length: desktop 1440 ≤ 10,500 px, tablet ≤ 12,500, phone ≤ 13,000. Must work at 360 px without horizontal page scroll; wide code scrolls inside its panel.
 
-## Lines
+## Grounds and hairlines
 
-Lines carry the structure of the paper sections, and only there (`10-lines.css`); the night sections carry none. Use them where they say something, never as filler (the maintainer: "善用, 不是一味的用"):
+- Every `<section>` carries `data-ground` (`paper`, `paper-2`, `stone`, `night`); the nav reads it and takes that ground's fill and text.
+- **Bands** (stone, night) are inset: 12 px from the page's edges (8 px on phones), radius 28 (20), no ring in either theme. The final band rounds only its top corners and the footer only its bottom ones, so they read as one night sheet.
+- **Hairlines only inside objects**: rows of a ledger or list, between a sheet bar and its body, around a flat sheet on paper (an inset 1 px `line`, so hover can darken it without moving anything). Never a ring round a whole section; no rails, crosses, dashed or chamfered borders, textures, grain, photos or shaders.
 
-- Two hairline rails run down the page just outside the content column; every chapter opens on a hairline between them, with a small cross where it meets each rail. Hidden below 768px.
-- The pipeline's thread shows the order of the steps and how far a run has got; the picture beside it sits in a frame with crop marks.
-- Grids of cards (features, plans) share their hairlines, because the cards are parts of one whole.
-- Rows of tables and lists.
+## Elevation
 
-## Elevation and the night
-
-- **Surfaces on paper** are hairlines first: grids share their lines (see Lines); the product window and the lifecycle thread are `card` with a 1px `line` hairline, and only the window keeps a long soft shadow. Panels inside a surface are inset on `paper` with a hairline and no shadow. There is no frosted glass on paper and no glow behind sections.
-- **Ink glass** only where something moves behind it: the nav, the phone menu and the dock (`night-2` at about 90%, an 18px blur).
-- **Reading light** (`components/landing/reading.tsx`): the hero's picture is the file ocra reviewed in the example run, the recorded demo repository's `src/auth/session.ts`, tilted and dim on the right of the night. A light that follows the pointer brings the code up to full brightness, and the line the finding quotes glows throughout with its severity beside it. The build fails if that file and the recording disagree on the quoted line. Hidden below 900px; the scanning beam stops under Reduce motion.
-- **Silk** (`components/landing/silk.tsx`, `silk-scene.tsx`): the statement band and the final call to action carry a WebGPU scene from [Shaders](https://shaders.com) (MIT): a few pinned threads of light (`Strands`) that drift slowly and stretch under the pointer (`Liquify`), with a faint grain and a vignette. The threads lie low, clear of the text. The library (about 700 KB compressed) loads only when its section comes within a screen of the viewport, at an idle moment, and after a WebGPU adapter answers; never under Save-Data, on a device reporting 4 GB of memory or less, or on a phone (coarse pointer, under 900px). Until the scene has drawn, and wherever it does not load, the CSS ground shows: the night with the silk's glow where the threads would be. Every `<Shader>` passes `disableTelemetry`: the library otherwise reports frame timings and the hostname to shaders.com.
+One shadow, `--float`, only for sheets on a desk, the lifecycle thread, the gate tile and the nav drawer; in dark it carries its own 6 % white ring. Everything else is flat. The nav is near-opaque on paper (96 %) and blurs only over night.
 
 ## Shapes
 
-10px for buttons; 6px for chips and stage names; 5px for tags; 9px for small controls and segmented tabs; 12px for insets; 14px for windows; 16px for cards; 18px for plans. No pills.
+Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls 10 px (buttons, tablists, the comment, the prompt box), sheets 14 px, cards 16 px (gate tiles), desks and bands 28 px (desk = sheet + 14 px padding). Phones: desks and bands 20 px with 8 px padding, sheets 12 px. The nav bar 12 px. No pills; GitHub's own "bot" label is the only rounded-full shape.
 
 ## Components
 
-- **Mark** (`components/brand/eyes-mark.tsx`, `app/icon.svg`): a jumping spider's front eye row: two large eyes between two small ones, the large ones with a glint cut out. One even-odd path in `currentColor`, no ids, so it takes any colour from CSS and renders the same at 12px and 700px. Ink on paper, aquamarine on the night.
-- **Logo** (`components/logo.tsx`): the mark beside the wordmark, 620 weight, 110% width.
-- **Favicon and Apple icon**: the eye row as white eyes with dark pupils on a night tile, like the living eyes in the nav. `app/favicon.ico` is `app/icon.svg` rendered at 16, 32 and 48px, for clients that ask for it by name. **Share card**: the same tile beside the wordmark.
-- **Footer mark**: the eye row at 720px in `line`, cut off by the bottom of the page, peeking.
-- **Living eyes** (`LookingEyes`): the eye row as white eyes with dark pupils that turn towards the pointer, and a blink every few seconds; in the nav logo on the night and, large with a soft aquamarine halo, over the final call to action.
-- **Product window** (`product-window.tsx`, `pr-pane.tsx`): the example pull request, terminal and ocra Cloud console behind tabs. The pull request shows what ocra actually posts, as GitHub shows it: the summary comment and the inline comment from the engine's `render.ts`, posted by `github-actions` (the Action's identity), in the engine's English. No invented dashboards, progress tracks or banners. It replays when it scrolls into view: the check runs, then the comments arrive. The finding ends with a plain `Suggestion:` line because this recording's scripted model gives no structured fix; a committable suggestion block would need a new recording.
-- **Providers marquee** (`works.tsx`, `lib/landing/brand-icons.ts`): two rows of chips with single-colour 20px marks (LobeHub icons, MIT; Simple Icons, CC0), moving in opposite directions. The marks come from one sprite, `/icons.svg` (`app/icons.svg/route.ts`), built at build time and cached by the browser for a day (`next.config.mjs`).
-- **Buttons** (`app/global.css`): `btn-brand` (aquamarine, the primary action), `btn-dark`, `btn-soft` (hairline on paper), `btn-ghost` (hairline on the night).
-- **Manual (MDX)**: `Callout`, `Cards`/`Card`, `Steps`/`Step`, `Tabs`/`Tab`, registered in `components/mdx.tsx`, which gives panels the `glass` class (now a card on paper) and cards the block hover. Register a component before the manual uses it, or the build fails.
-- Copy lives in `lib/copy/` (`types.ts`, then `en.ts` and `zh.ts` with the same shape); components never hard-code strings except identifiers.
+- **Mark** (`components/brand/eyes-mark.tsx`): a jumping spider's front eye row, one even-odd path in `currentColor`. The logo (`components/logo.tsx`) sets it beside the wordmark (Archivo 540 at `--wordmark-stretch`, 78 %). `LookingEyes` is the living version: in the hero's code rail as the reader (ink eyes, the glint as pupil), and at 560 px in the final band, following the pointer.
+- **Icons**: white eyes with night pupils on the night tile (`app/icon.svg`, `apple-icon.tsx`, `opengraph-image.tsx`, `favicon.ico`).
+- **Primitives** (`components/landing/`): `Section`, `Lines`, `Kicker`, `ArrowGlyph`, `withCode` (`section.tsx`); `CodeRows` and `InkCode` (`code.tsx`: recorded lines read at build time, reader rail, ink overlay, folds, custom rows); `Comment` and `BotAvatar` (`comment.tsx`); `CodeMark` (`pen/code-mark.tsx`); `Marked`, `Band`, `Note`, `Tick`, `Bar`, `Ringed`, `Arrow`, `KeyGlyph` (`pen/marks.tsx`); `tabPattern` and `inactive` (`tabs.ts`).
+- **The pen** draws server-rendered SVG strokes from `lib/landing/pen.ts` (pure geometry, the hand ported from the "Marks" prototype): underline, double underline, strike, ring, caret, box, arrow, tick, margin bar, the verdict mark (a pen dot for 🔴, an octagon for 🛑). Underlines and strikes draw by a left-to-right wipe with a non-scaling stroke; rings, carets, boxes, arrows and ticks by dash in uniformly scaled units. Every mark is `aria-hidden` and has a text equivalent.
+- **Buttons** (`app/global.css`): `.btn` 48 px (`.btn-sm` 38, 44 on phones), `.btn-primary` (ink; on night, on-night), `.btn-quiet` (a `line-2` ring). No lift, no shadow, no sheen.
+- **Stacked variants**: tab panels, lifecycle states and story figures share one grid cell; an inactive one is `inert` and hidden, never transparent alone.
+- **Copy** lives in `lib/copy/sections/`, one module per section with English and Chinese side by side; `lib/copy/index.ts` resolves the example run into it. Numbers, paths, lines and titles come from `lib/landing/example-run.ts`, which `lib/landing/recorded.ts` checks against the recording at build time.
 
 ## Motion
 
-All of it lives in `09-motion.css` and one client island, `components/landing/motion.tsx`.
-
-- **Entrance**: the hero headline rises word by word out of a blur, then the lede, the buttons and the note. They rise and sharpen but never fade in: text at opacity 0 does not count as painted, and on a phone the lede is the largest contentful paint. The silk canvas settles in from a slight zoom once it has drawn.
-- **Scroll**: the product window lies back in perspective and comes upright as it scrolls into view (CSS scroll-driven animation where supported); headings, cards, plans and panels rise in as they enter, staggered within their grid (opacity and transform only; whatever is already on screen when the script runs stays as it is).
-- **Pointer**: the silk stretches under it; a soft aquamarine light follows it across cards, steps, plans and the security panel; the eyes look at it; a sheen crosses the primary button on hover; surfaces rise 2px and their hairline darkens; links draw an underline.
-- **Reduce motion**: entrance, scroll animations, reveals, the blink and the silk's drift are off; nothing is ever hidden waiting for a reveal (the page is hidden only after the script has run, and only without Reduce motion). What answers the pointer still runs. The providers marquee drifts at half speed (the maintainer wants it visible) and pauses on hover.
+- No animation library. CSS transitions and keyframes, scroll-driven animations behind `@supports`, IntersectionObserver, the Web Animations API, and small islands. No window scroll listener (the phone menu's close-on-scroll exists only while it is open).
+- **Gating**: the root layout's inline script adds `html.mo` before the first paint when motion is allowed; every pre-play state is written under `@media (prefers-reduced-motion: no-preference) { html.mo … }`. `components/landing/motion.tsx` adds `html.hy`; without it the script drops `mo` after 4 s. Without JavaScript, under Reduce motion or after that fail-safe, the page shows every finished state.
+- **The pen's two modes** (`04-pen.css`): `data-pen="clock"` plays CSS animations a clock island owns through the Web Animations API (the hero); `data-pen="on"` plays transitions when the root gains `.on` (story figures, the lifecycle's Fixed state, `data-pen-once` roots). Static marks (the gate, the fallback line, legends) carry neither.
+- Curves: `--e-enter`, `--e-std`, `--e-pop`, linear for scrubbed animations and the marquee, `steps(n)` for typing only. Nothing reveals on scroll; only recorded events draw on entry.
+- **Reduce motion**: every finished state at first paint; pointer-driven motion (the final eyes) still runs; the marquee runs at half speed with its pause button.
 
 ## Do's and Don'ts
 
 - Do keep every page and string in English and Chinese, and check the Chinese layout separately.
-- Do check light and dark, 390px and desktop, Reduce motion on and off, and a browser with and without WebGPU, before calling a change done.
-- Do label examples of ocra output as examples and keep them technically correct.
-- **Don't resemble a competitor's visual signature** (Greptile's halftone animals, CodeRabbit's orange): borrow finish, not devices. Before showing a design, name the product it could be mistaken for, and change direction rather than recolour.
-- Don't add a second accent colour, gradient text, glow blobs behind sections, frosted glass on paper, dot textures, pill badges or uppercase eyebrow labels.
-- Don't put a second shader effect in a section, or let the silk run behind body text.
-- Don't write a colour literal outside `app/tokens.css`; name a token, and derive translucent variants with `color-mix(in srgb, var(--token) N%, transparent)`. The shader scenes read their colours from the tokens at run time. The standalone icons and the share card (`app/icon.svg`, `app/apple-icon.tsx`, `app/opengraph-image.tsx`) are the exception: they are images, rendered without the page's CSS.
+- Do check light and dark, 390 px and desktop, Reduce motion on and off, before calling a change done.
+- Do label the example run wherever it appears and keep it the recording's.
+- **Don't resemble a competitor's visual signature** (CodeRabbit's taupe mat and orange, Factory's grey and uppercase mono, Greptile's mint and rails): borrow finish, not devices.
+- Don't use the pen on UI chrome or on our own claims, add a second accent, gradient text, glows, glass on paper, textures, pills or uppercase labels.
+- Don't write a colour literal outside `app/tokens.css`; name a token and derive translucent variants with `color-mix(in srgb, var(--token) N%, transparent)`. The standalone icons and the share card are the exception: they are images.
 
 ## Known issues
 
-- Headless Chromium's software GPU loses the WebGPU device; the silk falls back to its CSS ground there, which is what the screenshots record. To see the scene in an automated browser, launch Chromium with `--enable-unsafe-webgpu --headless=new --enable-gpu --ignore-gpu-blocklist`.
+- Display lines fall back to "Ocra Narrow" from local system faces; where none is installed they fall to next/font's Arial-based fallback and are clipped at their container until Archivo arrives.
 
 ## Verification
 
 - Lint this file: `npx @google/design.md lint DESIGN.md`.
-- **Screenshots** (`tests/visual/`, Playwright): `/` and `/zh`, the manual index (`Cards`), quickstart (`Steps`), installation (`Callout`) and the 404 page in each language; at 390, 768 and 1280px; light and dark. Every page also fails on console errors.
+- **Screenshots** (`tests/visual/`, Playwright): `/` and `/zh`, the manual's index, quickstart and installation, and the 404 page in each language, at 390, 768 and 1280 px, light and dark. Every page also fails on console errors.
 - Locally: `npm run build && npm run visual:baseline` before the change, then `npm run build && npm run visual` after it. Screenshots stay in the git-ignored `.visual/`.
 - In CI, the Visual workflow builds the base branch and the pull request in one job and compares them. A pull request that changes the look on purpose gets the `visual-change` label and lists the expected differences.
-- The harness takes screenshots with Reduce motion on, which settles the hero window on its finished review and stops the idle loops. `tests/visual/stable.css` pins the docs table of contents and the providers marquee (which drifts even with Reduce motion on), and hides the shader canvas so the CSS ground is recorded.
+- The harness takes screenshots with Reduce motion on, which settles every animated object on its finished state. `tests/visual/stable.css` pins the docs table of contents and the providers marquee.

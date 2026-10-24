@@ -1,0 +1,103 @@
+/* Shared motion (motion.md): registered properties, the keyframes sections
+   assign, the swap of stacked variants and the shared Reduce motion block.
+   Pre-play states live only inside
+   @media (prefers-reduced-motion: no-preference) { html.mo … }, so without
+   JavaScript, under Reduce motion or after the 4 s fail-safe the page is
+   finished. Curves: --e-enter, --e-std, --e-pop, linear, and steps(n) for
+   typing only. */
+
+/* The wrap-safe band's drawn width; 100 % unless a pre-play rule says 0. */
+@property --pw {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+/* Typed characters (the terminal command, `--plan`), stepped. */
+@property --k {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+/* Where a reader's glint (or a pupil) looks, in viewBox units. */
+@property --px {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --py {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* Load: the H1 and the copy rise into place (motion.md §3); text is painted
+   at frame 0 and never transparent. */
+@keyframes rise {
+  from {
+    transform: translateY(var(--rise, 12px));
+  }
+}
+/* The hero desk settles. */
+@keyframes settle {
+  from {
+    transform: translateY(16px) scale(0.99);
+  }
+}
+/* A progress rule growing from the left. */
+@keyframes grow {
+  from {
+    transform: scaleX(0.02);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+/* Typing: --k counts 0 → --n characters with steps(--n). */
+@keyframes type {
+  from {
+    --k: 0;
+  }
+  to {
+    --k: var(--n);
+  }
+}
+/* A stacked variant swapping in on a user's choice (tabs, story figures). */
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes swap-out {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+}
+
+/* The final band's living eyes (components/landing/motion.tsx): the pupils
+   move by --px / --py in viewBox units, smoothed by the loop rather than a
+   transition, and the blink runs only while the band is in view. Scoped
+   here, so the manual's logo keeps its own blink. */
+.home .final-eyes .pupil {
+  transform: translate(calc(var(--px) * 1px), calc(var(--py) * 1px));
+  transition: none;
+}
+.home .final-eyes .lids {
+  animation-play-state: paused;
+}
+.home .awake .final-eyes .lids {
+  animation-play-state: running;
+}
+
+/* Reduce motion: state changes land at once. Sections add their own
+   finished states; the marquee keeps running at half speed (motion.md §15). */
+@media (prefers-reduced-motion: reduce) {
+  .home .nav,
+  .home .nav-cta,
+  .home .seg [role="tab"],
+  .home .code .ln,
+  .home .code .ln-n {
+    transition: none;
+  }
+}

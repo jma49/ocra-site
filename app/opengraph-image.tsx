@@ -20,8 +20,8 @@ export default function OpenGraphImage() {
         alignItems: "center",
         justifyContent: "center",
         gap: 56,
-        background: "#090c0b",
-        color: "#edf1ec",
+        background: "#1A1A1A",
+        color: "#F2F2F2",
       }}
     >
       {/* biome-ignore lint/performance/noImgElement: ImageResponse renders plain elements, not next/image */}
@@ -33,7 +33,7 @@ export default function OpenGraphImage() {
       />
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div style={{ fontSize: 150, fontWeight: 800, letterSpacing: -6 }}>ocra</div>
-        <div style={{ fontSize: 44, color: "#7fffd4" }}>Open-CR-Agent</div>
+        <div style={{ fontSize: 44, color: "#FD545F" }}>Open-CR-Agent</div>
       </div>
     </div>,
     size,

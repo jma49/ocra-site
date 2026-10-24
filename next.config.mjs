@@ -9,9 +9,7 @@ const withMDX = createMDX();
 // nonces need a render per request, which gives up the prerendered,
 // CDN-cached pages. The policy still stops scripts, styles, fonts and
 // requests from other origins, plugins, <base> rewrites and framing.
-// React needs eval in development only. The silk's shader library tests once
-// whether eval is allowed and takes its eval-free path when it is not; the
-// browser reports that test as a violation, and the silk still draws.
+// React needs eval in development only.
 // No third-party script loads today. Vercel Analytics and Speed Insights
 // would be same-origin; the preview toolbar (vercel.live) would need
 // allowing, and previews are off (vercel.json).

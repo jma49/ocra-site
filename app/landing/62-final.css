@@ -1,0 +1,49 @@
+/* Final: the night band joined to the footer, the eyes at their largest,
+   the three-line H2, the CTAs and the prompt line with Copy (package C).
+   F's stub. */
+.home .final {
+  padding-block: var(--pad-band) 104px;
+  border-radius: var(--r-band) var(--r-band) 0 0;
+}
+.home .final-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gap);
+  row-gap: 40px;
+  align-items: center;
+}
+.home .final-eyes {
+  grid-column: 1 / span 5;
+  width: min(100%, 560px);
+  height: auto;
+}
+.home .final-text {
+  grid-column: 6 / -1;
+}
+.home .final-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+.home .final .prompt {
+  margin-top: 24px;
+  padding-inline-end: 16px;
+}
+@media (max-width: 1023px) {
+  .home .final-eyes,
+  .home .final-text {
+    grid-column: 1 / -1;
+  }
+  .home .final-eyes {
+    width: 360px;
+  }
+}
+@media (max-width: 599px) {
+  .home .final {
+    padding-block: 72px 64px;
+  }
+  .home .final-eyes {
+    width: 280px;
+  }
+}
