@@ -1,15 +1,17 @@
-/* How it works (P1, foundation.md): the head on the desk, then the pinned
-   stage: the desk's world (31-figures.css) beside the copy column, the
-   chapters stacked in one place, the legend and the scrubber; the paper
-   the camera pushes into. Phones: 32-figure-review.css. */
+/* How it works (P1, foundation.md). With motion the stage is pinned while
+   the run-way (.how-way) scrolls past: the head lies over its first screen
+   (wide), the chapters play in one place, the camera pushes into the paper
+   Quiet by design is printed on. Without (Reduce motion, no script) the
+   head, then the five chapters listed beside the finished desk, which stays
+   in view while they are read. The desk's world: 31-figures.css; phones:
+   32-figure-review.css. */
 
-.home .how {
-  padding-top: clamp(96px, 12vh, 140px);
-}
-
-/* ---- Head: the claim over empty desk ---- */
+/* ---- Head ---- */
 .home .how-head {
-  padding-bottom: clamp(56px, 10vh, 120px);
+  position: relative;
+  z-index: 3;
+  padding-top: clamp(96px, 12vh, 140px);
+  padding-bottom: clamp(24px, 4vh, 48px);
 }
 .home .how-kicker {
   margin: 0 0 22px;
@@ -37,7 +39,7 @@
 }
 .home .how-body {
   max-width: 34rem;
-  margin: 30px 0 0;
+  margin: 28px 0 0;
   font: 400 18px / 1.6 var(--font-sans);
   color: var(--on-desk-2);
   text-wrap: pretty;
@@ -70,73 +72,128 @@
   }
 }
 
-/* ---- The pin: the stage holds still while scroll plays the chapters ---- */
-.home .how-pin {
-  position: relative;
-  height: calc(var(--vh, 100vh) * 5.85);
-}
+/* ---- The stage, still: the finished desk beside the chapters ---- */
 .home .how-stage {
   --push: 0;
+  position: relative;
+  display: grid;
+}
+.home .how-scene {
+  grid-area: 1 / 1;
   position: sticky;
   top: 0;
   height: var(--vh, 100vh);
   overflow: clip;
+  mask-image: linear-gradient(to bottom, transparent, var(--umbra) 120px);
 }
-.home .how-scene {
-  position: absolute;
-  inset: 0;
-  overflow: clip;
-}
-
-/* ---- The copy column, chapter by chapter ---- */
 .home .how-side {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  padding-top: 72px;
+  grid-area: 1 / 1;
+  position: relative;
+  padding-block: 40px 140px;
   pointer-events: none;
-  opacity: calc(1 - var(--push) * 3);
 }
 .home .how-copy {
-  width: min(360px, 30vw);
+  width: min(380px, 30vw);
   pointer-events: auto;
 }
 .home .how-chapters {
   display: grid;
+  gap: 52px;
 }
-.home .how-ch {
-  grid-area: 1 / 1;
-  opacity: 0;
-  translate: 0 22px;
-  visibility: hidden;
-  transition:
-    opacity 380ms var(--e-std),
-    translate 620ms var(--e-settle),
-    visibility 0s 620ms;
+.home .how-way,
+.home .how-paper {
+  display: none;
 }
-.home .how-ch.is-on {
-  opacity: 1;
-  translate: 0 0;
-  visibility: visible;
-  transition:
-    opacity 520ms var(--e-std) 120ms,
-    translate 720ms var(--e-settle) 120ms,
-    visibility 0s;
-}
-.home .how-ch.is-past {
-  translate: 0 -22px;
-}
-/* Reduce motion: the chapter changes at once, by visibility alone. */
-@media (prefers-reduced-motion: reduce) {
-  .home .how-ch,
-  .home .how-ch.is-on,
-  .home .how-ch.is-past {
+
+/* ---- The stage, pinned: one chapter at a time ---- */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .home .how-pin {
+    position: relative;
+  }
+  .home .how-stage {
+    display: block;
+    position: sticky;
+    top: 0;
+    height: var(--vh, 100vh);
+    overflow: clip;
+  }
+  .home .how-scene {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    mask-image: none;
+  }
+  .home .how-side {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding-block: 72px 0;
+    opacity: calc(1 - var(--push) * 3);
+  }
+  .home .how-copy {
+    transition:
+      opacity 420ms var(--e-std) 160ms,
+      visibility 0s;
+  }
+  /* Before the first chapter, and where the island never ran (the head
+     would lie over the last chapter's copy). */
+  .home .how:not(.is-live) .how-copy,
+  .home .how-stage[data-ch="0"] .how-copy {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 300ms var(--e-std),
+      visibility 0s 300ms;
+  }
+  .home .how-way {
+    display: block;
+    height: calc(var(--vh, 100vh) * 3.3);
+  }
+  .home .how-chapters {
+    gap: 0;
+  }
+  .home .how-ch {
+    grid-area: 1 / 1;
+    opacity: 0;
+    translate: 0 22px;
+    visibility: hidden;
+    transition:
+      opacity 380ms var(--e-std),
+      translate 620ms var(--e-settle),
+      visibility 0s 620ms;
+  }
+  .home .how-ch.is-on {
     opacity: 1;
-    translate: none;
-    transition: none;
+    translate: 0 0;
+    visibility: visible;
+    transition:
+      opacity 520ms var(--e-std) 120ms,
+      translate 720ms var(--e-settle) 120ms,
+      visibility 0s;
+  }
+  .home .how-ch.is-past {
+    translate: 0 -22px;
+  }
+  .home .how-paper {
+    display: block;
   }
 }
+/* Wide, pinned: the head lies over the stage's first screen and scrolls
+   away while the desk holds still under it. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) and (min-width: 900px) {
+  .home .how-head {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding-top: clamp(120px, 16vh, 160px);
+    pointer-events: none;
+    opacity: var(--hd, 1);
+  }
+}
+
+/* ---- The copy column ---- */
 .home .how-stages {
   display: flex;
   flex-wrap: wrap;
@@ -158,7 +215,7 @@
 .home .how-h3 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(28px, 2.5vw, 36px);
+  font-size: clamp(30px, 2.6vw, 38px);
   font-weight: 500;
   font-stretch: 82%;
   line-height: 1.06;
@@ -174,12 +231,12 @@
 }
 .home .how-text {
   margin: 16px 0 0;
-  font: 400 17px / 1.6 var(--font-sans);
+  font: 400 18px / 1.6 var(--font-sans);
   color: var(--on-desk-2);
   text-wrap: pretty;
 }
 .home .how-text code {
-  font: 400 0.92em / 1 var(--font-mono);
+  font: 400 0.9em / 1 var(--font-mono);
   color: var(--on-desk);
 }
 .home .how-legend {
@@ -187,7 +244,7 @@
   flex-wrap: wrap;
   gap: 6px 20px;
   margin: 30px 0 0;
-  font: 400 13px / 1.3 var(--font-sans);
+  font: 400 14px / 1.3 var(--font-sans);
   color: var(--on-desk-3);
 }
 .home .how-legend span {
@@ -210,7 +267,7 @@
 .home .how-scrub {
   --sp: 1;
   position: relative;
-  margin-top: 26px;
+  margin-top: 24px;
   container-type: inline-size;
 }
 .home .how-ticks {
@@ -243,7 +300,7 @@
   margin: 14px 0 0;
   padding: 0;
   list-style: none;
-  font: 400 13px / 1.3 var(--font-mono);
+  font: 400 14px / 1.3 var(--font-mono);
   color: var(--on-desk-3);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
@@ -263,18 +320,18 @@
   position: absolute;
   left: max(40px, calc((100vw - 1280px) / 2));
   bottom: 28px;
-  max-width: min(380px, 32vw);
+  max-width: min(400px, 32vw);
   flex-wrap: wrap;
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 0;
-  font: 400 13px / 1.3 var(--font-sans);
+  font: 400 14px / 1.3 var(--font-sans);
   color: var(--on-desk-3);
   opacity: calc(1 - var(--push) * 3);
 }
 .home .how-run code {
-  font: 400 13px / 1 var(--font-mono);
+  font: 400 14px / 1 var(--font-mono);
   color: var(--on-desk-2);
 }
 .home .how-run-dot {
@@ -283,6 +340,8 @@
   border-radius: 50%;
   box-shadow: inset 0 0 0 1.5px var(--on-desk-2);
 }
+/* The same paper as Quiet's: its tooth, laid from the stage's top edge,
+   where Quiet's own page begins (40-quiet.css). */
 .home .how-paper {
   position: absolute;
   inset: 0;
@@ -292,5 +351,5 @@
     url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
     var(--print-paper);
   background-blend-mode: multiply, normal;
-  opacity: clamp(0, (var(--push) - 0.5) / 0.4, 1);
+  opacity: clamp(0, (var(--push) - 0.45) / 0.35, 1);
 }

@@ -1,6 +1,9 @@
 /* Quiet by design (P1): the paper the story's camera pushed into, so it
-   starts flat and blank with no edge (the band's slide and shadow are off);
-   the head, the struck poster, the caption and the run's count. */
+   starts flat with no edge (the band's slide and shadow are off); the head,
+   the struck poster, the caption and the run's count. With motion its page
+   begins one screen up, on the pinned stage's last screen: that screen is
+   the stage's own paper (30-how.css) until the push ends, and the poster
+   comes up on it (`--qin`, set by the story's island with `.joined`). */
 
 .home .quiet .paper-band,
 html.mo .home .quiet .paper-band {
@@ -18,7 +21,31 @@ html.mo .home .quiet .paper-band {
   box-shadow: none;
 }
 .home .quiet-in {
-  padding-block: clamp(40px, 7vh, 80px) clamp(88px, 12vh, 140px);
+  padding-block: clamp(96px, 12vh, 112px) clamp(72px, 10vh, 104px);
+}
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .home .quiet {
+    margin-top: calc(-1 * var(--vh, 100vh));
+  }
+}
+.home .quiet.joined .paper-band-face {
+  isolation: isolate;
+  background: none;
+}
+.home .quiet.joined .paper-band-face::before {
+  content: "";
+  position: absolute;
+  inset: var(--vh, 100vh) 0 0;
+  z-index: -1;
+  background:
+    url(/landing/tex/paper-tooth.webp) 0 calc(-1 * var(--vh, 100vh)) / 256px 256px,
+    linear-gradient(to bottom, var(--print-paper) 40%, var(--print-paper-2)),
+    var(--print-paper);
+  background-blend-mode: multiply, normal, normal;
+}
+.home .quiet.joined .quiet-in {
+  opacity: var(--qin, 1);
+  translate: 0 calc((1 - var(--qin, 1)) * 18px);
 }
 
 /* ---- Head: the claim and its lead ---- */
@@ -60,14 +87,14 @@ html.mo .home .quiet .paper-band {
 /* ---- The poster: the out-of-scope list, struck ---- */
 .home .quiet-poster {
   position: relative;
-  margin-top: clamp(48px, 8vh, 96px);
+  margin-top: clamp(40px, 6vh, 64px);
 }
 .home .quiet-words {
   margin: 0;
   padding: 0;
   list-style: none;
   font-family: var(--font-display);
-  font-size: clamp(60px, 11.2vw, 164px);
+  font-size: clamp(60px, 10.4vw, 150px);
   font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.02em;
@@ -137,8 +164,8 @@ html.mo .home .quiet-pen {
   justify-content: space-between;
   align-items: flex-end;
   gap: 24px 56px;
-  margin-top: clamp(64px, 9vh, 96px);
-  padding-top: 26px;
+  margin-top: clamp(56px, 8vh, 80px);
+  padding-top: 24px;
   border-top: 1px solid color-mix(in srgb, var(--print-ink) 18%, transparent);
 }
 .home .quiet-caption {

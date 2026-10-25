@@ -10,7 +10,8 @@ import { drawn, inkStrokes, pointOn, writeMapped } from "./how/follow";
 // and lies down beside the last. The poster is painted struck; the strikes
 // wait undrawn only under motion (40-quiet.css), so Reduce motion, no script
 // and the 4 s fail-safe all show them finished. The pen lies beside the
-// last word in every case.
+// last word in every case. Where the poster comes up on the story's paper
+// (`.joined`), the head rises and the pen starts once it is up (`.q-in`).
 export function QuietPlay() {
   useEffect(() => {
     const band = document.getElementById("quiet");
@@ -29,7 +30,7 @@ export function QuietPlay() {
       const narrow = r.width < 600;
       return {
         x: narrow ? 12 : r.width * 0.5,
-        y: r.height + (narrow ? 26 : 44),
+        y: r.height + (narrow ? 34 : 44),
         r: -4,
         lift: 0,
         tilt: 0,
@@ -38,7 +39,23 @@ export function QuietPlay() {
     const rig = new PenRig(rigEl, rest());
     band.classList.add("pen-ready");
     const head = band.querySelector(".quiet-head");
-    const offHead = head ? whenSeen(head, () => band.classList.add("head-in"), 0.01) : () => {};
+    const offs: (() => void)[] = [];
+    // Run `fn` once the poster is coming up (`q-up`) or up (`q-in`); at once
+    // where it is not joined.
+    const whenUp = (fn: () => void, state = "q-in") => {
+      const shown = () => !band.classList.contains("joined") || band.classList.contains(state);
+      if (shown()) return fn();
+      const mo = new MutationObserver(() => {
+        if (!shown()) return;
+        mo.disconnect();
+        fn();
+      });
+      mo.observe(band, { attributes: true, attributeFilter: ["class"] });
+      offs.push(() => mo.disconnect());
+    };
+    const offHead = head
+      ? whenSeen(head, () => whenUp(() => band.classList.add("head-in"), "q-up"), 0.01)
+      : () => {};
     if (!motionAllowed()) {
       band.classList.add("played");
       return offHead;
@@ -46,26 +63,30 @@ export function QuietPlay() {
     const ctl = new AbortController();
     const off = whenSeen(
       poster,
-      () => {
-        const signal = ctl.signal;
-        void (async () => {
-          drawn(strokes, false);
-          band.classList.add("playing");
-          const r = poster.getBoundingClientRect();
-          const first = strokes[0] ? pointOn(strokes[0], 0, toLocal) : { x: 0, y: 0 };
-          rig.set({ x: r.width + 200, y: first.y - 120, r: -36, lift: 1, tilt: 1 });
-          await rig.to({ x: first.x + 90, y: first.y - 40, lift: 0.6 }, 620, ease.settle, signal);
-          for (const layer of layers) {
-            await writeMapped(rig, inkStrokes(layer, ["strike"]), toLocal, { speed: 0.6, signal });
-            await sleep(140, signal);
-          }
-          await rig.to(rest(), 760, ease.glide, signal);
-          band.classList.replace("playing", "played");
-        })().catch(() => {
-          drawn(strokes, true);
-          rig.set(rest());
-        });
-      },
+      () =>
+        whenUp(() => {
+          const signal = ctl.signal;
+          void (async () => {
+            drawn(strokes, false);
+            band.classList.add("playing");
+            const r = poster.getBoundingClientRect();
+            const first = strokes[0] ? pointOn(strokes[0], 0, toLocal) : { x: 0, y: 0 };
+            rig.set({ x: r.width + 200, y: first.y - 120, r: -36, lift: 1, tilt: 1 });
+            await rig.to({ x: first.x + 90, y: first.y - 40, lift: 0.6 }, 620, ease.settle, signal);
+            for (const layer of layers) {
+              await writeMapped(rig, inkStrokes(layer, ["strike"]), toLocal, {
+                speed: 0.6,
+                signal,
+              });
+              await sleep(140, signal);
+            }
+            await rig.to(rest(), 760, ease.glide, signal);
+            band.classList.replace("playing", "played");
+          })().catch(() => {
+            drawn(strokes, true);
+            rig.set(rest());
+          });
+        }),
       0.45,
     );
     let width = innerWidth;
@@ -79,6 +100,7 @@ export function QuietPlay() {
       ctl.abort();
       off();
       offHead();
+      for (const f of offs) f();
       removeEventListener("resize", onResize);
     };
   }, []);
