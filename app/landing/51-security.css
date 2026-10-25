@@ -1,449 +1,407 @@
-/* Security (sections.md §8): a night band, a raised slab. The gate leads:
-   an H2 on the shared tier with the body and the threat model's link under
-   it, then the gate as an instrument (four objects on the 12-column grid,
-   an arrow in each gap), the four properties, and the measured result that
-   closes the band. Quiet, the night band before it, opens on a statement
-   head beside its lead; this one does not. Text on the band is on-night or
-   on-night-2 (8 : 1 and up); the two middle tiles are sheets laid on it, in
-   ink, and the pen writes only there, at rest. */
-.home .security {
-  --sec-2: var(--on-night-2);
-  padding-block: var(--pad-band);
+/* Built for code you do not trust (security.tsx), on a paper band. The
+   poster of refused paths, each under an ink marker bar; then a printed
+   page. A bar is two filtered passes, each drawn once in a window that
+   slides open with scroll (a view timeline per row) while its contents
+   slide back the other way: transforms only, the filter never re-runs. */
+
+.home .sec {
+  /* The sheet starts early, over the pinned lifecycle stage's last frame. */
+  margin-top: -14vh;
+  overflow-x: clip;
 }
-/* Dark: this band carries sheets, so it sits a step above the other night
-   bands (1.28 : 1 from the page, not 1.24), and its sheets a step above
-   it: lighter is higher. Its secondary text is lifted to keep 8 : 1. */
-.dark .home .security {
-  --sec-2: color-mix(in srgb, var(--on-night) 30%, var(--on-night-2));
-  background: color-mix(in srgb, var(--night) 70%, var(--night-2));
+.home .sec-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
-.home .sec-intro {
+.home .sec-in {
+  padding-block: clamp(96px, 12vh, 140px) clamp(88px, 11vh, 128px);
+}
+.home .sec-head {
   display: grid;
-  justify-items: start;
-  gap: 8px;
-  max-width: 38rem;
-  margin-top: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  align-items: end;
+  gap: 32px 64px;
 }
-.home .sec-intro .t-body {
-  color: var(--sec-2);
-}
-.home .sec-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  min-width: 44px;
-  font-weight: 500;
+.home .sec-kicker {
   font-size: 15px;
+  font-weight: 500;
+  color: var(--print-ink-2);
+}
+.home .sec-h {
+  margin-top: 16px;
+  font-size: clamp(3.25rem, 1.2rem + 6.4vw, 7rem);
+  font-stretch: 66%;
+  line-height: 0.9;
+  color: var(--print-ink);
+}
+.home .sec-hl {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.1em;
+  padding-bottom: 0.04em;
+}
+.home .sec-hli {
+  display: block;
+}
+.home .sec-lead {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--print-ink-2);
 }
 
-/* ---- The gate ---- */
-.home .sec-gate {
+/* ---- The poster ---- */
+.home .sec-poster {
+  margin: clamp(64px, 9vh, 104px) 0 0;
+}
+.home .sec-poster-cap {
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--print-ink) 34%, transparent);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--print-ink);
+}
+.home .sec-row {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: var(--gap);
-  align-items: stretch;
-  margin-top: 48px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  align-items: center;
+  gap: 12px 48px;
+  padding: clamp(14px, 2.2vh, 26px) 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--print-ink) 12%, transparent);
 }
-.home .sec-tile {
+.home .sec-path {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 24px;
-  border-radius: var(--r-card);
+  justify-self: start;
+  display: inline-block;
+  font: 400 clamp(5.5rem, 1.6rem + 11vw, 12.25rem) / 1 var(--font-mono);
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--print-ink);
 }
-.home .sec-tile .t-h4 {
-  color: var(--on-night);
-}
-.home .sec-title > :not(.sr-only) {
+.home .sec-path-t {
   display: block;
 }
-.home .sec-what code {
-  font-weight: 500;
-  font-size: 0.86em;
+.home .sec-bar {
+  position: absolute;
+  left: -0.26em;
+  top: 0;
+  height: 1.2em;
+  pointer-events: none;
 }
-.home .sec-how {
-  color: var(--ink-2);
+.home .sec-win {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 1.2em;
+  overflow: hidden;
+  /* The leading edge: the chisel's slanted cut, barely softened. */
+  mask-image: linear-gradient(
+    104deg,
+    var(--black) calc(100% - 0.34em),
+    transparent calc(100% - 0.3em)
+  );
 }
-/* Chinese titles, labels and notes break at their punctuation, never
-   inside a word. */
-.home .security :lang(zh) :is(.sec-title, .sec-label, .sec-end .t-small),
-.home .security:lang(zh) :is(.sec-title, .sec-label, .sec-end .t-small) {
-  word-break: keep-all;
+.home .sec-win-in {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
-.home .sec-tile .t-small {
-  margin-top: 10px;
-  color: var(--sec-2);
-}
-.home .sec-end .t-small {
-  text-wrap: balance;
-}
-/* The two ends of the flow, outside ocra: cards in the night's second
-   tone, centred on the row, so it reads as four objects, source to
-   provider. In dark the band is itself lifted toward night-2, so the
-   cards keep night-2 (never above the sheets: lighter is higher) and
-   take a firmer edge. */
-.home .sec-end {
-  align-self: center;
-  background: var(--night-2);
-  box-shadow: inset 0 0 0 1px var(--line-night);
-}
-.dark .home .sec-end {
-  box-shadow: inset 0 0 0 1px var(--line-night-2);
-}
-/* The gate and the agents: sheets laid on the band, in ink, so the pen can
-   write (in its paper colour, not the night's). */
-.home .sec-tile.sheet {
+.home .sec-win svg {
+  display: block;
   overflow: visible;
-  border-radius: var(--r-card);
-  box-shadow: var(--float);
-  color: var(--ink);
 }
-.home .sec-tile.sheet .t-h4 {
-  color: var(--ink);
+.home .sec-ink {
+  fill: var(--umbra);
 }
-.home .security .sheet .mk {
-  stroke: var(--pen);
+.home .sec-rim {
+  flood-color: var(--black);
+  flood-opacity: 0.5;
 }
-.dark .home .sec-tile.sheet {
-  background: color-mix(in srgb, var(--white) 5%, var(--sheet));
-}
-.dark .home .security :is(.sec-chip, .sec-answer) {
-  background: color-mix(in srgb, var(--white) 5%, var(--sheet-2));
-}
-.dark .home .sec-ask {
-  color: var(--ink-2);
-}
-.home .sec-core {
-  z-index: var(--z-over);
-}
-.home .sec-label {
-  margin-top: 18px;
-  margin-bottom: 8px;
-  font-weight: 500;
-  font-size: 13.5px;
-  line-height: 1.4;
-  color: var(--ink);
-}
-.home .sec-list {
-  display: grid;
-  gap: 6px;
-}
-.home .sec-tools li {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 24px;
-}
-.home .sec-tools code {
-  font-size: 13px;
-  color: var(--ink);
-}
-/* A refused path or an off tool: Maple on the sheet's inset, struck. */
-.home .sec-chip {
-  padding: 0 8px;
-  border-radius: var(--r-chip);
-  background: var(--sheet-2);
-  font-size: 12.5px;
-  line-height: 1.75;
-  color: var(--ink);
-}
-.home .sec-chip.ink-code {
-  display: inline-grid;
-}
-.home .sec-chip-text {
-  display: inline-flex;
-  align-items: center;
-  height: calc(12.5px * 1.75);
-  font-size: 13px;
-}
-.home .sec-off {
+.home .sec-rule {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
+  align-items: baseline;
+  gap: 4px 14px;
+  font: 400 16px / 1.5 var(--font-mono);
+  color: var(--print-ink-2);
 }
-/* The gate's answer to an agent that asks for a refused path. */
-.home .sec-answer {
+.home .sec-rule code {
+  color: var(--print-ink);
+  font: inherit;
+}
+
+/* The exchange on the first row: what the agent asked, what the gate said. */
+.home .sec-x {
   display: grid;
-  gap: 2px;
-  align-self: stretch;
-  margin-top: auto;
-  padding: 9px 11px;
-  border-radius: var(--r-ctl);
-  background: var(--sheet-2);
-  font-size: 11.5px;
-  line-height: 1.55;
-  text-wrap: balance;
+  gap: 8px;
+  min-width: 0;
 }
-.home .sec-answer code {
-  font-size: inherit;
+.home .sec-x-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  white-space: nowrap;
 }
-.home .sec-ask {
-  color: var(--ink-3);
+.home .sec-x-who {
+  flex: none;
+  width: 5ch;
+  font: 400 15px / 1.4 var(--font-mono);
+  color: var(--print-ink-3);
+  transition: opacity 260ms var(--e-std);
 }
-.home .sec-ask span {
-  color: var(--ink);
+.home .sec-x-say {
+  font: 400 20px / 1.4 var(--font-mono);
+  color: var(--print-ink);
 }
-.home .sec-denied {
-  color: var(--ink);
+.home .sec-x .sec-rule {
+  margin-top: 10px;
 }
-.home .sec-core .sec-list {
-  margin-bottom: 18px;
-}
-.home .sec-more {
-  margin-inline-start: 4px;
-  font-size: 13px;
-  color: var(--ink-2);
-}
-/* The arrow in the gap before a tile. */
-.home .sec-flow {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--gap) / -2);
-  translate: -50% -50%;
-  display: grid;
-  place-items: center;
-  font-size: 32px;
-  line-height: 1;
-  color: var(--sec-2);
-}
-.home .sec-flow .arrow-glyph {
-  display: block;
-}
-.home .sec-down {
-  display: none;
-  font-family: var(--font-mono);
+.home .sec-caret {
+  display: inline-block;
+  align-self: center;
+  width: 0.55em;
+  height: 1.1em;
+  margin-left: -8px;
+  background: var(--print-ink);
   font-size: 20px;
 }
 
-/* ---- Properties ---- */
-.home .sec-props {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 28px;
-  margin-top: 56px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line-night-2);
+.home .sec-also {
+  margin-top: 36px;
+  max-width: 1040px;
+  font-size: 16px;
+  line-height: 2;
+  color: var(--print-ink-2);
 }
-.home .sec-props .t-small {
-  margin-top: 8px;
-  color: var(--sec-2);
+.home .sec-also-h {
+  margin-right: 10px;
+  font-weight: 560;
+  color: var(--print-ink);
+}
+.home .sec-also-t {
+  display: block;
+}
+.home .sec-also code {
+  margin-right: 14px;
+  font: 400 16px / 1 var(--font-mono);
+  color: var(--print-ink);
 }
 
-/* ---- The measured result, closing the band on the properties' columns:
-   its label, the sentence over two, the method's link ---- */
-.home .sec-proof {
+/* ---- The printed page under it ---- */
+.home .sec-page {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 4px;
-  align-items: baseline;
-  margin-top: 40px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line-night-2);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 48px 72px;
+  margin-top: clamp(72px, 10vh, 112px);
 }
-/* One sentence in two or three even lines: balanced, in Chinese too,
-   where it would otherwise leave its last clause alone on a line. */
-.home .sec-proof-text {
-  grid-column: span 2;
-  max-width: 34em;
-  color: var(--sec-2);
-  text-wrap: balance;
+.home .sec-clauses {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 48px 56px;
+}
+.home .sec-clause {
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--print-ink) 34%, transparent);
+}
+.home .sec-clause h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 560;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: var(--print-ink);
+}
+.home .sec-clause p {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--print-ink-2);
+}
+.home .sec-src .ink-link {
+  min-height: 32px;
+  white-space: normal;
+  font-weight: 400;
+}
+.home .sec-src code {
+  font: 400 16px / 1.45 var(--font-mono);
+  color: var(--print-ink-2);
+  overflow-wrap: anywhere;
+}
+.home .sec-proof {
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--print-ink) 34%, transparent);
+}
+.home .sec-proof-k {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--print-ink-2);
+}
+.home .sec-proof-t {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--print-ink);
 }
 .home .sec-n {
+  font-weight: 650;
   font-variant-numeric: tabular-nums;
-  color: var(--on-night);
+}
+.home .sec-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+.home .sec-foot {
+  margin-top: 56px;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--print-ink) 12%, transparent);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--print-ink-2);
+}
+.home .sec-foot code {
+  font: 500 15px / 1 var(--font-mono);
+  color: var(--print-ink);
 }
 
-/* ---- 600 to 1199: the ends as full-width strips, the two sheets side by
-   side; the flow runs down, across, down ---- */
-@media (max-width: 1199px) {
-  .home .sec-gate {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 32px;
-    margin-top: 44px;
-  }
-  .home .sec-tile {
-    padding: 20px 22px 22px;
-  }
-  .home .sec-end {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: var(--gap);
-    align-items: baseline;
-    align-self: stretch;
-    padding-block: 14px 16px;
-  }
-  .home .sec-end .t-small {
-    margin-top: 0;
-  }
-  .home .sec-core .sec-flow,
-  .home .sec-end .sec-flow {
-    top: -16px;
-    left: 50%;
-  }
-  .home .sec-core .sec-flow .arrow-glyph,
-  .home .sec-end .sec-flow .arrow-glyph {
-    display: none;
-  }
-  .home .sec-core .sec-down,
-  .home .sec-end .sec-down {
-    display: block;
-  }
-  .home .sec-props {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 40px;
-  }
-  .home .sec-proof {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 36px;
-  }
-  .home .sec-proof-text,
-  .home .sec-proof .sec-link {
-    grid-column: 2;
-  }
-  /* A wide tile sets its lists as rows. */
-  .home .sec-list,
-  .home .sec-tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .home .sec-tools {
-    gap: 6px 16px;
-  }
+/* ---- Chinese: the system face's own sizes ---- */
+.home :lang(zh) .sec-h {
+  font-size: clamp(2.75rem, 1.2rem + 5.2vw, 5.75rem);
+  line-height: 1.12;
+}
+.home :lang(zh) .sec-proof-t {
+  font-size: 26px;
+  line-height: 1.45;
+}
+.home :lang(zh) .sec-clause h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
 }
 
-/* Below 1024 a half-width column is too narrow for the sentence (Chinese
-   would break inside a word): the label, then the sentence across. */
+/* ---- Tablet and phone ---- */
 @media (max-width: 1023px) {
-  .home .sec-proof {
+  .home .sec-head,
+  .home .sec-page {
     grid-template-columns: minmax(0, 1fr);
   }
-  .home .sec-proof-text,
-  .home .sec-proof .sec-link {
-    grid-column: 1;
+  .home .sec-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .home .sec-path {
+    font-size: clamp(5rem, 22vw, 10rem);
   }
 }
-
-/* "isolated agents · 30 steps each" fits one line where its tile spans
-   half the container or more. */
-@media (max-width: 599px), (min-width: 768px) and (max-width: 1199px) {
-  .home .sec-agents .sec-title > :not(.sr-only) {
-    display: inline;
-  }
-  .home .sec-agents .sec-how::before {
-    content: " · " / "";
-  }
-}
-
-/* ---- Phones leave the gate's answer out (the struck list says it), as
-   the page's length budget asks ---- */
 @media (max-width: 599px) {
-  .home .sec-core .sec-list {
-    margin-bottom: 0;
+  .home .sec-path {
+    font-size: 24vw;
   }
-  .home .sec-answer {
-    display: none;
-  }
-}
-
-/* ---- Phones: one column, a Maple ↓ between the tiles, lists as rows ---- */
-@media (max-width: 599px) {
-  .home .sec-intro {
-    margin-top: 16px;
-    gap: 4px;
-  }
-  .home .sec-gate {
+  .home .sec-clauses {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 24px;
-    margin-top: 24px;
+    gap: 36px;
   }
-  .home .sec-tile {
-    padding: 12px 16px 14px;
-  }
-  .home .sec-end {
-    display: block;
-    padding-block: 10px 11px;
-  }
-  .home .sec-tile .t-h4 {
-    font-size: 16px;
-  }
-  .home .sec-end .t-h4 {
-    font-size: 15px;
-  }
-  .home .sec-end .t-small {
-    margin-top: 2px;
-  }
-  .home .sec-flow,
-  .home .sec-agents .sec-flow {
-    top: -12px;
-    left: 50%;
-  }
-  .home .sec-flow .arrow-glyph,
-  .home .sec-agents .sec-flow .arrow-glyph {
-    display: none;
-  }
-  .home .sec-down,
-  .home .sec-agents .sec-down {
-    display: block;
-    font-size: 18px;
-  }
-  .home .sec-label {
-    margin-top: 10px;
-    margin-bottom: 6px;
-    font-size: 13px;
-  }
-  .home .sec-list {
-    gap: 5px;
-  }
-  .home .sec-tools {
-    gap: 4px 10px;
-  }
-  .home .sec-tools li {
-    gap: 5px;
-  }
-  .home .sec-tools code {
-    font-size: 12px;
-  }
-  .home .sec-chip {
-    padding-inline: 5px;
-    font-size: 11.5px;
-  }
-  .home .sec-chip-text {
-    height: calc(11.5px * 1.75);
-    font-size: 12px;
-  }
-  .home .sec-off {
-    gap: 5px;
-  }
-  .home .sec-more {
-    margin-inline-start: 2px;
-    font-size: 12.5px;
-  }
-  .home .sec-props {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 10px;
-    margin-top: 24px;
-    padding-top: 18px;
-  }
-  .home .sec-props .t-h4 {
-    font-size: 16px;
-  }
-  .home .sec-props .t-small {
-    margin-top: 1px;
-  }
-  .home .sec-proof {
-    margin-top: 24px;
-    padding-top: 18px;
-  }
-  .home .sec-proof .t-h4 {
-    font-size: 16px;
-  }
-  .home .sec-proof-text {
+  .home .sec-x-say {
     font-size: 17px;
+  }
+  .home .sec-caret {
+    font-size: 17px;
+  }
+  .home .sec-x-row {
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+  .home .sec-lead {
+    font-size: 17px;
+  }
+  .home .sec-proof-t {
+    font-size: 24px;
+  }
+}
+
+/* ---- Motion: the bars ink with scroll, one by one; the heading rises,
+   the exchange is typed (SecurityPlay), the caret blinks ---- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .sec-row {
+      view-timeline: --sec-row block;
+    }
+    html.mo .home .sec-win,
+    html.mo .home .sec-win-in {
+      will-change: translate;
+      animation: sec-open linear both;
+      animation-timeline: --sec-row;
+      animation-range: cover 20vh cover 40vh;
+    }
+    html.mo .home .sec-win-in {
+      animation-name: sec-hold;
+    }
+    html.mo .home .sec-win[data-pass="2"],
+    html.mo .home .sec-win[data-pass="2"] .sec-win-in {
+      animation-range: cover 33vh cover 52vh;
+    }
+  }
+}
+@keyframes sec-open {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes sec-hold {
+  from {
+    translate: 100% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.mo.hy .home .sec-h:not(.risen) .sec-hli {
+    translate: 0 108%;
+  }
+  html.mo.hy .home .sec-h .sec-hli {
+    transition: translate 1050ms var(--e-settle);
+  }
+  html.mo.hy .home .sec-h .sec-hl:nth-child(2) .sec-hli {
+    transition-delay: 110ms;
+  }
+  html.mo.hy .home .sec-x-row:not(.on) .sec-x-who {
+    opacity: 0;
+  }
+  html.mo.hy .home .sec-x-say:not(.typing, .typed) {
+    visibility: hidden;
+  }
+  html.mo.hy .home .sec-x-say:not(.typed) + .sec-caret {
+    visibility: hidden;
+  }
+  html.mo .home .sec-caret {
+    animation: caret 0.9s steps(1) infinite;
+  }
+}
+
+/* The sheet docks: it comes in a little low and turned, with the shade
+   wide, and lands square on the desk's edge. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .sec .paper-band {
+      animation-name: sec-dock;
+      transform-origin: 50% 0;
+    }
+  }
+}
+@keyframes sec-dock {
+  from {
+    translate: 0 90px;
+    rotate: 0.6deg;
+  }
+  to {
+    translate: 0 0;
+    rotate: 0deg;
   }
 }
