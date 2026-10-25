@@ -12,19 +12,19 @@ test.beforeEach(({}, testInfo) => {
 });
 
 // axe on the landing page in both languages; the projects run it at every
-// width in both colour schemes. The product window's tabs and the
+// width in both colour schemes. The product window's second tab and the
 // lifecycle's states are checked open, since each renders different markup.
 for (const path of ["/", "/zh"]) {
   test(`axe ${path}`, async ({ page }) => {
-    // Five full axe passes over a long page.
+    // Four full axe passes over a long page.
     test.setTimeout(90_000);
     await page.goto(path, { waitUntil: "networkidle" });
     const states: { name: string; open: () => Promise<void> }[] = [
       { name: "default", open: async () => {} },
-      ...[1, 2].map((n) => ({
-        name: `window tab ${n}`,
-        open: () => page.locator("#product [role=tab]").nth(n).click(),
-      })),
+      {
+        name: "window tab 1",
+        open: () => page.locator("#product [role=tab]").nth(1).click(),
+      },
       ...[1, 2].map((n) => ({
         name: `lifecycle state ${n}`,
         open: () => page.locator(".lifecycle [role=tab]").nth(n).click(),
@@ -67,8 +67,10 @@ test("tabs move with the arrow keys", async ({ page }) => {
   await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
   const panel = await tabs.nth(1).getAttribute("aria-controls");
   await expect(page.locator(`#${panel}`)).toHaveAttribute("role", "tabpanel");
+  await page.keyboard.press("Home");
+  await expect(tabs.first()).toBeFocused();
   await page.keyboard.press("End");
-  await expect(tabs.nth(2)).toBeFocused();
+  await expect(tabs.nth(1)).toBeFocused();
   await page.keyboard.press("ArrowRight");
   await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
 });

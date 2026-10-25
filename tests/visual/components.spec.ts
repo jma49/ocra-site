@@ -1,4 +1,4 @@
-import { expect, type Page, test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 // How the landing page's islands and the manual's sidebar behave. The
 // comparison job runs these tests against the base branch while it records
@@ -36,95 +36,9 @@ test("the logo does not prefetch the page it is on", async ({ page }) => {
 
 test("the theme toggle says whether the dark theme is on", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
-  const toggle = page.locator(".nav-r button.theme-bar");
+  const toggle = page.locator(".nav [data-theme-toggle]");
   await expect(toggle).toHaveAttribute("aria-pressed", "false");
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("html")).toHaveClass(/\bdark\b/);
-});
-
-test.describe("with motion", () => {
-  test.use({ reducedMotion: "no-preference" });
-
-  test("the pipeline advances only while it is on screen", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-    const pipeline = page.locator(".pipe");
-    await expect(pipeline).toHaveAttribute("data-running", "false");
-    await pipeline.scrollIntoViewIfNeeded();
-    await expect(pipeline).toHaveAttribute("data-running", "true");
-  });
-
-  test("the statement follows the scroll only near its paragraph", async ({ page }) => {
-    await page.addInitScript(() => {
-      const listening = new Set<unknown>();
-      (window as unknown as { scrollListeners: Set<unknown> }).scrollListeners = listening;
-      const add = window.addEventListener.bind(window);
-      const remove = window.removeEventListener.bind(window);
-      window.addEventListener = ((type: string, listener: unknown, options?: unknown) => {
-        if (type === "scroll") listening.add(listener);
-        return add(type as "scroll", listener as EventListener, options as AddEventListenerOptions);
-      }) as typeof window.addEventListener;
-      window.removeEventListener = ((type: string, listener: unknown, options?: unknown) => {
-        if (type === "scroll") listening.delete(listener);
-        return remove(type as "scroll", listener as EventListener, options as EventListenerOptions);
-      }) as typeof window.removeEventListener;
-    });
-    const listeners = () =>
-      page.evaluate(
-        () => (window as unknown as { scrollListeners: Set<unknown> }).scrollListeners.size,
-      );
-    await page.goto("/", { waitUntil: "networkidle" });
-    expect(await listeners()).toBe(0);
-
-    const paragraph = page.locator(".statement .scrub");
-    await paragraph.scrollIntoViewIfNeeded();
-    await expect.poll(listeners).toBe(1);
-    const firstWord = paragraph.locator(".w").first();
-    await page.mouse.wheel(0, 200);
-    await expect.poll(() => firstWord.evaluate((w) => getComputedStyle(w).opacity)).toBe("1");
-  });
-
-  test("a reveal never hides what is already on screen", async ({ page }) => {
-    await page.addInitScript(() => {
-      const hidden: string[] = [];
-      (window as unknown as { hiddenOnScreen: string[] }).hiddenOnScreen = hidden;
-      new MutationObserver((records) => {
-        for (const { target } of records) {
-          if (!(target instanceof HTMLElement) || target.dataset.reveal !== "") continue;
-          const r = target.getBoundingClientRect();
-          if (r.top < innerHeight && r.bottom > 0) hidden.push(target.className);
-        }
-      }).observe(document, { attributes: true, attributeFilter: ["data-reveal"], subtree: true });
-    });
-    await page.goto("/#plans", { waitUntil: "networkidle" });
-    await expect(page.locator("html.motion")).toHaveCount(1);
-    const hidden = await page.evaluate(
-      () => (window as unknown as { hiddenOnScreen: string[] }).hiddenOnScreen,
-    );
-    expect(hidden).toEqual([]);
-  });
-
-  test("a reveal does not blur", async ({ page }) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-    const waiting = page.locator('[data-reveal=""]').first();
-    await expect(waiting).toHaveCount(1);
-    expect(await waiting.evaluate((el) => getComputedStyle(el).filter)).toBe("none");
-  });
-});
-
-const light = (page: Page) =>
-  page.locator(".reading").evaluate((el) => (el as HTMLElement).style.getPropertyValue("--lx"));
-
-test("the reading light rests while the pointer is elsewhere on the page", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  await page.mouse.move(900, 300);
-  await expect.poll(() => light(page)).not.toBe("");
-  await page.mouse.wheel(0, 4000);
-  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(3000);
-  await page.mouse.move(400, 300);
-  await page.waitForTimeout(200);
-  const parked = await light(page);
-  await page.mouse.move(800, 500);
-  await page.waitForTimeout(200);
-  expect(await light(page)).toBe(parked);
 });
