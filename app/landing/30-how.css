@@ -422,11 +422,38 @@
     color: var(--how-ink-2);
   }
 }
+/* Under a pointer an inactive step's whole entry is its button: its sheet
+   comes in at a little under half, its rules give way as the active step's
+   do, its text darkens a step, and a press gives a little. */
 @media (hover: hover) and (min-width: 1200px) and (min-height: 760px) and (
     prefers-reduced-motion: no-preference
   ) {
-  html.mo .home .step:not(.is-on) .step-go:hover :is(.step-n, .step-t) {
-    color: var(--ink);
+  html.mo .home .step:not(.is-on) .step-go::after {
+    content: "";
+    position: absolute;
+    inset: 0 -22px;
+    border-radius: var(--r-card);
+  }
+  html.mo .home .step {
+    transition: scale 160ms var(--e-enter);
+  }
+  html.mo .home .step:has(.step-go:active) {
+    scale: 0.98;
+  }
+  html.mo .home .step:not(.is-on):hover {
+    --how-ink: var(--ink);
+    --how-ink-2: var(--ink-2);
+  }
+  html.mo .home .step:not(.is-on):hover::before {
+    opacity: 0.45;
+  }
+  html.mo .home .step:not(.is-on):hover::before,
+  html.mo .home .step:not(.is-on):hover :is(.step-n, .step-t, .step-text) {
+    transition-duration: 160ms;
+    transition-timing-function: var(--e-enter);
+  }
+  html.mo .home :is(.step:not(.is-on):hover, .step:not(.is-on):hover + .fig + .step)::after {
+    opacity: 0;
   }
 }
 
