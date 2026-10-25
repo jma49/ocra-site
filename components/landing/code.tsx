@@ -83,7 +83,8 @@ function noteCol(text: string, note: NoteSpec): number {
 // renders the same cells for a clock to play (13-hero-run.css). Rows carry
 // `data-n` and `--r` (their index) for per-row animation; `overlay` holds
 // marks that span rows (an Arrow), positioned in em of the code from the
-// block's top-left. A focusable, labelled group that scrolls sideways.
+// block's top-left. A labelled group; it takes focus only while it has
+// code to scroll sideways (motion.tsx), so it is never a dead tab stop.
 export function CodeRows({
   path,
   label,
@@ -110,8 +111,6 @@ export function CodeRows({
       data-reader={reader || undefined}
       role="group"
       aria-label={label}
-      // biome-ignore lint/a11y/noNoninteractiveTabindex: code that scrolls sideways must take focus to scroll by keyboard
-      tabIndex={0}
     >
       {rows.map((row, r) => {
         if ("custom" in row) {
