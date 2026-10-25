@@ -1,8 +1,10 @@
-/* Works: the small H2, body and platform tiles beside the provider index,
-   headed by its "45", with the marquee inside the column and its pause
-   button (sections.md §3, motion.md §15). Package P. */
+/* Works: the H2 on the page's headline step (.t-h2, as how, features,
+   lifecycle, plans and FAQ) across the grid; under it the body and
+   platform tiles beside the provider index, headed by its "45", with the
+   marquee inside the column and its pause button (sections.md §3,
+   motion.md §15). Package P. */
 .home .works {
-  padding-block: 96px var(--pad);
+  padding-block: 112px var(--pad);
 }
 .home .works-grid {
   display: grid;
@@ -11,6 +13,9 @@
   row-gap: 48px;
   align-items: start;
 }
+.home .works-h {
+  grid-column: 1 / -1;
+}
 .home .works-copy {
   grid-column: 1 / span 5;
 }
@@ -18,14 +23,29 @@
   grid-column: 6 / -1;
   min-width: 0;
 }
+/* Set in its two lines where both fit; one balanced sentence below, the
+   body close under it as one block. */
+@media (max-width: 1199px) {
+  .home .works-h .l {
+    display: inline;
+    white-space: normal;
+  }
+  .home .works-h {
+    margin-bottom: -20px;
+  }
+}
+/* The body's first line sits on the 45's cap height, so the two columns
+   start together under the H2. */
 @media (min-width: 1200px) {
-  .home .works-copy .t-h2s {
-    max-width: 13em;
+  .home .works-grid {
+    row-gap: 56px;
+  }
+  .home .works-copy {
+    padding-top: 6px;
   }
 }
 .home .works-copy .t-body {
   max-width: 34rem;
-  margin-top: 16px;
 }
 
 /* ---- Platform tiles: mark, name and the flag that targets it ---- */
@@ -202,13 +222,41 @@ html:not(.hy) .home .mq-pause {
 .home .works-index:has(.mq-pause[aria-pressed="true"]) .mq-track {
   animation-play-state: paused;
 }
-/* Reduce motion: still moving, at half speed, with the pause button. */
+/* Reduce motion: nothing moves. Each row's set stands still and wraps,
+   unfaded; the copy made for the loop and the pause button go. */
 @media (prefers-reduced-motion: reduce) {
-  .home .mq-track {
-    animation-duration: 128s;
+  .home .mq {
+    mask-image: none;
   }
-  .home .mq-rev .mq-track {
-    animation-duration: 144s;
+  .home .mq-track {
+    width: auto;
+    animation: none;
+  }
+  .home .mq-set {
+    flex-wrap: wrap;
+    padding-inline-end: 0;
+  }
+  .home .mq-set[aria-hidden] {
+    display: none;
+  }
+  .home .works-foot .mq-pause {
+    display: none;
+  }
+}
+/* On a phone the wrapped sets would run a dozen lines: each row stays one
+   line that the reader swipes, faded at its far edge. */
+@media (prefers-reduced-motion: reduce) and (max-width: 599px) {
+  .home .mq {
+    mask-image: linear-gradient(90deg, var(--ink) 88%, transparent);
+  }
+  .home .mq-row {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .home .mq-set {
+    flex-wrap: nowrap;
+    padding-inline-end: 24px;
   }
 }
 @keyframes mq-slide {
@@ -228,14 +276,9 @@ html:not(.hy) .home .mq-pause {
 }
 
 /* Chinese headings and labels break at punctuation and spaces, never
-   inside a word; paragraphs break between any characters, as Chinese is
-   set, balanced so no line is left with a word or two. */
+   inside a word; paragraphs follow the page's prose rule (01-base.css). */
 .home .works:lang(zh) :is(h2, h3, dt, dd, .t-h4) {
   word-break: keep-all;
-}
-.home .works:lang(zh) p {
-  line-break: strict;
-  text-wrap: balance;
 }
 @media (max-width: 1199px) {
   .home .works-copy,

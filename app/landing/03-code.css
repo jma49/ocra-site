@@ -17,18 +17,40 @@
   overflow-x: auto;
   overscroll-behavior-x: contain;
 }
+/* Code the reader reads (the hero, story 3) is the page's signature object:
+   a step larger, so the pen's marks read at a glance. */
+.home .code[data-reader] {
+  --fs: 15;
+}
 @media (max-width: 1439px) {
   .home .code {
     --fs: 13;
   }
+  .home .code[data-reader] {
+    --fs: 14;
+  }
+}
+/* Where a reader's column is at its narrowest (the pinned story at 1200,
+   the one-column hero below 768), a half step down so no row scrolls. */
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .home .code[data-reader] {
+    --fs: 13.5;
+  }
+}
+@media (max-width: 767px) {
+  .home .code[data-reader] {
+    --fs: 13;
+  }
 }
 @media (max-width: 599px) {
-  .home .code {
+  .home .code,
+  .home .code[data-reader] {
     --fs: 11.5;
   }
 }
 @media (max-width: 379px) {
-  .home .code {
+  .home .code,
+  .home .code[data-reader] {
     --fs: 10.5;
   }
 }
@@ -227,6 +249,30 @@
 }
 .home .is-reader .lids {
   animation: none;
+}
+/* While it reads, the reader blinks: once as it reads line 42 (about
+   650 ms into the hero's theatre, 13-hero-run.css) and once after the pen
+   has marked it, before the comment lands (about 1300 ms). Played by the
+   hero's clock with the rest of the theatre (data-pen="clock"), and over
+   before it ends; at rest the eyes are open. */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home [data-pen="clock"] .is-reader .lids {
+    animation: rd-blink 900ms linear 560ms both;
+  }
+}
+@keyframes rd-blink {
+  0%,
+  3%,
+  20%,
+  75%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  10%,
+  82% {
+    transform: scaleY(0.08);
+  }
 }
 @media (max-width: 599px) {
   .home .code .rd {

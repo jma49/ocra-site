@@ -352,7 +352,7 @@ One shadow, `--float`, only for sheets on a desk, the lifecycle thread, the gate
 
 ## Shapes
 
-Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls 10 px (buttons, tablists, the comment, the prompt box), sheets 14 px, cards 16 px (gate tiles), desks and bands 28 px (desk = sheet + 14 px padding). Phones: desks and bands 20 px with 8 px padding, sheets 12 px. The nav bar 12 px. No pills; GitHub's own "bot" label is the only rounded-full shape.
+Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls 10 px (buttons, tablists, the comment), sheets 14 px (the final band's install sheet included, its Copy button 10 px inside 4 px), cards 16 px (gate tiles), desks and bands 28 px (desk = sheet + 14 px padding). Phones: desks and bands 20 px with 8 px padding, sheets 12 px. The nav bar 12 px. No pills; GitHub's own "bot" label is the only rounded-full shape.
 
 ## Components
 

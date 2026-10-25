@@ -40,8 +40,10 @@
   flex: none;
   vertical-align: -0.1em;
 }
+/* The ring round a display figure (story 3's L42), in 0.01 em units: about
+   3 px at the figure's 1440 size, the pen's signature weight. */
 .home .mk-host > .mk-ring {
-  --sw: 1.8;
+  --sw: 2.9;
 }
 /* Wipe-drawn marks (underline, double underline, strike): a left-to-right
    clip, so the stroke keeps its px width at any stretch. */
@@ -54,6 +56,18 @@
 }
 .home .mk-double path {
   stroke-width: 2px;
+}
+/* On code rows the pen writes at signature weight: 2.6 px at any code
+   size (the arrow a little lighter), so its marks carry the first screen
+   at a glance. Marks on chips and small text keep the finer hand above. */
+.home .code .mk {
+  --sw: calc(260 / var(--fs, 13.5));
+}
+.home .code .mk-arrow {
+  --sw: calc(220 / var(--fs, 13.5));
+}
+.home .code .mk-wipe path {
+  stroke-width: 2.6px;
 }
 
 /* ---- Overlays: marks and notes on code ---- */
@@ -78,7 +92,7 @@
   clip-path: inset(-4px);
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
   letter-spacing: 0.01em;
   color: var(--pen);
@@ -90,17 +104,16 @@
 .home .pen-note.above {
   bottom: calc(100% + 3px);
 }
+/* An insert the pen writes in (`* 1000`) is code: at the code's own size. */
 .home .pen-note-mono {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: calc(var(--fs, 13.5) * 1px);
+  font-weight: 500;
   letter-spacing: 0;
 }
 @media (max-width: 599px) {
   .home .pen-note {
-    font-size: 11px;
-  }
-  .home .pen-note-mono {
-    font-size: 11.5px;
+    font-size: 12px;
   }
 }
 /* The margin bar: at the rail's inner edge, the whole row's height less a

@@ -50,15 +50,15 @@ function Flow() {
   );
 }
 
-// Built for code you do not trust: the stone band and the gate that enforces
+// Built for code you do not trust: a night band and the gate that enforces
 // it (sections.md §8). The gate is standing policy, so its marks are drawn
-// at rest, and only on the two sheets: the pen never writes on stone. The
-// tools ticked are the ones the example run's agents called (recorded.ts
-// checks them against the transcript).
+// at rest, and only on the two sheets laid on the band. The tools ticked are
+// the ones the example run's agents called (recorded.ts checks them against
+// the transcript).
 export function Security({ copy, locale }: { copy: Copy["security"]; locale: Locale }) {
   const f = copy.flow;
   return (
-    <Section id="security" ground="stone" className="security" labelledBy="sec-h">
+    <Section id="security" ground="night" className="security" labelledBy="sec-h">
       <div className="wrap">
         <div className="sec-head">
           <h2 className="t-band sec-h" id="sec-h">

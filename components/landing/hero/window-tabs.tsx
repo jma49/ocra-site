@@ -10,21 +10,25 @@ const moving = () =>
   document.documentElement.classList.contains("mo") &&
   matchMedia("(prefers-reduced-motion: no-preference)").matches;
 
-// The product window's only client state: which pane shows. Both panes are
-// rendered on the server and stacked in one cell, so switching never moves
-// the page; the hidden one is inert. With motion, a pane the visitor picks
-// eases in (motion.md §5), and the terminal types its run again each time
-// it is shown (12-terminal.css; the review's own clock pauses meanwhile).
+// The product window, the desk itself (a figure: the tab row, the two
+// stacked panes, then its caption along the foot), and its only client
+// state: which pane shows. Both panes are rendered on the server and
+// stacked in one cell, so switching never moves the page; the hidden one is
+// inert. With motion, a pane the visitor picks eases in (motion.md §5), and
+// the terminal prints the rest of its run again each time it is shown
+// (12-terminal.css; the review's own clock pauses meanwhile).
 export function WindowTabs({
   labels,
   tablist,
   chip,
   panes,
+  caption,
 }: {
   labels: Record<WindowTab, string>;
   tablist: string;
   chip: ReactNode;
   panes: Record<WindowTab, ReactNode>;
+  caption: ReactNode;
 }) {
   const [tab, setTab] = useState<WindowTab>("pr");
   // Panes the visitor has opened: the terminal plays only from then on.
@@ -58,7 +62,7 @@ export function WindowTabs({
   }, [tab]);
 
   return (
-    <div className="desk">
+    <figure className="product desk" id="product">
       <div className="desk-top">
         <div className="seg" {...t.list(tablist)}>
           {TABS.map((id) => (
@@ -81,6 +85,7 @@ export function WindowTabs({
           </div>
         ))}
       </div>
-    </div>
+      {caption}
+    </figure>
   );
 }

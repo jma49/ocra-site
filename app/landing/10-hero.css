@@ -1,8 +1,9 @@
 /* The hero (sections.md §2): the brand line across the container (one line
    from 1024 px, two below), then the lede, the two ways in and the note in
-   four columns beside the desk in eight (one column below 1200 px). The
-   load (motion.md §3): text is painted at frame 0 and only rises into
-   place; the desk settles; nothing blurs, nothing moves sideways. */
+   four columns beside the desk in eight (one column below 1200 px); what
+   the example is runs along the desk's foot (11-window.css). The load: the
+   line rises out of a mask, the copy and the desk follow, and the review
+   starts as they settle; nothing blurs, nothing moves sideways. */
 .home .hero {
   padding-block: 24px 64px;
 }
@@ -35,18 +36,26 @@
 .home .hero .t-lede {
   max-width: 34rem;
   color: var(--ink-2);
+  text-wrap: pretty;
 }
-/* Stacked, the two ways in share the wider one's width, so the pair reads
-   as one block rather than two ragged edges. */
+/* The two ways in side by side. From 1200 px they fill the column's
+   measure together, one block under the lede; where it is too narrow for
+   both (1200–1359 px) each takes a row of its own, at the column's width. */
 .home .hero-cta {
-  display: grid;
-  width: max-content;
-  max-width: 100%;
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 28px;
 }
 .home .hero-cta .btn {
   justify-content: center;
+  gap: 8px;
+  padding-inline: 16px;
+}
+@media (min-width: 1200px) {
+  .home .hero-cta .btn {
+    flex: 1 0 auto;
+  }
 }
 .home .hero-note {
   margin-top: 16px;
@@ -68,11 +77,6 @@
     margin-top: 24px;
     row-gap: 40px;
   }
-  .home .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    width: auto;
-  }
   .home .hero-grid > .product {
     width: min(100%, 760px);
     margin-inline-start: auto;
@@ -92,8 +96,7 @@
     align-self: start;
   }
   .home .hero-copy .hero-cta {
-    display: grid;
-    width: max-content;
+    flex-wrap: nowrap;
     margin-top: 0;
   }
   .home .hero-copy .hero-note {
@@ -150,42 +153,55 @@
   overflow-wrap: anywhere;
 }
 
-/* ---- Load ---- */
+/* ---- Load: about 760 ms, then the review plays (review-clock.tsx) ----
+   The line rises out of a mask at its own foot, one line after the other;
+   the lede, the ways in and the note rise a step behind; the desk settles
+   under them. The copy stays painted from frame 0 (on a phone the lede is
+   the largest text) and only moves; the line is clipped, never faded. */
 @media (prefers-reduced-motion: no-preference) {
   /* An inline line cannot move; each line rises as a box of its own. */
   html.mo .home .hero .t-display .l {
     display: inline-block;
-    animation: rise 560ms var(--e-enter) both;
+    animation: hero-line 640ms var(--e-enter) backwards;
   }
   html.mo .home .hero .t-display .l + .l {
-    animation-delay: 60ms;
+    animation-delay: 90ms;
   }
   html.mo .home .hero :is(.t-lede, .hero-cta, .hero-note) {
-    --rise: 10px;
-    animation: rise 560ms var(--e-enter) 120ms both;
+    --rise: 18px;
+    animation: rise 520ms var(--e-enter) 160ms backwards;
   }
   html.mo .home .hero .hero-cta {
-    animation-delay: 180ms;
+    animation-delay: 200ms;
   }
   html.mo .home .hero .hero-note {
     animation-delay: 240ms;
   }
-  /* The desk settles, not the figure: a figure holding a transform would
-     become its side caption's containing block (11-window.css). Below
-     1200 px the caption under the desk settles with it. */
-  html.mo .home .hero .product > :is(.desk, .product-cap) {
+  html.mo .home .hero .product {
     transform-origin: 50% 0;
-    animation: settle 640ms var(--e-enter) 100ms both;
-  }
-}
-@media (prefers-reduced-motion: no-preference) and (min-width: 1200px) {
-  html.mo .home .hero .product > .product-cap {
-    --rise: 10px;
-    animation: rise 560ms var(--e-enter) 240ms both;
+    animation: hero-desk 640ms var(--e-enter) 80ms backwards;
   }
 }
 @media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
   html.mo .home .hero .t-display .l {
     display: block;
+  }
+}
+/* The mask is the line's own box, 20 % taller each way for the glyphs:
+   the clip moves against the rise, so it holds still on the page while
+   the line comes up through it. */
+@keyframes hero-line {
+  from {
+    transform: translateY(125%);
+    clip-path: inset(-145% -4% 105% -4%);
+  }
+  to {
+    transform: none;
+    clip-path: inset(-20% -4% -20% -4%);
+  }
+}
+@keyframes hero-desk {
+  from {
+    transform: translateY(36px) scale(0.975);
   }
 }

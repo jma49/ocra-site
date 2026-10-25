@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { type CSSProperties, Fragment } from "react";
 import type { Copy } from "@/lib/copy";
 import { type ClaimOutcome, exampleRun } from "@/lib/landing/example-run";
 import { Arrow, Band, Marked, Tick } from "../pen/marks";
@@ -9,13 +9,16 @@ const { claims } = exampleRun;
 
 // When the pen acts on each claim, in pipeline order (motion.md §6): the
 // memory filter sets #2 aside, the verifier ticks #1 and #3 and strikes
-// #4, the judge merges #3 into #1.
+// #4, the judge merges #3 into #1 (the arrow, at 380), and the verdict is
+// underlined at 480. Every mark is drawn by 800 ms (story.tsx moves the
+// meter with these beats); strikes take 260 ms.
 const AT: Record<ClaimOutcome, number> = {
-  remembered: 400,
-  confirmed: 800,
-  merged: 1000,
-  disproved: 1200,
+  remembered: 100,
+  confirmed: 200,
+  merged: 260,
+  disproved: 320,
 };
+const STRIKE_MS = 260;
 const STRUCK: ReadonlySet<ClaimOutcome> = new Set(["remembered", "disproved"]);
 
 // The claims grouped by the task that reported them, in the run's order.
@@ -41,7 +44,8 @@ const merged = claims.findIndex((c) => c.outcome === "merged");
 const into = claims.findIndex((c) => c.outcome === "confirmed");
 
 // Below 600 px a struck title may wrap: the wrap-safe band, split where
-// the narrowest phone breaks it.
+// the narrowest phone breaks it, a band per line so both draw at once
+// (32-figure-review.css sets their duration).
 function phoneLines(title: string): string[] {
   if (title.length <= 24) return [title];
   const cut = title.lastIndexOf(" ", 18);
@@ -54,12 +58,17 @@ function Title({ claim }: { claim: Claim }) {
   return (
     <span className="fig-claim-t">
       <span className="fig-wide">
-        <Marked kind="strike" at={at}>
+        <Marked kind="strike" at={at} dur={STRIKE_MS}>
           {claim.title}
         </Marked>
       </span>
       <span className="fig-narrow">
-        <Band kind="strike" lines={phoneLines(claim.title)} at={at} />
+        {phoneLines(claim.title).map((line, i) => (
+          <Fragment key={line}>
+            {i > 0 && " "}
+            <Band kind="strike" lines={[line]} at={at + 60 * i} />
+          </Fragment>
+        ))}
       </span>
     </span>
   );
@@ -79,9 +88,9 @@ function Outcome({ f, outcome }: { f: F; outcome: ClaimOutcome }) {
 }
 
 // Story figure 4, filter · verify · judge · verdict: the four candidate
-// findings and what became of each, then the verdict, computed in code. It
-// tightens (font-stretch 100 % → 66 %) at 2100 ms and is double-underlined
-// at 2950; "1 verified critical" stands under it.
+// findings and what became of each, then the verdict, computed in code, set
+// finished from the first frame and double-underlined by the pen; "1
+// verified critical" stands under it.
 export function FigureVerify({ f }: { f: F }) {
   const glossed = Object.values(f.claimGloss).some(Boolean);
   return (
@@ -116,13 +125,13 @@ export function FigureVerify({ f }: { f: F }) {
           from={{ x: 0.7, y: titleMiddle(merged, glossed) - 0.2 }}
           to={{ x: 0.75, y: titleMiddle(into, glossed) + 0.45 }}
           dir="up"
-          at={1600}
+          at={380}
         />
       </div>
       <div className="fig-foot fig-verdict">
         <div className="verdict-row t-verdict">
           <p className="verdict">
-            <Marked kind="double" at={2950}>
+            <Marked kind="double" at={480} dur={200}>
               {f.ledger.verdict}
             </Marked>
           </p>

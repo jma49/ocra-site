@@ -15,14 +15,14 @@ interface HeroCopy {
 export const hero: Bilingual<HeroCopy> = {
   en: {
     lines: ["Reads first.", "Comments last."],
-    lede: "Open-source AI code review for GitHub and GitLab. Its agents read your repository, quote the exact code they mean, and face a second read before anything reaches your pull request. When there is nothing worth saying, it leaves no comment on your code.",
+    lede: "Open-source AI code review for GitHub and GitLab. It stays quiet unless a finding quotes the code it means and holds up on a second read.",
     cloud: "Start with ocra Cloud",
     selfHost: "Self-host, Apache-2.0",
     note: "Free during early access. Bring your own model key.",
   },
   zh: {
     lines: ["先读懂，", "再开口。"],
-    lede: "开源的 AI 代码审查，支持 GitHub 和 GitLab。agent 先读你的仓库，引用它所指的那段代码，再经过第二遍复核，才会出现在你的 PR\u00a0里。没有值得说的，就不在你的代码上留评论。",
+    lede: "开源的 AI 代码审查，支持 GitHub 和 GitLab。一条意见要引用它所指的代码、经得起第二遍核查，否则它不开口。",
     cloud: "开始使用 ocra Cloud",
     selfHost: "自托管，Apache-2.0",
     note: "早期体验期间免费，自带模型 key。",
@@ -36,6 +36,9 @@ interface WindowCopy {
   urls: { pr: FromRun; terminal: FromRun };
   example: string;
   pr: {
+    // The theatre's placeholder where the comment will land, before it does:
+    // what the reader is doing (13-hero-run.css). Never in the final state.
+    pending: { reading: string; checking: FromRun };
     replay: string;
     replayLabel: string;
     summaryLabel: string;
@@ -62,8 +65,12 @@ export const productWindow: Bilingual<WindowCopy> = {
       terminal: (run) => `${run.repo} · ${run.command}`,
     },
     example:
-      "An example run, recorded with the real ocra CLI and a scripted model: the pipeline, the output and the verdict are ocra's own. The pull request view shows that run's finding as ocra posts it on GitHub.",
+      "Recorded with the real ocra CLI and a scripted model: the pipeline, the output and the verdict are ocra's own. The pull request view shows the run's finding as ocra posts it on GitHub.",
     pr: {
+      pending: {
+        reading: "ocra is reading the change",
+        checking: (run) => `ocra is checking line ${run.finding.line}`,
+      },
       replay: "Replay",
       replayLabel: "Replay the review",
       summaryLabel: "summary comment",
@@ -89,8 +96,12 @@ export const productWindow: Bilingual<WindowCopy> = {
       terminal: (run) => `${run.repo} · ${run.command}`,
     },
     example:
-      "示例运行：用真实的 ocra CLI 和脚本化的模型录制，流水线、输出和结论都来自 ocra 本身。拉取请求视图按 ocra 在 GitHub 上发布的样子展示这次运行的意见。",
+      "用真实的 ocra CLI 和脚本化的模型录制，流水线、输出和结论都来自 ocra 本身。拉取请求视图按 ocra 在 GitHub 上发布的样子展示这次运行的意见。",
     pr: {
+      pending: {
+        reading: "ocra 正在阅读这次改动",
+        checking: (run) => `ocra 正在核查第 ${run.finding.line} 行`,
+      },
       replay: "重播",
       replayLabel: "重播这次审查",
       summaryLabel: "总结评论",

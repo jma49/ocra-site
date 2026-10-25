@@ -4,13 +4,15 @@
    Shared; sections place them and style their own content. */
 
 /* ---- Desk and sheet ---- */
+/* A stone slab under one light from the top left (tokens: --desk-face,
+   --desk-edge): its 10 px rim lit along the top, its foot shaded, its own
+   shadow on the page; the sheet on it casts a contact and an ambient
+   shadow (--float). Nothing is drawn on the stone. */
 .home .desk {
-  padding: 14px;
-  border-radius: var(--r-band);
-  background: var(--stone);
-}
-.dark .home .desk {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--white) 6%, transparent);
+  padding: 10px;
+  border-radius: var(--r-desk);
+  background: var(--desk-face), var(--stone);
+  box-shadow: var(--desk-edge);
 }
 .home .sheet {
   position: relative;
@@ -21,6 +23,43 @@
 }
 .home .desk .sheet {
   box-shadow: var(--float);
+}
+/* Papers on a desk: of two stacked sheets (the hero's pull request and
+   terminal), the one not on show lies under the one shown, its top edge
+   out from under it, so the desk holds papers rather than one window. It
+   stays inert and unread; only its paper shows. */
+.home .desk > .stack {
+  isolation: isolate;
+}
+.home .desk > .stack > .sheet {
+  transform-origin: 50% 0;
+}
+.home .desk > .stack > .sheet[data-inactive] {
+  z-index: -1;
+  visibility: visible;
+  translate: 0 -8px;
+  scale: 0.96 1;
+  background: color-mix(in srgb, var(--black) 3%, var(--sheet));
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--black) 8%, transparent),
+    0 1px 2px color-mix(in srgb, var(--black) 10%, transparent);
+  pointer-events: none;
+}
+.dark .home .desk > .stack > .sheet[data-inactive] {
+  background: var(--sheet);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--white) 11%, transparent),
+    0 1px 3px color-mix(in srgb, var(--black) 50%, transparent);
+}
+.home .desk > .stack > .sheet[data-inactive] > * {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .home .desk > .stack > .sheet {
+    transition:
+      translate 320ms var(--e-enter),
+      scale 320ms var(--e-enter);
+  }
 }
 .home .sheet-bar {
   display: flex;
@@ -47,6 +86,11 @@
     padding: 8px;
     border-radius: 20px;
   }
+  /* The tab row sits 8 px above the sheet here: a smaller lip, clear of it. */
+  .home .desk > .stack > .sheet[data-inactive] {
+    translate: 0 -5px;
+    scale: 0.94 1;
+  }
   .home .sheet {
     border-radius: 12px;
   }
@@ -64,7 +108,7 @@
   background: color-mix(in srgb, var(--ink) 8%, transparent);
 }
 .home .desk .seg {
-  background: color-mix(in srgb, var(--ink) 8%, var(--stone));
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
 }
 .home .seg [role="tab"] {
   display: inline-grid;
@@ -167,8 +211,9 @@
   border-radius: 50%;
   box-shadow: inset 0 0 0 1.3px var(--ink);
 }
+/* Translucent, so the desk's light runs under it as under the tabs. */
 .home .chip-example.on-stone {
-  background: color-mix(in srgb, var(--ink) 8%, var(--stone));
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
   box-shadow: none;
 }
 /* "Illustration": not recorded. */

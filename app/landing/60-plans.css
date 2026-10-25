@@ -8,6 +8,7 @@
 .home .plans-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto 1fr;
   column-gap: var(--gap);
   row-gap: 48px;
   align-items: start;
@@ -144,29 +145,30 @@
   background: var(--ink-3);
 }
 
-/* ---- The fine print: under the head, level with the ledger's last rule
-   from 1200 px; under the ledger below that ---- */
+/* ---- The fine print: 32 px under the head's body from 1200 px (the
+   ledger's height goes to the flexible second row); under the ledger
+   below that ---- */
 .home .plans-fine {
   grid-column: 1 / span 4;
   grid-row: 2;
-  align-self: end;
+  align-self: start;
   max-width: 60ch;
+  margin-top: -16px;
   color: var(--ink-2);
 }
 
-/* ---- Chinese: the system face for the prices; points break at
-   punctuation and spaces, never inside a word ---- */
+/* ---- Chinese: the system face for the prices. A point (one short
+   clause or two) breaks at punctuation and spaces, never inside a word.
+   Paragraphs break as Chinese prose does, between any two characters,
+   under strict punctuation rules: kept whole, their clauses left lines
+   ending far short of the measure ---- */
 .home .plan-points li:lang(zh) {
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
-/* Short zh paragraphs balance their lines rather than leave a glyph or two
-   alone on the last one (a break between two characters is ordinary in
-   Chinese prose; an orphan is not). */
 .home :is(.plans-head .t-body, .plans-fine):lang(zh) {
-  text-wrap: balance;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
+  line-break: strict;
+  text-wrap: pretty;
 }
 .home .plan .price:lang(zh) {
   font-family: var(--font-sans);
@@ -180,6 +182,9 @@
 /* 1024 and 768: the ledger under the head, which sets its H2 and body side
    by side so the head costs one block, not two. */
 @media (max-width: 1199px) {
+  .home .plans-grid {
+    grid-template-rows: none;
+  }
   .home .plans-head,
   .home .plans-ledger,
   .home .plans-fine {

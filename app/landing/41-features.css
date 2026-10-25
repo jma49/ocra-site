@@ -290,14 +290,9 @@
 }
 
 /* Chinese headings and labels break at punctuation and spaces, never
-   inside a word; paragraphs break between any characters, as Chinese is
-   set, balanced so no line is left with a word or two. */
+   inside a word; paragraphs follow the page's prose rule (01-base.css). */
 .home .features:lang(zh) :is(h2, h3, dt, dd, .t-h4) {
   word-break: keep-all;
-}
-.home .features:lang(zh) p {
-  line-break: strict;
-  text-wrap: balance;
 }
 @media (max-width: 1199px) {
   .home .feat-bill,

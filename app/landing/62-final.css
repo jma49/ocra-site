@@ -1,8 +1,8 @@
 /* Final: the second night band, its top corners rounded, the footer
    continuing it below. The eye row at its largest beside a three-line H2,
-   the CTAs and the install line with its Copy button (package C). */
+   the CTAs and the install sheet with its Copy button (package C). */
 .home .final {
-  padding-block: var(--pad-band) 104px;
+  padding-block: var(--pad-band) 80px;
 }
 /* The band lies on the FAQ's ground, which carries on round it to the page's
    end: the section is full-bleed in paper-2 and draws the night slab inside
@@ -50,7 +50,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 32px;
+}
+/* Where the sheet is the wider of the two (zh), the buttons share the
+   difference, so the row and the sheet end on one edge. */
+.home .final-cta .btn {
+  flex: 1 0 auto;
 }
 
 /* ---- The eyes ---- */
@@ -173,61 +177,79 @@
   }
 }
 
-/* ---- The install line ---- */
-.home .final .prompt {
-  margin-top: 24px;
-  padding: 0 4px 0 0;
+/* ---- The install sheet ----
+   A night sheet under the CTAs, as wide as their row (.final-act is sized
+   by its widest child): a bar with what the command is, what it needs and
+   the Copy button, then the command itself. The command never scrolls or
+   clips: below about 350 px it breaks once, before the package name. */
+.home .final-act {
+  display: grid;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 32px;
 }
-.home .prompt-line {
+.home .final .prompt {
+  display: block;
+  height: auto;
+  margin-top: 20px;
+  padding: 0;
+  border-radius: var(--r-sheet);
+  box-shadow:
+    inset 0 0 0 1px var(--line-night),
+    var(--float);
+}
+.home .prompt-bar {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 0;
-  height: 100%;
-  padding-inline: 16px 12px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  min-height: 44px;
+  padding: 0 4px 0 16px;
+  border-bottom: 1px solid var(--line-night);
+  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+  background: color-mix(in srgb, var(--on-night) 3%, transparent);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1;
+}
+.home .prompt-label {
+  font-weight: 500;
+  color: var(--on-night-2);
   white-space: nowrap;
-  border-radius: inherit;
 }
-.home .prompt-line::-webkit-scrollbar {
-  display: none;
+.home .prompt-meta {
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--on-night-3);
 }
-/* Where the line scrolls (phones), its end fades out until it is scrolled
-   to: a scroll timeline on the line itself, inactive while it fits. */
-@property --prompt-fade {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 0px;
+.home .prompt-meta::before {
+  content: "·";
+  margin-inline-end: 10px;
+  font-family: var(--font-sans);
 }
-@supports (animation-timeline: scroll()) {
-  .home .prompt-line {
-    mask-image: linear-gradient(90deg, var(--ink) calc(100% - var(--prompt-fade)), transparent);
-    animation: prompt-fade linear both;
-    animation-timeline: scroll(self inline);
-  }
-}
-@keyframes prompt-fade {
-  from {
-    --prompt-fade: 36px;
-  }
-  to {
-    --prompt-fade: 0px;
-  }
+.home .final .prompt-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding: 13px 24px 14px 16px;
+  line-height: 1.5;
 }
 .home .prompt-line code {
   font-size: inherit;
 }
-.home .prompt-line:focus-visible {
-  outline-offset: -2px;
+.home .prompt-word {
+  white-space: nowrap;
 }
 .home .prompt-copy {
+  position: relative;
   display: grid;
   flex: none;
-  height: 40px;
+  height: 36px;
+  margin-left: auto;
   padding: 0 14px;
   border: 0;
-  border-radius: calc(var(--r-ctl) - 4px);
+  border-radius: calc(var(--r-sheet) - 4px);
   background: color-mix(in srgb, var(--on-night) 9%, transparent);
   color: var(--on-night);
   font-family: var(--font-sans);
@@ -236,6 +258,12 @@
   line-height: 1;
   cursor: pointer;
   transition: background-color 150ms var(--e-std);
+}
+/* The button's hit area is the bar's full 44 px height. */
+.home .prompt-copy::before {
+  content: "";
+  position: absolute;
+  inset: calc((36px - 44px) / 2) -4px;
 }
 .home .prompt-copy-label {
   grid-area: 1 / 1;
@@ -272,35 +300,40 @@
   }
 }
 /* 768: still the eyes beside the text (one column would leave the band's
-   right half empty), smaller; the install line scrolls inside its box. */
+   right half empty), smaller; the command at 12.5 px. */
 @media (max-width: 1023px) {
   .home .final {
-    padding-block: var(--pad-band);
+    padding-block: var(--pad-band) 64px;
+  }
+  .home .final-act {
+    margin-top: 24px;
+  }
+  .home .prompt-bar {
+    min-height: 40px;
+  }
+  .home .prompt-copy {
+    height: 32px;
+    padding-inline: 12px;
+    font-size: 13.5px;
+  }
+  .home .prompt-copy::before {
+    inset: calc((32px - 44px) / 2) -4px;
+  }
+  .home .final .prompt-line {
+    padding-block: 12px 13px;
   }
   .home .final-grid {
     --eyes: 38%;
   }
-  /* 12.5 px and tighter insets keep the whole command in the 390 px column
-     at 768; narrower, it scrolls inside its box. */
   .home .final .prompt {
-    display: flex;
-    gap: 6px;
-    width: 100%;
     font-size: 12.5px;
   }
-  .home .prompt-line {
-    flex: 1 1 auto;
-    padding-inline: 14px 6px;
-  }
-  .home .prompt-copy {
-    padding-inline: 12px;
-  }
 }
-/* 390: the eyes at 280 px, the CTAs stacked full width, the install line
-   scrolling inside its box (never an ellipsis over the package name). */
+/* 390: the eyes at 280 px, the CTAs and the install sheet full width; the
+   whole command on one line down to about 350 px, then on two. */
 @media (max-width: 599px) {
   .home .final {
-    padding-block: 72px 64px;
+    padding-block: 72px 48px;
   }
   .home .final.band {
     padding-inline: 8px;
@@ -316,28 +349,30 @@
   }
   .home .final-grid {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 36px;
+    row-gap: 28px;
   }
   .home .final-eyes {
     width: 280px;
   }
+  .home .final-act {
+    width: 100%;
+    margin-top: 24px;
+  }
   .home .final-cta {
     flex-direction: column;
-    margin-top: 28px;
   }
   .home .final-cta .btn {
     width: 100%;
   }
   .home .final .prompt {
-    display: flex;
-    width: 100%;
-    height: 52px;
+    --r-sheet: 12px;
+    margin-top: 16px;
   }
-  .home .prompt-line {
-    flex: 1 1 auto;
-    padding-inline: 14px 10px;
-  }
-  .home .prompt-copy {
-    height: 44px;
+}
+/* Below 375 px the bar keeps the label and the button; the requirement
+   is on the manual's installation page. */
+@media (max-width: 374px) {
+  .home .prompt-meta {
+    display: none;
   }
 }

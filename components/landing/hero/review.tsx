@@ -1,3 +1,4 @@
+import { EyesMark } from "@/components/brand/eyes-mark";
 import type { Copy } from "@/lib/copy";
 import { exampleRun } from "@/lib/landing/example-run";
 import { CodeRows } from "../code";
@@ -42,6 +43,22 @@ function SummaryRow({ label }: { label: string }) {
   );
 }
 
+// Where the comment will land, until it lands (13-hero-run.css): the eye
+// row and what it is doing, reading the change, then checking the line it
+// will anchor. The comment covers it in place. Only the theatre shows it; the
+// finished review, Reduce motion and no JavaScript never do.
+function Pending({ says }: { says: Copy["window"]["pr"]["pending"] }) {
+  return (
+    <div className="pending" aria-hidden="true">
+      <EyesMark size={24} className="pending-eyes" />
+      <span className="pending-says">
+        <span className="pending-read">{says.reading}</span>
+        <span className="pending-check">{says.checking}</span>
+      </span>
+    </div>
+  );
+}
+
 function ReplayIcon() {
   return (
     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
@@ -60,7 +77,9 @@ function ReplayIcon() {
 // The pull request pane: the recorded rows the finding's evidence cites (16,
 // 21) and the function (40–43), as GitHub shows them; the reader reads them,
 // the pen marks line 42, then the comment and the summary row land
-// (motion.md §4). Rendered finished; review-clock.tsx plays it.
+// (motion.md §4, compressed so the comment is in by about 3 s after load;
+// the reader's own beats are in 13-hero-run.css). Rendered finished;
+// review-clock.tsx plays it.
 export function Review({ copy }: { copy: Copy["window"] }) {
   return (
     <ReviewClock>
@@ -95,21 +114,21 @@ export function Review({ copy }: { copy: Copy["window"] }) {
           {
             n: finding.line,
             hot: true,
-            anchor: 1700,
+            anchor: 860,
             marks: [
-              { kind: "under", token: "session.expiresAt", at: 1900 },
-              { kind: "under", token: "Date.now()", at: 2640 },
-              { kind: "caret", token: finding.insertAfter, at: 3330 },
+              { kind: "under", token: "session.expiresAt", at: 900 },
+              { kind: "under", token: "Date.now()", at: 1100 },
+              { kind: "caret", token: finding.insertAfter, at: 1290 },
             ],
             notes: [
-              { token: "session.expiresAt", text: copy.pr.notes.seconds, place: "below", at: 2140 },
-              { token: "Date.now()", text: copy.pr.notes.milliseconds, place: "below", at: 2830 },
+              { token: "session.expiresAt", text: copy.pr.notes.seconds, place: "below", at: 980 },
+              { token: "Date.now()", text: copy.pr.notes.milliseconds, place: "below", at: 1170 },
               {
                 token: finding.insertAfter,
                 end: true,
                 text: insert,
                 place: "above",
-                at: 3520,
+                at: 1350,
                 mono: true,
               },
             ],
@@ -118,6 +137,7 @@ export function Review({ copy }: { copy: Copy["window"] }) {
         ]}
       />
       <div className="review-foot">
+        <Pending says={copy.pr.pending} />
         <Comment onLine={copy.pr.onLine} label={copy.pr.commentLabel} />
         <SummaryRow label={copy.pr.summaryLabel} />
       </div>
