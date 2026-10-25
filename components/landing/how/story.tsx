@@ -48,6 +48,7 @@ function run(root: HTMLElement, pass: string): () => void {
   };
   const leaving = new Map<HTMLElement, number>();
   let beats: number[] = [];
+  let swapping = 0;
   let pinned = false;
   let current = 1;
   let lockedUntil = 0;
@@ -95,6 +96,10 @@ function run(root: HTMLElement, pass: string): () => void {
     const fig = figs[n - 1];
     if (!fig || (n === current && fig.classList.contains("on"))) return;
     current = n;
+    // The figure fades run only inside this window (31-figures.css).
+    clearTimeout(swapping);
+    root.setAttribute("data-swap", "");
+    swapping = later(() => root.removeAttribute("data-swap"), SWAP + 200);
     for (const el of [root, story]) el?.setAttribute("data-step", String(n));
     root.style.setProperty("--step", String(n));
     if (passed) passed.textContent = pass.replace("{n}", String(n));
