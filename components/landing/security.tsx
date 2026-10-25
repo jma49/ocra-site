@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Copy } from "@/lib/copy";
 import { fill } from "@/lib/copy/define";
 import type { Locale } from "@/lib/i18n";
+import { accessDenied, BUILTINS_OFF, OPENCODE_BUILTINS, REFUSED } from "@/lib/landing/engine-facts";
 import { exampleRun } from "@/lib/landing/example-run";
 import { measured } from "@/lib/landing/measured";
 import { localePath } from "@/lib/shared";
@@ -9,20 +10,9 @@ import { InkCode } from "./code";
 import { Marked, Tick } from "./pen/marks";
 import { ArrowGlyph, Lines, Section } from "./section";
 
-// Paths the gate refuses, as ocra's core names them: a few of its secret
-// patterns (packages/core/src/select/patterns.ts, SECRET_PATTERNS) and git's
-// internals (packages/core/src/pipeline/context.ts, reviewContext).
-const REFUSED = [".env", "*.pem", "id_rsa", ".git/"];
-// OpenCode's built-in tools, every one disabled for ocra's agents (ocra's
-// packages/runtime-opencode/src/opencode-config.ts, OPENCODE_BUILTIN_TOOLS,
-// for the pinned OpenCode 1.18.32); four are shown by name.
-const BUILTINS_OFF = ["bash", "edit", "write", "webfetch"];
-const BUILTINS_TOTAL = 14;
-// What the gate answers an agent that asks for a refused path: the message
-// of the AccessDeniedError reviewContext throws (packages/core/src/pipeline/
-// context.ts). Engine output, English in every language.
-const ASKED = REFUSED[0] ?? ".env";
-const DENIED = `Access to ${ASKED} is not allowed`;
+// The refusal the gate tile shows: an agent asks for the first refused path.
+const ASKED = REFUSED[0];
+const DENIED = accessDenied(ASKED);
 
 // A tile title in two set lines, "what · how": the separator is read, not
 // shown, so a narrow tile never breaks the title next to it.
@@ -152,7 +142,7 @@ export function Security({ copy, locale }: { copy: Copy["security"]; locale: Loc
                 </li>
               ))}
               <li className="sec-more">
-                {fill(f.more, { n: BUILTINS_TOTAL - BUILTINS_OFF.length })}
+                {fill(f.more, { n: OPENCODE_BUILTINS - BUILTINS_OFF.length })}
               </li>
             </ul>
           </li>

@@ -2,8 +2,8 @@
 // publishes it with its limits (ocra docs/manual/en/quality.mdx, the opening
 // callout; content/docs/en/quality.mdx here): the current configuration's one
 // run on the golden smoke tier. A new run updates the manual and this
-// constant together; the page states the sample size from it, never a
-// rounded rate.
+// constant together (scripts/engine-facts.test.mjs compares them); the page
+// states the sample size from it, never a rounded rate.
 export const measured = {
   changes: 8,
   known: 16,
