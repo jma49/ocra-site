@@ -39,6 +39,7 @@ export function SiteHeader({
         </p>
       </aside>
       <NavShell
+        top="desk"
         bar={
           <>
             {/* The page itself: nothing to prefetch. */}

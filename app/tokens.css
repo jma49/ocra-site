@@ -105,6 +105,58 @@
   --z-tip: 5;
   --z-nav: 60;
 
+  /* ---- The desk (concept C, foundation.md) ----
+     The landing page is one lit desk seen by a camera, the same in both
+     themes: a deep ink-teal surface, printed paper on it, one red pen.
+     The desk ground: lit centre, body, the dark it falls off to. */
+  --desk: #17272c;
+  --desk-hi: #24393f;
+  --desk-lo: #0c1618;
+  /* Evening: the room light is down, one warm lamp. */
+  --desk-eve: #0f1b1e;
+  --desk-eve-lo: #060c0e;
+  /* The lamp's warm light, and the dark every shadow on the desk is made of. */
+  --lamp: #ffdeb6;
+  --umbra: #020b0d;
+  /* Text set straight on the desk. */
+  --on-desk: #eef2f0;
+  --on-desk-2: color-mix(in srgb, var(--on-desk) 70%, transparent);
+  --on-desk-3: color-mix(in srgb, var(--on-desk) 50%, transparent);
+  --line-desk: color-mix(in srgb, var(--on-desk) 14%, transparent);
+  /* Printed paper (laser paper, never cream as a page ground), its print. */
+  --print-paper: #f6f4ef;
+  --print-paper-2: #ebe8e1;
+  --print-ink: #1c2226;
+  --print-ink-2: #545c5f;
+  --print-ink-3: #8a9293;
+  /* The index card: whiter stock, a printed red head rule, pale blue lines. */
+  --card-stock: #fbfaf7;
+  --card-rule: #d6463c;
+  --card-line: #8db0d6;
+  /* Cinnabar: the pen's barrel and its ink, nothing else (no button, no UI).
+     The ink is a little deeper than the barrel; its rim pools darker. */
+  --cinnabar: #d9432b;
+  --cinnabar-hi: #ee7a5e;
+  --cinnabar-lo: #a32a17;
+  --pen-ink: #c8351f;
+  --pen-rim: #7d1204;
+  /* Steel and black of the pen's tip, grip and clip, and the binder clip.
+     Flat tones: the pen is a crisp graphic, never a gradient render. */
+  --steel: #c9d1d4;
+  --steel-hi: #f1f5f6;
+  --steel-lo: #7d888c;
+  --grip: #24292b;
+  --grip-hi: #3d4548;
+  /* The smoked acrylic of the reading ruler's tab. */
+  --smoke: #1a2326;
+
+  /* Easing vocabulary (motion.md): settle (paper landing), glide (an object
+     carried), stroke (the pen's velocity), snap (a clip biting). */
+  --e-settle: cubic-bezier(0.2, 0.75, 0.15, 1);
+  --e-glide: cubic-bezier(0.45, 0, 0.2, 1);
+  --e-stroke: cubic-bezier(0.6, 0, 0.4, 1);
+  --e-snap: cubic-bezier(0.3, 1.45, 0.5, 1);
+
   /* Fumadocs draws the manual's chrome from these. The pen is never the
      manual's link, primary or active colour: only critical callouts. */
   --color-fd-background: var(--paper);

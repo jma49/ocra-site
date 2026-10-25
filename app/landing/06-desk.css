@@ -1,0 +1,212 @@
+/* The desk's grounds and its one physics (foundation.md). Shared.
+   - Grounds: [data-ground="desk"|"desk-evening"] sections hold a
+     DeskGround; [data-ground="paper-band"] a PaperBand.
+   - Light: --lx, --ly (-1 to 1, motion/pointer.ts) on a section lean the
+     lamp's pool and every shadow in it; 0 without a pointer.
+   - Lift: --lift per object (0 resting, 1 held up) widens and softens its
+     shadow (07-desk-objects.css).
+   - Depth: [data-depth="paper"|"card"|"tool"] parallax by height on scroll,
+     a scroll timeline where supported. */
+
+@property --lift {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --hover {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.home [data-ground="desk"],
+.home [data-ground="desk-evening"] {
+  --lx: 0;
+  --ly: 0;
+  position: relative;
+  isolation: isolate;
+  background: var(--desk);
+  color: var(--on-desk);
+}
+.home [data-ground="desk-evening"] {
+  background: var(--desk-eve);
+}
+
+/* The desk surface: fine grain over the ink-teal, lit from the upper left. */
+.home .desk-ground {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    url(/landing/tex/desk-grain.webp) 0 0 / 256px 256px,
+    radial-gradient(70% 60% at 64% 30%, var(--desk-hi), transparent 72%),
+    var(--desk);
+  background-blend-mode: overlay, normal, normal;
+}
+/* Reaching up under the announce line and the nav, so the first screen is
+   one desk from the top edge (the hero). */
+.home .desk-ground.reach {
+  top: -240px;
+}
+.home .desk-ground.eve {
+  background:
+    url(/landing/tex/desk-grain.webp) 0 0 / 256px 256px,
+    radial-gradient(
+      46% 52% at 50% 64%,
+      color-mix(in srgb, var(--desk-hi) 70%, var(--desk-eve)),
+      transparent 78%
+    ),
+    var(--desk-eve);
+  background-blend-mode: overlay, normal, normal;
+}
+/* The lamp's pool: warm light in soft-light, leaning a few per cent towards
+   the pointer (a transform, never a repaint of the gradient). */
+.home .desk-lamp {
+  position: absolute;
+  inset: -12%;
+  background: radial-gradient(
+    40% 46% at 64% 34%,
+    color-mix(in srgb, var(--lamp) 34%, transparent),
+    color-mix(in srgb, var(--lamp) 8%, transparent) 58%,
+    transparent 78%
+  );
+  mix-blend-mode: soft-light;
+  transform: translate3d(calc(var(--lx) * 3%), calc(var(--ly) * 2.4%), 0);
+}
+.home .eve .desk-lamp {
+  background: radial-gradient(
+    30% 40% at 50% 66%,
+    color-mix(in srgb, var(--lamp) 46%, transparent),
+    color-mix(in srgb, var(--lamp) 10%, transparent) 55%,
+    transparent 76%
+  );
+}
+/* The falloff: the room darkens away from the light. */
+.home .desk-fall {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 105% at 58% 30%,
+    transparent 44%,
+    color-mix(in srgb, var(--umbra) 48%, transparent) 100%
+  );
+  mix-blend-mode: multiply;
+}
+.home .eve .desk-fall {
+  background: radial-gradient(
+    90% 80% at 50% 64%,
+    transparent 30%,
+    color-mix(in srgb, var(--desk-eve-lo) 82%, transparent) 100%
+  );
+}
+
+/* A paper band: a full-bleed sheet lying on the desk. Its edge slides up
+   over the desk above as it enters, its contact shadow following. */
+.home [data-ground="paper-band"] {
+  position: relative;
+  z-index: 1;
+  color: var(--print-ink);
+}
+.home .paper-band {
+  position: relative;
+}
+.home .paper-band-face {
+  position: relative;
+  background:
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    linear-gradient(
+      170deg,
+      color-mix(in srgb, var(--white) 50%, var(--print-paper)),
+      var(--print-paper) 40%,
+      var(--print-paper-2)
+    ),
+    var(--print-paper);
+  background-blend-mode: multiply, normal, normal;
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--white) 90%, transparent);
+}
+.home .paper-band-sh {
+  position: absolute;
+  inset: -18px 0 auto;
+  height: 40px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--umbra) 34%, transparent)
+  );
+  filter: blur(8px);
+  pointer-events: none;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .paper-band {
+      animation: band-slide linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+@keyframes band-slide {
+  from {
+    translate: 0 64px;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* Parallax by height: paper low, cards mid, the pen and the ruler high. The
+   `translate` property composes with an object's own transform. */
+.home [data-depth] {
+  --depth: 0;
+}
+.home [data-depth="paper"] {
+  --depth: 0.05;
+}
+.home [data-depth="card"] {
+  --depth: 0.1;
+}
+.home [data-depth="tool"] {
+  --depth: 0.16;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home [data-depth] {
+      animation: depth linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+@keyframes depth {
+  from {
+    translate: 0 calc(var(--depth) * 50vh);
+  }
+  to {
+    translate: 0 calc(var(--depth) * -50vh);
+  }
+}
+
+/* Typed text (motion/text.ts): the untyped rest keeps its place. */
+.home .ty-rest {
+  visibility: hidden;
+}
+.home .ty-caret {
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  vertical-align: -0.12em;
+  box-shadow: 0 0 0 0.06em currentColor;
+  animation: caret 0.9s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.mo.hy .home [data-type]:not(.typing, .typed) {
+    visibility: hidden;
+  }
+}

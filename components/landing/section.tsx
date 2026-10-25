@@ -1,8 +1,10 @@
 import { Fragment, type ReactNode } from "react";
 
-// The four grounds a section can stand on (DESIGN.md, Grounds). Night and
-// stone are inset bands; the nav reads `data-ground` to follow the page.
-type Ground = "paper" | "paper-2" | "stone" | "night";
+// The grounds a section can stand on (DESIGN.md, Grounds). Night and stone
+// are inset bands; the nav reads `data-ground` to follow the page. The desk
+// page (foundation.md): "desk" and "desk-evening" are the lit desk
+// (DeskGround inside), "paper-band" a full-bleed sheet lying on it.
+type Ground = "paper" | "paper-2" | "stone" | "night" | "desk" | "desk-evening" | "paper-band";
 
 // A landing section: its ground, and an id where the nav or a link needs one.
 // Night and stone sections are inset bands (rounded, 12 px from the edges).

@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { hoverLift, nearEyes, pointerLight } from "./desk/motion/pointer";
+import { autoText } from "./desk/motion/text";
 
 // The landing page's shared motion, in one island so no section turns into a
 // client component for it (motion.md §2, §6, §9, §12):
@@ -36,6 +38,16 @@ export function LandingMotion() {
     cleanups.push(() => removeEventListener("resize", resized));
 
     cleanups.push(penOnce());
+    // The desk (foundation.md): the lamp follows the pointer on every desk
+    // section, sheets and cards lift under it, typed and counted text plays
+    // once in view, the eye row on a ruler watches the pointer.
+    for (const s of document.querySelectorAll<HTMLElement>(
+      '.home [data-ground="desk"], .home [data-ground="desk-evening"]',
+    ))
+      cleanups.push(pointerLight(s));
+    cleanups.push(hoverLift());
+    cleanups.push(autoText());
+    cleanups.push(nearEyes());
     cleanups.push(finalEyes());
     cleanups.push(scrollFocus());
     return () => {
@@ -49,7 +61,8 @@ export function LandingMotion() {
 function penOnce(): () => void {
   const timeline = CSS.supports("animation-timeline: view()");
   const observers = new Map<number, IntersectionObserver>();
-  for (const el of document.querySelectorAll<HTMLElement>("[data-pen-once]")) {
+  // Ink layers drawn once in view (InkLayer `once`) take the same path.
+  for (const el of document.querySelectorAll<HTMLElement>("[data-pen-once], [data-ink='once']")) {
     const value = el.dataset.penOnce;
     if (value === "timeline" && timeline) continue;
     // The quiet band's fallback draws at half visibility (motion.md §7).
