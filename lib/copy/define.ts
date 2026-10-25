@@ -33,3 +33,27 @@ export function fill(template: string, values: Record<string, string | number>):
     return String(value);
   });
 }
+
+// Chinese prose has no spaces, so the browser may break it between any two
+// characters, inside a word (什 / 么) or before a particle (上 / 的). Ties
+// with a word joiner (U+2060: invisible, skipped by screen readers and by
+// find in page) make it break only between words: the characters of each
+// word ICU's dictionary finds, 的, 地, 得, 了, 着 and 们 with the word before
+// them, and a clause's last character with the one before it, so no line
+// opens on one character and a stop (理。). A tie only removes a break, so a
+// word the dictionary misses can still break as before, never worse. Lines
+// still fill their measure (01-base.css), unlike keep-all, which breaks only
+// at punctuation and spaces.
+const TIE = "\u2060";
+const HAN = /^\p{Script=Han}{2,}$/u;
+const PARTICLE = /(?<=[\p{L}\p{N}])(?=[的地得了着们])/gu;
+const CLAUSE_END = /(?<=\p{Script=Han})(?=\p{Script=Han}[。，、；：！？）」』”])/gu;
+let words: Intl.Segmenter | undefined;
+export function tieWords(text: string): string {
+  words ??= new Intl.Segmenter("zh", { granularity: "word" });
+  let out = "";
+  for (const { segment } of words.segment(text)) {
+    out += HAN.test(segment) ? [...segment].join(TIE) : segment;
+  }
+  return out.replace(PARTICLE, TIE).replace(CLAUSE_END, TIE);
+}

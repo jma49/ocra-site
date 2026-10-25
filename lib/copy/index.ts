@@ -1,6 +1,6 @@
 import type { Locale } from "@/lib/i18n";
 import { exampleRun } from "@/lib/landing/example-run";
-import type { Bilingual, Resolved } from "./define";
+import { type Bilingual, type Resolved, tieWords } from "./define";
 import { announce, meta, nav, notFound } from "./sections/chrome";
 import { faq } from "./sections/faq";
 import { features } from "./sections/features";
@@ -52,9 +52,23 @@ function resolve(value: unknown): unknown {
   return value;
 }
 
+// Every Chinese string on the page, once resolved, breaks only between
+// words (tieWords). The <head> metadata is left as written.
+function tie(value: unknown): unknown {
+  if (typeof value === "string") return tieWords(value);
+  if (Array.isArray(value)) return value.map(tie);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, tie(item)]));
+  }
+  return value;
+}
+
 function forLocale(locale: Locale): Copy {
   const copy = Object.fromEntries(
-    Object.entries(sources).map(([key, source]) => [key, resolve(source[locale])]),
+    Object.entries(sources).map(([key, source]) => {
+      const value = resolve(source[locale]);
+      return [key, locale === "zh" && key !== "meta" ? tie(value) : value];
+    }),
   );
   return copy as Copy;
 }
