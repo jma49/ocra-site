@@ -25,9 +25,9 @@ export const works: Bilingual<WorksCopy> = {
   },
   zh: {
     title: "在团队已经在用的地方审查，用你已经在付费的模型。",
-    body: "GitHub 上的 pull request、GitLab 上的 merge request，或任何本地分支。可以用 45 家模型服务商中任意一家的 key，或你自己的 OpenAI 兼容端点。",
+    body: "GitHub 上的 pull request、GitLab 上的 merge request，或任何本地分支。可以用 45\u00a0家模型服务商中任意一家的 key，或你自己的 OpenAI 兼容端点。",
     platforms: "平台",
-    more: "另有 {count} 家可通过 ocra Cloud 接入，也可以接你自己运行的任何 OpenAI 兼容端点。",
+    more: "另有 {count}\u00a0家可通过 ocra Cloud 接入，也可以接你自己运行的任何 OpenAI 兼容端点。",
     local: "本地分支",
     gauge: "家模型服务商，经 ocra Cloud 接入",
     marquee: { pause: "暂停滚动", play: "继续滚动" },

@@ -1,42 +1,181 @@
 /* Quiet by design: the night band, the statement, the struck words with
-   their scroll timeline and its fallback, caption and proof (package P).
-   F's stub. */
+   their scroll timeline and its fallback, caption and proof (sections.md
+   §5, motion.md §7). Package P. */
 .home .quiet {
+  --st: clamp(4.75rem, 2.61rem + 8.76vw, 10.5rem);
+  --lead: clamp(1.1875rem, 1.07rem + 0.476vw, 1.5rem);
   padding-block: var(--pad-band);
 }
 .home .quiet-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 64px;
-  row-gap: 48px;
-  align-items: start;
+  row-gap: 24px;
 }
+/* The statement on the left; the argument reads down the right column:
+   the lead, the struck list, the caption that names it, the proof. */
 .home .quiet .t-statement {
   grid-column: 1 / span 7;
+  grid-row: 1 / span 3;
+  color: var(--on-night);
 }
-.home .quiet-side {
+/* The lead's first line starts at the H2's cap height: Archivo's cap top
+   sits 0.078 em into a 0.86 line, the lead's 0.358 em into its 1.42 line. */
+.home .quiet-lead {
   grid-column: 8 / -1;
-  padding-top: 0.4em;
+  align-self: start;
+  max-width: 24em;
+  padding-top: max(0px, calc(0.078 * var(--st) - 0.358 * var(--lead)));
+  color: var(--on-night);
 }
 .home .oos {
+  grid-column: 8 / -1;
   display: grid;
-  margin-top: 40px;
+  justify-items: start;
+  margin-top: 16px;
   color: var(--on-night-2);
 }
+.home .quiet-foot {
+  grid-column: 8 / -1;
+  align-self: start;
+}
 .home .quiet-caption {
-  margin-top: 24px;
+  max-width: 30em;
 }
 .home .quiet-proof {
   margin-top: 16px;
+  font-family: var(--font-mono);
   font-size: 13px;
+  line-height: 1.5;
   color: var(--on-night-3);
+}
+/* Chinese: the lead breaks evenly, and the proof is a sentence in the text
+   face (the code face's spaces gap CJK). */
+.home .quiet:lang(zh) .quiet-lead {
+  text-wrap: balance;
+}
+.home .quiet:lang(zh) .quiet-proof {
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+/* ---- The strike follows the scroll: struck on the way down, un-struck on
+   the way back; each word also recedes to the night's secondary tone as
+   the pen crosses it. Without scroll timelines the list is struck once at
+   half visibility (data-pen-once, motion.tsx), the words receding with
+   their strokes. Without JavaScript or with Reduce motion: struck. ---- */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .oos[data-pen="on"]:not(.on) li {
+    color: var(--on-night);
+  }
+  html.mo .home .oos[data-pen="on"].on li {
+    transition: color 420ms var(--e-std) var(--t, 0ms);
+  }
+  html.mo .home .oos li:nth-child(2) {
+    --t: 350ms;
+  }
+  html.mo .home .oos li:nth-child(3) {
+    --t: 700ms;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .home .oos {
+      view-timeline: --oos block;
+    }
+    html.mo .home .oos li,
+    html.mo .home .oos .mk-wipe {
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --oos;
+    }
+    html.mo .home .oos li {
+      animation-name: oos-recede;
+    }
+    html.mo .home .oos .mk-wipe {
+      animation-name: pen-wipe;
+    }
+    html.mo .home .oos li:nth-child(1),
+    html.mo .home .oos li:nth-child(1) .mk-wipe {
+      animation-range: cover 13% cover 27%;
+    }
+    html.mo .home .oos li:nth-child(2),
+    html.mo .home .oos li:nth-child(2) .mk-wipe {
+      animation-range: cover 22% cover 36%;
+    }
+    html.mo .home .oos li:nth-child(3),
+    html.mo .home .oos li:nth-child(3) .mk-wipe {
+      animation-range: cover 30% cover 45%;
+    }
+  }
+}
+@keyframes oos-recede {
+  from {
+    color: var(--on-night);
+  }
+  to {
+    color: var(--on-night-2);
+  }
+}
+
+/* Chinese text breaks at punctuation and spaces, never inside a word. */
+.home .quiet:lang(zh) :is(p, h3, dt, dd, .t-h4) {
+  word-break: keep-all;
 }
 @media (max-width: 1199px) {
   .home .quiet-grid {
     column-gap: var(--gap);
   }
+}
+/* 1024–1199: six and six, so the lead keeps a reading measure. */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .home .quiet .t-statement {
+    grid-column: 1 / span 6;
+  }
+  .home .quiet-lead,
+  .home .oos,
+  .home .quiet-foot {
+    grid-column: 7 / -1;
+  }
+}
+/* Below 1024 px: the statement and the lead stacked; from 600 px the
+   struck list and its caption share a row, the caption on the list's last
+   line; below 600 px everything stacks. */
+@media (max-width: 1023px) {
   .home .quiet .t-statement,
-  .home .quiet-side {
+  .home .quiet-lead,
+  .home .oos,
+  .home .quiet-foot {
     grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .home .quiet-lead {
+    padding-top: 0;
+  }
+  .home .oos {
+    margin-top: 8px;
+  }
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  .home .oos {
+    grid-column: 1 / span 6;
+  }
+  .home .quiet-foot {
+    grid-column: 7 / -1;
+    grid-row: 3;
+    align-self: end;
+    padding-bottom: 0.4em;
+  }
+}
+@media (max-width: 599px) {
+  .home .quiet-grid {
+    row-gap: 28px;
+  }
+  .home .oos {
+    margin-top: 4px;
+  }
+  .home .quiet-proof {
+    font-size: 12px;
   }
 }

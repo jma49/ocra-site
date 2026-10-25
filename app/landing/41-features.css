@@ -1,108 +1,463 @@
-/* Features: the one-line H2, the bill ledger and its total, the fallback
-   line, the rules.json sheet (package P). F's stub. */
+/* Features: the one-line H2, the bill ledger with its share bars, the four
+   totals and the double-underlined total, the fallback line, the
+   rules.json sheet (sections.md §6). Package P. */
 .home .features {
   padding-block: var(--pad);
 }
+/* 7 / 5 rather than the 8 / 4 first planned: the rules file's longest line
+   (58 characters of 12 px Maple) needs five columns to show unscrolled. */
 .home .feat-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
-  row-gap: 56px;
-  margin-top: 56px;
+  row-gap: 64px;
+  margin-top: 48px;
 }
 .home .feat-bill {
-  grid-column: 1 / span 8;
+  grid-column: 1 / span 7;
 }
-.home .feat-rules {
-  grid-column: 9 / -1;
+.home .feat-side {
+  grid-column: 8 / -1;
   min-width: 0;
 }
-.home .feat-bill .t-body,
-.home .feat-rules .t-body {
+.home .feat-bill > .t-body,
+.home .feat-rules > .t-body {
+  max-width: 36rem;
   margin-top: 12px;
 }
+
+/* ---- The ledger: typography on paper, no card ---- */
 .home .feat-ledger {
-  margin-top: 24px;
+  width: 100%;
+  margin-top: 28px;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 14px;
+  color: var(--ink-2);
 }
-.home .feat-ledger .ledger-row {
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.8fr);
-  gap: 16px;
+.home .feat-ledger th,
+.home .feat-ledger td {
+  height: 44px;
+  padding: 0 0 0 20px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-weight: 400;
+  vertical-align: middle;
+  white-space: nowrap;
 }
-.home .feat-head {
-  min-height: 36px;
-  padding-inline: 12px;
-  border-radius: 8px;
+.home .feat-ledger :is(th, td):first-child {
+  padding-left: 12px;
+}
+.home .feat-ledger :is(th, td):last-child {
+  padding-right: 12px;
+}
+.home .feat-ledger thead th {
+  height: 36px;
   border-bottom: 0;
   background: var(--sheet-2);
   color: var(--ink-3);
 }
-.home .feat-head span:nth-child(n + 3) {
+.home .feat-ledger thead th:first-child {
+  width: 24%;
+  border-radius: 8px 0 0 8px;
+}
+.home .feat-ledger thead th:last-child {
+  width: 15%;
+  border-radius: 0 8px 8px 0;
+}
+.home .feat-ledger thead .feat-c-bundle {
+  width: 15%;
+}
+.home .feat-ledger thead .feat-num:not(:last-child) {
+  width: 17%;
+}
+.home .feat-ledger tbody th code {
+  font-size: 13px;
+  color: var(--ink);
+}
+.home .feat-helpers {
+  display: block;
+  overflow: visible;
+  color: var(--ink-2);
+}
+/* The helpers' label runs on under the empty bundle cell. */
+.home .feat-ledger tbody tr:last-child th {
+  overflow: visible;
+}
+.home .feat-ledger .feat-num {
   text-align: right;
+}
+.home .feat-ledger td.feat-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.home .feat-b-inline {
+  display: none;
+}
+.home .feat-ledger tbody tr {
+  transition: background-color 150ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .feat-ledger tbody tr:hover {
+    background: var(--tint);
+  }
+  .home .feat-ledger tbody tr:hover .feat-bar i {
+    background: var(--ink);
+  }
+}
+
+/* Each row's share of the run's dollars, on a track that is the whole run. */
+.home .feat-bar {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  overflow: hidden;
+}
+.home .feat-bar i {
+  display: block;
+  width: calc(var(--share) * 100%);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink-2);
+  transform-origin: left;
+  transition: background-color 150ms var(--e-std);
+}
+/* The bars grow in the order the run made the calls when the ledger comes
+   into view (data-pen-once); finished without motion or JavaScript. */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .feat-book:not(.on) .feat-bar i {
+    transform: scaleX(0);
+  }
+  html.mo .home .feat-book.on .feat-bar i {
+    transition:
+      transform 520ms var(--e-enter) calc(80ms + var(--r) * 60ms),
+      background-color 150ms var(--e-std);
+  }
+}
+
+/* ---- Totals, as the CLI prints them, and the run total ---- */
+.home .feat-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 0 14px;
+}
+.home .feat-sums {
+  padding: 0 0 4px 12px;
 }
 .home .feat-totals {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  padding-block: 16px;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: repeat(4, max-content);
+  column-gap: 36px;
+  row-gap: 14px;
+}
+.home .feat-totals dt {
+  color: var(--ink-3);
 }
 .home .feat-totals dd {
-  text-align: left;
+  margin-top: 2px;
+  font-family: var(--font-mono);
   font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.home .feat-note {
+  margin-top: 18px;
+  color: var(--ink-3);
 }
 .home .feat-total {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-top: 20px;
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  padding-right: 8px;
+}
+.home .feat-total .t-small {
+  color: var(--ink-2);
 }
 .home .feat-total .t-figure {
   color: var(--ink);
 }
-.home .feat-note {
-  margin-top: 8px;
-  color: var(--ink-3);
-}
+
+/* ---- The fallback line: an illustration, its marks drawn at rest ---- */
 .home .feat-fallback {
-  display: grid;
-  justify-items: start;
-  gap: 10px;
   margin-top: 32px;
+}
+.home .feat-fb-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
 }
 .home .feat-chain {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px 36px;
+  margin-top: 12px;
+}
+.home .feat-chain li {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+}
+.home .feat-model {
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: var(--r-chip);
+  background: var(--sheet);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+.home .feat-out .feat-model {
+  color: var(--ink-3);
+}
+.home .feat-go .feat-model {
+  padding-left: 9px;
+  color: var(--ink);
+}
+.home .feat-state {
+  padding-left: 2px;
+  color: var(--ink-3);
+}
+.home .feat-go .feat-state {
+  color: var(--ink-2);
+}
+.home .feat-chain li + li::before {
+  content: "→" / "";
+  position: absolute;
+  top: 0;
+  right: 100%;
+  width: 36px;
+  line-height: 32px;
+  text-align: center;
   font-family: var(--font-mono);
   font-size: 13px;
+  color: var(--ink-3);
 }
-.home .feat-json {
+.home .feat-fb-body {
+  max-width: 34rem;
+  margin-top: 12px;
+  color: var(--ink-2);
+}
+
+/* ---- The rules file ---- */
+.home .feat-sheet {
   margin-top: 20px;
-  padding: 16px 18px;
   border-radius: 12px;
+  transition: box-shadow 200ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .feat-sheet:hover {
+    box-shadow: inset 0 0 0 1px var(--line-2);
+  }
+}
+/* The file never scrolls sideways: a line too long for its sheet wraps. */
+.home .feat-json {
+  margin: 0;
+  padding: 14px 18px 16px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   font-family: var(--font-mono);
   font-size: 12px;
-  line-height: 1.7;
-  overflow-x: auto;
-}
-.home .feat-json-c {
+  line-height: 1.65;
   color: var(--ink-3);
+}
+.home .feat-json code {
+  font-size: inherit;
+}
+/* A line that runs past a narrow sheet wraps under its value's start. */
+.home .feat-json .jl {
+  display: block;
+  padding-left: calc(var(--h) * 1ch);
+  text-indent: calc(var(--h) * -1ch);
+}
+.home .feat-json .j-k {
+  color: var(--ink);
+}
+.home .feat-json .j-s {
+  color: var(--ink-2);
+}
+
+/* Chinese headings and labels break at punctuation and spaces, never
+   inside a word; paragraphs break between any characters, as Chinese is
+   set, balanced so no line is left with a word or two. */
+.home .features:lang(zh) :is(h2, h3, dt, dd, .t-h4) {
+  word-break: keep-all;
+}
+.home .features:lang(zh) p {
+  line-break: strict;
+  text-wrap: balance;
 }
 @media (max-width: 1199px) {
   .home .feat-bill,
-  .home .feat-rules {
+  .home .feat-side {
     grid-column: 1 / -1;
   }
 }
-@media (max-width: 599px) {
-  .home .feat-totals {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* One-column layouts from 720 px: the rules text beside the rules file;
+   from 860 px the fallback chain joins the text's column, below that it
+   runs under both. */
+@media (min-width: 720px) and (max-width: 1199px) {
+  .home .feat-side {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: var(--gap);
   }
-  .home .feat-ledger .ledger-row {
-    grid-template-columns: minmax(0, 1fr) auto auto;
+  .home .feat-rules {
+    display: contents;
   }
-  .home .feat-ledger .ledger-row > :nth-child(2) {
+  .home .feat-rules > .t-h3,
+  .home .feat-rules > .t-body,
+  .home .feat-fallback {
+    grid-column: 1;
+  }
+  .home .feat-sheet {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: start;
+    margin-top: 0;
+  }
+  .home .feat-fallback {
+    margin-top: 40px;
+  }
+}
+@media (min-width: 720px) and (max-width: 859px) {
+  .home .feat-side {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+  }
+  .home .feat-sheet {
+    grid-row: 1 / span 2;
+  }
+  .home .feat-fallback {
+    grid-column: 1 / -1;
+  }
+}
+/* Narrow sheets: the file keeps its first rule. */
+@media (max-width: 859px) {
+  .home .feat-json :is([data-more], .j-more) {
     display: none;
+  }
+}
+@media (max-width: 599px) {
+  .home .feat-grid {
+    row-gap: 40px;
+    margin-top: 28px;
+  }
+  .home .feat-ledger {
+    margin-top: 22px;
+  }
+  .home .feat-ledger .feat-c-bundle,
+  .home .feat-ledger .feat-c-share {
+    display: none;
+  }
+  .home .feat-b-inline {
+    display: inline;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .home .feat-ledger th,
+  .home .feat-ledger td {
+    padding-left: 12px;
+  }
+  .home .feat-ledger :is(th, td):first-child {
+    padding-left: 8px;
+  }
+  .home .feat-ledger :is(th, td):last-child {
+    padding-right: 8px;
+  }
+  .home .feat-ledger thead th:first-child {
+    width: auto;
+  }
+  .home .feat-ledger thead .feat-num:not(:last-child) {
+    width: 30%;
+  }
+  .home .feat-ledger thead th:last-child {
+    width: 24%;
+  }
+  .home .feat-ledger tbody th code,
+  .home .feat-ledger td.feat-num {
+    font-size: 12px;
+  }
+  .home .feat-helpers {
+    font-size: 13px;
+    white-space: normal;
+    line-height: 1.3;
+  }
+  /* The four totals in a row, then the run total beside its label and
+     the note, all on one grid. */
+  .home .feat-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas:
+      "totals totals"
+      ". fig"
+      "label fig"
+      "note fig";
+    gap: 0 16px;
+    padding: 16px 8px 12px;
+  }
+  .home .feat-sums,
+  .home .feat-total {
+    display: contents;
+  }
+  .home .feat-totals {
+    grid-area: totals;
+    grid-template-columns: repeat(4, max-content);
+    justify-content: space-between;
+    column-gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .home .feat-totals dd {
+    font-size: 13px;
+  }
+  .home .feat-total > .t-small {
+    grid-area: label;
+  }
+  .home .feat-total > .t-figure {
+    grid-area: fig;
+    align-self: end;
+    justify-self: end;
+  }
+  .home .feat-note {
+    grid-area: note;
+    align-self: end;
+    margin-top: 2px;
+  }
+  .home .feat-fallback {
+    margin-top: 28px;
+  }
+  .home .feat-chain {
+    margin-top: 12px;
+  }
+  .home .feat-json {
+    padding: 12px 14px 14px;
+    font-size: 11.5px;
+    line-height: 1.6;
+  }
+  .home .feat-sheet .sheet-bar {
+    min-height: 36px;
+  }
+  .home .feat-ledger tbody :is(th, td) {
+    height: 40px;
+  }
+  .home .feat-fb-head .t-h4 {
+    font-size: 16px;
   }
 }
