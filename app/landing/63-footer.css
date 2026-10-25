@@ -84,8 +84,8 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 56px;
-  row-gap: 40px;
-  padding-top: 72px;
+  row-gap: 36px;
+  padding-top: 60px;
 }
 .home .foot-brand {
   grid-column: 1 / span 4;
@@ -138,8 +138,8 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px 24px;
-  margin: 64px 0 0;
-  padding-top: 22px;
+  margin: 52px 0 0;
+  padding-top: 20px;
   border-top: 1px solid var(--line-desk);
   font: 400 13px / 1.4 var(--font-mono);
   color: var(--on-desk-3);
@@ -157,8 +157,22 @@
 @media (max-width: 599px) {
   .home .foot-cols {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
   }
   .home .foot-grid {
-    padding-top: 52px;
+    row-gap: 24px;
+    padding-top: 34px;
+  }
+  .home .foot-link {
+    min-height: 34px;
+  }
+  .home .foot-link .ink-under {
+    bottom: 6px;
+  }
+  .home .foot-base {
+    margin-top: 28px;
+  }
+  .home .foot {
+    padding-bottom: 28px;
   }
 }

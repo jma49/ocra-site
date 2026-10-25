@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import type { Copy } from "@/lib/copy";
 import type { Locale } from "@/lib/i18n";
 import { exampleRun } from "@/lib/landing/example-run";
@@ -32,14 +31,37 @@ const CODE_LINES = [
   { n: finding.line, text: fixed },
   { n: finding.line + 1, text: recordedLine(finding.path, finding.line + 1) },
 ];
+// Where a printer breaks a line too long for the phone's narrower sheet
+// (62-final.css): after the last space that leaves the head within 36
+// columns; the rest hangs four columns in. Wide, it reads as one line.
+function printed(text: string) {
+  const k = text.lastIndexOf(" ", 36);
+  return text.length <= 48 || k < 0 ? [text, ""] : [text.slice(0, k), text.slice(k + 1)];
+}
 // The pen's tick after the corrected line, in the code's px.
 const TICK = [
   { name: "tick", mark: tick((fixed.length + 2) * CELL.ch, CELL.row + 3, { size: 16, seed: 29 }) },
 ];
 
+function Printed({ text }: { text: string }) {
+  const [head, rest] = printed(text);
+  return (
+    <code>
+      {head}
+      {rest ? (
+        <span className="final-wrap">
+          <span className="final-sp"> </span>
+          {rest}
+        </span>
+      ) : null}
+    </code>
+  );
+}
+
 // The close: the evening desk. The room light falls as the band enters, the
-// lamp clicks on over the last sheet, the fix is typed into line 42, the pen
-// ticks it, and the install command is typed under it (final-play.tsx).
+// lamp clicks on over the last sheet, the fix is typed into line 42 in the
+// pen's ink, the pen ticks it and lies down off the print, and the install
+// command is typed under it (final-play.tsx).
 export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale }) {
   const s = copy.sheet;
   return (
@@ -79,7 +101,6 @@ export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale })
             path={finding.path}
             meta={s.meta}
             rows={[]}
-            style={{ "--w": "660px", "--h": "430px", "--r": "-1.6deg" } as CSSProperties}
             over={
               <InkLayer
                 id="final-tick"
@@ -104,7 +125,7 @@ export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale })
                       {after}
                     </code>
                   ) : (
-                    <code>{l.text}</code>
+                    <Printed text={l.text} />
                   )}
                 </li>
               ))}
@@ -132,8 +153,9 @@ export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale })
               <span>{s.foot}</span>
               <span>{s.example}</span>
             </p>
+            <div className="final-warm" aria-hidden="true" />
             <div className="final-shade" aria-hidden="true" />
-            <Pen className="final-pen" rest={{ x: 96, y: 478, r: -4 }} />
+            <Pen className="final-pen" rest={{ x: 120, y: 474, r: -4 }} />
           </Sheet>
         </div>
       </div>

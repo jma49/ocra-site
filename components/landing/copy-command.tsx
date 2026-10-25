@@ -5,9 +5,9 @@ import { type MouseEvent, useEffect, useRef, useState } from "react";
 const SHOWN_MS = 1600;
 const BLINK_MS = 460;
 
-// The final sheet's Copy button. Both labels are rendered in one cell, so
-// the button keeps its width when "Copied" replaces "Copy"; a status line
-// tells screen readers. The eye row on the pen's clip catches the light
+// The final sheet's Copy button. Its minimum width holds either label, so
+// it keeps its width when "Copied" replaces "Copy"; a status line tells
+// screen readers. The eye row on the pen's clip catches the light
 // once in acknowledgement (62-final.css, `data-blink`). Where the clipboard
 // is refused, the command is selected instead, ready to copy by hand.
 export function CopyCommand({ text, label, done }: { text: string; label: string; done: string }) {
@@ -47,15 +47,16 @@ export function CopyCommand({ text, label, done }: { text: string; label: string
         data-copied={copied || undefined}
         onClick={copy}
       >
-        <span className="final-copy-label" data-shown={!copied || undefined}>
-          {label}
-        </span>
-        <span className="final-copy-label" data-shown={copied || undefined}>
-          <svg viewBox="0 0 16 14" width="13" height="12" aria-hidden="true">
-            <path d="M1.5 7.5 6 12 14.5 1.5" />
-          </svg>
-          {done}
-        </span>
+        {copied ? (
+          <span className="final-copy-label">
+            <svg viewBox="0 0 16 14" width="13" height="12" aria-hidden="true">
+              <path d="M1.5 7.5 6 12 14.5 1.5" />
+            </svg>
+            {done}
+          </span>
+        ) : (
+          <span className="final-copy-label">{label}</span>
+        )}
       </button>
       <span className="sr-only" role="status">
         {copied ? done : ""}
