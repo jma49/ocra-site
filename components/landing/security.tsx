@@ -19,18 +19,20 @@ import { Section } from "./section";
 import { SecurityPlay } from "./security-play";
 
 // Built for code you do not trust (D3, concept C), on a paper band. The
-// poster: the four paths the gate refuses at poster size, each covered by a
-// black marker in two passes (the gate is code, not the reviewer's pen, so
-// never cinnabar), with the rule that refuses it, and the refusal typed
+// poster: the four paths the gate refuses at poster size, each struck through
+// by a black marker in two passes (the gate is code, not the reviewer's pen,
+// so never cinnabar), with the rule that refuses it, and the refusal typed
 // verbatim on the first. Then a printed page: the four properties, each
 // citing where the engine enforces it, and the one measured result. The
 // bars are drawn once, filtered once, and revealed by scroll through a
 // sliding window (51-security.css), so scrubbing never re-rasterises them.
 
 const ASKED = REFUSED_RULES[0].path;
-// Maple Mono's advance, in em, and the baseline of a line set solid.
+// Maple Mono's advance, in em, the baseline of a line set solid, and the
+// strike's centre: halfway up its x-height (0.56 em).
 const ADVANCE = 0.6034;
 const BASE = 86;
+const STRIKE = BASE - 28;
 
 // A chisel marker's stroke from x0 to x1 between yTop and yBot, in units of
 // the type's size (100 = 1 em): wobbling edges, the ends cut at the
@@ -56,15 +58,16 @@ function marker(x0: number, x1: number, yTop: number, yBot: number, seed: number
   return `M${bot[0]}L${top.join("L")}L${bot.reverse().join("L")}Z`;
 }
 
-// One redaction bar over a path of `chars` characters: two passes, each in
-// its own window.
+// One strike through a path of `chars` characters, a firm line across the
+// x-height that leaves the word legible: two passes, the second laid a hair
+// lower to firm the line's foot, each in its own window.
 function Bar({ chars, i }: { chars: number; i: number }) {
   const w = chars * ADVANCE * 100;
   const x0 = -6;
   const x1 = w + 10;
   const passes = [
-    marker(x0, x1, BASE - 33, BASE - 6, 3 + i * 7, -0.01),
-    marker(x0 + 6, x1 - 5, BASE - 19, BASE + 7, 5 + i * 11, 0.006),
+    marker(x0, x1, STRIKE - 6, STRIKE + 5, 3 + i * 7, -0.008),
+    marker(x0 + 6, x1 - 5, STRIKE - 2, STRIKE + 6, 5 + i * 11, 0.005),
   ];
   const vw = x1 + 16 - (x0 - 16);
   return (
