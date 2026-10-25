@@ -1,82 +1,384 @@
-/* How it works: the head, legend and caption, the meter row, the story grid
-   in reading order, steps and numerals, the pinned, unpinned and reduced
-   layouts (package S). F's stub: unpinned, text beside its figure. */
+/* How it works (sections.md §4; package S): the head, the meter row, the
+   story grid in reading order (step n, then figure n), steps and their
+   numerals. Pinned (≥ 1200 × 760, html.mo, motion allowed; the island uses
+   the same query): the figures share one sticky place beside the steps and
+   the meter sticks above them. Otherwise (narrow, short, no JS, Reduce
+   motion) each step flows with its figure: beside it from 1200 px, above it
+   below that. The figures themselves: 31-figures.css. */
+
 .home .how {
   padding-block: var(--pad);
 }
+
+/* ---- Head: 7/5, bottom-aligned ---- */
 .home .how-head {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
-  row-gap: 24px;
+  row-gap: 32px;
   align-items: end;
 }
-.home .how-head > :first-child {
+.home .how-title {
   grid-column: 1 / span 7;
 }
-.home .how-head .t-kicker {
-  margin-bottom: 16px;
+.home .how-title .t-kicker {
+  margin-bottom: 22px;
 }
 .home .how-aside {
   grid-column: 8 / -1;
   display: grid;
-  gap: 16px;
+  gap: 18px;
+  padding-bottom: 6px;
 }
 .home .how-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px 24px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--ink-2);
+}
+.home .how-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.home .how-legend li::before {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  background: var(--ink);
+}
+.home .how-legend li[data-kind="model"]::before {
+  background: none;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
 }
 .home .how-example {
   color: var(--ink-3);
 }
+/* A stage's kind: a filled square is code, a ring is a model. */
+.home .how .k {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+}
+.home .how .k[data-kind="model"] {
+  background: none;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.3px currentColor;
+}
+
+/* ---- The meter row (pinned only) ---- */
+.home .meter-row {
+  display: none;
+  position: sticky;
+  top: 76px;
+  z-index: 3;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 44px;
+  margin-top: 60px;
+  background: var(--paper-2);
+  /* Also covers the slit between the floating nav and the row. */
+  box-shadow:
+    inset 0 -1px 0 var(--line-2),
+    0 -12px 0 var(--paper-2);
+}
+.home .meter {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+}
+.home .meter li {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 44px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  transition: color 500ms var(--e-std);
+}
+.home .meter li + li {
+  margin-inline-start: 16px;
+}
+.home .meter li[data-first] {
+  margin-inline-start: 33px;
+}
+.home .meter li[data-first]::before {
+  content: "";
+  position: absolute;
+  left: -17px;
+  top: 17px;
+  width: 1px;
+  height: 10px;
+  background: var(--line-2);
+}
+.home .meter li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms var(--e-std);
+}
+.home .meter li.is-past {
+  color: var(--ink);
+}
+.home .meter li.is-on {
+  color: var(--ink);
+  font-weight: 500;
+}
+.home .meter li.is-on::after {
+  transform: none;
+}
+.home .meter-pass {
+  flex: none;
+  font-size: 14px;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+}
+/* Progress: the story's scroll position where scroll timelines exist,
+   else the step (--step, set by the island). */
+.home .meter-rule {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(calc(var(--step, 1) / 4));
+  transform-origin: left;
+  transition: transform 450ms var(--e-enter);
+}
+@supports (animation-timeline: view()) {
+  .home .how-run {
+    timeline-scope: --story;
+  }
+  .home .story {
+    view-timeline: --story block;
+  }
+  /* From step 1 reaching the viewport's middle to step 4 leaving it. */
+  .home .meter-rule {
+    transition: none;
+    animation: grow linear both;
+    animation-timeline: --story;
+    animation-range: cover 16% cover 84%;
+  }
+}
+
+/* ---- The story: steps and figures in reading order ---- */
 .home .story {
+  --num: 44px;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
-  row-gap: 56px;
-  margin-top: 56px;
+  row-gap: 96px;
+  margin-top: 96px;
 }
 .home .step {
   grid-column: 1 / span 5;
-  padding-top: 24px;
+  grid-row: var(--i);
+  align-self: start;
+  padding-top: 48px;
 }
 .home .fig {
   grid-column: 6 / -1;
+  grid-row: var(--i);
   min-width: 0;
   margin: 0;
 }
-.home .step h3 {
+.home .step-h {
+  margin: 0;
+}
+.home .step-go {
   display: flex;
   align-items: baseline;
-  gap: 16px;
+  gap: 18px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
 .home .step-n {
+  position: relative;
+  flex: none;
+  width: var(--num);
   font-family: var(--font-display);
   font-weight: 520;
   font-stretch: 62%;
   font-size: 64px;
-  line-height: 1;
+  line-height: 0.82;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+  transition: color 500ms var(--e-std);
+}
+/* The active step's numeral: an ink underline (pinned only). */
+.home .step-n::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 0.5em;
+  bottom: -10px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 300ms var(--e-std);
+}
+.home .step-t {
+  transition: color 500ms var(--e-std);
+}
+.home .step-t:lang(zh) {
+  word-break: keep-all;
 }
 .home .step-stages {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin: 16px 0;
+  margin: 22px 0 14px calc(var(--num) + 18px);
 }
+.home .step-text {
+  max-width: 31rem;
+  margin-inline-start: calc(var(--num) + 18px);
+  transition: color 500ms var(--e-std);
+}
+.home .step-text code {
+  font-size: 0.86em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* ---- Pinned ---- */
+@media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  html.mo .home .meter-row {
+    display: flex;
+  }
+  html.mo .home .story {
+    row-gap: 0;
+    margin-top: 12px;
+  }
+  html.mo .home .step {
+    min-height: min(calc(var(--vh, 100svh) * 0.55), 460px);
+    padding-block: 32px 24px;
+  }
+  html.mo .home .step:not(.is-on) :is(.step-n, .step-t, .step-text, .step-text code) {
+    color: var(--ink-3);
+  }
+  html.mo .home .step.is-on .step-n::after {
+    transform: none;
+  }
+  html.mo .home .fig {
+    grid-row: 1 / 5;
+    position: sticky;
+    top: 132px;
+    align-self: start;
+    z-index: 2;
+  }
+}
+@media (hover: hover) and (min-width: 1200px) and (min-height: 760px) and (
+    prefers-reduced-motion: no-preference
+  ) {
+  html.mo .home .step:not(.is-on) .step-go:hover :is(.step-n, .step-t) {
+    color: var(--ink);
+  }
+}
+
+/* ---- Below 1200: each step above its figure; from 600 px the step's
+   head stands left of its text. The figure's head names the stages, so the
+   chips stay with the pinned and side-by-side layouts. ---- */
 @media (max-width: 1199px) {
-  .home .how-head > :first-child,
-  .home .how-aside,
-  .home .step,
-  .home .fig {
+  .home .how-title,
+  .home .how-aside {
     grid-column: 1 / -1;
   }
+  .home .how-aside {
+    max-width: 40rem;
+  }
   .home .story {
+    grid-template-columns: minmax(0, 1fr);
     row-gap: 24px;
+    margin-top: 64px;
+  }
+  .home .step,
+  .home .fig {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .home .step {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    align-items: start;
+    padding-top: 48px;
+  }
+  .home .step-h {
+    grid-column: 1 / span 5;
+  }
+  .home .step-stages {
+    display: none;
+  }
+  .home .step-text {
+    grid-column: 6 / -1;
+    max-width: 36rem;
+    margin: 0;
+  }
+  .home .step:first-child {
+    padding-top: 0;
   }
 }
+
+/* ---- Phones: one column ---- */
 @media (max-width: 599px) {
+  .home .how-head {
+    row-gap: 18px;
+  }
+  .home .how-title .t-kicker {
+    margin-bottom: 12px;
+  }
+  /* "Code checks the answer." is 8.03 em: below 390 px the H2 shrinks to
+     the column rather than clip. */
+  .home .how-title .t-h2:not(:lang(zh)) {
+    font-size: min(2.625rem, calc((100vw - 40px) / 8.2));
+  }
+  .home .how-aside {
+    gap: 12px;
+  }
+  .home .story {
+    --num: 30px;
+    row-gap: 12px;
+    margin-top: 36px;
+  }
+  .home .step {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 8px;
+    padding-top: 14px;
+  }
+  .home .step-h,
+  .home .step-text {
+    grid-column: 1;
+  }
+  .home .step-go {
+    gap: 12px;
+  }
   .home .step-n {
     font-size: 46px;
   }
