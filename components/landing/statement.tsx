@@ -65,7 +65,7 @@ export function Statement({ copy }: { copy: Copy["statement"] }) {
       <PaperBand>
         <div className="wrap quiet-in">
           <div className="quiet-head">
-            <h2 className="quiet-h" id="quiet-title">
+            <h2 className="t-h2 quiet-h" id="quiet-title">
               {copy.lines.map((line, i) => (
                 <span key={line} className="quiet-hl">
                   <span className="quiet-hli">

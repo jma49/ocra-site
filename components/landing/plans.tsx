@@ -76,7 +76,7 @@ export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale })
       <PaperBand>
         <div className="wrap pl-in">
           <header className="pl-head">
-            <h2 className="pl-h" id="plans-title">
+            <h2 className="t-h2 pl-h" id="plans-title">
               {copy.lines.map((line, i) => (
                 <Fragment key={line}>
                   {i > 0 && locale === "en" ? " " : null}

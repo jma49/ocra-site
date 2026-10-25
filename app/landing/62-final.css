@@ -6,7 +6,7 @@
 
 .home .final {
   overflow: clip;
-  padding-block: clamp(104px, 13vh, 136px) clamp(64px, 8vh, 96px);
+  padding-block: var(--head-top) clamp(64px, 8vh, 96px);
 }
 
 /* The join with the desk above: its tone carried over the first screen. */
@@ -68,25 +68,12 @@
   column-gap: 56px;
   align-items: center;
 }
+/* The headline across the top at the section H2's size; the sheet under
+   it on the right, its top level with the buttons. */
 .home .final-copy {
-  grid-column: 1 / span 5;
+  grid-column: 1 / -1;
   position: relative;
   z-index: 1;
-}
-.home .final-h {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(52px, 5.6vw, 84px);
-  font-weight: 500;
-  font-stretch: 72%;
-  line-height: 0.96;
-  letter-spacing: -0.02em;
-  color: var(--on-desk);
-}
-.home:lang(zh) .final-h {
-  font-size: clamp(44px, 5.2vw, 76px);
-  line-height: 1.14;
-  letter-spacing: 0;
 }
 .home .final-hl {
   display: block;
@@ -110,6 +97,7 @@
   --k: 1;
   grid-column: 6 / span 7;
   position: relative;
+  margin-top: -48px;
   height: calc(510px * var(--k));
   scale: var(--k);
   transform-origin: 0 0;
@@ -384,7 +372,7 @@ html.mo .home .final-pen {
    line 42 and the command stay whole at about 10 px. */
 @media (max-width: 699px) {
   .home .final {
-    padding-block: 88px 44px;
+    padding-bottom: 44px;
   }
   .home .final-cta {
     gap: 12px 24px;

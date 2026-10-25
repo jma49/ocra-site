@@ -6,7 +6,7 @@
 
 .home .features {
   overflow-x: clip;
-  padding-block: clamp(96px, 12vh, 136px) clamp(48px, 6vh, 72px);
+  padding-block: var(--head-top) clamp(48px, 6vh, 72px);
 }
 .home .feat-grid {
   display: grid;
@@ -16,29 +16,9 @@
   min-height: 728px;
 }
 
-/* ---- The copy ---- */
-.home .feat-eyebrow {
-  margin-bottom: 28px;
-  font: 400 16px / 1 var(--font-mono);
-  color: var(--on-desk-2);
-}
-.home .feat-h {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(56px, 8.8vw, 128px);
-  font-weight: 500;
-  font-stretch: 70%;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: var(--on-desk);
-}
-.home .feat-h:lang(zh) {
-  font-family: var(--font-sans);
-  font-size: clamp(44px, 6.6vw, 96px);
-  font-weight: 600;
-  font-stretch: 100%;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
+/* ---- The copy: from the section's head line, beside the sheet ---- */
+.home .feat-copy {
+  align-self: start;
 }
 .home .feat-hl {
   display: block;
@@ -254,11 +234,7 @@
    the repository, the bundles and the helpers' names stay off. */
 @media (max-width: 759px) {
   .home .features {
-    padding-block: 72px 40px;
-  }
-  .home .feat-eyebrow {
-    margin-bottom: 20px;
-    font-size: 14px;
+    padding-bottom: 40px;
   }
   .home .feat-list {
     margin-top: 28px;

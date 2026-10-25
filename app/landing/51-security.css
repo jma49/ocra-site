@@ -15,25 +15,13 @@
   height: 0;
 }
 .home .sec-in {
-  padding-block: clamp(80px, 10vh, 112px) clamp(64px, 8.5vh, 96px);
+  padding-block: var(--head-top) clamp(64px, 8.5vh, 96px);
 }
 .home .sec-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
   align-items: end;
   gap: 32px 64px;
-}
-.home .sec-kicker {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--print-ink-2);
-}
-.home .sec-h {
-  margin-top: 16px;
-  font-size: clamp(3.25rem, 1.2rem + 6.4vw, 7rem);
-  font-stretch: 66%;
-  line-height: 0.9;
-  color: var(--print-ink);
 }
 .home .sec-hl {
   display: block;
@@ -272,10 +260,6 @@
 }
 
 /* ---- Chinese: the system face's own sizes ---- */
-.home :lang(zh) .sec-h {
-  font-size: clamp(2.75rem, 1.2rem + 5.2vw, 5.75rem);
-  line-height: 1.12;
-}
 .home :lang(zh) .sec-proof-t {
   font-size: 26px;
   line-height: 1.45;
@@ -303,7 +287,7 @@
    keeps one line per speaker; the sources fit on one line. */
 @media (max-width: 599px) {
   .home .sec-in {
-    padding-block: 72px 56px;
+    padding-bottom: 56px;
   }
   .home .sec-head {
     gap: 24px;

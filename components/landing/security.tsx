@@ -188,7 +188,7 @@ export function Security({ copy, locale }: { copy: Copy["security"]; locale: Loc
         <div className="wrap sec-in">
           <header className="sec-head">
             <div>
-              <p className="sec-kicker">{copy.label}</p>
+              <p className="t-kicker sec-kicker">{copy.label}</p>
               <h2 className="t-h2 sec-h" id="sec-h">
                 {copy.lines.map((line, i) => (
                   <span key={line} className="sec-hl">

@@ -10,7 +10,7 @@
 }
 .home .works-in {
   position: relative;
-  padding-block: clamp(96px, 11vh, 132px) clamp(64px, 8vh, 96px);
+  padding-block: var(--head-top) clamp(64px, 8vh, 96px);
 }
 
 /* ---- The poster: eyebrow, two lines across the page, the lede under ---- */
@@ -24,21 +24,6 @@
 .home .works-h {
   grid-column: 1 / -1;
 }
-.home .works-eyebrow {
-  margin-bottom: 30px;
-  font: 400 16px / 1 var(--font-mono);
-  color: var(--print-ink-2);
-}
-.home .works-h {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(56px, 9.6vw, 140px);
-  font-weight: 500;
-  font-stretch: 70%;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: var(--print-ink);
-}
 .home .works-hl {
   display: block;
   overflow: clip;
@@ -47,14 +32,6 @@
 }
 .home .works-hl > span {
   display: block;
-}
-.home .works-h:lang(zh) {
-  font-family: var(--font-sans);
-  font-size: clamp(40px, 7.2vw, 104px);
-  font-weight: 600;
-  font-stretch: 100%;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
 }
 .home .works-lede {
   grid-column: 2;
@@ -170,11 +147,7 @@ html.mo .home .features .pen-rig {
 }
 @media (max-width: 759px) {
   .home .works-in {
-    padding-block: 80px 64px;
-  }
-  .home .works-eyebrow {
-    margin-bottom: 22px;
-    font-size: 14px;
+    padding-bottom: 64px;
   }
   .home .works-lede {
     font-size: 17px;

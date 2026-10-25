@@ -19,8 +19,8 @@ export function Works({ copy, locale }: { copy: Copy["works"]; locale: Locale })
       <PaperBand>
         <div className="wrap works-in">
           <header className="works-head">
-            <p className="works-eyebrow">{copy.eyebrow}</p>
-            <h2 className="works-h" id="works-title">
+            <p className="t-kicker works-eyebrow">{copy.eyebrow}</p>
+            <h2 className="t-h2 works-h" id="works-title">
               {copy.lines.map((line, i) => (
                 <span key={line} className="works-hl">
                   <span>

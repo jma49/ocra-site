@@ -10,7 +10,7 @@
 }
 .home .pl-in {
   position: relative;
-  padding-block: 112px 84px;
+  padding-block: var(--head-top) 84px;
 }
 
 /* ---- Head: the headline left, the lede at its foot on the right ---- */
@@ -22,14 +22,6 @@
 }
 .home .pl-h {
   grid-column: 1 / 9;
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(56px, 6.6vw, 96px);
-  font-weight: 500;
-  font-stretch: 72%;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  color: var(--print-ink);
 }
 .home .pl-hl {
   display: block;
@@ -247,14 +239,6 @@ html.mo .home .plans .pl-pen[data-depth] {
 }
 
 /* ---- Chinese: its own sizes ---- */
-.home .pl-h:lang(zh) {
-  font-family: var(--font-sans);
-  font-size: clamp(44px, 5.4vw, 78px);
-  font-weight: 600;
-  font-stretch: 100%;
-  line-height: 1.12;
-  letter-spacing: 0.02em;
-}
 .home .pl-name h3:lang(zh) {
   font-family: var(--font-sans);
   font-size: 32px;
@@ -301,7 +285,7 @@ html.mo .home .plans .pl-pen[data-depth] {
 }
 @media (max-width: 1023px) {
   .home .pl-in {
-    padding-block: 104px 72px;
+    padding-bottom: 72px;
   }
   .home .pl-head {
     display: block;
@@ -337,13 +321,7 @@ html.mo .home .plans .pl-pen[data-depth] {
 }
 @media (max-width: 639px) {
   .home .pl-in {
-    padding-block: 88px 64px;
-  }
-  .home .pl-h {
-    font-size: clamp(44px, 12.4vw, 64px);
-  }
-  .home .pl-h:lang(zh) {
-    font-size: 10.6vw;
+    padding-bottom: 64px;
   }
   .home .pl-lede {
     margin-top: 18px;
