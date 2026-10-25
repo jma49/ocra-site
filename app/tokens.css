@@ -124,13 +124,13 @@
   --on-desk-3: color-mix(in srgb, var(--on-desk) 50%, transparent);
   --line-desk: color-mix(in srgb, var(--on-desk) 14%, transparent);
   /* Printed paper (laser paper, never cream as a page ground), its print. */
-  --print-paper: #f6f4ef;
-  --print-paper-2: #ebe8e1;
+  --print-paper: #faf8f2;
+  --print-paper-2: #f0ece3;
   --print-ink: #1c2226;
   --print-ink-2: #545c5f;
   --print-ink-3: #8a9293;
   /* The index card: whiter stock, a printed red head rule, pale blue lines. */
-  --card-stock: #fbfaf7;
+  --card-stock: #fdfcf8;
   --card-rule: #d6463c;
   --card-line: #8db0d6;
   /* Cinnabar: the pen's barrel and its ink, nothing else (no button, no UI).
@@ -227,4 +227,12 @@
     inset 0 0 0 1px color-mix(in srgb, var(--white) 8%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--white) 12%, transparent),
     4px 30px 60px -28px color-mix(in srgb, var(--black) 80%, transparent);
+}
+
+/* Teal print for the manual's code (app/docs.css): strings and values on
+   the printed sheet (5.8 : 1 on print-paper), and on the lamp-lit evening
+   sheet. Never a link, a state or a mark. */
+:root {
+  --print-teal: #2d6870;
+  --print-teal-lamp: #8cc4c2;
 }

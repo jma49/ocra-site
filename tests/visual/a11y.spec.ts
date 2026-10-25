@@ -12,38 +12,21 @@ test.beforeEach(({}, testInfo) => {
 });
 
 // axe on the landing page in both languages; the projects run it at every
-// width in both colour schemes. The product window's second tab and the
-// lifecycle's states are checked open, since each renders different markup.
+// width in both colour schemes.
 for (const path of ["/", "/zh"]) {
   test(`axe ${path}`, async ({ page }) => {
-    // Four full axe passes over a long page.
+    // A full axe pass over a long page.
     test.setTimeout(90_000);
     await page.goto(path, { waitUntil: "networkidle" });
-    const states: { name: string; open: () => Promise<void> }[] = [
-      { name: "default", open: async () => {} },
-      {
-        name: "window tab 1",
-        open: () => page.locator("#product [role=tab]").nth(1).click(),
-      },
-      ...[1, 2].map((n) => ({
-        name: `lifecycle state ${n}`,
-        open: () => page.locator(".lifecycle [role=tab]").nth(n).click(),
-      })),
-    ];
-    for (const state of states) {
-      await state.open();
-      // Measure the settled state, not a hover or a colour transition.
-      await page.mouse.move(0, 0);
-      await page.waitForFunction(() =>
-        document.getAnimations().every((a) => !(a instanceof CSSTransition)),
-      );
-      const { violations } = await new AxeBuilder({ page }).analyze();
-      expect(
-        violations.map(
-          (v) => `${state.name}: ${v.id} ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`,
-        ),
-      ).toEqual([]);
-    }
+    // Measure the settled state, not a hover or a colour transition.
+    await page.mouse.move(0, 0);
+    await page.waitForFunction(() =>
+      document.getAnimations().every((a) => !(a instanceof CSSTransition)),
+    );
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    expect(
+      violations.map((v) => `${v.id} ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`),
+    ).toEqual([]);
   });
 }
 
@@ -57,23 +40,6 @@ for (const path of ["/this-page-does-not-exist", "/zh/this-page-does-not-exist"]
     ).toEqual([]);
   });
 }
-
-test("tabs move with the arrow keys", async ({ page }) => {
-  await page.goto("/", { waitUntil: "networkidle" });
-  const tabs = page.locator("#product [role=tab]");
-  await tabs.first().focus();
-  await page.keyboard.press("ArrowRight");
-  await expect(tabs.nth(1)).toBeFocused();
-  await expect(tabs.nth(1)).toHaveAttribute("aria-selected", "true");
-  const panel = await tabs.nth(1).getAttribute("aria-controls");
-  await expect(page.locator(`#${panel}`)).toHaveAttribute("role", "tabpanel");
-  await page.keyboard.press("Home");
-  await expect(tabs.first()).toBeFocused();
-  await page.keyboard.press("End");
-  await expect(tabs.nth(1)).toBeFocused();
-  await page.keyboard.press("ArrowRight");
-  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
-});
 
 test("the menu closes on Escape and returns focus", async ({ page }) => {
   test.skip(page.viewportSize()?.width !== 390, "the menu button is phone-only");

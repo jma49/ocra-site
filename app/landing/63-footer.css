@@ -1,30 +1,91 @@
-/* Footer: continues the final band (its bottom corners rounded, 12 px from
-   the page's bottom), under a hairline: the logo and tagline beside four
-   columns of links, each a 44 × 44 px target (package C). Like the final
-   band, it is full-bleed in paper-2 with the night slab drawn inside. */
-.home .foot.band {
+/* Footer (P1): the desk's front edge. A lit bevel where the desk turns
+   down, a ruler's scale printed along it that slides with the scroll, then
+   the brand and four columns of links on the desk; links get the pen's
+   underline on hover (08-ink.css). */
+
+.home .foot {
   position: relative;
   isolation: isolate;
-  margin: 0;
-  padding: 0 12px calc(48px + 12px);
-  border-radius: 0;
-  background: var(--paper-2);
+  padding-bottom: 40px;
+  overflow: clip;
 }
-.home .foot.band::before {
-  content: "";
+.home .foot .desk-ground {
+  background:
+    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
+    linear-gradient(to bottom, var(--desk-eve), var(--desk-lo));
+  background-blend-mode: overlay, normal;
+}
+.home .foot .desk-lamp,
+.home .foot .desk-fall {
+  display: none;
+}
+
+/* ---- The front edge: the bevel catching the lamp, the printed scale ---- */
+.home .foot-edge {
+  position: relative;
+  height: 30px;
+  overflow: clip;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--on-desk) 22%, var(--desk)) 0,
+    color-mix(in srgb, var(--on-desk) 8%, var(--desk)) 2px,
+    var(--desk-lo) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--lamp) 40%, transparent),
+    0 14px 26px -12px var(--umbra);
+}
+.home .foot-scale {
   position: absolute;
-  inset: 0 12px 12px;
-  z-index: -1;
-  border-radius: 0 0 var(--r-band) var(--r-band);
-  background: var(--night);
+  left: -200px;
+  right: -200px;
+  top: 3px;
+  height: 12px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--on-desk) 46%, transparent) 0 1px,
+      transparent 1px 64px
+    )
+    0 0 / 100% 12px no-repeat,
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--on-desk) 30%, transparent) 0 1px,
+      transparent 1px 32px
+    )
+    0 0 / 100% 8px no-repeat,
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--on-desk) 18%, transparent) 0 1px,
+      transparent 1px 6.4px
+    )
+    0 0 / 100% 5px no-repeat;
 }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .foot-scale {
+      animation: foot-scale linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 0%;
+    }
+  }
+}
+@keyframes foot-scale {
+  from {
+    translate: -128px 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+/* ---- Brand and links ---- */
 .home .foot-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 36px;
-  padding-top: 48px;
-  border-top: 1px solid var(--line-night);
+  column-gap: 56px;
+  row-gap: 40px;
+  padding-top: 72px;
 }
 .home .foot-brand {
   grid-column: 1 / span 4;
@@ -33,73 +94,71 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  margin-top: -6px;
-  color: var(--on-night);
-  text-decoration: none;
+  color: var(--on-desk);
 }
-.home .foot-brand .t-small {
-  max-width: 22rem;
-  margin-top: 6px;
-  color: var(--on-night-2);
+.home .foot-tagline {
+  max-width: 18rem;
+  margin: 14px 0 0;
+  font: 400 15px / 1.55 var(--font-sans);
+  color: var(--on-desk-2);
 }
 .home .foot-cols {
-  grid-column: 5 / -1;
+  grid-column: 6 / span 7;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: var(--gap);
+  gap: 32px 24px;
 }
-.home .foot-col h2 {
-  margin-bottom: 6px;
+.home .foot-h {
+  margin: 0 0 6px;
+  font: 500 13px / 1.3 var(--font-sans);
+  color: var(--on-desk-3);
 }
-/* The text keeps the column's edge; its target reaches 8 px past it. */
-.home .foot-col a {
-  display: inline-flex;
-  align-items: center;
-  min-width: 44px;
-  min-height: 44px;
-  margin-inline: -8px;
-  padding-inline: 8px;
-  border-radius: var(--r-tab);
+.home .foot-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home .foot-link {
+  min-height: 40px;
   font-size: 15px;
-  line-height: 1.3;
-  color: var(--on-night-2);
-  text-decoration: none;
-  transition: color 150ms var(--e-std);
+  font-weight: 400;
+  color: var(--on-desk-2);
+  transition: color 200ms var(--e-std);
 }
 @media (hover: hover) {
-  .home .foot-col a:hover {
-    color: var(--on-night);
+  .home .foot-link:hover {
+    color: var(--on-desk);
   }
 }
-.home .foot-col a:focus-visible {
-  outline-offset: -2px;
+.home .foot-link .ink-under {
+  bottom: 9px;
+}
+.home .foot-base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin: 64px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-desk);
+  font: 400 13px / 1.4 var(--font-mono);
+  color: var(--on-desk-3);
 }
 
-/* 1024 and 768: the logo row, then the four columns. */
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
+  .home .foot-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .home .foot-brand,
   .home .foot-cols {
     grid-column: 1 / -1;
   }
 }
-/* 390: the columns two by two. */
 @media (max-width: 599px) {
-  .home .foot.band {
-    padding: 0 8px calc(40px + 8px);
-  }
-  .home .foot.band::before {
-    inset: 0 8px 8px;
-    border-radius: 0 0 20px 20px;
-  }
-  .home .foot-grid {
-    row-gap: 28px;
-    padding-top: 40px;
-  }
   .home .foot-cols {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 24px;
   }
-  .home .foot-col h2 {
-    margin-bottom: 2px;
+  .home .foot-grid {
+    padding-top: 52px;
   }
 }

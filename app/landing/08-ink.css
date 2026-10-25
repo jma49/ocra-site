@@ -116,6 +116,13 @@
 /* The desk's primary call to action: paper on the desk, ink type. Its
    arrow gets a pen tick under the pointer. */
 .home .btn-desk {
+  translate: calc(var(--mx, 0) * 1px) calc(var(--my, 0) * 1px);
+  transition:
+    translate 420ms var(--e-settle),
+    background-color 150ms var(--e-std),
+    box-shadow 150ms var(--e-std),
+    color 150ms var(--e-std),
+    transform 200ms var(--e-std);
   background: var(--print-paper);
   color: var(--print-ink);
   box-shadow:

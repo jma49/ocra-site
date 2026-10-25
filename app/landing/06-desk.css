@@ -32,7 +32,10 @@
   background: var(--desk-eve);
 }
 
-/* The desk surface: fine grain over the ink-teal, lit from the upper left. */
+/* The desk surface: fine grain over the ink-teal, lit from above. Every
+   light and shade below is centred on the section's middle and has faded
+   out by its top and bottom edges, so two desk sections meet without a
+   seam: the desk is one surface the camera travels across. */
 .home .desk-ground {
   position: absolute;
   inset: 0;
@@ -40,8 +43,8 @@
   overflow: hidden;
   pointer-events: none;
   background:
-    url(/landing/tex/desk-grain.webp) 0 0 / 256px 256px,
-    radial-gradient(70% 60% at 64% 30%, var(--desk-hi), transparent 72%),
+    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
+    radial-gradient(70% 58% at 64% 50%, var(--desk-hi), transparent 72%),
     var(--desk);
   background-blend-mode: overlay, normal, normal;
 }
@@ -52,7 +55,7 @@
 }
 .home .desk-ground.eve {
   background:
-    url(/landing/tex/desk-grain.webp) 0 0 / 256px 256px,
+    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
     radial-gradient(
       46% 52% at 50% 64%,
       color-mix(in srgb, var(--desk-hi) 70%, var(--desk-eve)),
@@ -83,12 +86,12 @@
     transparent 76%
   );
 }
-/* The falloff: the room darkens away from the light. */
+/* The falloff: the room darkens away from the light, towards the sides. */
 .home .desk-fall {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    120% 105% at 58% 30%,
+    110% 105% at 58% 50%,
     transparent 44%,
     color-mix(in srgb, var(--umbra) 48%, transparent) 100%
   );
@@ -185,6 +188,30 @@
   }
   to {
     translate: 0 calc(var(--depth) * -50vh);
+  }
+}
+/* Inside a pinned stage the objects hold still in the viewport, so their
+   own view() timelines stop; a stage that opts in (`data-stage` on its tall
+   scrolling wrapper) lends them its timeline instead, and they drift by
+   height across the whole pin. */
+.home [data-stage] {
+  view-timeline: --stage block;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home [data-stage] [data-depth] {
+      animation-name: depth-stage;
+      animation-timeline: --stage;
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+@keyframes depth-stage {
+  from {
+    translate: 0 calc(var(--depth) * 24vh);
+  }
+  to {
+    translate: 0 calc(var(--depth) * -24vh);
   }
 }
 
