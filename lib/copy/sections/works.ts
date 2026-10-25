@@ -1,5 +1,5 @@
 import { PROVIDERS } from "@/lib/landing/engine-facts";
-import type { Bilingual, Lines } from "../define";
+import type { Bilingual, FromRun, Lines } from "../define";
 
 interface WorksCopy {
   // Two set lines from 1200 px; one balanced sentence below. Chinese keeps
@@ -20,6 +20,13 @@ interface WorksCopy {
   // the second after "+"; a phone runs them on one line. One thing breaks
   // only where it has an ordinary space or a U+200B.
   leaves: Record<"github" | "gitlab" | "git", readonly [string] | readonly [string, string]>;
+  // The miniature of what lands on each platform (works-outputs.tsx): the
+  // chips that say which are the example run and which is drawn, where the
+  // inline comment sits, and GitLab's reply field under its thread.
+  example: string;
+  illustration: string;
+  onLine: FromRun;
+  reply: string;
   // Beside the provider count that heads the provider index.
   gauge: string;
   marquee: { pause: string; play: string };
@@ -37,6 +44,10 @@ export const works: Bilingual<WorksCopy> = {
       gitlab: ["summary note", "inline threads"],
       git: ["a\u00a0report\u00a0in your\u00a0terminal"],
     },
+    example: "Example run",
+    illustration: "Illustration",
+    onLine: (run) => `line ${run.finding.line}`,
+    reply: "Reply…",
     gauge: "model providers through ocra Cloud",
     marquee: { pause: "Pause the provider marks", play: "Play the provider marks" },
   },
@@ -47,10 +58,14 @@ export const works: Bilingual<WorksCopy> = {
     more: "另有 {count}\u00a0家可通过 ocra Cloud 接入，也可以接你自己运行的任何 OpenAI 兼容端点。",
     local: "本地分支",
     leaves: {
-      github: ["摘要评论", "行内评论"],
-      gitlab: ["摘要评论", "行内讨论串"],
+      github: ["总结评论", "行内评论"],
+      gitlab: ["总结评论", "行内讨论串"],
       git: ["终端里的\u200b审查报告"],
     },
+    example: "示例运行",
+    illustration: "示意",
+    onLine: (run) => `第 ${run.finding.line} 行`,
+    reply: "回复…",
     gauge: "家模型服务商，经 ocra Cloud 接入",
     marquee: { pause: "暂停滚动", play: "继续滚动" },
   },
