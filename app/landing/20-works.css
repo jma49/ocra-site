@@ -246,6 +246,12 @@ html:not(.hy) .home .mq-pause {
     max-width: 560px;
   }
 }
+/* One column: the hero above ends on the same paper, so less air. */
+@media (max-width: 1023px) {
+  .home .works {
+    padding-top: 72px;
+  }
+}
 @media (max-width: 599px) {
   .home .works {
     padding-block: 72px;

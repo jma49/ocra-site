@@ -47,10 +47,14 @@
     --pad-band: 104px;
   }
 }
+/* One column from here down: the page is long, so a little less air
+   between sections (the tablet page stays within 12,500 px). */
 @media (max-width: 1023px) {
   .home {
     --gutter: 32px;
     --gap: 32px;
+    --pad: 88px;
+    --pad-band: 88px;
   }
 }
 @media (max-width: 599px) {
