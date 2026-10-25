@@ -1,16 +1,30 @@
-import { ease, motionAllowed, sleep, tween, whenSeen } from "./core";
+import { Cancelled, ease, motionAllowed, tween, whenSeen } from "./core";
 
 // Typed things and counted figures. The server renders the final text; these
 // replay it once when it comes into view, without moving layout: the untyped
 // rest keeps its place (hidden), a counted figure keeps its final width.
 
-// Type a plain-text element on with a caret, `cps` characters a second.
+// Type a plain-text element on with a caret, `cps` characters a second and
+// a typewriter's rhythm (a little longer after a space or a stop), the whole
+// line done within `max` ms however long it is, so a reader never waits on
+// half-typed text. Timed on frames, not a timer per character.
 export async function typeOn(
   el: HTMLElement,
-  { cps = 38, signal }: { cps?: number; signal?: AbortSignal } = {},
+  { cps = 38, max = 1100, signal }: { cps?: number; max?: number; signal?: AbortSignal } = {},
 ) {
   const full = el.textContent ?? "";
   if (!full || !motionAllowed()) return;
+  const chars = [...full];
+  const beats = chars.map((ch) => (ch === " " ? 1.6 : /[.,:;]/.test(ch) ? 2.4 : 1));
+  const unit = Math.min(1000 / cps, max / beats.reduce((a, b) => a + b, 0));
+  // When each character appears: the first at once, each next one a beat
+  // after the one before it; the caret rests for the last beat.
+  const at: number[] = [];
+  let t = 0;
+  for (const b of beats) {
+    at.push(t);
+    t += b * unit;
+  }
   const on = document.createElement("span");
   const caret = document.createElement("span");
   const rest = document.createElement("span");
@@ -20,13 +34,24 @@ export async function typeOn(
   el.replaceChildren(on, caret, rest);
   el.classList.add("typing");
   try {
-    for (let i = 1; i <= full.length; i++) {
-      on.textContent = full.slice(0, i);
-      rest.textContent = full.slice(i);
-      // A typewriter's rhythm: a little longer after a space or a stop.
-      const ch = full[i - 1] ?? "";
-      await sleep((1000 / cps) * (ch === " " ? 1.6 : /[.,:;]/.test(ch) ? 2.4 : 1), signal);
-    }
+    await new Promise<void>((res, rej) => {
+      const t0 = performance.now();
+      let shown = 0;
+      const frame = (now: number) => {
+        if (signal?.aborted) return rej(new Cancelled());
+        const e = now - t0;
+        let i = shown;
+        while (i < at.length && (at[i] ?? 0) <= e) i++;
+        if (i !== shown) {
+          shown = i;
+          on.textContent = chars.slice(0, i).join("");
+          rest.textContent = chars.slice(i).join("");
+        }
+        if (e >= t) return res();
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
   } finally {
     el.textContent = full;
     el.classList.remove("typing");
