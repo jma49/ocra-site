@@ -16,10 +16,14 @@
 .home .hero h1 {
   margin-inline-start: -0.035em;
 }
-/* The one line has no descenders: a tighter box, so the desk's papers and
-   the summary card on them are in the first screen at 1440 × 900. */
+/* The one line has no descenders: a tighter box, so the desk's papers are
+   in the first screen at 1440 × 900. Its ascenders reach the box's top, so
+   the margin sets the air under the nav bar (44 px at 148 px, never under
+   40): more than the 34 px the line keeps from the desk, as the line
+   belongs to what follows it. */
 @media (min-width: 1024px) {
   .home .hero h1 {
+    margin-top: max(1.5rem, 0.19em);
     line-height: 0.8;
   }
 }
@@ -219,6 +223,16 @@
 .home .hero:lang(zh) h1 {
   margin-inline-start: -0.01em;
   font-feature-settings: "halt";
+}
+/* Ideographs fill the em, where Archivo's capitals fill two thirds of it: a
+   size smaller, the line carries the Latin one's weight. A one-em box puts
+   the glyphs' tops at its top, so the line keeps the same air under the
+   nav and the desk stays in the first screen. */
+@media (min-width: 1024px) {
+  .home .hero:lang(zh) h1 {
+    font-size: min(8.5rem, 12cqi);
+    line-height: 1;
+  }
 }
 /* The lede and the note break at punctuation and spaces only, never inside
    a word (没 / 有). */

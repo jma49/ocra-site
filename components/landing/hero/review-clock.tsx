@@ -24,13 +24,22 @@ const FONT_WAIT = 1100;
 // starts as the desk comes to rest, within a second of navigation.
 const NOT_BEFORE = 760;
 
+// On a phone the comment's place is a screen below the code's top: the
+// review starts as the code comes up from the screen's foot (its top above
+// 90 % of the height), so a reader who scrolls to it finds the comment
+// posted, not an empty sheet under a pending row. A later start (75 %) is
+// too late: one flick lands on the code with the 2 s review half run.
+// Wider, the code and its comment are in view together.
+const PHONE = "(max-width: 599px)";
+const PHONE_MARGIN = "0px 0px -10% 0px";
+
 // The hero's clock (motion.md §4). The theatre is CSS animations inside
 // #review (13-hero-run.css), held paused until this mounts; from then on
 // this owns them through the Web Animations API, so nothing else ever
 // touches their play state. It plays them once the code is at least 60 %
-// in view, the page has settled, the code face is in (or 1.1 s have
-// passed since navigation), the Pull request tab is selected and the
-// document is visible;
+// in view (on a phone, once it is coming into view), the page has
+// settled, the code face is in (or 1.1 s have passed since navigation),
+// the Pull request tab is selected and the document is visible;
 // it pauses whenever one of those stops holding and resumes where it
 // stopped, unless the reader has scrolled past the code: then it finishes.
 // Replay rewinds them. Without motion (html.mo) the review is
@@ -133,25 +142,42 @@ export function ReviewClock({ children }: { children: ReactNode }) {
       );
     }
 
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e) return;
-        // A reader who has read past the code comes back to the finished
-        // review, not to a run paused halfway with its comment unposted.
-        const past = !e.isIntersecting && e.boundingClientRect.bottom <= (e.rootBounds?.top ?? 0);
-        if (past && started && !done()) {
-          for (const a of anims) a.finish();
-          root.dataset.clock = "done";
-          return;
-        }
-        const tall = (e.rootBounds?.height ?? innerHeight) * 0.6;
-        inView = e.intersectionRatio >= 0.6 || e.intersectionRect.height >= tall;
-        update();
-      },
-      { threshold: [0, 0.3, 0.6, 0.8, 1] },
-    );
-    if (code) io.observe(code);
-    cleanups.push(() => io.disconnect());
+    const phone = matchMedia(PHONE);
+    const seen = ([e]: IntersectionObserverEntry[]) => {
+      if (!e) return;
+      // A reader who has read past the code comes back to the finished
+      // review, not to a run paused halfway with its comment unposted.
+      const past = !e.isIntersecting && e.boundingClientRect.bottom <= (e.rootBounds?.top ?? 0);
+      if (past && started && !done()) {
+        for (const a of anims) a.finish();
+        root.dataset.clock = "done";
+        return;
+      }
+      const tall = (e.rootBounds?.height ?? innerHeight) * 0.6;
+      inView = phone.matches
+        ? e.isIntersecting
+        : e.intersectionRatio >= 0.6 || e.intersectionRect.height >= tall;
+      update();
+    };
+    // The phone's rule needs its own root margin, so a turn of the screen
+    // across 600 px rebuilds the observer.
+    let io: IntersectionObserver | undefined;
+    const observe = () => {
+      io?.disconnect();
+      io = new IntersectionObserver(
+        seen,
+        phone.matches
+          ? { rootMargin: PHONE_MARGIN, threshold: 0 }
+          : { threshold: [0, 0.3, 0.6, 0.8, 1] },
+      );
+      if (code) io.observe(code);
+    };
+    observe();
+    phone.addEventListener("change", observe);
+    cleanups.push(() => {
+      phone.removeEventListener("change", observe);
+      io?.disconnect();
+    });
 
     const tabs = new MutationObserver(update);
     if (pane) tabs.observe(pane, { attributes: true, attributeFilter: ["data-inactive"] });
