@@ -184,8 +184,9 @@ function run(root: HTMLElement, pass: string): () => void {
     }
     // The stage holds still, so the page scrolls to a third of the way
     // into the step's beat (30-how.css): the stage pins when the run's top
-    // is its pad above the stage's sticky top.
-    const beat = Number.parseFloat(getComputedStyle(root).getPropertyValue("--beat"));
+    // is its pad above the stage's sticky top. A middle cue is one beat
+    // tall (the beat is a calc() of the viewport, so it is measured).
+    const beat = cues[1]?.getBoundingClientRect().height ?? 0;
     const pin =
       root.getBoundingClientRect().top +
       scrollY +

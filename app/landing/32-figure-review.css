@@ -4,11 +4,12 @@
    The frame, the pinned swap and figures 1–2: 31-figures.css. */
 
 /* ---- 3 · review · anchor ---- */
+/* L42 stands just over the code it was found in (the body's gap and 6 px). */
 .home .fig-l42 {
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-block: auto;
+  margin-bottom: 6px;
   padding-inline-start: 0.2em;
 }
 .home .fig-l42 .t-figure {
@@ -55,6 +56,35 @@
   box-shadow: inset 0 0 0 1px var(--line);
   color: var(--ink);
   white-space: pre;
+}
+
+/* Its foot: where ocra looks for a quote, in order, the first boxed. */
+.home .fig-methods {
+  --fs: 14;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.home .fig-method {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.home .fig-method code {
+  font-size: inherit;
+}
+/* Clear of the box the pen draws round it. */
+.home .fig-method .ink-code {
+  margin-inline: 10px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.home .fig-anchor-note {
+  color: var(--ink-3);
 }
 
 /* ---- 4 · filter · verify · judge · verdict ---- */
@@ -175,6 +205,14 @@
   .home .fig-l42 {
     gap: 14px;
     padding-inline-start: 0;
+  }
+  .home .fig-methods {
+    --fs: 12;
+    column-gap: 7px;
+    font-size: 12px;
+  }
+  .home .fig-method {
+    gap: 7px;
   }
   .home .fig-l42 .t-figure {
     font-size: 54px;

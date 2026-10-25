@@ -2,13 +2,17 @@ import type { Copy } from "@/lib/copy";
 import { exampleRun } from "@/lib/landing/example-run";
 import { span } from "@/lib/landing/pen";
 import { recordedLine } from "@/lib/landing/recorded";
-import { CodeRows } from "../code";
+import { CodeRows, InkCode } from "../code";
 import { Arrow, Ringed } from "../pen/marks";
 
 const { finding } = exampleRun;
 const ROW = 1.75;
 const ANCHOR_ROW = 2;
 const QUOTE_ROW = 5;
+// Where ocra looks for a quote, in order: the anchor methods the JSON
+// report counts (../ocra packages/core/src/anchor/anchor.ts). This quote
+// is a whole changed line, so the first one finds it.
+const METHODS = ["hunk", "file", "cross_file", "relocated", "file_level"] as const;
 
 // The arrow from the agent's quote up to the line ocra found it on: out to
 // the right of both and back, in em of the code from the code column's
@@ -35,8 +39,10 @@ function quoteArrow() {
 // note included, is whole from the first frame. The reader sweeps lines
 // 40–42 and parks on 42 (32-figure-review.css), then the margin bar grows,
 // the arrow joins the quote under the code to its line and the `L42`
-// figure is ringed, all by 800 ms.
-// Beats (ms after `.on`): sweep 120–340; bar 420; arrow 480; ring 560.
+// figure is ringed, all by 800 ms. The foot names where ocra looks, in
+// order, and boxes the method that found this quote.
+// Beats (ms after `.on`): sweep 120–340; bar 420; arrow 480; ring 560;
+// box 640.
 export function FigureReview({ f }: { f: Copy["how"]["figures"] }) {
   return (
     <>
@@ -64,6 +70,21 @@ export function FigureReview({ f }: { f: Copy["how"]["figures"] }) {
         ]}
         overlay={quoteArrow()}
       />
+      <p className="fig-foot fig-anchor">
+        <span className="fig-methods">
+          {METHODS.map((method, i) => (
+            <span key={method} className="fig-method">
+              {i > 0 && <span aria-hidden="true">→</span>}
+              {i === 0 ? (
+                <InkCode text={method} marks={[{ kind: "box", token: method, at: 640 }]} />
+              ) : (
+                <code>{method}</code>
+              )}
+            </span>
+          ))}
+        </span>
+        <span className="fig-anchor-note">{f.anchorNote}</span>
+      </p>
     </>
   );
 }

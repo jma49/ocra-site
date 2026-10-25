@@ -4,6 +4,8 @@ import { InkCode } from "../code";
 import { Tick } from "../pen/marks";
 
 const { files, tier } = exampleRun;
+// ocra's risk tiers, lowest first (../ocra packages/core/src/triage.ts).
+const TIERS = ["trivial", "lite", "full"] as const;
 
 // Story figure 1, select · triage: the five changed files in git's order,
 // each read or set aside with its recorded reason, and the risk tier the
@@ -11,7 +13,7 @@ const { files, tier } = exampleRun;
 // done by 800 ms so no still catches it half marked. Beats (ms after the
 // figure's `.on`): down the list from 140, 60 ms apart, a tick before each
 // read file and a strike through the lock file; rings round `auth/` at 420
-// and 480; the tier boxed at 500.
+// and 480; the change's tier boxed among the three at 500.
 export function FigureSelect({ f }: { f: Copy["how"]["figures"] }) {
   let ring = 0;
   return (
@@ -34,12 +36,23 @@ export function FigureSelect({ f }: { f: Copy["how"]["figures"] }) {
         })}
       </ul>
       <p className="fig-foot fig-tier">
-        <span>{f.tier}</span>
-        <InkCode
-          text={tier}
-          marks={[{ kind: "box", token: tier, at: 500 }]}
-          className="fig-tier-v"
-        />
+        <span className="fig-tier-row">
+          <span className="fig-tier-k">{f.tier}</span>
+          <span className="fig-tiers">
+            {TIERS.map((t) =>
+              t === tier ? (
+                <InkCode
+                  key={t}
+                  text={t}
+                  marks={[{ kind: "box", token: t, at: 500 }]}
+                  className="fig-tier-v"
+                />
+              ) : (
+                <code key={t}>{t}</code>
+              ),
+            )}
+          </span>
+        </span>
         <span className="fig-tier-why">{f.tierWhy}</span>
       </p>
     </>
