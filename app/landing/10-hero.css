@@ -142,13 +142,20 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  /* Faded in from the top and out to the bottom, so the light meets the
-     desk above and the next section's desk below without a seam. */
+  /* Faded in from the top and out to the bottom on an eased ramp (no Mach
+     band), so the light meets the desk above and the next section's desk
+     below without a seam. */
   mask-image: linear-gradient(
     to bottom,
     transparent,
+    color-mix(in srgb, var(--black) 16%, transparent) 40px,
+    color-mix(in srgb, var(--black) 50%, transparent) 80px,
+    color-mix(in srgb, var(--black) 84%, transparent) 120px,
     var(--black) 160px,
     var(--black) calc(100% - 180px),
+    color-mix(in srgb, var(--black) 84%, transparent) calc(100% - 135px),
+    color-mix(in srgb, var(--black) 50%, transparent) calc(100% - 90px),
+    color-mix(in srgb, var(--black) 16%, transparent) calc(100% - 45px),
     transparent
   );
 }
@@ -207,6 +214,14 @@
   .home .hero-world {
     --ws: 0.92;
     left: calc(50% + 20px);
+  }
+}
+/* A small laptop: the page a little smaller and further in, so line 42's
+   margin note is never cut by the window's edge. */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .home .hero-world {
+    --ws: 0.86;
+    left: calc(50% + 4px);
   }
 }
 
@@ -327,12 +342,37 @@
     bottom: 64px;
   }
 }
+/* The phone's first screen holds the whole review: the line, the CTA, the
+   page with line 42 and its ink, and the card with its last line. */
+@media (max-width: 599px) {
+  .home .hero-in {
+    padding-top: 16px;
+  }
+  .home .hero-lede {
+    max-width: none;
+  }
+  .home .hero-cta {
+    gap: 0 22px;
+    margin-top: 20px;
+  }
+  .home .hero-cta .ink-link {
+    min-height: 44px;
+  }
+  .home .hero-scene.is-narrow {
+    margin-top: 6px;
+  }
+}
+/* A tablet: the page centred, the pen at the desk's size and wholly on the
+   frame (a larger pen ran off the scene's foot and was cut mid-barrel). */
 @media (min-width: 600px) and (max-width: 1023px) {
   .home .hero-scene.is-narrow {
     --cx: calc(50% - 250px);
     --cy: 196px;
     --cw: 340px;
-    height: 440px;
+    height: 452px;
+  }
+  .home .is-narrow .hero-pen {
+    --pen-s: 0.72;
   }
   .home .is-narrow .hero-world {
     --ws: 1;

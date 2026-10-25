@@ -32,21 +32,20 @@
   background: var(--desk-eve);
 }
 
-/* The desk surface: fine grain over the ink-teal, lit from above. Every
-   light and shade below is centred on the section's middle and has faded
-   out by its top and bottom edges, so two desk sections meet without a
-   seam: the desk is one surface the camera travels across. */
+/* The desk surface: a fine grain over the ink-teal (one grain to a device
+   pixel on a 2x screen), lit from above. The grain is the ground's own
+   background, so it dithers every light laid over it. */
 .home .desk-ground {
   position: absolute;
   inset: 0;
   z-index: -1;
-  overflow: hidden;
+  /* clip, not hidden: the light inside sticks to the viewport. */
+  overflow: clip;
   pointer-events: none;
   background:
     url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
-    radial-gradient(70% 58% at 64% 50%, var(--desk-hi), transparent 72%),
     var(--desk);
-  background-blend-mode: overlay, normal, normal;
+  background-blend-mode: overlay, normal;
 }
 /* Reaching up under the announce line and the nav, so the first screen is
    one desk from the top edge (the hero). */
@@ -56,35 +55,62 @@
 .home .desk-ground.eve {
   background:
     url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
-    radial-gradient(
-      46% 52% at 50% 64%,
-      color-mix(in srgb, var(--desk-hi) 70%, var(--desk-eve)),
-      transparent 78%
-    ),
     var(--desk-eve);
-  background-blend-mode: overlay, normal, normal;
 }
-/* The lamp's pool: warm light in soft-light, leaning a few per cent towards
-   the pointer (a transform, never a repaint of the gradient). */
+/* The light rides with the camera: a screen-high frame that sticks to the
+   viewport through a tall section (the pinned story keeps its lamp) and
+   lies at a short one's size. It fades out over its top and bottom edges
+   (an eased ramp, no Mach band), so every desk section begins and ends on
+   the bare desk and two of them meet without a seam. The frame is a
+   stacking context, so its layers are plain alpha, tuned to match the
+   soft-light lamp and multiplied falloff they replace. */
+.home .desk-light {
+  --edge: min(26%, 240px);
+  position: sticky;
+  top: 0;
+  height: min(100%, 100vh);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--black) 16%, transparent) calc(var(--edge) * 0.25),
+    color-mix(in srgb, var(--black) 50%, transparent) calc(var(--edge) * 0.5),
+    color-mix(in srgb, var(--black) 84%, transparent) calc(var(--edge) * 0.75),
+    var(--black) var(--edge),
+    var(--black) calc(100% - var(--edge)),
+    color-mix(in srgb, var(--black) 84%, transparent) calc(100% - var(--edge) * 0.75),
+    color-mix(in srgb, var(--black) 50%, transparent) calc(100% - var(--edge) * 0.5),
+    color-mix(in srgb, var(--black) 16%, transparent) calc(100% - var(--edge) * 0.25),
+    transparent
+  );
+}
+/* The lamp: its warm pool over the lit centre of the desk, leaning a few
+   per cent towards the pointer (a transform, never a repaint). */
 .home .desk-lamp {
   position: absolute;
   inset: -12%;
-  background: radial-gradient(
-    40% 46% at 64% 34%,
-    color-mix(in srgb, var(--lamp) 34%, transparent),
-    color-mix(in srgb, var(--lamp) 8%, transparent) 58%,
-    transparent 78%
-  );
-  mix-blend-mode: soft-light;
+  background:
+    radial-gradient(
+      40% 46% at 64% 36%,
+      color-mix(in srgb, var(--lamp) 8%, transparent),
+      color-mix(in srgb, var(--lamp) 2%, transparent) 58%,
+      transparent 78%
+    ),
+    radial-gradient(56% 47% at 61% 50%, var(--desk-hi), transparent 72%);
   transform: translate3d(calc(var(--lx) * 3%), calc(var(--ly) * 2.4%), 0);
 }
 .home .eve .desk-lamp {
-  background: radial-gradient(
-    30% 40% at 50% 66%,
-    color-mix(in srgb, var(--lamp) 46%, transparent),
-    color-mix(in srgb, var(--lamp) 10%, transparent) 55%,
-    transparent 76%
-  );
+  background:
+    radial-gradient(
+      30% 40% at 50% 66%,
+      color-mix(in srgb, var(--lamp) 11%, transparent),
+      color-mix(in srgb, var(--lamp) 2.4%, transparent) 55%,
+      transparent 76%
+    ),
+    radial-gradient(
+      37% 42% at 50% 61%,
+      color-mix(in srgb, var(--desk-hi) 70%, var(--desk-eve)),
+      transparent 78%
+    );
 }
 /* The falloff: the room darkens away from the light, towards the sides. */
 .home .desk-fall {
@@ -93,15 +119,14 @@
   background: radial-gradient(
     110% 105% at 58% 50%,
     transparent 44%,
-    color-mix(in srgb, var(--umbra) 48%, transparent) 100%
+    color-mix(in srgb, var(--umbra) 46%, transparent) 100%
   );
-  mix-blend-mode: multiply;
 }
 .home .eve .desk-fall {
   background: radial-gradient(
     90% 80% at 50% 64%,
     transparent 30%,
-    color-mix(in srgb, var(--desk-eve-lo) 82%, transparent) 100%
+    color-mix(in srgb, var(--desk-eve-lo) 78%, transparent) 100%
   );
 }
 
