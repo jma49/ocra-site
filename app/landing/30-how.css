@@ -1,540 +1,296 @@
-/* How it works (sections.md §4; package S): the head, the meter row, the
-   story grid in reading order (step n, then figure n), steps and their
-   numerals. Pinned (≥ 1200 × 760, html.mo, motion allowed; the island uses
-   the same query): the meter row, the step list and the figures, stacked
-   in one place, hold still as one stage on a full-bleed band. Otherwise
-   (narrow, short, no JS, Reduce motion) each step flows with its figure:
-   beside it from 1200 px, above it below that. The figures and the band's
-   paint: 31-figures.css. */
+/* How it works (P1, foundation.md): the head on the desk, then the pinned
+   stage: the desk's world (31-figures.css) beside the copy column, the
+   chapters stacked in one place, the legend and the scrubber; the paper
+   the camera pushes into. Phones: 32-figure-review.css. */
 
 .home .how {
-  /* The pinned stage's band: a stone desk, a step lighter than the stone
-     and warmed toward the night, lit from the top left and shaded at the
-     foot as every desk is (31-figures.css paints the light), so the sheet
-     lies on a lit plane rather than a grey field. */
-  --how-band: color-mix(
-    in oklab,
-    var(--night) 4%,
-    color-mix(in oklab, var(--stone) 70%, var(--paper-2))
-  );
-  --how-light: color-mix(in srgb, var(--white) 62%, transparent);
-  --how-shade: color-mix(in srgb, var(--night) 9%, transparent);
-  /* Text printed on the band (at least 6.5 : 1 where it is darkest); the
-     active step lies on a sheet instead. */
-  --how-ink: color-mix(in oklab, var(--ink) 86%, var(--how-band));
-  --how-ink-2: color-mix(in oklab, var(--ink) 76%, var(--how-band));
-  --how-rule: color-mix(in srgb, var(--ink) 14%, transparent);
-  padding-block: var(--pad);
-}
-.dark .home .how {
-  --how-band: color-mix(in oklab, var(--night) 60%, var(--stone));
-  --how-light: color-mix(in srgb, var(--white) 5%, transparent);
-  --how-shade: transparent;
-  --how-ink: var(--ink-2);
-  --how-ink-2: var(--ink-3);
+  padding-top: clamp(96px, 12vh, 140px);
 }
 
-/* ---- Head: 7/5, bottom-aligned ---- */
+/* ---- Head: the claim over empty desk ---- */
 .home .how-head {
+  padding-bottom: clamp(56px, 10vh, 120px);
+}
+.home .how-kicker {
+  margin: 0 0 22px;
+  font: 500 15px / 1.2 var(--font-sans);
+  color: var(--on-desk-2);
+}
+.home .how-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(50px, 7.2vw, 104px);
+  font-weight: 500;
+  font-stretch: 72%;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: var(--on-desk);
+}
+.home .how-hl {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.04em;
+}
+.home .how-hli {
+  display: inline-block;
+}
+.home .how-body {
+  max-width: 34rem;
+  margin: 30px 0 0;
+  font: 400 18px / 1.6 var(--font-sans);
+  color: var(--on-desk-2);
+  text-wrap: pretty;
+}
+.home .how-h:lang(zh),
+.home:lang(zh) .how-h {
+  font-size: clamp(44px, 6.1vw, 88px);
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .how-hli {
+    translate: 0 105%;
+    transition: translate 1s var(--e-settle);
+  }
+  html.mo .home .how-hl + .how-hl .how-hli {
+    transition-delay: 0.1s;
+  }
+  html.mo .home .how-body {
+    opacity: 0;
+    translate: 0 14px;
+    transition:
+      opacity 700ms var(--e-std) 0.35s,
+      translate 900ms var(--e-settle) 0.35s;
+  }
+  html.mo .home .how.head-in :is(.how-hli, .how-body) {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ---- The pin: the stage holds still while scroll plays the chapters ---- */
+.home .how-pin {
+  position: relative;
+  height: calc(var(--vh, 100vh) * 5.85);
+}
+.home .how-stage {
+  --push: 0;
+  position: sticky;
+  top: 0;
+  height: var(--vh, 100vh);
+  overflow: clip;
+}
+.home .how-scene {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+}
+
+/* ---- The copy column, chapter by chapter ---- */
+.home .how-side {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding-top: 72px;
+  pointer-events: none;
+  opacity: calc(1 - var(--push) * 3);
+}
+.home .how-copy {
+  width: min(360px, 30vw);
+  pointer-events: auto;
+}
+.home .how-chapters {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 32px;
-  align-items: end;
 }
-.home .how-title {
-  grid-column: 1 / span 7;
+.home .how-ch {
+  grid-area: 1 / 1;
+  opacity: 0;
+  translate: 0 22px;
+  visibility: hidden;
+  transition:
+    opacity 380ms var(--e-std),
+    translate 620ms var(--e-settle),
+    visibility 0s 620ms;
 }
-.home .how-title .t-kicker {
-  margin-bottom: 22px;
+.home .how-ch.is-on {
+  opacity: 1;
+  translate: 0 0;
+  visibility: visible;
+  transition:
+    opacity 520ms var(--e-std) 120ms,
+    translate 720ms var(--e-settle) 120ms,
+    visibility 0s;
 }
-.home .how-aside {
-  grid-column: 8 / -1;
-  display: grid;
-  gap: 18px;
-  padding-bottom: 6px;
+.home .how-ch.is-past {
+  translate: 0 -22px;
+}
+/* Reduce motion: the chapter changes at once, by visibility alone. */
+@media (prefers-reduced-motion: reduce) {
+  .home .how-ch,
+  .home .how-ch.is-on,
+  .home .how-ch.is-past {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}
+.home .how-stages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 18px;
+}
+.home .how-stages code {
+  padding: 3px 8px 4px;
+  border-radius: 3px;
+  font: 400 14px / 1.2 var(--font-mono);
+  color: var(--on-desk);
+  box-shadow: inset 0 0 0 1px var(--line-desk);
+}
+.home .how-stages code[data-kind="model"] {
+  background: var(--on-desk);
+  color: var(--desk);
+  box-shadow: none;
+}
+.home .how-h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 2.5vw, 36px);
+  font-weight: 500;
+  font-stretch: 82%;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+  color: var(--on-desk);
+  text-wrap: balance;
+}
+.home .how-h3:lang(zh),
+.home:lang(zh) .how-h3 {
+  line-height: 1.25;
+  letter-spacing: 0;
+  word-break: keep-all;
+}
+.home .how-text {
+  margin: 16px 0 0;
+  font: 400 17px / 1.6 var(--font-sans);
+  color: var(--on-desk-2);
+  text-wrap: pretty;
+}
+.home .how-text code {
+  font: 400 0.92em / 1 var(--font-mono);
+  color: var(--on-desk);
 }
 .home .how-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 24px;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  line-height: 1.4;
-  color: var(--ink-2);
+  gap: 6px 20px;
+  margin: 30px 0 0;
+  font: 400 13px / 1.3 var(--font-sans);
+  color: var(--on-desk-3);
 }
-.home .how-legend li {
+.home .how-legend span {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 }
-.home .how-legend li::before {
-  content: "";
-  flex: none;
-  width: 9px;
-  height: 9px;
-  background: var(--ink);
+.home .how-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px var(--on-desk-2);
 }
-.home .how-legend li[data-kind="model"]::before {
-  background: none;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.5px var(--ink);
-}
-.home .how-example {
-  color: var(--ink-3);
-}
-/* A stage's kind: a filled square is code, a ring is a model. */
-.home .how .k {
-  flex: none;
-  width: 7px;
-  height: 7px;
-  background: currentColor;
-}
-.home .how .k[data-kind="model"] {
-  background: none;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.3px currentColor;
+.home .how-legend i[data-kind="model"] {
+  background: var(--on-desk);
+  box-shadow: none;
 }
 
-/* ---- The meter row (pinned only) ---- */
-.home .how-run {
-  --rail-top: 76px;
-  --rail-h: 44px;
-}
-.home :is(.meter-row, .how-cues) {
-  display: none;
-}
-.home .meter-row {
+/* ---- The scrubber: the run's own numbers on ticks ---- */
+.home .how-scrub {
+  --sp: 1;
   position: relative;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  height: var(--rail-h);
-  box-shadow: inset 0 -1px 0 var(--how-rule);
+  margin-top: 26px;
+  container-type: inline-size;
 }
-.home .meter {
+.home .how-ticks {
+  position: relative;
+  height: 16px;
+  background: repeating-linear-gradient(90deg, var(--line-desk) 0 1px, transparent 1px 6px);
+}
+.home .how-ticks-lit {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, var(--on-desk-2) 0 1px, transparent 1px 6px);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--sp));
+}
+.home .how-ticks::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -6px;
+  width: 2px;
+  height: 28px;
+  border-radius: 1px;
+  background: var(--on-desk);
+  translate: calc(var(--sp) * 100cqi) 0;
+}
+.home .how-stops {
   display: flex;
-  align-items: center;
-  min-width: 0;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1;
-}
-.home .meter li {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 44px;
-  color: var(--ink-3);
+  justify-content: space-between;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font: 400 13px / 1.3 var(--font-mono);
+  color: var(--on-desk-3);
   white-space: nowrap;
-  transition: color 500ms var(--e-std);
+  font-variant-numeric: tabular-nums;
 }
-.home .meter li + li {
-  margin-inline-start: 16px;
+.home .how-stops li {
+  transition: color 300ms var(--e-std);
 }
-.home .meter li[data-first] {
-  margin-inline-start: 33px;
+.home .how-stops li.is-on {
+  color: var(--on-desk);
 }
-.home .meter li[data-first]::before {
-  content: "";
-  position: absolute;
-  left: -17px;
-  top: 17px;
-  width: 1px;
-  height: 10px;
-  background: var(--line-2);
-}
-.home .meter li::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 9px;
-  height: 2px;
-  background: var(--ink);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 300ms var(--e-std);
-}
-.home .meter li.is-past {
-  color: var(--ink);
-}
-.home .meter li.is-on {
-  color: var(--ink);
+.home .how-stops b {
   font-weight: 500;
 }
-.home .meter li.is-on::after {
-  transform: none;
-}
-.home .meter-pass {
-  flex: none;
-  font-size: 14px;
-  color: var(--ink-2);
-  font-variant-numeric: tabular-nums;
-}
-/* Progress: the story's scroll position where scroll timelines exist,
-   else the step (--step, set by the island). */
-.home .meter-rule {
+
+/* ---- The run it replays, and the paper the camera pushes into ---- */
+.home .how-run {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: var(--ink);
-  transform: scaleX(calc(var(--step, 1) / 4));
-  transform-origin: left;
-  transition: transform 450ms var(--e-enter);
-}
-@supports (animation-timeline: view()) {
-  .home .how-run {
-    view-timeline: --story block;
-  }
-  /* From the stage pinning (the run's top a band's pad above the rail's
-     place) to its letting go: the rule fills as the cues pass. */
-  .home .meter-rule {
-    --pin: calc(var(--vh, 100vh) - var(--pin-top, 0px) + var(--band-pad, 0px));
-    transition: none;
-    animation: grow linear both;
-    animation-timeline: --story;
-    animation-range: cover var(--pin) cover calc(var(--pin) + var(--runway, 0px));
-  }
-}
-
-/* ---- The story: steps and figures in reading order ---- */
-.home .story {
-  --num: 44px;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 96px;
-  margin-top: 96px;
-}
-.home .step {
-  grid-column: 1 / span 5;
-  grid-row: var(--i);
-  align-self: start;
-  padding-top: 48px;
-}
-.home .fig {
-  grid-column: 6 / -1;
-  grid-row: var(--i);
-  min-width: 0;
-  margin: 0;
-}
-.home .step-h {
-  margin: 0;
-}
-.home .step-go {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  width: 100%;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: var(--r-ctl);
-  background: none;
-  color: var(--ink);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-.home .step-n {
-  flex: none;
-  width: var(--num);
-  font-family: var(--font-display);
-  font-weight: 520;
-  font-stretch: 62%;
-  font-size: 64px;
-  line-height: 0.82;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-  transition: color 500ms var(--e-std);
-}
-.home .step-t {
-  transition: color 500ms var(--e-std);
-}
-.home .step-t:lang(zh) {
-  word-break: keep-all;
-}
-.home .step-stages {
-  display: flex;
+  left: max(40px, calc((100vw - 1280px) / 2));
+  bottom: 28px;
+  max-width: min(380px, 32vw);
   flex-wrap: wrap;
-  gap: 6px;
-  margin: 22px 0 14px calc(var(--num) + 18px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font: 400 13px / 1.3 var(--font-sans);
+  color: var(--on-desk-3);
+  opacity: calc(1 - var(--push) * 3);
 }
-.home .step-text {
-  max-width: 31rem;
-  margin-inline-start: calc(var(--num) + 18px);
-  transition: color 500ms var(--e-std);
+.home .how-run code {
+  font: 400 13px / 1 var(--font-mono);
+  color: var(--on-desk-2);
 }
-.home .step-text code {
-  font-size: 0.86em;
-  color: var(--ink);
-  white-space: nowrap;
+.home .how-run-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--on-desk-2);
 }
-
-/* ---- Pinned: one stage on a full-bleed band ----
-   The stage (the meter row, the step list and the one sheet) holds still
-   under the nav while the reader scrolls past four cues (story.tsx), on
-   the run's band, edge to edge; the sheet lies on it with no desk. Every
-   step stays in view, so the rail never cuts one, and the list fills the
-   column beside the sheet: the active step lies on a sheet of its own. */
-@media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
-  /* The band is the section's own ground here: the head and the foot pad
-     stand on the page's paper, so the band meets the Quiet slab across the
-     same paper margin every slab has. */
-  html.mo .home .how {
-    background: var(--paper);
-  }
-  html.mo .home .how-run {
-    --band-pad: 36px;
-    /* The scroll each step holds the stage for: one Page Down or Space,
-       which Chromium and WebKit page by the viewport less 40 px. Four full
-       beats, so four presses from wherever the first lands show steps 1
-       to 4, each with the stage pinned. */
-    --beat: calc(var(--vh, 100vh) - 40px);
-    --runway: calc(4 * var(--beat));
-    /* 600 px at the shortest pinned viewport (760), up to 660: the step
-       list and figure 4, the tallest bodies, fit; no taller, so the other
-       figures keep a modest bottom margin rather than an empty field. */
-    --sheet-h: clamp(600px, calc(var(--vh, 100vh) - 220px), 660px);
-    --stage-h: calc(var(--rail-h) + 20px + var(--sheet-h));
-    /* Under the nav, or centred in a viewport taller than stage and nav. */
-    --pin-top: max(var(--rail-top), calc((var(--vh, 100vh) - var(--stage-h)) / 2));
-    position: relative;
-    isolation: isolate;
-    /* The band's light (31-figures.css) ends with the band. */
-    clip-path: inset(0 -100vw);
-    min-height: calc(var(--band-pad) * 2 + var(--stage-h) + var(--runway));
-    margin-top: 72px;
-    padding-block: var(--band-pad);
-  }
-  html.mo .home .how-stage {
-    position: sticky;
-    top: var(--pin-top);
-  }
-  html.mo .home .meter-row {
-    display: flex;
-    --ink-3: var(--how-ink-2);
-    --ink-2: var(--how-ink);
-    --line-2: var(--how-rule);
-  }
-  html.mo .home .story {
-    --num: 30px;
-    grid-template-rows: repeat(4, auto);
-    row-gap: 10px;
-    height: var(--sheet-h);
-    margin-top: 20px;
-  }
-  html.mo .home .how-cues {
-    display: block;
-    position: absolute;
-    inset-inline: 0;
-    top: calc(var(--vh, 100vh) / 2 - var(--pin-top) + var(--band-pad));
-    visibility: hidden;
-    pointer-events: none;
-  }
-  html.mo .home .how-cue {
-    display: block;
-    height: var(--beat);
-  }
-  /* The first and last cues reach past the run, so a jump into the story
-     from anywhere finds the step it lands on. */
-  html.mo .home .how-cue:first-child {
-    height: calc(var(--beat) + var(--vh, 100vh));
-    margin-top: calc(-1 * var(--vh, 100vh));
-  }
-  html.mo .home .how-cue:last-child {
-    height: calc(var(--beat) + var(--vh, 100vh));
-  }
-
-  /* The step list. */
-  html.mo .home .step {
-    position: relative;
-    align-self: stretch;
-    padding: 18px 0 16px;
-  }
-  html.mo .home .step::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: 0 -22px;
-    border-radius: var(--r-card);
-    background: var(--sheet);
-    box-shadow: var(--float);
-    opacity: 0;
-    transition: opacity 300ms var(--e-std);
-  }
-  html.mo .home .step.is-on::before {
-    opacity: 1;
-  }
-  html.mo .home .step + .fig + .step::after {
-    content: "";
-    position: absolute;
-    top: -6px;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: var(--how-rule);
-    transition: opacity 300ms var(--e-std);
-  }
-  html.mo .home :is(.step.is-on + .fig + .step, .step.is-on)::after {
-    opacity: 0;
-  }
-  html.mo .home .step-go {
-    gap: 14px;
-  }
-  html.mo .home .step-n {
-    font-size: 44px;
-  }
-  html.mo .home .step-stages {
-    display: none;
-  }
-  html.mo .home .step .step-text {
-    margin-top: 8px;
-    font-size: 15.5px;
-    line-height: 1.5;
-  }
-  /* Where the column or the sheet is shorter, the list still fits beside
-     the sheet: the text runs under the numeral, then a half step smaller. */
-  @media (max-width: 1439px) {
-    html.mo .home .step .step-text {
-      margin-inline-start: 0;
-      font-size: 15px;
-    }
-  }
-  @media (max-height: 879px) {
-    html.mo .home .step {
-      padding-block: 14px 12px;
-    }
-    html.mo .home .step .step-text {
-      margin-top: 6px;
-      font-size: 14.5px;
-      line-height: 1.45;
-    }
-  }
-  html.mo .home .step:not(.is-on) :is(.step-n, .step-t) {
-    color: var(--how-ink);
-  }
-  html.mo .home .step:not(.is-on) :is(.step-text, .step-text code) {
-    color: var(--how-ink-2);
-  }
-}
-/* Under a pointer an inactive step's whole entry is its button: its sheet
-   comes in at a little under half, its rules give way as the active step's
-   do, its text darkens a step, and a press gives a little. */
-@media (hover: hover) and (min-width: 1200px) and (min-height: 760px) and (
-    prefers-reduced-motion: no-preference
-  ) {
-  html.mo .home .step:not(.is-on) .step-go::after {
-    content: "";
-    position: absolute;
-    inset: 0 -22px;
-    border-radius: var(--r-card);
-  }
-  html.mo .home .step {
-    transition: scale 160ms var(--e-enter);
-  }
-  html.mo .home .step:has(.step-go:active) {
-    scale: 0.98;
-  }
-  html.mo .home .step:not(.is-on):hover {
-    --how-ink: var(--ink);
-    --how-ink-2: var(--ink-2);
-  }
-  html.mo .home .step:not(.is-on):hover::before {
-    opacity: 0.45;
-  }
-  html.mo .home .step:not(.is-on):hover::before,
-  html.mo .home .step:not(.is-on):hover :is(.step-n, .step-t, .step-text) {
-    transition-duration: 160ms;
-    transition-timing-function: var(--e-enter);
-  }
-  html.mo .home :is(.step:not(.is-on):hover, .step:not(.is-on):hover + .fig + .step)::after {
-    opacity: 0;
-  }
-}
-
-/* ---- Below 1200: each step above its figure; from 600 px the step's
-   head stands left of its text. The figure's head names the stages, so the
-   chips stay with the pinned and side-by-side layouts. ---- */
-@media (max-width: 1199px) {
-  .home .how-title,
-  .home .how-aside {
-    grid-column: 1 / -1;
-  }
-  .home .how-aside {
-    max-width: 40rem;
-  }
-  .home .story {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 24px;
-    margin-top: 64px;
-  }
-  .home .step,
-  .home .fig {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .home .step {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gap);
-    align-items: start;
-    padding-top: 48px;
-  }
-  .home .step-h {
-    grid-column: 1 / span 5;
-  }
-  .home .step-stages {
-    display: none;
-  }
-  .home .step-text {
-    grid-column: 6 / -1;
-    max-width: 36rem;
-    margin: 0;
-  }
-  .home .step:first-child {
-    padding-top: 0;
-  }
-}
-
-/* ---- Phones: one column ---- */
-@media (max-width: 599px) {
-  .home .how-head {
-    row-gap: 18px;
-  }
-  .home .how-title .t-kicker {
-    margin-bottom: 12px;
-  }
-  /* "Code checks the answer." is 8.03 em: below 390 px the H2 shrinks to
-     the column rather than clip. */
-  .home .how-title .t-h2:not(:lang(zh)) {
-    font-size: min(2.625rem, calc((100vw - 40px) / 8.2));
-  }
-  .home .how-aside {
-    gap: 12px;
-  }
-  .home .story {
-    --num: 30px;
-    row-gap: 12px;
-    margin-top: 36px;
-  }
-  .home .step {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 8px;
-    padding-top: 14px;
-  }
-  .home .step-h,
-  .home .step-text {
-    grid-column: 1;
-  }
-  .home .step-go {
-    gap: 12px;
-  }
-  .home .step-n {
-    font-size: 46px;
-  }
+.home .how-paper {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--print-paper);
+  background-blend-mode: multiply, normal;
+  opacity: clamp(0, (var(--push) - 0.5) / 0.4, 1);
 }

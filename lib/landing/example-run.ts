@@ -5,10 +5,10 @@
 // checks it against the recording at build time and fails the build when
 // they disagree.
 
-export type FileId = "docs" | "lock" | "login" | "session" | "token";
+type FileId = "docs" | "lock" | "login" | "session" | "token";
 type CallRole = "review" | "grouping" | "verification" | "judge";
-export type Reviewer = "correctness" | "security" | "performance";
-export type ClaimOutcome = "confirmed" | "remembered" | "merged" | "disproved";
+type Reviewer = "correctness" | "security" | "performance";
+type ClaimOutcome = "confirmed" | "remembered" | "merged" | "disproved";
 
 const MODEL = "google/gemini-3.5-flash";
 
