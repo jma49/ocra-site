@@ -8,6 +8,18 @@
   overflow: clip;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 14px));
 }
+/* Under the band's 64 px slide (06-desk.css): the paper Security ends on,
+   so this sheet lands on paper, never on the page behind. */
+.home .plans::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 64px;
+  background:
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--print-paper-2);
+  background-blend-mode: multiply, normal;
+}
 .home .pl-in {
   position: relative;
   padding-block: var(--head-top) 84px;

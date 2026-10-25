@@ -3,8 +3,10 @@
    is lifted out of the file; its answer sits on the card's pale ruled
    lines. The card's printed head rule is blue: red is the pen's. */
 
+/* The foot is short: the evening desk below begins on this desk's tone
+   (62-final.css), so the file runs straight on into the last sheet. */
 .home .faq {
-  padding-block: var(--head-top) 120px;
+  padding-block: var(--head-top) 72px;
   overflow-x: clip;
 }
 /* The desk runs on under the paper band's slanted foot (60-plans.css). */
@@ -290,7 +292,7 @@
 /* ---- Widths ---- */
 @media (max-width: 1023px) {
   .home .faq {
-    padding-bottom: 104px;
+    padding-bottom: 72px;
   }
   .home .fq-in {
     display: block;
@@ -308,7 +310,7 @@
 }
 @media (max-width: 639px) {
   .home .faq {
-    padding-bottom: 88px;
+    padding-bottom: 56px;
   }
   .home .fq-q button {
     grid-template-columns: 38px minmax(0, 1fr) 22px;

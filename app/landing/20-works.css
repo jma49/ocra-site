@@ -5,8 +5,12 @@
 
 .home .works {
   overflow-x: clip;
-  /* Under the sliding sheet: the paper it lands on (Quiet ends on paper). */
-  background: var(--print-paper-2);
+  /* Under the sliding sheet: the paper it lands on, toothed like Quiet's
+     foot so the two read as one sheet. */
+  background:
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--print-paper-2);
+  background-blend-mode: multiply, normal;
 }
 .home .works-in {
   position: relative;

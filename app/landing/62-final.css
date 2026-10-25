@@ -9,16 +9,31 @@
   padding-block: var(--head-top) clamp(64px, 8vh, 96px);
 }
 
-/* The join with the desk above: its tone carried over the first screen. */
+/* The join with the desk above: its tone and grain carried over the first
+   280 px, and the room's dusk fading in over the same 280 px, so the two
+   desks meet without a step. */
 .home .final-dusk {
   position: absolute;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(
+}
+.home .final-dusk::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 280px;
+  background:
+    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
+    var(--desk);
+  background-blend-mode: overlay, normal;
+  mask-image: linear-gradient(
     to bottom,
-    var(--desk) 0,
-    color-mix(in srgb, var(--desk) 0%, transparent) 280px
+    var(--black),
+    color-mix(in srgb, var(--black) 84%, transparent) 25%,
+    color-mix(in srgb, var(--black) 50%, transparent) 50%,
+    color-mix(in srgb, var(--black) 16%, transparent) 75%,
+    transparent
   );
 }
 .home .final-dusk::after {
@@ -31,6 +46,14 @@
     color-mix(in srgb, var(--desk-eve-lo) 80%, transparent)
   );
   opacity: 0.8;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--black) 16%, transparent) 70px,
+    color-mix(in srgb, var(--black) 50%, transparent) 140px,
+    color-mix(in srgb, var(--black) 84%, transparent) 210px,
+    var(--black) 280px
+  );
 }
 /* The lamp's pool round the sheet: a warm wash lifting the desk under it
    (soft light) and a low glow where the light is strongest (screen). */
