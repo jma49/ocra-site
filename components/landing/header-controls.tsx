@@ -86,12 +86,13 @@ function usePromoted(): boolean {
 const WIDE = "(min-width: 1024px)";
 
 // The sticky header: the bar (logo, links, controls) and the phone drawer.
-// While the drawer is open a scrim covers the page and the page is inert,
-// so the drawer is the only thing to read, tap or tab to. It closes on a
-// tap outside the bar and the drawer (the scrim), on a link in it, on
-// Escape (focus returns to its button), once the page scrolls 40 px, and
-// when the window grows past the drawer; those listeners exist only while
-// it is open.
+// While the drawer is open a scrim covers the page, the page is inert and
+// holds still (02-nav.css), so the drawer is the only thing to read, tap,
+// tab to or scroll; it takes the viewport below the bar and no more. It
+// closes on a tap outside the bar and the drawer (the scrim; a click, so a
+// drag there is not a tap), on a link in it, on Escape (focus returns to
+// its button), and when the window grows past the drawer; those listeners
+// exist only while it is open.
 export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode }) {
   const [open, setOpen] = useState(false);
   const shell = useRef<HTMLElement>(null);
@@ -102,7 +103,7 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
   useEffect(() => {
     if (!open) return;
     const close = () => setOpen(false);
-    const outside = (e: PointerEvent) => {
+    const outside = (e: MouseEvent) => {
       if (!(e.target as Element).closest?.(".nav, .drawer")) close();
     };
     const onKey = (e: KeyboardEvent) => {
@@ -110,24 +111,28 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
       close();
       button.current?.focus();
     };
-    const startY = scrollY;
-    const scrolled = () => {
-      if (Math.abs(scrollY - startY) > 40) close();
+    // 12 px clear of the viewport's bottom edge, as the bar is of its sides.
+    const sheet = shell.current?.querySelector<HTMLElement>(".drawer");
+    const fit = () => {
+      if (sheet)
+        sheet.style.maxHeight = `${innerHeight - sheet.getBoundingClientRect().top - 12}px`;
     };
     const wide = matchMedia(WIDE);
     const page = [...(shell.current?.parentElement?.children ?? [])].filter(
       (el): el is HTMLElement => el instanceof HTMLElement && el !== shell.current && !el.inert,
     );
     for (const el of page) el.inert = true;
-    document.addEventListener("pointerdown", outside);
+    fit();
+    document.addEventListener("click", outside);
     document.addEventListener("keydown", onKey);
-    addEventListener("scroll", scrolled, { passive: true });
+    addEventListener("resize", fit, { passive: true });
     wide.addEventListener("change", close);
     return () => {
       for (const el of page) el.inert = false;
-      document.removeEventListener("pointerdown", outside);
+      if (sheet) sheet.style.maxHeight = "";
+      document.removeEventListener("click", outside);
       document.removeEventListener("keydown", onKey);
-      removeEventListener("scroll", scrolled);
+      removeEventListener("resize", fit);
       wide.removeEventListener("change", close);
     };
   }, [open]);

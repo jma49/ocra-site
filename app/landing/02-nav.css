@@ -28,16 +28,21 @@
     text-decoration-color: var(--ink);
   }
 }
-@media (max-width: 599px) {
-  /* 12.5 px above and below: room for the link's 44 px target whether the
-     sentence takes one line or two, without reaching under the bar. */
+/* On a phone or a touch screen, 12.5 px above and below: room for the
+   link's 44 px target whether the sentence takes one line or two, without
+   reaching under the bar. Inline padding: a taller target, the same line
+   height. */
+@media (max-width: 599px), (pointer: coarse) {
   .home .announce p {
-    font-size: 13px;
-    padding: 12.5px 20px;
+    padding-block: 12.5px;
   }
-  /* Inline padding: a taller target, the same line height. */
   .home .announce a {
     padding-block: 15px;
+  }
+}
+@media (max-width: 599px) {
+  .home .announce p {
+    font-size: 13px;
   }
 }
 
@@ -235,6 +240,18 @@ html:not(.dark) .home .theme-sun,
 }
 .home .nav-shell[data-open] .drawer {
   display: block;
+}
+/* The page under an open drawer holds still: a drag on the scrim scrolls
+   nothing, html keeps its stable gutter (global.css) so nothing moves,
+   and the page is where it was when the drawer closes. A drawer taller
+   than the room under the bar (a phone on its side) scrolls inside
+   itself, to the height NavShell gives it. */
+html:has(.home .nav-shell[data-open]) {
+  overflow: hidden;
+}
+.home .drawer {
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .home .drawer ul {
   display: grid;
