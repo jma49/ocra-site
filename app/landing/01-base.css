@@ -332,6 +332,16 @@
 .home :lang(zh) .t-h2s {
   word-break: keep-all;
 }
+/* Chinese prose breaks between any two characters, as Chinese is set, under
+   strict punctuation rules, and fills its measure (pretty, not balance).
+   Headings and labels keep their phrases whole (keep-all) and balance;
+   prose never does, or its lines end far short. The copy ties each word's
+   characters and its particles (lib/copy: tieWords), so prose breaks
+   between words, never inside one. */
+.home :lang(zh) :where(p, li, dd, figcaption) {
+  line-break: strict;
+  text-wrap: pretty;
+}
 .home :lang(zh) .t-display {
   font-size: clamp(4.75rem, 2.4rem + 9.6vw, 7.5rem);
   line-height: 1.06;
