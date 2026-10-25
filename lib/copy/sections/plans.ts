@@ -1,5 +1,9 @@
 import type { Bilingual, Lines } from "../define";
 
+// The product's name never breaks across lines in prose: a no-break space
+// (written as an escape, so the source stays ASCII).
+const CLOUD = "ocra\u00a0Cloud";
+
 export type PlanId = "self" | "cloud" | "team";
 
 interface PlansCopy {
@@ -23,7 +27,7 @@ interface PlansCopy {
 export const plans: Bilingual<PlansCopy> = {
   en: {
     lines: ["Open core.", "Hosted when", "you want it."],
-    body: "The engine stays Apache-2.0 and complete without an account. ocra Cloud is free while it is in early access; you bring the model key.",
+    body: `The engine stays Apache-2.0 and complete without an account. ${CLOUD} is free while it is in early access; you bring the model key.`,
     items: {
       self: {
         state: "available now",
@@ -66,11 +70,11 @@ export const plans: Bilingual<PlansCopy> = {
         planned: true,
       },
     },
-    fine: "With ocra Cloud your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing. If nothing but your provider may see the code, self-host: it is the same engine.",
+    fine: `With ${CLOUD} your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing. If nothing but your provider may see the code, self-host: it is the same engine.`,
   },
   zh: {
     lines: ["开源核心，", "需要时", "再托管。"],
-    body: "引擎保持 Apache-2.0，不需要账号也完整可用。ocra Cloud 早期体验期间免费，模型 key 由你自带。",
+    body: `引擎保持 Apache-2.0，不需要账号也完整可用。${CLOUD} 早期体验期间免费，模型 key 由你自带。`,
     items: {
       self: {
         state: "现已可用",
@@ -113,6 +117,6 @@ export const plans: Bilingual<PlansCopy> = {
         planned: true,
       },
     },
-    fine: "使用 ocra Cloud 时，你的改动会经过它的网关再到达你的模型服务商。控制台默认只保存计数，只有开启发现共享后，才会保存发现及其引用的代码。如果只能让模型服务商看到代码，请自托管：引擎是同一个。",
+    fine: `使用 ${CLOUD} 时，你的改动会经过它的网关再到达你的模型服务商。控制台默认只保存计数，只有开启发现共享后，才会保存发现及其引用的代码。如果只能让模型服务商看到代码，请自托管：引擎是同一个。`,
   },
 };

@@ -1,4 +1,6 @@
-/* FAQ: the sticky H2 beside six native details (package C). F's stub. */
+/* FAQ: a sticky head beside six native disclosures, one open at a time; a
+   plus that turns to a cross, and answers that ease open where the browser
+   can animate to `auto` (package C). */
 .home .faq {
   padding-block: var(--pad);
 }
@@ -6,14 +8,35 @@
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
-  row-gap: 40px;
+  row-gap: 32px;
   align-items: start;
 }
-.home .faq-title {
+.home .faq-head {
   grid-column: 1 / span 5;
+  position: sticky;
+  top: 120px;
+}
+.home .faq-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: 15px;
+}
+.home .faq-more .arrow-glyph {
+  margin-inline-start: 0;
+  transition: transform 250ms var(--e-enter);
+}
+@media (hover: hover) {
+  .home .faq-more:hover .arrow-glyph {
+    transform: translateX(3px);
+  }
 }
 .home .faq-list {
   grid-column: 6 / -1;
+  border-top: 1px solid var(--line-2);
 }
 .home .faq-list details {
   border-bottom: 1px solid var(--line);
@@ -21,20 +44,121 @@
 .home .faq-list summary {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   min-height: 64px;
-  cursor: pointer;
+  margin-inline: -12px;
+  padding: 14px 12px;
   list-style: none;
+  cursor: pointer;
 }
 .home .faq-list summary::-webkit-details-marker {
   display: none;
 }
+.home .faq-list summary:focus-visible {
+  outline-offset: 2px;
+  border-radius: var(--r-tab);
+}
+
+/* The plus, drawn: two bars in a 32 px well that takes the hover tint and
+   turns 45° into a cross when its answer is open. */
+.home .faq-icon {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  margin-inline-end: -6px;
+  border-radius: 50%;
+  transition:
+    background-color 150ms var(--e-std),
+    rotate 200ms var(--e-std);
+}
+.home .faq-icon::before,
+.home .faq-icon::after {
+  content: "";
+  position: absolute;
+  inset-inline: 8px;
+  top: 15.25px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--ink);
+}
+.home .faq-icon::after {
+  rotate: 90deg;
+}
+.home .faq-list details[open] .faq-icon {
+  rotate: 45deg;
+}
+@media (hover: hover) {
+  .home .faq-list summary:hover .faq-icon {
+    background: var(--tint);
+  }
+}
 .home .faq-list p {
   max-width: 60ch;
-  padding-bottom: 20px;
+  padding: 0 56px 22px 0;
 }
+
+/* Answers ease open and shut (a user's action, so no pre-play state); the
+   browsers that cannot animate to `auto` simply switch. */
+@media (prefers-reduced-motion: no-preference) {
+  .home .faq-list {
+    interpolate-size: allow-keywords;
+  }
+  .home .faq-list details::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 320ms var(--e-enter),
+      content-visibility 320ms var(--e-enter) allow-discrete;
+  }
+  .home .faq-list details[open]::details-content {
+    block-size: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .faq-icon {
+    transition: none;
+  }
+}
+
+/* 1024 and 768: one column; the head is not sticky. */
 @media (max-width: 1199px) {
-  .home .faq-title,
+  .home .faq-head,
   .home .faq-list {
     grid-column: 1 / -1;
+  }
+  .home .faq-head {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    column-gap: var(--gap);
+  }
+  .home .faq-more {
+    margin-top: 0;
+  }
+}
+
+/* 390: every answer starts closed (faq.tsx), summaries 56 px. */
+@media (max-width: 599px) {
+  .home .faq-grid {
+    row-gap: 20px;
+  }
+  .home .faq-head {
+    display: block;
+  }
+  .home .faq-more {
+    margin-top: 4px;
+  }
+  .home .faq-list summary {
+    min-height: 56px;
+    margin-inline: -8px;
+    padding: 8px;
+  }
+  .home .faq-list p {
+    padding-inline-end: 0;
+    padding-bottom: 22px;
   }
 }

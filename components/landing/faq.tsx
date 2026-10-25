@@ -1,22 +1,37 @@
 import type { Copy } from "@/lib/copy";
-import { Lines, Section } from "./section";
+import type { Locale } from "@/lib/i18n";
+import { localePath } from "@/lib/shared";
+import { FaqPhones } from "./faq-phones";
+import { ArrowGlyph, Lines, Section } from "./section";
 
-// Plain answers (sections.md §10). Stub from package F; C builds it out.
-export function Faq({ copy }: { copy: Copy["faq"] }) {
+// Plain answers (sections.md §10): a sticky head beside six native
+// disclosures, one open at a time (the first, from 600 px: FaqPhones closes
+// it on a phone); the manual has the rest.
+export function Faq({ copy, locale }: { copy: Copy["faq"]; locale: Locale }) {
   return (
-    <Section ground="paper-2" className="faq">
+    <Section ground="paper-2" className="faq" labelledBy="faq-title">
       <div className="wrap faq-grid">
-        <h2 className="t-h2 faq-title">
-          <Lines lines={copy.lines} />
-        </h2>
+        <div className="faq-head">
+          <h2 className="t-h2" id="faq-title">
+            <Lines lines={copy.lines} />
+          </h2>
+          <a className="link faq-more" href={localePath(locale, "/docs/faq")}>
+            {copy.more}
+            <ArrowGlyph />
+          </a>
+        </div>
         <div className="faq-list">
           {copy.items.map((item, i) => (
-            <details key={item.q} open={i === 0}>
-              <summary className="t-h4">{item.q}</summary>
+            <details key={item.q} name="faq" open={i === 0}>
+              <summary>
+                <span className="t-h4">{item.q}</span>
+                <span className="faq-icon" aria-hidden="true" />
+              </summary>
               <p className="t-body">{item.a}</p>
             </details>
           ))}
         </div>
+        <FaqPhones />
       </div>
     </Section>
   );
