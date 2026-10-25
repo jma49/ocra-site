@@ -1,65 +1,191 @@
-/* Hero: the head (a container for the one-line H1), the lede, CTAs and note,
-   the 4/8 grid and its 1024 / 768 / 390 layouts (package H). The rules
-   below are F's stub layout; H replaces them. */
+/* The hero (sections.md §2): the brand line across the container (one line
+   from 1024 px, two below), then the lede, the two ways in and the note in
+   four columns beside the desk in eight (one column below 1200 px). The
+   load (motion.md §3): text is painted at frame 0 and only rises into
+   place; the desk settles; nothing blurs, nothing moves sideways. */
 .home .hero {
   padding-block: 24px 64px;
 }
 .home .hero-head {
   container-type: inline-size;
 }
+/* Archivo's capitals sit a little in from their box at this size: pull the
+   line back so its stems align with the lede and the desk's edge. */
+.home .hero h1 {
+  margin-inline-start: -0.035em;
+}
 .home .hero-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
-  row-gap: 32px;
   align-items: start;
   margin-top: 28px;
 }
 .home .hero-copy {
   grid-column: 1 / span 4;
+  /* The lede's first cap height meets the desk's top edge (half-leading
+     plus Archivo's ascent above its caps: 0.42 em at 1.55). */
+  margin-top: -0.42em;
+  font-size: clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
 }
 .home .hero-grid > .product {
   grid-column: 5 / -1;
+  min-width: 0;
 }
+.home .hero .t-lede {
+  max-width: 34rem;
+  color: var(--ink-2);
+}
+/* Stacked, the two ways in share the wider one's width, so the pair reads
+   as one block rather than two ragged edges. */
 .home .hero-cta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: grid;
+  width: max-content;
+  max-width: 100%;
   gap: 12px;
   margin-top: 28px;
+}
+.home .hero-cta .btn {
+  justify-content: center;
 }
 .home .hero-note {
   margin-top: 16px;
   color: var(--ink-3);
 }
+
+/* 1024–1199: the line stays one line; under it the lede, with the ways in
+   and the note at its right, foot to foot; then the desk, which keeps a
+   desktop measure and sits under them, to the right. */
 @media (max-width: 1199px) {
   .home .hero-copy,
   .home .hero-grid > .product {
     grid-column: 1 / -1;
   }
-  .home .hero-copy .t-lede {
-    max-width: 34rem;
+  .home .hero-copy {
+    margin-top: 0;
+  }
+  .home .hero-grid {
+    margin-top: 24px;
+    row-gap: 40px;
   }
   .home .hero-cta {
-    flex-direction: row;
+    display: flex;
     flex-wrap: wrap;
+    width: auto;
   }
   .home .hero-grid > .product {
     width: min(100%, 760px);
     margin-inline-start: auto;
   }
 }
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .home .hero-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 34rem) auto;
+    grid-template-rows: 1fr auto;
+    column-gap: var(--gap);
+    align-items: end;
+    justify-content: space-between;
+  }
+  .home .hero-copy .t-lede {
+    grid-row: 1 / 3;
+    align-self: start;
+  }
+  .home .hero-copy .hero-cta {
+    display: grid;
+    width: max-content;
+    margin-top: 0;
+  }
+  .home .hero-copy .hero-note {
+    grid-column: 2;
+    margin-top: 12px;
+  }
+}
+/* 600–1023: two lines; the desk at the content width (760 px at most). */
 @media (max-width: 1023px) {
+  .home .hero {
+    padding-block: 28px 56px;
+  }
+  .home .hero h1 {
+    margin-inline-start: -0.03em;
+  }
   .home .hero-grid > .product {
     margin-inline-start: 0;
   }
 }
+/* Below 600: the ways in stacked at full width; the desk bleeds to 8 px
+   from the screen's edges. */
 @media (max-width: 599px) {
-  .home .hero-cta .btn {
-    width: 100%;
+  .home .hero {
+    padding-block: 20px 48px;
+  }
+  .home .hero-grid {
+    margin-top: 20px;
+    row-gap: 28px;
+  }
+  .home .hero-cta {
+    display: grid;
+    margin-top: 24px;
+  }
+  .home .hero-note {
+    margin-top: 14px;
   }
   .home .hero-grid > .product {
     width: auto;
     margin-inline: -12px;
+  }
+}
+
+/* Chinese: the system face draws its glyphs to the box, so no optical
+   pull; at display size a full-width comma leaves a hole mid-line, so the
+   punctuation is set half width. */
+.home .hero:lang(zh) h1 {
+  margin-inline-start: -0.01em;
+  font-feature-settings: "halt";
+}
+/* The lede and the note break at punctuation and spaces only, never inside
+   a word (没 / 有). */
+.home .hero:lang(zh) :is(.t-lede, .hero-note) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+/* ---- Load ---- */
+@media (prefers-reduced-motion: no-preference) {
+  /* An inline line cannot move; each line rises as a box of its own. */
+  html.mo .home .hero .t-display .l {
+    display: inline-block;
+    animation: rise 560ms var(--e-enter) both;
+  }
+  html.mo .home .hero .t-display .l + .l {
+    animation-delay: 60ms;
+  }
+  html.mo .home .hero :is(.t-lede, .hero-cta, .hero-note) {
+    --rise: 10px;
+    animation: rise 560ms var(--e-enter) 120ms both;
+  }
+  html.mo .home .hero .hero-cta {
+    animation-delay: 180ms;
+  }
+  html.mo .home .hero .hero-note {
+    animation-delay: 240ms;
+  }
+  /* The desk settles, not the figure: a figure holding a transform would
+     become its side caption's containing block (11-window.css). Below
+     1200 px the caption under the desk settles with it. */
+  html.mo .home .hero .product > :is(.desk, .product-cap) {
+    transform-origin: 50% 0;
+    animation: settle 640ms var(--e-enter) 100ms both;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 1200px) {
+  html.mo .home .hero .product > .product-cap {
+    --rise: 10px;
+    animation: rise 560ms var(--e-enter) 240ms both;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
+  html.mo .home .hero .t-display .l {
+    display: block;
   }
 }

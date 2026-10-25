@@ -1,2 +1,243 @@
-/* The hero theatre: animation assignments per beat, the reader's sweep and
-   glances, the clock's states and the linked hover (package H). */
+/* The hero theatre (motion.md §4): reads first, comments last. Every beat is
+   a CSS animation inside #review, held paused until review-clock.tsx takes
+   them over through the Web Animations API (so no rule here may depend on
+   data-clock or data-linked). Times are the clock's, from its first play.
+
+   The reader works row by row: each row's eye and its reading band show for
+   that row's window (a jump is 40 ms out and 50 ms in; a fixation is the
+   time between). Rows by data-n, as the hero shows them: 16 and 21 (the
+   evidence), 40 and 41 skimmed and read, 42 read with a scan, 43 skimmed,
+   then a regression to 42, where the eyes park and the pen starts. Line
+   42's marks and notes carry their own --t (review.tsx) and play through
+   04-pen.css's clock mode.
+
+   Without motion, Reduce motion, failed hydration or once done: only line
+   42's eyes show, looking at Date.now(); every mark, the comment and the
+   summary row are there. */
+
+/* The reading band of a row, under its text. */
+.home #review .ln {
+  isolation: isolate;
+}
+.home #review .ln::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--read);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Held until the clock owns them. The beats below are written under
+     :where() so that this hold outranks their animation shorthand. */
+  html.mo .home #review[data-clock="idle"] *,
+  html.mo .home #review[data-clock="idle"] *::before {
+    animation-play-state: paused;
+  }
+
+  /* The anchored row's band is played like the others. */
+  html.mo .home #review :where(.ln[data-anchor]) {
+    background: transparent;
+  }
+
+  /* 0 ms: the eyes open on line 16. */
+  html.mo .home #review :where(.ln[data-n="16"] .rd) {
+    animation:
+      rd-pop 200ms var(--e-pop) both,
+      rd-out 40ms var(--e-std) 320ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="16"])::before {
+    animation:
+      rd-band 60ms var(--e-std) both,
+      rd-out 40ms var(--e-std) 320ms forwards;
+  }
+  /* 320 ms: to 21, the other half of the evidence. */
+  html.mo .home #review :where(.ln[data-n="21"] .rd) {
+    animation:
+      rd-in 50ms var(--e-enter) 320ms both,
+      rd-out 40ms var(--e-std) 670ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="21"])::before {
+    animation:
+      rd-band 50ms var(--e-enter) 320ms both,
+      rd-out 40ms var(--e-std) 670ms forwards;
+  }
+  /* 670 ms: a skim of 40. */
+  html.mo .home #review :where(.ln[data-n="40"] .rd) {
+    animation:
+      rd-in 50ms var(--e-enter) 670ms both,
+      rd-out 40ms var(--e-std) 800ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="40"])::before {
+    animation:
+      rd-band 50ms var(--e-enter) 670ms both,
+      rd-out 40ms var(--e-std) 800ms forwards;
+  }
+  /* 800 ms: 41 read. */
+  html.mo .home #review :where(.ln[data-n="41"] .rd) {
+    animation:
+      rd-in 50ms var(--e-enter) 800ms both,
+      rd-out 40ms var(--e-std) 1110ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="41"])::before {
+    animation:
+      rd-band 50ms var(--e-enter) 800ms both,
+      rd-out 40ms var(--e-std) 1110ms forwards;
+  }
+  /* 1110 ms: 42 read with a scan; 1480 ms away to 43; 1600 ms back to park. */
+  html.mo .home #review :where(.ln[data-n="42"] .rd) {
+    animation:
+      rd-in 50ms var(--e-enter) 1110ms both,
+      rd-out 40ms var(--e-std) 1480ms forwards,
+      rd-in 50ms var(--e-enter) 1600ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="42"])::before {
+    animation:
+      rd-band 50ms var(--e-enter) 1110ms both,
+      rd-out 40ms var(--e-std) 1480ms forwards,
+      rd-band 50ms var(--e-enter) 1600ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="43"] .rd) {
+    animation:
+      rd-in 50ms var(--e-enter) 1480ms both,
+      rd-out 40ms var(--e-std) 1600ms forwards;
+  }
+  html.mo .home #review :where(.ln[data-n="43"])::before {
+    animation:
+      rd-band 50ms var(--e-enter) 1480ms both,
+      rd-out 40ms var(--e-std) 1600ms forwards;
+  }
+
+  /* The parked eyes' glint: the scan, a glance at each mark as the pen
+     makes it, down at the comment as it lands, back to Date.now(). */
+  html.mo .home #review :where(.ln[data-anchor] .is-reader) {
+    animation: rd-glance 5220ms linear both;
+  }
+  /* 1700 ms: the anchored line's number turns ink with the margin bar. */
+  html.mo .home #review :where(.ln[data-anchor] .ln-n) {
+    animation: rd-num 300ms var(--e-std) 1700ms both;
+  }
+
+  /* 4020 ms: comments last. 4170 ms: the summary row, posted with it. */
+  html.mo .home #review :where(.comment) {
+    animation: rv-land 800ms var(--e-enter) 4020ms both;
+  }
+  html.mo .home #review :where(.summary-row) {
+    animation: rv-wipe 400ms var(--e-std) 4170ms both;
+  }
+}
+
+@keyframes rd-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rd-band {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes rd-num {
+  from {
+    color: var(--ink-3);
+  }
+  to {
+    color: var(--ink);
+  }
+}
+/* 0 → 5220 ms: 1160 scan from -0.3 (320 ms), 1900 glance at expiresAt
+   (160 ms), 2640 at Date.now(), 3330 at the caret, 4020 down at the
+   comment (400 ms), 4820 back to Date.now() (400 ms). */
+@keyframes rd-glance {
+  0%,
+  22.22% {
+    --px: -0.3;
+    --py: 0;
+    animation-timing-function: var(--e-std);
+  }
+  28.35%,
+  36.4% {
+    --px: 0.7;
+    --py: 0;
+    animation-timing-function: var(--e-enter);
+  }
+  39.46%,
+  50.57% {
+    --px: 0.45;
+    --py: 0.35;
+    animation-timing-function: var(--e-enter);
+  }
+  53.64%,
+  63.79% {
+    --px: 0.85;
+    --py: 0.35;
+    animation-timing-function: var(--e-enter);
+  }
+  66.86%,
+  77.01% {
+    --px: 0.6;
+    --py: -0.2;
+    animation-timing-function: var(--e-enter);
+  }
+  84.67%,
+  92.34% {
+    --px: 0.2;
+    --py: 1;
+    animation-timing-function: var(--e-enter);
+  }
+  100% {
+    --px: 0.8;
+    --py: 0.3;
+  }
+}
+@keyframes rv-land {
+  from {
+    clip-path: inset(0 0 100% 0 round 10px);
+    transform: translateY(10px);
+  }
+  to {
+    clip-path: inset(-2px round 10px);
+    transform: none;
+  }
+}
+@keyframes rv-wipe {
+  from {
+    clip-path: inset(0 0 100% 0 round 8px);
+  }
+  to {
+    clip-path: inset(0 round 8px);
+  }
+}
+
+/* Linked hover: the comment and the line it anchors light together. */
+.home #review .mk-wipe path,
+.home #review .mk-dash path {
+  transition: stroke-width 200ms var(--e-std);
+}
+.home #review[data-linked] .mk-wipe path {
+  stroke-width: 2.4px;
+}
+.home #review[data-linked] .mk-dash path {
+  --sw: calc(240 / var(--fs, 13.5));
+}
+/* The row itself takes the deeper band; the played band under it steps
+   aside, so the two never stack. */
+.home #review[data-linked] .ln[data-anchor] {
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+}
+.home #review[data-linked] .ln[data-anchor]::before {
+  background: transparent;
+}
+.home #review[data-linked] .comment {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 40%, transparent);
+}
