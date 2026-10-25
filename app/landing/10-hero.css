@@ -133,6 +133,34 @@
   overflow: hidden;
   pointer-events: none;
 }
+/* The lamp falls on the objects too: warm on the paper towards the light,
+   the room darkening at the edges of the frame. */
+.home .hero-scene::before,
+.home .hero-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  /* Faded in from the top, so the light meets the desk above without a seam. */
+  mask-image: linear-gradient(to bottom, transparent, var(--black) 160px);
+}
+.home .hero-scene::before {
+  background: radial-gradient(
+    46% 58% at calc(62% + var(--lx) * 3%) calc(30% + var(--ly) * 3%),
+    color-mix(in srgb, var(--lamp) 30%, transparent),
+    transparent 72%
+  );
+  mix-blend-mode: soft-light;
+}
+.home .hero-scene::after {
+  background: radial-gradient(
+    120% 125% at 58% 0%,
+    transparent 56%,
+    color-mix(in srgb, var(--umbra) 36%, transparent) 100%
+  );
+  mix-blend-mode: multiply;
+}
 .home .hero-world {
   position: absolute;
   left: calc(50% + 46px);
