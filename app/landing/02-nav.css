@@ -111,6 +111,36 @@
   --cta-g: var(--ink);
   --cta-t: var(--paper);
 }
+/* Over the desk: bare at the top of the page, so the desk reads from the
+   top edge; a smoked glass pill once scrolled. The promoted call to action
+   is paper on the desk, never the pen's red. */
+.home .nav:is([data-on="desk"], [data-on="desk-evening"]) {
+  --nav-g: var(--desk);
+  --nav-o: 62%;
+  --nav-t: var(--on-desk);
+  --nav-a: var(--on-desk-2);
+  --nav-l: var(--line-desk);
+  --focus: var(--on-desk);
+}
+.home .nav:is([data-on="desk"], [data-on="desk-evening"]):not([data-scrolled]) {
+  --nav-o: 0%;
+  --nav-l: transparent;
+  backdrop-filter: none;
+}
+.home .nav[data-promoted]:is([data-on="desk"], [data-on="desk-evening"]) {
+  --cta-g: var(--print-paper);
+  --cta-t: var(--print-ink);
+}
+.home .nav[data-on="paper-band"] {
+  --nav-g: var(--print-paper);
+  --nav-t: var(--print-ink);
+  --nav-a: var(--print-ink-2);
+  --nav-l: color-mix(in srgb, var(--print-ink) 10%, transparent);
+}
+.home .nav[data-promoted][data-on="paper-band"] {
+  --cta-g: var(--print-ink);
+  --cta-t: var(--print-paper);
+}
 .home .nav[data-promoted][data-on="night"] {
   --cta-g: var(--on-night);
   --cta-t: var(--night);

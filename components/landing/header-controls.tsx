@@ -24,8 +24,8 @@ const Menu = createContext<{
 // The ground under the bar's middle: a 2 px band 38 px from the top, where
 // the sticky bar's centre sits. Above every section (the announce line) the
 // page's own ground shows.
-function useGround(): string {
-  const [ground, setGround] = useState("paper");
+function useGround(top: string): string {
+  const [ground, setGround] = useState(top);
   useEffect(() => {
     const targets = [
       ...document.querySelectorAll<HTMLElement>("main section[data-ground], footer[data-ground]"),
@@ -45,7 +45,7 @@ function useGround(): string {
             else under.delete(el);
           }
           const last = [...under].pop();
-          setGround(last?.dataset.ground ?? "paper");
+          setGround(last?.dataset.ground ?? top);
         },
         { rootMargin: `-38px 0px -${Math.max(0, height - 40)}px 0px` },
       );
@@ -62,7 +62,7 @@ function useGround(): string {
       io?.disconnect();
       removeEventListener("resize", resized);
     };
-  }, []);
+  }, [top]);
   return ground;
 }
 
@@ -93,12 +93,37 @@ const WIDE = "(min-width: 1024px)";
 // drag there is not a tap), on a link in it, on Escape (focus returns to
 // its button), and when the window grows past the drawer; those listeners
 // exist only while it is open.
-export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode }) {
+// Whether the page has left its top: the hero's sentinel 24 px down has
+// scrolled under the bar. Over the desk the bar is bare at the top and a
+// glass pill once scrolled (02-nav.css).
+function useScrolled() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const sentinel = document.querySelector("[data-top-sentinel]");
+    if (!sentinel) return;
+    const io = new IntersectionObserver(([e]) => setScrolled(!e?.isIntersecting));
+    io.observe(sentinel);
+    return () => io.disconnect();
+  }, []);
+  return scrolled;
+}
+
+export function NavShell({
+  bar,
+  drawer,
+  top = "paper",
+}: {
+  bar: ReactNode;
+  drawer: ReactNode;
+  // The ground above every section (the announce line's): the hero's desk.
+  top?: string;
+}) {
   const [open, setOpen] = useState(false);
   const shell = useRef<HTMLElement>(null);
   const button = useRef<HTMLButtonElement>(null);
-  const ground = useGround();
+  const ground = useGround(top);
   const promoted = usePromoted();
+  const scrolled = useScrolled();
 
   useEffect(() => {
     if (!open) return;
@@ -148,7 +173,12 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
           if ((e.target as Element).closest("#site-menu a")) setOpen(false);
         }}
       >
-        <div className="nav" data-on={ground} data-promoted={promoted || undefined}>
+        <div
+          className="nav"
+          data-on={ground}
+          data-promoted={promoted || undefined}
+          data-scrolled={scrolled || undefined}
+        >
           {bar}
         </div>
         <div className="drawer" id="site-menu">

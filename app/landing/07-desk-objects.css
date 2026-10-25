@@ -1,0 +1,402 @@
+/* The desk's objects (components/landing/desk): sheet, ruler, pen, card,
+   clip. Every shadow comes from one light (upper left, leaning with --lx,
+   --ly) and one height (--lift, plus --hover under the pointer): a tight
+   contact shadow that fades as the object rises and a wide soft one that
+   moves out. Shadows are pre-blurred layers; only their opacity and
+   position move. Shared. */
+
+.home [data-lift] {
+  transition: --hover 420ms var(--e-settle);
+}
+.home [data-lift].lifted {
+  --hover: 1;
+}
+.home .sh {
+  --L: calc(var(--lift) + var(--hover) * 0.22);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.home .sh-c {
+  box-shadow:
+    0 0.5px 1px color-mix(in srgb, var(--umbra) 55%, transparent),
+    1px 2px 5px color-mix(in srgb, var(--umbra) 36%, transparent);
+  opacity: calc(1 - var(--L) * 1.5);
+  translate: calc(1px - var(--lx, 0) * 1px) calc(1.5px - var(--ly, 0) * 1px);
+}
+.home .sh-a {
+  inset: 2% 1% -1% 2%;
+  background: color-mix(in srgb, var(--umbra) 62%, transparent);
+  filter: blur(22px);
+  opacity: calc(0.66 - var(--L) * 0.2);
+  translate: calc(10px + var(--L) * 30px - var(--lx, 0) * 10px)
+    calc(16px + var(--L) * 44px - var(--ly, 0) * 8px);
+  scale: calc(1 + var(--L) * 0.03);
+}
+
+/* ---- Sheet (.desk-sheet): laser paper, its tooth, the cut edge catching the light ---- */
+.home .desk-sheet {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--w, 690px);
+  height: var(--h, 940px);
+  transform: rotate(var(--r, 0deg)) scale(calc(1 + var(--hover) * 0.004));
+  transform-origin: 40% 30%;
+}
+.home .sheet-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--print-ink);
+  background:
+    linear-gradient(
+      128deg,
+      color-mix(in srgb, var(--white) 70%, transparent),
+      transparent 36%,
+      transparent 62%,
+      color-mix(in srgb, var(--umbra) 7%, transparent)
+    ),
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--print-paper);
+  background-blend-mode: normal, multiply, normal;
+  box-shadow:
+    inset 1px 1px 0 color-mix(in srgb, var(--white) 90%, transparent),
+    inset -1px -1px 0 color-mix(in srgb, var(--umbra) 9%, transparent);
+}
+.home .sheet-head {
+  position: absolute;
+  left: 44px;
+  right: 40px;
+  top: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid color-mix(in srgb, var(--print-ink) 42%, transparent);
+  font: 400 16px / 1 var(--font-mono);
+  white-space: nowrap;
+}
+.home .sheet-meta {
+  color: var(--print-ink-2);
+}
+.home .sheet-code {
+  position: absolute;
+  left: 44px;
+  top: 78px;
+  right: 20px;
+  font: 400 16px / 26px var(--font-mono);
+  font-variant-ligatures: none;
+}
+.home .sheet-rows li {
+  display: flex;
+  height: 26px;
+  white-space: pre;
+}
+.home .sheet-rows .sheet-ln {
+  flex: none;
+  width: 2.6ch;
+  text-align: right;
+  color: var(--print-ink-3);
+}
+.home .sheet-rows .sheet-mk {
+  flex: none;
+  width: 2.4ch;
+  text-align: center;
+  color: var(--print-ink-3);
+}
+.home .sheet-rows .sheet-tx {
+  font: inherit;
+  color: var(--print-ink);
+}
+.home .sheet-rows .sheet-c {
+  color: var(--print-ink-2);
+}
+/* Over the code, from its first character cell: ink layers, the ruler. */
+.home .sheet-over {
+  position: absolute;
+  left: calc(44px + 5ch);
+  top: 78px;
+  font: 400 16px / 26px var(--font-mono);
+  width: 0;
+  height: 0;
+}
+.home .sheet-over .ink-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+
+/* ---- Reading ruler: smoked acrylic under the row being read ---- */
+.home .ruler {
+  --nudge: 14px;
+  position: absolute;
+  left: -152px;
+  top: 0;
+  width: var(--w);
+  height: 46px;
+  transform: translateY(calc((var(--row) + 1) * 26px + var(--nudge)));
+  transition:
+    transform 110ms var(--e-glide),
+    opacity 320ms var(--e-std);
+}
+.home .ruler-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--white) 70%, transparent) 0 2px,
+      color-mix(in srgb, var(--white) 18%, transparent) 2px 30%,
+      transparent 30%
+    ),
+    color-mix(in srgb, var(--steel-lo) 16%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--white),
+    inset 0 -2px 0 color-mix(in srgb, var(--smoke) 26%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--smoke) 18%, transparent),
+    4px 9px 10px -4px color-mix(in srgb, var(--umbra) 26%, transparent);
+}
+.home .ruler-scale {
+  position: absolute;
+  left: 104px;
+  right: 22px;
+  bottom: 0;
+  height: 12px;
+  transform: scaleY(-1);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--print-ink) 55%, transparent) 0 1px,
+      transparent 1px 25.6px
+    )
+    0 0 / 100% 10px no-repeat,
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--print-ink) 32%, transparent) 0 1px,
+      transparent 1px 5.12px
+    )
+    0 0 / 100% 4px no-repeat;
+}
+.home .ruler-tab {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 84px;
+  display: grid;
+  place-items: center;
+  border-radius: 3px 0 0 3px;
+  background: color-mix(in srgb, var(--smoke) 93%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white) 26%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--white) 10%, transparent);
+}
+.home .ruler-eyes .eye,
+.home .ruler-eyes .glint {
+  fill: var(--on-desk);
+}
+.home .ruler-eyes .iris {
+  fill: var(--smoke);
+}
+.home .ruler-eyes .lids {
+  animation: none;
+}
+.home .ruler-eyes .pupil {
+  transition: transform 160ms var(--e-glide);
+}
+
+/* ---- The pen: a flat graphic on a rig (tip at the origin) ---- */
+.home .pen-rig {
+  --lift: 0;
+  --tilt: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.home .pen-rig svg {
+  position: absolute;
+  left: -6px;
+  top: -20px;
+  overflow: visible;
+  transform-origin: 6px 20px;
+}
+.home .pen {
+  transform: translate(var(--pen-x), var(--pen-y)) rotate(var(--pen-r))
+    scale(
+      calc((1 - var(--tilt) * 0.1 + var(--lift) * 0.04) * var(--pen-s, 1)),
+      calc((1 + var(--lift) * 0.04) * var(--pen-s, 1))
+    );
+}
+.home .pen-sh {
+  fill: var(--umbra);
+  transform: translate(
+      calc(var(--pen-x) + 3px + var(--lift) * 20px - var(--lx, 0) * 4px),
+      calc(var(--pen-y) + 5px + var(--lift) * 30px - var(--ly, 0) * 3px)
+    )
+    rotate(var(--pen-r))
+    scale(
+      calc((1 - var(--tilt) * 0.06) * var(--pen-s, 1)),
+      calc((1 + var(--lift) * 0.3) * var(--pen-s, 1))
+    );
+}
+.home .pen-sh-c {
+  filter: blur(1.6px);
+  opacity: calc(0.62 - var(--lift) * 1.2);
+}
+.home .pen-sh-a {
+  filter: blur(9px);
+  opacity: calc(0.26 + var(--lift) * 0.12);
+}
+.home .p-body {
+  fill: var(--cinnabar);
+}
+.home .p-body-hi {
+  fill: var(--cinnabar-hi);
+}
+.home .p-body-lo {
+  fill: var(--cinnabar-lo);
+}
+.home .p-grip,
+.home .p-nib {
+  fill: var(--grip);
+}
+.home .p-grip-hi {
+  fill: var(--grip-hi);
+}
+.home .p-steel,
+.home .p-clip {
+  fill: var(--steel);
+}
+.home .p-steel-hi,
+.home .p-clip-hi {
+  fill: var(--steel-hi);
+}
+.home .p-steel-lo {
+  fill: var(--steel-lo);
+}
+.home .p-eyes {
+  fill: var(--grip);
+}
+
+/* ---- Index card: typed, a printed red head rule, pale blue lines ---- */
+.home .card {
+  --x: 0px;
+  --y: 0px;
+  --r: 0deg;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 460px;
+  height: 178px;
+  margin: 0;
+  transform: translate(var(--x), var(--y)) rotate(var(--r)) perspective(900px)
+    rotateX(calc(var(--ty, 0) * -2.5deg * var(--hover)))
+    rotateY(calc(var(--tx, 0) * 2.5deg * var(--hover))) scale(calc(1 + var(--hover) * 0.012));
+}
+.home .card-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  padding: 24px 22px 0;
+  color: var(--print-ink);
+  font: 400 16px / 28px var(--font-mono);
+  background:
+    linear-gradient(
+      128deg,
+      color-mix(in srgb, var(--white) 80%, transparent),
+      transparent 42%,
+      color-mix(in srgb, var(--umbra) 5%, transparent)
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 27px,
+      color-mix(in srgb, var(--card-line) 45%, transparent) 27px 28px
+    )
+    0 66px / 100% calc(100% - 66px) no-repeat,
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--card-stock);
+  background-blend-mode: normal, normal, multiply, normal;
+  box-shadow: inset 1px 1px 0 color-mix(in srgb, var(--white) 90%, transparent);
+}
+.home .card-face::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 58px;
+  height: 1.5px;
+  background: color-mix(in srgb, var(--card-rule) 70%, transparent);
+}
+.home .card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--print-ink-2);
+  white-space: nowrap;
+}
+.home .card-title {
+  margin-top: 8px;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.home .card-quote,
+.home .card-foot {
+  color: var(--print-ink-2);
+  white-space: nowrap;
+}
+.home .card-foot {
+  color: var(--print-ink-3);
+}
+.home .card-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 70% at calc(50% + var(--tx, 0) * 40%) calc(40% + var(--ty, 0) * 40%),
+    color-mix(in srgb, var(--white) 50%, transparent),
+    transparent 70%
+  );
+  opacity: calc(var(--hover) * 0.6);
+  mix-blend-mode: soft-light;
+}
+
+/* ---- Binder clip: black steel jaw, wire handles; --x, --y its jaw ---- */
+.home .clip {
+  --x: 0px;
+  --y: 0px;
+  --r: 0deg;
+  position: absolute;
+  left: -40px;
+  top: -40px;
+  z-index: 2;
+  transform: translate(var(--x), var(--y)) rotate(var(--r));
+}
+.home .clip svg {
+  display: block;
+  overflow: visible;
+}
+.home .clip-body {
+  fill: var(--grip);
+}
+.home .clip-hi {
+  fill: var(--grip-hi);
+}
+.home .clip-wire {
+  fill: none;
+  stroke: var(--steel);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.home .clip-sh {
+  fill: color-mix(in srgb, var(--umbra) 55%, transparent);
+  filter: blur(3px);
+  transform: translate(3px, 5px);
+}
