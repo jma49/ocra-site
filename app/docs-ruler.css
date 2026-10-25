@@ -149,6 +149,11 @@ html:has(.docs-desk) .bg-fd-overlay {
 #fd-search-dialog-content [id^="fd-search-option-"] {
   border-radius: 2px;
   box-shadow: inset 0 -1px 0 var(--stock-line);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+#fd-search-dialog-content [id^="fd-search-option-"] code {
+  font-size: 0.86em;
 }
 #fd-search-dialog-content kbd,
 #fd-search-dialog-content > :has(input) button {
