@@ -37,7 +37,7 @@ export function generateStaticParams() {
 // goes after 4 s and the page shows finished.
 // A repeat visit in the session (hero/hero-play.tsx) adds `seen`, so the
 // hero paints its final state at once.
-const gate = `(function(){var d=document.documentElement;d.style.setProperty("--vh",innerHeight+"px");try{if(sessionStorage.getItem("ocra:desk-hero"))d.classList.add("seen")}catch(e){}if(matchMedia("(prefers-reduced-motion: no-preference)").matches){d.classList.add("mo");setTimeout(function(){if(document.querySelector(".home")&&!d.classList.contains("hy"))d.classList.remove("mo")},4000)}})()`;
+const gate = `(function(){var d=document.documentElement;d.style.setProperty("--vh",innerHeight+"px");if(matchMedia("(prefers-reduced-motion: no-preference)").matches){d.classList.add("mo");setTimeout(function(){if(document.querySelector(".home")&&!d.classList.contains("hy"))d.classList.remove("mo")},4000)}})()`;
 
 export default async function RootLayout({
   params,

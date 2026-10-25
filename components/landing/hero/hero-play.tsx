@@ -10,10 +10,9 @@ import { PenRig, setDrawn, strokesOf, write } from "@/components/landing/desk/mo
 // navigation so a late hydration catches up instead of running late:
 // the ruler reads down the page with the eyes on its tab, glances back at
 // expiresAt and blinks on line 42; the pen comes in, writes, lifts and lies
-// down; the finding card is dealt and clipped at line 42 by about 3 s.
-// A repeat visit in the session (the gate's `html.seen`) paints the final
-// state at once, with Replay.
-const SEEN = "ocra:desk-hero";
+// down; the finding card is dealt and clipped at line 42. It plays on every
+// load: the pen's marks are the page's point, so a returning reader sees
+// them written too. The headline is readable from the first frame.
 
 const until = (t: number, signal: AbortSignal) => sleep(Math.max(0, t - performance.now()), signal);
 
@@ -22,14 +21,6 @@ const shown = (hero: HTMLElement) =>
   [...hero.querySelectorAll<HTMLElement>(".hero-scene")].find(
     (s) => getComputedStyle(s).display !== "none",
   );
-
-const seen = () => {
-  try {
-    return sessionStorage.getItem(SEEN) !== null;
-  } catch {
-    return false;
-  }
-};
 
 export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel: string }) {
   const [canReplay, setCanReplay] = useState(false);
@@ -58,11 +49,6 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
       ruler.style.setProperty("--row", finalRow);
       ruler.style.removeProperty("--nudge");
       rig.set(rest);
-      try {
-        sessionStorage.setItem(SEEN, "1");
-      } catch {
-        /* storage refused: the next visit plays again */
-      }
       setCanReplay(true);
     };
 
@@ -124,7 +110,8 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
           { duration: 170, easing: "ease-in-out" },
         );
       await enter;
-      await write(rig, ink, { speed: 0.5, signal });
+      // At a hand's pace, so each mark is seen being made.
+      await write(rig, ink, { speed: 0.85, signal });
       look(0.4, 0.4);
       // Done writing: the pen lies down, the card is dealt and clipped. On
       // the phone the ruler is set aside first, to make room for the card.
@@ -171,11 +158,10 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
   }, []);
 
   useEffect(() => {
-    const root = document.documentElement;
     const hero = document.getElementById("hero");
     if (!hero) return;
     const visible = hero.getBoundingClientRect().bottom > innerHeight * 0.3;
-    if (!motionAllowed() || root.classList.contains("seen") || seen() || !visible) {
+    if (!motionAllowed() || !visible) {
       hero.classList.add("done");
       setCanReplay(motionAllowed());
       return;
@@ -190,10 +176,7 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
       type="button"
       className="hero-replay"
       aria-label={replayLabel}
-      onClick={() => {
-        document.documentElement.classList.remove("seen");
-        void play(performance.now());
-      }}
+      onClick={() => void play(performance.now())}
     >
       {replay}
     </button>
