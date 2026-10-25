@@ -78,13 +78,20 @@
   html.mo .home .fig .sheet {
     flex: 1;
   }
+  /* Transitions run only while the island swaps (data-swap): a viewport
+     change that flips this block (a full-page capture) must not leave
+     every body half faded over the next. */
   html.mo .home .fig {
     visibility: hidden;
+  }
+  html.mo .home .how-run[data-swap] .fig {
     transition: visibility 0s linear 350ms;
   }
   html.mo .home .fig.is-on {
     z-index: 1;
     visibility: visible;
+  }
+  html.mo .home .how-run[data-swap] .fig.is-on {
     transition: none;
   }
   /* The leaving figure lies over the entering one with no ground of its
@@ -99,8 +106,12 @@
   html.mo .home .fig-body {
     opacity: 0;
     transform: translateY(16px);
+  }
+  /* The fade is shorter than the move, so a fast scroll through the steps
+     never shows two bodies half faded over each other for long. */
+  html.mo .home .how-run[data-swap] .fig-body {
     transition:
-      opacity 350ms var(--e-enter),
+      opacity 200ms var(--e-enter),
       transform 350ms var(--e-enter);
   }
   html.mo .home .fig.is-out .fig-body {
@@ -109,7 +120,10 @@
   html.mo .home .fig.is-on .fig-body {
     opacity: 1;
     transform: none;
-    transition-delay: 150ms;
+  }
+  html.mo .home .how-run[data-swap] .fig.is-on .fig-body {
+    transition-duration: 240ms, 350ms;
+    transition-delay: 100ms;
   }
   /* The five files share the room the desk leaves, evenly. */
   html.mo .home .fig-files {
