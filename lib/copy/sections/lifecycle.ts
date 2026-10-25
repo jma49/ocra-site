@@ -82,7 +82,7 @@ export const lifecycle: Bilingual<LifecycleCopy> = {
       dismissed:
         "维护者拒绝了它。ocra 不再报告，它也不再计入结论，除非它以更严重的级别再次出现。PR 的作者本人不能这样做。",
     },
-    caption: "示意：示例运行的这条意见在推送之后会怎样。这些推送和回复不在录制里。",
+    caption: "示例运行的这条意见在推送之后会怎样，这里只是示意：这些推送和回复不在录制里。",
     illustration: "示意",
     status: { open: "未解决", resolved: "已解决" },
     outdated: "已过时",
