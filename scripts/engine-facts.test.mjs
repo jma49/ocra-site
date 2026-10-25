@@ -1,8 +1,8 @@
 // The copy states the engine's facts from lib/landing/engine-facts.ts and
 // its measured quality from lib/landing/measured.ts; this compares them with
 // the engine's source and manual. It reads the engine checkout next to this
-// repository (../ocra, or OCRA_DIR, which must exist; CI checks the engine
-// out and sets it) and skips without one.
+// repository (../ocra, as in the maintainer's workspace, or OCRA_DIR, which
+// must then exist) and skips without one, as in CI.
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";

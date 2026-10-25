@@ -11,38 +11,18 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: site
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          path: site
           persist-credentials: false
-      # The engine next to this repository, as in the documented workspace
-      # layout, so scripts/engine-facts.test.mjs compares the facts the copy
-      # states with the engine's main instead of skipping (OCRA_DIR makes a
-      # missing checkout an error).
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          repository: jma49/Open-CR-Agent
-          path: ocra
-          persist-credentials: false
-          sparse-checkout: |
-            packages/cloud-contract/src
-            packages/core/src
-            packages/runtime-opencode/src
-            docs/manual/en
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: site/package-lock.json
       - run: npm ci
       - run: npm run verify
         env:
           MANUAL_SOURCE: remote
-          OCRA_DIR: ../ocra
 
   # Conventional Commits and no AI attribution, with the engine's own checks
   # (AGENTS.md, Working with agents). Pinned to an engine release, so a push
