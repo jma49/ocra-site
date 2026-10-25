@@ -1,8 +1,10 @@
 /* Works: the H2 on the page's headline step (.t-h2, as how, features,
-   lifecycle, plans and FAQ) across the grid; under it the body and
-   platform tiles beside the provider index, headed by its "45", with the
-   marquee inside the column and its pause button (sections.md §3,
-   motion.md §15). Package P. */
+   lifecycle, plans and FAQ) across the grid; under it the platform tiles,
+   each showing in miniature what the review leaves there, across the grid;
+   then the body beside the provider count, the "45", and the marquee and
+   its pause button across the grid under both (sections.md §3,
+   motion.md §15). Below 1200 px one column: the H2, the body, the tiles,
+   the index. Package P. */
 .home .works {
   padding-block: 112px var(--pad);
 }
@@ -13,15 +15,51 @@
   row-gap: 48px;
   align-items: start;
 }
-.home .works-h {
+.home .works-h,
+.home .works-copy,
+.home .works-tiles,
+.home .works-index {
   grid-column: 1 / -1;
+  min-width: 0;
 }
 .home .works-copy {
-  grid-column: 1 / span 5;
+  max-width: 34rem;
 }
-.home .works-index {
-  grid-column: 6 / -1;
-  min-width: 0;
+/* From 1200 px the index's parts take the grid's rows themselves, so the
+   marquee can run under the body as well as the count; the gaps are the
+   rows' margins. The body's first line sits on the 45's cap height. */
+@media (min-width: 1200px) {
+  .home .works-grid {
+    row-gap: 0;
+  }
+  .home .works-tiles {
+    grid-row: 2;
+    margin-top: 56px;
+  }
+  .home .works-copy {
+    grid-row: 3;
+    grid-column: 1 / span 5;
+    margin-top: 72px;
+    padding-top: 6px;
+  }
+  .home .works-index {
+    display: contents;
+  }
+  .home .works-gauge {
+    grid-row: 3;
+    grid-column: 6 / -1;
+    margin-top: 72px;
+  }
+  .home .mq {
+    grid-row: 4;
+  }
+  .home .works-foot {
+    grid-row: 5;
+  }
+  .home .mq,
+  .home .works-foot {
+    grid-column: 1 / -1;
+  }
 }
 /* Set in its two lines where both fit; one balanced sentence below, the
    body close under it as one block. */
@@ -48,44 +86,31 @@
     max-inline-size: 9em;
   }
 }
-/* The body's first line sits on the 45's cap height, so the two columns
-   start together under the H2. */
-@media (min-width: 1200px) {
-  .home .works-grid {
-    row-gap: 56px;
-  }
-  .home .works-copy {
-    padding-top: 6px;
-  }
-}
-.home .works-copy .t-body {
-  max-width: 34rem;
-}
 
-/* ---- Platform tiles: mark and flag, name, then what ocra leaves there ----
-   Each tile is a small sheet: the flag that targets the platform in its
-   bar, the name, and a recessed foot in the flag's mono naming what the
-   review leaves behind, two things on two lines with the second after "+".
-   Equal widths, so the three feet line up; the tile is drawn with a border,
-   not an inset ring, so the foot's ground stays inside it. The foot's mono
-   shrinks with the tile (cqi) just enough that "+ inline comments", its
-   longest line at 17 characters, never wraps; the narrowest desktop
-   tiles (1200-1359 px, 139-155 px wide) also tighten their padding. */
+/* ---- Platform tiles: mark, name and flag, what ocra leaves there, then
+   the same shown ----
+   Each tile is a sheet: the platform's mark, its name and the flag that
+   targets it; under them, in the flag's mono, the two things the review
+   leaves, on two lines with the second after "+"; then its foot, sunk into
+   the sheet, holds the miniature of those things (21-works-outputs.css).
+   Three equal columns, close as one set, edge to edge with the content
+   column from 900 px; 600-899 px sets each tile as a row, the words
+   beside the miniature. */
 .home .works-tiles {
-  display: flex;
-  gap: 8px;
-  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
 }
 .home .works-tile {
-  --tp: 14px;
+  --tp: 16px;
+  /* The foot's inset from the sheet's edge; the radii stay concentric. */
+  --ti: 5px;
   display: flex;
-  flex: 1 1 0;
-  container-type: inline-size;
   flex-direction: column;
   min-width: 0;
   overflow: clip;
   border: 1px solid var(--line);
-  border-radius: var(--r-ctl);
+  border-radius: var(--r-card);
   background: var(--sheet);
   transition:
     border-color 200ms var(--e-std),
@@ -95,9 +120,8 @@
 .home .works-tile-h {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 13px calc(var(--tp) - 1px) 0 var(--tp);
+  gap: 10px;
+  padding: 15px calc(var(--tp) - 1px) 0 var(--tp);
 }
 .home .works-tile-h > svg {
   flex: none;
@@ -105,38 +129,53 @@
   height: 22px;
 }
 .home .works-tile code {
+  margin-inline-start: auto;
   font-size: 12px;
   line-height: 1.2;
   color: var(--ink-3);
   transition: color 200ms var(--e-std);
 }
 .home .works-tile .t-h4 {
-  padding: 12px var(--tp) 14px;
   font-size: 17px;
   line-height: 1.1;
   white-space: nowrap;
 }
-/* The foot fills the tile's rest, so its rule lines up across the three
-   when one says less (本地分支's one line). */
+/* Two lines in every tile, so the three feet start level. */
 .home .works-tile-o {
   display: grid;
-  flex: 1 0 auto;
   align-content: start;
-  padding: 9px var(--tp) 11px;
-  border-top: 1px solid var(--line);
-  background: var(--paper-2);
+  min-height: calc(2 * 17px + 24px);
+  padding: 10px var(--tp) 14px;
   font-family: var(--font-mono);
-  font-size: min(12px, calc((100cqi - 2 * var(--tp)) / 10.4));
+  font-size: 12px;
   line-height: 17px;
   color: var(--ink-2);
-  text-wrap: balance;
 }
-@media (min-width: 1200px) and (max-width: 1359px) {
-  .home .works-tile {
-    --tp: 12px;
+.home .works-tile .wo-plane {
+  flex: 1 0 auto;
+  margin: 0 var(--ti) var(--ti);
+  border-radius: calc(var(--r-card) - var(--ti) - 1px);
+}
+/* 600-899 px: a row each, the words beside their miniature. */
+@media (min-width: 600px) and (max-width: 899px) {
+  .home .works-tiles {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
   }
-  .home .works-tile .t-h4 {
-    font-size: 16px;
+  .home .works-tile {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+  .home .works-tile-h {
+    grid-area: 1 / 1;
+  }
+  .home .works-tile-o {
+    grid-area: 2 / 1;
+  }
+  .home .works-tile .wo-plane {
+    grid-area: 1 / 2 / 3 / 3;
+    margin: var(--ti) var(--ti) var(--ti) 0;
   }
 }
 /* Under a pointer a tile lifts off the page, a sheet picked up. */
@@ -335,15 +374,6 @@ html:not(.hy) .home .mq-pause {
 .home .works:lang(zh) :is(h2, h3, dt, dd, .t-h4) {
   word-break: keep-all;
 }
-@media (max-width: 1199px) {
-  .home .works-copy,
-  .home .works-index {
-    grid-column: 1 / -1;
-  }
-  .home .works-tiles {
-    max-width: 560px;
-  }
-}
 /* One column: the hero above ends on the same paper, so less air. */
 @media (max-width: 1023px) {
   .home .works {
@@ -357,40 +387,29 @@ html:not(.hy) .home .mq-pause {
   .home .works-grid {
     row-gap: 40px;
   }
-  /* A phone stacks the tiles as rows: mark, name and flag on one line,
-     the foot under them as one line. */
+  /* A phone stacks the tiles: mark, name and flag on one line, the two
+     things on one line, then the miniature. */
   .home .works-tiles {
-    display: grid;
-    gap: 8px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
   }
   .home .works-tile {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    column-gap: 10px;
+    --tp: 14px;
   }
   .home .works-tile-h {
-    display: contents;
+    padding-top: 13px;
   }
   .home .works-tile-h > svg {
-    grid-area: 1 / 1;
     width: 20px;
     height: 20px;
-    margin: 12px 0 12px 14px;
   }
   .home .works-tile .t-h4 {
-    grid-area: 1 / 2;
-    padding: 0;
     font-size: 15px;
-  }
-  .home .works-tile code {
-    grid-area: 1 / 3;
-    margin-right: 14px;
   }
   .home .works-tile-o {
     display: block;
-    grid-column: 1 / -1;
-    padding: 8px 14px 9px;
+    min-height: 0;
+    padding: 8px var(--tp) 12px;
   }
   .home .works-tile-o > span {
     display: inline;

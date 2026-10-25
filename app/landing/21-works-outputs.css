@@ -1,0 +1,274 @@
+/* What lands on each platform, in miniature (works-outputs.tsx): a small
+   night plane in each tile's foot, its chip on the plane's top row as on
+   the hero's desk, and the hero's own objects on it at about 0.8 of their
+   size (the summary card 40 → 32 px, the comment's 14 px → 11 px, the
+   terminal's 12.5 px mono → 10 px): the papers lie from the plane's top
+   left and run off its foot, as papers run off a desk. Nothing here moves;
+   the tile lifts as a whole. Package P. */
+
+/* The plane: the hero desk's lit night (10-hero.css), repeated here rather
+   than shared because there it carries the desk's padding, rim and tab row. */
+.home .wo-plane {
+  --plane: var(--night);
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 156px;
+  padding: 12px 0 0 12px;
+  overflow: clip;
+  background:
+    radial-gradient(
+      70% 90% at 8% 0%,
+      color-mix(in srgb, var(--white) 8%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--white) 4%, var(--plane)) 0%,
+      var(--plane) 50%,
+      color-mix(in oklab, var(--black) 10%, var(--plane)) 100%
+    )
+    var(--plane);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white) 12%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--white) 5%, transparent);
+  color: var(--on-night);
+}
+/* At night the plane sinks below the tile's sheet and the papers rise off
+   it, a step lighter and edged, as GitHub's and GitLab's dark papers are. */
+.dark .home .wo-plane {
+  --plane: color-mix(in oklab, var(--night) 55%, var(--paper));
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white) 7%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--white) 6%, transparent);
+}
+.dark .home :is(.wo-paper, .wo-pill) {
+  background: var(--sheet-2);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--white) 9%, transparent),
+    0 8px 18px -8px color-mix(in srgb, var(--black) 70%, transparent);
+}
+.dark .home .wo-bar {
+  background: color-mix(in srgb, var(--white) 4%, var(--sheet-2));
+}
+
+/* The chip on the plane, as the hero desk's (translucent on the night). */
+.home .wo-chip {
+  flex: none;
+  height: 21px;
+  margin-bottom: 9px;
+  padding: 0 7px;
+  gap: 5px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--on-night) 9%, transparent);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--on-night-2);
+}
+.home .wo-chip-example {
+  color: var(--on-night);
+}
+.home .wo-chip-example::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.1px var(--on-night);
+}
+
+/* ---- The papers ---- */
+.home .wo-paper,
+.home .wo-pill {
+  display: block;
+  background: var(--sheet);
+  box-shadow: var(--float);
+  color: var(--ink-2);
+}
+.home .wo-plane .bot-avatar {
+  width: 16px;
+  height: 16px;
+}
+.home .wo-plane .bot-avatar svg {
+  width: 8px;
+  height: 8px;
+}
+.home .wo-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.home .wo-plane strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+.home .wo-label {
+  margin-inline-start: 8px;
+  font-size: 10px;
+  color: var(--ink-3);
+}
+/* The summary card: 32 px, on the comment's top left corner. */
+.home .wo-pill {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: calc(100% - 12px);
+  height: 32px;
+  padding: 0 13px 0 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.home .wo-plane .sev-octagon {
+  width: 10px;
+  height: 10px;
+}
+.home .wo-plane .sev-dot {
+  width: 7px;
+  height: 7px;
+  margin-inline-end: 6px;
+}
+/* The comment, its corner under the card. */
+.home .wo-comment {
+  align-self: stretch;
+  margin: -9px 12px 0 20px;
+  padding: 18px 12px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.home .wo-who {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-size: 10.5px;
+  line-height: 16px;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.home .wo-plane .cm-bot {
+  padding: 0 5px;
+  font-size: 9px;
+  line-height: 13px;
+}
+.home .wo-on {
+  margin-inline-start: auto;
+  font-size: 10px;
+}
+.home .wo-title {
+  display: block;
+}
+.home .wo-body {
+  display: block;
+  margin-top: 2px;
+}
+
+/* ---- GitLab: a note, then a thread under it ----
+   GitLab's own shapes: squarer corners, round avatars, the thread's
+   resolve mark and its reply field. */
+.home .wo-note,
+.home .wo-thread {
+  align-self: stretch;
+  margin-inline-end: 12px;
+  border-radius: 4px;
+}
+.home .wo-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  padding: 0 10px 0 8px;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.home .wo-av {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 10%, var(--sheet));
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.home .wo-note .wo-label {
+  margin-inline-start: auto;
+  padding-inline-start: 8px;
+}
+.home .wo-thread {
+  margin-top: 6px;
+  padding: 8px 12px 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.home .wo-resolve {
+  flex: none;
+  margin-inline-start: auto;
+  color: var(--ink-3);
+}
+.home .wo-reply {
+  display: block;
+  margin: 8px -12px 0;
+  padding: 7px 12px;
+  border-top: 1px solid var(--line);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+/* ---- Local: the terminal, open at its verdict ----
+   The paper runs on past the plane's foot, whatever the lines' count. */
+.home .wo-term {
+  flex: 1 0 auto;
+  align-self: stretch;
+  margin: 0 12px -24px 0;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+.home .wo-bar {
+  display: block;
+  height: 27px;
+  margin-bottom: 7px;
+  padding: 0 12px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  border-radius: 8px 8px 0 0;
+  background: var(--sheet-2);
+  font-size: 10px;
+  line-height: 26px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.home .wo-line {
+  display: block;
+  min-height: 17px;
+  padding-inline: calc(12px + var(--in) * 1ch) 12px;
+  text-indent: calc(var(--in) * -1ch);
+  font-size: 10px;
+  line-height: 17px;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.home .wo-warn {
+  font-weight: 500;
+  color: var(--pen);
+}
+
+/* ---- Narrow tiles ----
+   Where a tile is too narrow for the summary card's label (900-1199 px,
+   and phones), the card keeps the heading and the tile's caption names it;
+   the comment's title keeps its dot and drops the severity word. */
+@container (max-width: 359px) {
+  .home .wo-pill .wo-label,
+  .home .wo-note .wo-label,
+  .home .wo-sev {
+    display: none;
+  }
+}

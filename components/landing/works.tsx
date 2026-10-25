@@ -4,6 +4,7 @@ import { brandIcons } from "@/lib/landing/brand-icons";
 import { PROVIDERS } from "@/lib/landing/engine-facts";
 import { MarqueePause } from "./marquee-pause";
 import { Lines, Section } from "./section";
+import { WorksOutput } from "./works-outputs";
 
 // Where ocra reviews, and the `ocra review` flag that points it there
 // (the CLI's --pr, --mr and --from: docs/manual/en/cli.mdx). What it leaves
@@ -98,7 +99,10 @@ function Row({ row, reverse }: { row: readonly string[]; reverse?: boolean }) {
 
 // It runs where you already work, on the model you already pay for
 // (sections.md §3): the H2 on the page's headline step across the grid,
-// then the platforms beside the provider index, headed by its count.
+// the body, then what ocra leaves on each platform, shown, and the provider
+// index headed by its count. From 1200 px the platforms run under the H2
+// and the body moves beside the index (20-works.css); neither takes focus,
+// so moving them leaves the tab order as it was.
 export function Works({ copy }: { copy: Copy["works"] }) {
   return (
     <Section ground="paper" className="works" labelledBy="works-title">
@@ -106,23 +110,22 @@ export function Works({ copy }: { copy: Copy["works"] }) {
         <h2 className="t-h2 works-h" id="works-title">
           <Lines lines={copy.lines} />
         </h2>
-        <div className="works-copy">
-          <p className="t-body">{copy.body}</p>
-          <ul className="works-tiles" aria-label={copy.platforms}>
-            {PLATFORMS.map(({ icon, flag }) => (
-              <li key={icon} className="works-tile">
-                <span className="works-tile-h">
-                  <Icon name={icon} />
-                  <code>{flag}</code>
-                </span>
+        <p className="t-body works-copy">{copy.body}</p>
+        <ul className="works-tiles" aria-label={copy.platforms}>
+          {PLATFORMS.map(({ icon, flag }) => (
+            <li key={icon} className="works-tile">
+              <span className="works-tile-h">
+                <Icon name={icon} />
                 <span className="t-h4">
                   {icon === "git" ? copy.local : brandIcons[icon]?.label}
                 </span>
-                <Leaves items={copy.leaves[icon]} />
-              </li>
-            ))}
-          </ul>
-        </div>
+                <code>{flag}</code>
+              </span>
+              <Leaves items={copy.leaves[icon]} />
+              <WorksOutput platform={icon} copy={copy} />
+            </li>
+          ))}
+        </ul>
         <div className="works-index">
           <h3 className="works-gauge">
             <span className="t-gauge">{PROVIDERS}</span> <span className="t-h4">{copy.gauge}</span>
