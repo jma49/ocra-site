@@ -3,7 +3,6 @@
    sheet on the ground with GitHub's timeline under it, its caption and the
    state's note; the head and the comment's anatomy (cols 7–12). One column
    below 1200. What changes with the state is stacked: nothing moves. */
-@import "./50-lifecycle-thread.css";
 .home .lifecycle {
   padding-block: var(--pad);
 }
