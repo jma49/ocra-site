@@ -241,9 +241,10 @@ export const exampleRun = {
     deletions: 2,
     added: [8, 10, 13, 14, 16, 20, 21, 28, 29, 30, 31, 32, 33, 39, 40, 41, 42, 43],
   },
-  // The rows the hero shows: the lines the recorded finding's evidence cites
-  // (16, 21) and the function (40–43).
-  heroRows: [16, 21, 40, 41, 42, 43],
+  // The page the hero's desk prints: src/auth/session.ts from loadSession's
+  // check to the end of isExpired, line 42 on it; the pen marks these two
+  // operands of the quote.
+  heroPage: { from: 29, to: 43, marked: ["session.expiresAt", "Date.now()"] },
 } as const satisfies Shape & Record<string, unknown>;
 
 export type ExampleRun = typeof exampleRun;

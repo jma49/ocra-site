@@ -123,8 +123,14 @@ check(
   newStart + newCount - 1 === recordedLines(diff.path).length,
   "the new range does not end at the head's last line",
 );
-for (const n of exampleRun.heroRows)
-  check((diff.added as readonly number[]).includes(n), `hero row ${n} is not added`);
+const { heroPage } = exampleRun;
+check(
+  heroPage.from <= finding.line && finding.line <= heroPage.to,
+  "the hero's page does not print the finding's line",
+);
+check(heroPage.to <= recordedLines(diff.path).length, "the hero's page runs past the file");
+for (const token of heroPage.marked)
+  check(finding.quote.split(token).length === 2, `the quote does not hold ${token} once`);
 
 // 4. The changed files and the commit.
 const selected = files.filter((f) => f.selected).map((f) => f.path);

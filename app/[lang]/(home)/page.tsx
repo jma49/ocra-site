@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { InkDefs } from "@/components/landing/desk/ink";
 import { Faq } from "@/components/landing/faq";
 import { Features } from "@/components/landing/features";
 import { Final } from "@/components/landing/final";
@@ -29,18 +30,19 @@ export default async function HomePage({ params }: Props) {
     <>
       <SiteHeader copy={{ announce: copy.announce, nav: copy.nav }} locale={lang} />
       <main id="main" className="landing" tabIndex={-1}>
-        <Hero copy={copy.hero} window={copy.window} locale={lang} />
-        <Works copy={copy.works} />
+        <Hero copy={copy.hero} locale={lang} />
         <HowItWorks copy={copy.how} />
         <Statement copy={copy.statement} />
+        <Works copy={copy.works} />
         <Features copy={copy.features} />
-        <Lifecycle copy={copy.lifecycle} onLine={copy.window.pr.onLine} />
+        <Lifecycle copy={copy.lifecycle} onLine={copy.hero.desk.onLine} />
         <Security copy={copy.security} locale={lang} />
         <Plans copy={copy.plans} locale={lang} />
         <Faq copy={copy.faq} locale={lang} />
         <Final copy={copy.final} locale={lang} />
       </main>
       <Footer copy={copy.footer} locale={lang} />
+      <InkDefs />
       <LandingMotion />
     </>
   );

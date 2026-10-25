@@ -6,7 +6,7 @@ import { faq } from "./sections/faq";
 import { features } from "./sections/features";
 import { final } from "./sections/final";
 import { footer } from "./sections/footer";
-import { hero, productWindow } from "./sections/hero";
+import { hero } from "./sections/hero";
 import { how } from "./sections/how";
 import { lifecycle } from "./sections/lifecycle";
 import { plans } from "./sections/plans";
@@ -23,7 +23,6 @@ const sources = {
   nav,
   notFound,
   hero,
-  window: productWindow,
   works,
   how,
   statement,

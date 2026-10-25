@@ -1,365 +1,343 @@
-/* The hero (sections.md §2): the brand line across the container (one line
-   from 1024 px, two below), then the lede, the two ways in and the note in
-   four columns beside the desk in eight (one column below 1200 px), and
-   the desk's oxblood plane (its papers and caption: 11-window.css). The
-   load: the line rises out of a mask, the copy and the desk follow, and
-   the review starts as they settle; nothing blurs, nothing moves
-   sideways. */
+/* The hero (hero/hero.tsx): the brand line beside the desk. The desk is
+   painted composed and finished; with motion allowed and on a first visit
+   (not html.seen), the states below hold the objects before HeroPlay plays
+   them (.live), and .done is the finished desk. */
+
+.home:has(.hero[data-ground="desk"]) .announce {
+  position: relative;
+  z-index: 2;
+}
+.home:has(.hero[data-ground="desk"]) .announce p {
+  color: var(--on-desk-2);
+}
+.home:has(.hero[data-ground="desk"]) .announce a {
+  color: var(--on-desk);
+  text-decoration-color: var(--line-desk);
+}
+
 .home .hero {
-  padding-block: 16px 64px;
+  min-height: clamp(720px, calc(100svh - 96px), 920px);
+  overflow-x: clip;
 }
-.home .hero-head {
-  container-type: inline-size;
+.home .hero-top {
+  position: absolute;
+  top: 24px;
+  height: 1px;
+  width: 1px;
 }
-/* Archivo's capitals sit a little in from their box at this size: pull the
-   line back so its stems align with the lede and the desk's edge. */
-.home .hero h1 {
-  margin-inline-start: -0.035em;
-}
-/* The one line has no descenders: a tighter box, so the desk's papers are
-   in the first screen at 1440 × 900. Its ascenders reach the box's top, so
-   the margin sets the air under the nav bar (44 px at 148 px, never under
-   40): more than the 34 px the line keeps from the desk, as the line
-   belongs to what follows it. */
-@media (min-width: 1024px) {
-  .home .hero h1 {
-    margin-top: max(1.5rem, 0.19em);
-    line-height: 0.8;
-  }
-}
-.home .hero-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  align-items: start;
-  margin-top: 24px;
+.home .hero-in {
+  position: relative;
+  z-index: 2;
+  padding-top: clamp(48px, 8vh, 92px);
+  pointer-events: none;
 }
 .home .hero-copy {
-  grid-column: 1 / span 4;
-  /* The lede's first cap height meets the desk's top edge (half-leading
-     plus Archivo's ascent above its caps: 0.42 em at 1.55). */
-  margin-top: -0.42em;
-  font-size: clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  max-width: 620px;
+  pointer-events: auto;
 }
-.home .hero-grid > .product {
-  grid-column: 5 / -1;
-  min-width: 0;
+.home .hero-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(60px, 8.2vw, 120px);
+  font-weight: 500;
+  font-stretch: 70%;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--on-desk);
+  white-space: nowrap;
 }
-.home .hero .t-lede {
-  max-width: 34rem;
-  color: var(--ink-2);
+.home .hero-h .hl {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.04em;
+}
+.home .hero-h .hli {
+  display: block;
+}
+.home:lang(zh) .hero-h,
+.home .hero-h:lang(zh) {
+  font-family: var(--font-sans);
+  font-size: clamp(52px, 7vw, 104px);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+}
+.home .hero-lede {
+  max-width: 34ch;
+  margin-top: 30px;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--on-desk-2);
   text-wrap: pretty;
 }
-/* The two ways in side by side. From 1200 px they fill the column's
-   measure together, one block under the lede; where it is too narrow for
-   both (1200–1359 px) each takes a row of its own, at the column's width. */
 .home .hero-cta {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 28px;
-}
-.home .hero-cta .btn {
-  justify-content: center;
-  gap: 8px;
-  padding-inline: 16px;
-}
-@media (min-width: 1200px) {
-  .home .hero-cta .btn {
-    flex: 1 0 auto;
-  }
+  align-items: center;
+  gap: 14px 30px;
+  margin-top: 36px;
 }
 .home .hero-note {
   margin-top: 16px;
-  color: var(--ink-3);
+  font-size: 14px;
+  color: var(--on-desk-3);
 }
-
-/* From 1200 px the column runs down beside the desk to the first screen's
-   foot, and the key to the pen's marks and what the example is stand at
-   its foot: beside the marks they explain, at least 48 px under the note,
-   and level with the desk's foot where the screen shows it (below 1200 px
-   they are the desk's caption: 11-window.css). The column starts 275 px
-   down the screen (the bar, the nav and the line above it; 290 px in
-   Chinese, a little less from 1200 to 1359 px, where the line is smaller),
-   and its foot keeps 40 px off the screen's. */
-.home .hero-key {
-  display: none;
+.home .hero-caption {
+  position: absolute;
+  left: max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
+  bottom: 26px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 660px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--on-desk-3);
 }
-@media (min-width: 1200px) {
-  .home .hero-copy {
-    align-self: stretch;
-    display: flex;
-    flex-direction: column;
-    max-height: calc(100svh - 315px);
-  }
-  .home .hero:lang(zh) .hero-copy {
-    max-height: calc(100svh - 330px);
-  }
-  .home .hero-key {
-    display: grid;
-    gap: 14px;
-    margin-top: auto;
-    padding-top: 48px;
-    color: var(--ink-3);
-  }
-  /* A hairline over the key, as over a figure's notes. */
-  .home .hero-key::before {
-    content: "";
-    border-top: 1px solid var(--line);
-    margin-bottom: 4px;
-  }
-  .home .hero-key-marks {
-    display: grid;
-    gap: 3px;
-    color: var(--ink-2);
-  }
-  .home .hero-key-marks > span {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .home .hero-key-what {
-    max-width: 34rem;
-  }
-  /* The desk's caption keeps them for screen readers; only a gloss (zh)
-     stays on the plane. In English the caption's box stays, empty: its
-     40 px keep the plane's foot clear of the summary card. */
-  .home .product-cap :is(.product-example, .product-key) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
+.home .hero-caption-ring {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--on-desk-2);
 }
-/* A short screen where the ways in stack (1200–1359 px): the key comes a
-   little closer to the note, so its last line still clears the fold. */
-@media (min-width: 1200px) and (max-height: 799px) {
-  .home .hero-key {
-    padding-top: 28px;
-  }
-}
-
-/* 1024–1199: the line stays one line; under it the lede, with the ways in
-   and the note at its right, foot to foot; then the desk, which keeps a
-   desktop measure and sits under them, to the right. */
-@media (max-width: 1199px) {
-  .home .hero-copy,
-  .home .hero-grid > .product {
-    grid-column: 1 / -1;
-  }
-  .home .hero-copy {
-    margin-top: 0;
-  }
-  .home .hero-grid {
-    margin-top: 24px;
-    row-gap: 40px;
-  }
-  .home .hero-grid > .product {
-    width: min(100%, 760px);
-    margin-inline-start: auto;
-  }
-}
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .home .hero-copy {
-    display: grid;
-    grid-template-columns: minmax(0, 34rem) auto;
-    grid-template-rows: 1fr auto;
-    column-gap: var(--gap);
-    align-items: end;
-    justify-content: space-between;
-  }
-  .home .hero-copy .t-lede {
-    grid-row: 1 / 3;
-    align-self: start;
-  }
-  .home .hero-copy .hero-cta {
-    flex-wrap: nowrap;
-    margin-top: 0;
-  }
-  .home .hero-copy .hero-note {
-    grid-column: 2;
-    margin-top: 12px;
-  }
-}
-/* 600–1023: two lines; the desk at the content width (760 px at most). */
-@media (max-width: 1023px) {
-  .home .hero {
-    padding-block: 28px 56px;
-  }
-  .home .hero h1 {
-    margin-inline-start: -0.03em;
-  }
-  .home .hero-grid > .product {
-    margin-inline-start: 0;
-  }
-}
-/* Below 600: the ways in stacked at full width; the desk bleeds to 8 px
-   from the screen's edges. */
-@media (max-width: 599px) {
-  .home .hero {
-    padding-block: 20px 48px;
-  }
-  .home .hero-grid {
-    margin-top: 20px;
-    row-gap: 28px;
-  }
-  .home .hero-cta {
-    display: grid;
-    margin-top: 24px;
-  }
-  .home .hero-note {
-    margin-top: 14px;
-  }
-  .home .hero-grid > .product {
-    width: auto;
-    margin-inline: -12px;
-  }
-}
-
-/* ---- The desk: one ocra-coloured plane ----
-   The hero's desk is the night's oxblood, the hue the slabs carry, so the
-   first screen holds ocra's colour and the papers stand off it; under one
-   light from the top left like every desk, a lit rim and its own shadow on
-   the page (the papers on it: 11-window.css). In dark the plane sits
-   between the page and the sheets (lighter is higher). Its own type and
-   controls are set as on night; inside the papers everything is as on a
-   sheet. */
-.home .hero .desk {
-  --plane: var(--night);
-  --focus: var(--on-night);
-  background:
-    radial-gradient(
-      70% 70% at 10% 0%,
-      color-mix(in srgb, var(--white) 7%, transparent),
-      transparent 70%
-    ),
-    linear-gradient(
-      160deg,
-      color-mix(in oklab, var(--white) 4%, var(--plane)) 0%,
-      var(--plane) 50%,
-      color-mix(in oklab, var(--black) 10%, var(--plane)) 100%
-    )
-    var(--plane);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--white) 12%, transparent),
-    inset 0 0 0 1px color-mix(in srgb, var(--white) 5%, transparent),
-    0 1px 2px color-mix(in srgb, var(--black) 10%, transparent),
-    4px 28px 56px -30px color-mix(in srgb, var(--black) 45%, transparent);
-  color: var(--on-night);
-}
-.dark .home .hero .desk {
-  --plane: color-mix(in oklab, var(--night) 60%, var(--paper));
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--white) 8%, transparent),
-    inset 0 1px 0 color-mix(in srgb, var(--white) 10%, transparent),
-    4px 30px 60px -28px color-mix(in srgb, var(--black) 80%, transparent);
-}
-.home .hero .pane {
-  --focus: var(--ink);
-  color: var(--ink);
-}
-.home .hero .desk .seg {
-  background: color-mix(in srgb, var(--on-night) 9%, transparent);
-}
-.home .hero .desk .seg [role="tab"] {
-  color: var(--on-night);
-}
-.home .hero .desk .seg [role="tab"][aria-selected="true"] {
-  color: var(--ink);
-  box-shadow: none;
+.home .hero-replay {
+  position: absolute;
+  right: max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
+  bottom: 18px;
+  z-index: 3;
+  height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: color-mix(in srgb, var(--desk-lo) 70%, transparent);
+  color: var(--on-desk-2);
+  font: 500 13px / 1 var(--font-sans);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
 }
 @media (hover: hover) {
-  .home .hero .desk .seg [role="tab"]:not([aria-selected="true"]):hover {
-    background: color-mix(in srgb, var(--on-night) 10%, transparent);
-    color: var(--on-night);
+  .home .hero-replay:hover {
+    color: var(--on-desk);
   }
 }
-.home .hero .desk-chip {
-  color: var(--on-night);
-  background: color-mix(in srgb, var(--on-night) 9%, transparent);
-}
-.home .hero .desk-chip::before {
-  box-shadow: inset 0 0 0 1.3px var(--on-night);
-}
 
-/* Chinese: the system face draws its glyphs to the box, so no optical
-   pull; at display size a full-width comma leaves a hole mid-line, so the
-   punctuation is set half width. */
-.home .hero:lang(zh) h1 {
-  margin-inline-start: -0.01em;
-  font-feature-settings: "halt";
+/* ---- The desk scene: cropped, never scaled down past the type's floor ---- */
+.home .hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
 }
-/* Ideographs fill the em, where Archivo's capitals fill two thirds of it: a
-   size smaller, the line carries the Latin one's weight. A one-em box puts
-   the glyphs' tops at its top, so the line keeps the same air under the
-   nav and the desk stays in the first screen. */
-@media (min-width: 1024px) {
-  .home .hero:lang(zh) h1 {
-    font-size: min(8.5rem, 12cqi);
-    line-height: 1;
+.home .hero-world {
+  position: absolute;
+  left: calc(50% + 46px);
+  top: 18px;
+  transform: scale(var(--ws, 1));
+  transform-origin: 0 0;
+}
+.home .hero-world :is(.desk-sheet, .card) {
+  pointer-events: auto;
+}
+.home .hero-sheet {
+  --w: 690px;
+  --h: 1000px;
+  --r: -1.6deg;
+}
+.home .hero-card {
+  --x: -64px;
+  --y: 566px;
+  --r: 1.6deg;
+}
+.home .hero-clip {
+  --x: 150px;
+  --y: 569px;
+  --r: 1.6deg;
+}
+.home .hero-pen {
+  --pen-s: 0.82;
+}
+@media (min-width: 1600px) {
+  .home .hero-world {
+    --ws: 1.1;
   }
 }
-/* The lede and the note break at punctuation and spaces only, never inside
-   a word (没 / 有). */
-.home .hero:lang(zh) :is(.t-lede, .hero-note) {
-  word-break: keep-all;
-  overflow-wrap: anywhere;
+@media (max-width: 1299px) {
+  .home .hero-world {
+    --ws: 0.92;
+    left: calc(50% + 20px);
+  }
 }
 
-/* ---- Load: about 760 ms, then the review plays (review-clock.tsx) ----
-   The line rises out of a mask at its own foot, one line after the other;
-   the lede, the ways in and the note rise a step behind; the desk settles
-   under them. The copy stays painted from frame 0 (on a phone the lede is
-   the largest text) and only moves; the line is clipped, never faded. */
+/* ---- Phone and tablet: the copy, then the desk cropped below it ---- */
+@media (max-width: 1023px) {
+  .home .hero {
+    min-height: 0;
+  }
+  .home .hero-in {
+    padding-top: 28px;
+  }
+  .home .hero-copy {
+    max-width: 560px;
+  }
+  .home .hero-h {
+    font-size: clamp(50px, 13.4vw, 96px);
+  }
+  .home .hero-lede {
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  .home .hero-cta {
+    gap: 4px 22px;
+    margin-top: 22px;
+  }
+  .home .hero-note {
+    display: none;
+  }
+  .home .hero-scene {
+    position: relative;
+    inset: auto;
+    height: 430px;
+    margin-top: 10px;
+  }
+  .home .hero-world {
+    --ws: 0.68;
+    left: max(6px, calc(50% - 300px));
+    top: -214px;
+  }
+  .home .hero-sheet .ruler {
+    left: -96px;
+  }
+  .home .hero-card {
+    --x: 6px;
+    --y: 548px;
+    scale: 1.17;
+    transform-origin: 0 0;
+  }
+  .home .hero-clip {
+    --x: 268px;
+    --y: 552px;
+  }
+  .home .hero-caption {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin: 0 var(--gutter);
+    padding: 14px 0 22px;
+  }
+  .home .hero-replay {
+    bottom: 64px;
+  }
+}
+
+/* ---- The camera on scroll: the desk drops away, objects by their height
+   (06-desk.css, data-depth), over the first screen of scroll ---- */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .hero [data-depth] {
+      animation: hero-depth linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+    html.mo .home .hero-world {
+      animation: hero-dolly linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+  }
+}
+@keyframes hero-depth {
+  to {
+    translate: 0 calc(var(--depth) * -60vh);
+  }
+}
+@keyframes hero-dolly {
+  to {
+    translate: 0 -4vh;
+    scale: 0.97;
+  }
+}
+
+/* ---- Before play (first visit, motion allowed) ---- */
 @media (prefers-reduced-motion: no-preference) {
-  /* An inline line cannot move; each line rises as a box of its own. */
-  html.mo .home .hero .t-display .l {
-    display: inline-block;
-    animation: hero-line 640ms var(--e-enter) backwards;
+  html.mo:not(.seen) .home .hero:not(.done) .desk-lamp {
+    animation: lamp-warm 1100ms var(--e-std) both;
   }
-  html.mo .home .hero .t-display .l + .l {
+  html.mo:not(.seen) .home .hero:not(.done) .hero-sheet {
+    animation: sheet-land 900ms var(--e-settle) both;
+  }
+  html.mo:not(.seen) .home .hero:not(.done) .hero-h .hli {
+    animation: line-rise 700ms var(--e-settle) both;
+  }
+  html.mo:not(.seen) .home .hero:not(.done) .hero-h .hl + .hl .hli {
     animation-delay: 90ms;
   }
-  html.mo .home .hero :is(.t-lede, .hero-cta, .hero-note, .hero-key) {
-    --rise: 18px;
-    animation: rise 520ms var(--e-enter) 160ms backwards;
+  html.mo:not(.seen) .home .hero:not(.done) :is(.hero-lede, .hero-cta, .hero-note) {
+    animation: copy-rise 640ms var(--e-settle) 220ms both;
   }
-  html.mo .home .hero .hero-cta {
-    animation-delay: 200ms;
+  html.mo:not(.seen) .home .hero:not(.done) .ruler:not(.in) {
+    opacity: 0;
   }
-  html.mo .home .hero .hero-note {
-    animation-delay: 240ms;
+  html.mo:not(.seen) .home .hero:not(.done) .ruler {
+    --nudge: 0px;
   }
-  html.mo .home .hero .hero-key {
-    animation-delay: 300ms;
+  html.mo:not(.seen) .home .hero:not(.done) .ink-run {
+    stroke-dashoffset: 1;
   }
-  html.mo .home .hero .product {
-    transform-origin: 50% 0;
-    animation: hero-desk 640ms var(--e-enter) 80ms backwards;
-  }
-}
-@media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
-  html.mo .home .hero .t-display .l {
-    display: block;
+  html.mo:not(.seen) .home .hero:not(.done) .hero-card:not(.dealt),
+  html.mo:not(.seen) .home .hero:not(.done) .hero-clip:not(.bit),
+  html.mo:not(.seen) .home .hero:not(.done, .live) .hero-pen {
+    opacity: 0;
   }
 }
-/* The mask is the line's own box, 20 % taller each way for the glyphs:
-   the clip moves against the rise, so it holds still on the page while
-   the line comes up through it. */
-@keyframes hero-line {
+@keyframes lamp-warm {
+  0% {
+    opacity: 0.2;
+  }
+  22% {
+    opacity: 0.75;
+  }
+  30% {
+    opacity: 0.45;
+  }
+  38% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes sheet-land {
   from {
-    transform: translateY(125%);
-    clip-path: inset(-145% -4% 105% -4%);
+    translate: -16px -26px;
+    rotate: 1.2deg;
+    --lift: 0.7;
   }
   to {
-    transform: none;
-    clip-path: inset(-20% -4% -20% -4%);
+    translate: 0 0;
+    rotate: 0deg;
+    --lift: 0;
   }
 }
-@keyframes hero-desk {
+@keyframes line-rise {
   from {
-    transform: translateY(36px) scale(0.975);
+    translate: 0 105%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes copy-rise {
+  from {
+    translate: 0 12px;
+    opacity: 0.001;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
   }
 }
