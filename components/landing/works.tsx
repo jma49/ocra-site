@@ -6,7 +6,8 @@ import { MarqueePause } from "./marquee-pause";
 import { Lines, Section } from "./section";
 
 // Where ocra reviews, and the `ocra review` flag that points it there
-// (the CLI's --pr, --mr and --from: docs/manual/en/cli.mdx).
+// (the CLI's --pr, --mr and --from: docs/manual/en/cli.mdx). What it leaves
+// there is copy (copy.leaves).
 const PLATFORMS = [
   { icon: "github", flag: "--pr" },
   { icon: "gitlab", flag: "--mr" },
@@ -64,6 +65,24 @@ function Chips({ row, hidden }: { row: readonly string[]; hidden?: boolean }) {
   );
 }
 
+// What ocra leaves on the platform, in the tile's mono. The space before
+// the second thing joins the two on a phone's one line; between a desktop
+// tile's two block lines it collapses.
+function Leaves({ items }: { items: Copy["works"]["leaves"]["git"] }) {
+  const [first, second] = items;
+  return (
+    <span className="works-tile-o">
+      <span>{first}</span>
+      {second && (
+        <>
+          {" "}
+          <span>+ {second}</span>
+        </>
+      )}
+    </span>
+  );
+}
+
 // One marquee row: the set twice, the copy hidden from assistive tech, so
 // the track loops seamlessly by moving one set's width (motion.md §15).
 function Row({ row, reverse }: { row: readonly string[]; reverse?: boolean }) {
@@ -92,13 +111,14 @@ export function Works({ copy }: { copy: Copy["works"] }) {
           <ul className="works-tiles" aria-label={copy.platforms}>
             {PLATFORMS.map(({ icon, flag }) => (
               <li key={icon} className="works-tile">
-                <Icon name={icon} />
-                <span className="works-tile-t">
-                  <span className="t-h4">
-                    {icon === "git" ? copy.local : brandIcons[icon]?.label}
-                  </span>
+                <span className="works-tile-h">
+                  <Icon name={icon} />
                   <code>{flag}</code>
                 </span>
+                <span className="t-h4">
+                  {icon === "git" ? copy.local : brandIcons[icon]?.label}
+                </span>
+                <Leaves items={copy.leaves[icon]} />
               </li>
             ))}
           </ul>
