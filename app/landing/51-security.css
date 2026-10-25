@@ -1,14 +1,40 @@
-/* Security: the stone band, its statement-scale H2, the gate row with its
-   static marks, the props (package L). F's stub. */
+/* Security (sections.md §8): the stone band. A statement-scale H2 across
+   the band, the body and the threat model's link under it, then the gate as
+   an instrument (four tiles on the 12-column grid, an arrow in each gap)
+   and the four properties. Text on stone is ink or ink-2 only; the pen
+   writes only on the two sheets, at rest. */
 .home .security {
   padding-block: var(--pad-band);
 }
 .home .sec-intro {
   display: grid;
   justify-items: start;
-  gap: 16px;
-  max-width: 60ch;
-  margin-top: 24px;
+  gap: 10px;
+  max-width: 36rem;
+  margin-top: 32px;
+}
+/* From 1200 px the body sits beside the H2's short second line (cols 8–12),
+   its link on the H2's last baseline: the band's head is one block. Both
+   first lines end before col 8 in English and Chinese. */
+@media (min-width: 1200px) {
+  .home .sec-head {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gap);
+    align-items: end;
+  }
+  .home .sec-head > * {
+    grid-row: 1;
+  }
+  .home .sec-h {
+    grid-column: 1 / -1;
+  }
+  .home .sec-intro {
+    grid-column: 8 / -1;
+    max-width: none;
+    margin-top: 0;
+    margin-bottom: -8px;
+  }
 }
 .home .sec-intro .t-body {
   color: var(--ink-2);
@@ -17,74 +43,345 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+  min-width: 44px;
   font-weight: 500;
+  font-size: 15px;
 }
+
+/* ---- The gate ---- */
 .home .sec-gate {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 56px;
+  column-gap: var(--gap);
+  align-items: stretch;
+  margin-top: 64px;
 }
 .home .sec-tile {
-  display: grid;
-  align-content: start;
-  gap: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding: 24px;
   border-radius: var(--r-card);
 }
-.home .sec-tile.quiet {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+.home .sec-tile .t-h4 {
+  color: var(--ink);
 }
-.home .sec-tile.sheet {
-  box-shadow: var(--float);
+.home .sec-title > :not(.sr-only) {
+  display: block;
 }
-.home .sec-tile .t-small {
+.home .sec-what code {
+  font-weight: 500;
+  font-size: 0.86em;
+}
+.home .sec-how {
   color: var(--ink-2);
 }
+/* Chinese titles, labels and notes break at their punctuation, never
+   inside a word. */
+.home .security :lang(zh) :is(.sec-title, .sec-label, .sec-quiet .t-small),
+.home .security:lang(zh) :is(.sec-title, .sec-label, .sec-quiet .t-small) {
+  word-break: keep-all;
+}
+.home .sec-tile .t-small {
+  margin-top: 10px;
+  color: var(--ink-2);
+}
+.home .sec-quiet .t-small {
+  text-wrap: balance;
+}
+/* The two ends of the flow: quiet outlines, centred on the row. */
+.home .sec-quiet {
+  align-self: center;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+  transition: box-shadow 200ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .sec-quiet:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 34%, transparent);
+  }
+}
+/* The gate and the agents: sheets laid on the stone, so the pen can write. */
+.home .sec-tile.sheet {
+  overflow: visible;
+  border-radius: var(--r-card);
+  box-shadow: var(--float);
+}
+.home .sec-core {
+  z-index: var(--z-over);
+}
 .home .sec-label {
+  margin-top: 18px;
+  margin-bottom: 8px;
   font-weight: 500;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--ink);
 }
-.home .sec-chips {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  font-size: 13px;
-}
-.home .sec-tools {
+.home .sec-list {
   display: grid;
-  gap: 2px;
-  font-size: 13px;
+  gap: 6px;
 }
 .home .sec-tools li {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  min-height: 24px;
 }
+.home .sec-tools code {
+  font-size: 13px;
+  color: var(--ink);
+}
+/* A refused path or an off tool: Maple on the sheet's inset, struck. */
+.home .sec-chip {
+  padding: 0 8px;
+  border-radius: var(--r-chip);
+  background: var(--sheet-2);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.home .sec-chip.ink-code {
+  display: inline-grid;
+}
+.home .sec-chip-text {
+  display: inline-flex;
+  align-items: center;
+  height: calc(12.5px * 1.75);
+  font-size: 13px;
+}
+.home .sec-off {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+/* The gate's answer to an agent that asks for a refused path. */
+.home .sec-answer {
+  display: grid;
+  gap: 2px;
+  align-self: stretch;
+  margin-top: auto;
+  padding: 9px 11px;
+  border-radius: var(--r-ctl);
+  background: var(--sheet-2);
+  font-size: 11.5px;
+  line-height: 1.55;
+  text-wrap: balance;
+}
+.home .sec-answer code {
+  font-size: inherit;
+}
+.home .sec-ask {
+  color: var(--ink-3);
+}
+.home .sec-ask span {
+  color: var(--ink);
+}
+.home .sec-denied {
+  color: var(--ink);
+}
+.home .sec-core .sec-list {
+  margin-bottom: 18px;
+}
+.home .sec-more {
+  margin-inline-start: 4px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+/* The arrow in the gap before a tile. */
+.home .sec-flow {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--gap) / -2);
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--ink-2);
+}
+.home .sec-flow .arrow-glyph {
+  display: block;
+}
+.home .sec-down {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 20px;
+}
+
+/* ---- Properties ---- */
 .home .sec-props {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-  margin-top: 40px;
-  padding-top: 24px;
+  column-gap: var(--gap);
+  row-gap: 28px;
+  margin-top: 56px;
+  padding-top: 28px;
   border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
 }
-.home .sec-props p {
-  margin-top: 6px;
+.home .sec-props .t-small {
+  margin-top: 8px;
   color: var(--ink-2);
 }
+
+/* ---- 600 to 1199: the ends as full-width strips, the two sheets side by
+   side; the flow runs down, across, down ---- */
 @media (max-width: 1199px) {
-  .home .sec-gate,
-  .home .sec-props {
+  .home .sec-gate {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 599px) {
-  .home .sec-gate,
-  .home .sec-props {
-    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+    margin-top: 44px;
   }
   .home .sec-tile {
-    padding: 18px;
+    padding: 20px 22px 22px;
+  }
+  .home .sec-quiet {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--gap);
+    align-items: baseline;
+    align-self: stretch;
+    padding-block: 14px 16px;
+  }
+  .home .sec-quiet .t-small {
+    margin-top: 0;
+  }
+  .home .sec-core .sec-flow,
+  .home .sec-quiet .sec-flow {
+    top: -16px;
+    left: 50%;
+  }
+  .home .sec-core .sec-flow .arrow-glyph,
+  .home .sec-quiet .sec-flow .arrow-glyph {
+    display: none;
+  }
+  .home .sec-core .sec-down,
+  .home .sec-quiet .sec-down {
+    display: block;
+  }
+  .home .sec-props {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 40px;
+  }
+  /* A wide tile sets its lists as rows. */
+  .home .sec-list,
+  .home .sec-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .home .sec-tools {
+    gap: 6px 16px;
+  }
+}
+
+/* "isolated agents · 30 steps each" fits one line where its tile spans
+   half the container or more. */
+@media (max-width: 599px), (min-width: 768px) and (max-width: 1199px) {
+  .home .sec-agents .sec-title > :not(.sr-only) {
+    display: inline;
+  }
+  .home .sec-agents .sec-how::before {
+    content: " · " / "";
+  }
+}
+
+/* ---- Phones leave the gate's answer out (the struck list says it), as
+   the page's length budget asks ---- */
+@media (max-width: 599px) {
+  .home .sec-core .sec-list {
+    margin-bottom: 0;
+  }
+  .home .sec-answer {
+    display: none;
+  }
+}
+
+/* ---- Phones: one column, a Maple ↓ between the tiles, lists as rows ---- */
+@media (max-width: 599px) {
+  .home .sec-intro {
+    margin-top: 16px;
+    gap: 4px;
+  }
+  .home .sec-gate {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 24px;
+    margin-top: 24px;
+  }
+  .home .sec-tile {
+    padding: 12px 16px 14px;
+  }
+  .home .sec-quiet {
+    display: block;
+    padding-block: 10px 11px;
+  }
+  .home .sec-tile .t-h4 {
+    font-size: 16px;
+  }
+  .home .sec-quiet .t-h4 {
+    font-size: 15px;
+  }
+  .home .sec-quiet .t-small {
+    margin-top: 2px;
+  }
+  .home .sec-flow,
+  .home .sec-agents .sec-flow {
+    top: -12px;
+    left: 50%;
+  }
+  .home .sec-flow .arrow-glyph,
+  .home .sec-agents .sec-flow .arrow-glyph {
+    display: none;
+  }
+  .home .sec-down,
+  .home .sec-agents .sec-down {
+    display: block;
+    font-size: 18px;
+  }
+  .home .sec-label {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .home .sec-list {
+    gap: 5px;
+  }
+  .home .sec-tools {
+    gap: 4px 10px;
+  }
+  .home .sec-tools li {
+    gap: 5px;
+  }
+  .home .sec-tools code {
+    font-size: 12px;
+  }
+  .home .sec-chip {
+    padding-inline: 5px;
+    font-size: 11.5px;
+  }
+  .home .sec-chip-text {
+    height: calc(11.5px * 1.75);
+    font-size: 12px;
+  }
+  .home .sec-off {
+    gap: 5px;
+  }
+  .home .sec-more {
+    margin-inline-start: 2px;
+    font-size: 12.5px;
+  }
+  .home .sec-props {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 10px;
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+  .home .sec-props .t-h4 {
+    font-size: 16px;
+  }
+  .home .sec-props .t-small {
+    margin-top: 1px;
   }
 }

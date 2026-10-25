@@ -1,100 +1,306 @@
-/* Lifecycle: the 6/6 composition, tabs and pause, the conversation thread
-   and its states, the caption, the state note and the anatomy (package L).
-   F's stub. */
+/* Lifecycle (sections.md §7, motion.md §10): one finding after a push. The
+   object (cols 1–6, from the section's top): the tabs, the thread as a
+   sheet on the ground with GitHub's timeline under it, its caption and the
+   state's note; the head and the comment's anatomy (cols 7–12). One column
+   below 1200. What changes with the state is stacked: nothing moves. */
+@import "./50-lifecycle-thread.css";
 .home .lifecycle {
   padding-block: var(--pad);
 }
-.home .life-grid {
+.home .life {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
-  row-gap: 48px;
   align-items: start;
 }
-.home .life-object {
-  grid-column: 1 / span 6;
+.home .life > * {
+  grid-column: 1 / -1;
+  min-width: 0;
 }
-.home .life-text {
-  grid-column: 7 / -1;
+@media (min-width: 1200px) {
+  .home .life {
+    grid-template-rows: auto 1fr;
+  }
+  .home .life-object {
+    grid-column: 1 / span 6;
+    grid-row: 1 / span 2;
+  }
+  .home .life-head,
+  .home .life-anatomy {
+    grid-column: 7 / -1;
+  }
+  .home .life-anatomy {
+    grid-row: 2;
+  }
 }
-.home .life-thread {
-  box-shadow: var(--float);
-}
-.home .life-thread-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--line);
-  font-size: 13px;
-  color: var(--ink-3);
-}
-.home .life-thread-head strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-.home .life-thread-head code {
-  font-weight: 500;
-  color: var(--ink);
-}
-.home .life-status {
-  margin-inline-start: auto;
-  color: var(--ink);
-}
-.home .life-title {
-  padding: 12px 16px 4px;
-  font-size: 14px;
-  color: var(--ink-2);
-}
-.home .life-title strong {
-  color: var(--ink);
-  font-weight: 600;
-}
-.home .life-event {
-  padding: 4px 16px;
-  color: var(--ink-3);
-}
-.home .life-event:last-child {
-  padding-bottom: 16px;
-}
-.home .life-cap {
-  margin-top: 12px;
-  color: var(--ink-2);
-}
-.home .life-text .t-kicker {
+.home .life-head .t-kicker {
   margin-bottom: 16px;
 }
-.home .life-text .t-body {
+.home .life-head .t-body {
+  max-width: 34em;
   margin-top: 24px;
+  color: var(--ink-2);
+}
+
+/* ---- The object ---- */
+.home .life-object {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "ctl chip"
+    "thread thread"
+    "cap cap"
+    "note note";
+  align-items: center;
+}
+.home .life-controls {
+  grid-area: ctl;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.home .life-chip {
+  grid-area: chip;
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.home .lt {
+  grid-area: thread;
+  margin-top: 18px;
+}
+.home .life-cap {
+  grid-area: cap;
+  max-width: 44em;
+  margin-top: 22px;
+  color: var(--ink-2);
 }
 .home .life-note {
-  margin-top: 32px;
+  grid-area: note;
+  margin-top: 36px;
+}
+.home .life-note .t-lede {
   color: var(--ink);
 }
+
+/* The selected tab carries the autoplay's clock: an ink hairline that fills
+   in 5.2 s and, at its end, advances the state (lifecycle-states.tsx). It
+   runs only while the thread is in view and not held. */
+.home .life-tabs [role="tab"] {
+  position: relative;
+}
+.home .life-tick {
+  position: absolute;
+  inset: auto 10px 4px;
+  height: 2px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ink) 38%, transparent);
+  clip-path: inset(0 100% 0 0);
+  animation: life-tick 5200ms linear forwards paused;
+}
+.home .life[data-run] .life-tick {
+  animation-play-state: running;
+}
+@keyframes life-tick {
+  to {
+    clip-path: inset(0);
+  }
+}
+/* Pause: shown once the island runs, with motion only. */
+.home .life-pause {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  color: var(--ink);
+  cursor: pointer;
+  visibility: hidden;
+  transition:
+    background-color 150ms var(--e-std),
+    box-shadow 150ms var(--e-std);
+}
+html.mo.hy .home .life-pause {
+  visibility: visible;
+}
+.home .life-pause .pl {
+  display: none;
+}
+.home .life-pause[aria-pressed="true"] .pa {
+  display: none;
+}
+.home .life-pause[aria-pressed="true"] .pl {
+  display: block;
+}
+@media (hover: hover) {
+  .home .life-pause:hover {
+    background: var(--tint);
+    box-shadow: inset 0 0 0 1px var(--ink-3);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .life-pause {
+    display: none;
+  }
+}
+
+/* ---- The anatomy ---- */
 .home .life-anatomy {
-  margin-top: 32px;
+  margin-top: 40px;
 }
 .home .life-anatomy li {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
-  column-gap: 14px;
-  padding-block: 14px;
+  align-content: start;
+  column-gap: 16px;
+  padding-block: 14px 15px;
   border-top: 1px solid var(--line);
 }
 .home .life-anatomy .key-glyph {
-  margin-top: 4px;
+  margin-top: 6px;
 }
 .home .life-anatomy p {
   grid-column: 2;
+  margin-top: 2px;
   color: var(--ink-2);
 }
-@media (max-width: 1199px) {
-  .home .life-object,
-  .home .life-text {
-    grid-column: 1 / -1;
+
+/* ---- Playing a state, with motion only ---- */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .life[data-enter] .life-note > :not([data-inactive]) {
+    animation: swap-in 300ms var(--e-enter) both;
   }
-  .home .life-text {
-    order: -1;
+  /* An event arrives: its rail grows down to it, the badge pops, the words
+     wipe in (text is clipped, never faded). */
+  html.mo .home .life[data-enter] .lt-ev:not([data-inactive]) .lt-row::before {
+    transform-origin: 50% 0;
+    animation: life-rail 180ms var(--e-std) calc(var(--t) - 140ms) both;
+  }
+  html.mo .home .life[data-enter] .lt-ev:not([data-inactive]) .lt-row:not(:last-child)::after {
+    transform-origin: 50% 0;
+    animation: life-rail 180ms var(--e-std) calc(var(--t) + 200ms) both;
+  }
+  html.mo .home .life[data-enter] .lt-ev:not([data-inactive]) :is(.lt-badge, .lt-avatar) {
+    animation: life-pop 320ms var(--e-pop) var(--t) both;
+  }
+  html.mo .home .life[data-enter] .lt-ev:not([data-inactive]) .lt-text {
+    animation: life-wipe 420ms var(--e-std) calc(var(--t) + 60ms) both;
+  }
+  /* The push already shows in Reported: entering Fixed from there keeps it. */
+  html.mo .home .life[data-prev="reported"] .lt-ev[data-in="fixed"] .lt-push::before,
+  html.mo .home .life[data-prev="reported"] .lt-ev[data-in="fixed"] .lt-push * {
+    animation: none;
+  }
+  html.mo .home .life[data-enter][data-s="fixed"] .lt-outdated {
+    animation: life-wipe 320ms var(--e-std) 400ms both;
+  }
+  html.mo .home .life[data-enter] .lt-code code {
+    transition: color 300ms var(--e-std) 700ms;
+  }
+  html.mo .home .lt-status-track {
+    transition: translate 450ms var(--e-enter) 200ms;
+  }
+  html.mo .home .life[data-s="fixed"] .lt-status-track {
+    transition-delay: 1100ms;
+  }
+  html.mo .home .life[data-s="dismissed"] .lt-status-track {
+    transition-delay: 800ms;
+  }
+}
+@keyframes life-rail {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes life-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes life-wipe {
+  from {
+    clip-path: inset(-4px 100% -4px -4px);
+  }
+  to {
+    clip-path: inset(-4px);
+  }
+}
+
+/* ---- One column below 1200 px ---- */
+@media (max-width: 1199px) {
+  .home .life-object {
+    max-width: 760px;
+    margin-top: 40px;
+  }
+  .home .life-note {
+    margin-top: 28px;
+  }
+  .home .life-anatomy {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--gap);
+    margin-top: 32px;
+  }
+}
+
+/* ---- Phones: the tabs fill their row; the chip labels the caption ---- */
+@media (max-width: 599px) {
+  .home .life-object {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "ctl ctl"
+      "thread thread"
+      "chip cap"
+      "note note";
+    column-gap: 10px;
+    margin-top: 24px;
+  }
+  .home .life-head .t-kicker {
+    margin-bottom: 12px;
+  }
+  .home .life-head .t-body {
+    margin-top: 16px;
+  }
+  .home .lt {
+    margin-top: 10px;
+  }
+  .home .life-cap {
+    margin-top: 14px;
+  }
+  .home .life-tabs {
+    flex: 1 1 auto;
+  }
+  .home .life-pause {
+    width: 44px;
+    height: 44px;
+  }
+  .home .life-chip {
+    align-self: start;
+    margin-top: 11px;
+  }
+  .home .life-note {
+    margin-top: 18px;
+  }
+  .home .life-anatomy {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 6px;
+    margin-top: 22px;
+  }
+  .home .life-anatomy li {
+    column-gap: 12px;
+    align-items: center;
+    padding: 0;
+    border-top: 0;
+  }
+  .home .life-anatomy .key-glyph {
+    margin-top: 0;
+  }
+  .home .life-anatomy p {
+    margin-top: 0;
+    font-size: 13.5px;
+    line-height: 1.45;
   }
 }

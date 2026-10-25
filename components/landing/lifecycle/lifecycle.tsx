@@ -1,82 +1,67 @@
 import type { Copy } from "@/lib/copy";
-import { exampleRun } from "@/lib/landing/example-run";
-import { CodeRows } from "../code";
-import { BotAvatar } from "../comment";
 import { KeyGlyph } from "../pen/marks";
 import { Kicker, Lines, Section } from "../section";
-import { inactive } from "../tabs";
+import { LifecycleStates } from "./lifecycle-states";
+import { ThreadComment, ThreadFile, ThreadLine, threadEvents } from "./thread";
 
-const { finding } = exampleRun;
+// The anatomy's legend glyphs, in the order of `keys`: the margin bar (the
+// quoted line it anchored), the tick (verified), the underline (why it is
+// wrong), the caret (the fix). They describe the comment the hero showed.
 const KEYS = ["bar", "tick", "under", "caret"] as const;
 
-// One finding after you push (sections.md §7). Stub from package F: the
-// thread shows its Fixed state, line 42 struck as GitHub shows an outdated
-// line; L builds the tabs, the three states and their clock.
+// One finding, after you push (sections.md §7): a GitHub conversation
+// thread on the example run's finding, in three states, beside the head,
+// the state's note and the comment's anatomy. The thread's pushes and
+// replies are an illustration, labelled as one: they are not in the
+// recording.
 export function Lifecycle({ copy, onLine }: { copy: Copy["lifecycle"]; onLine: string }) {
   return (
-    <Section ground="paper-2" className="lifecycle">
-      <div className="wrap life-grid">
-        <div className="life-object">
-          <div className="sheet life-thread">
-            <div className="life-thread-head">
-              <BotAvatar />
-              <strong>github-actions</strong>
-              <code>{finding.path}</code>
-              <span className="t-small">{onLine}</span>
-              <span className="chip chip-illustration" aria-describedby="life-cap">
-                {copy.illustration}
-              </span>
-              <span className="life-status t-small">{copy.status.resolved}</span>
+    <Section ground="paper-2" className="lifecycle" labelledBy="life-h">
+      <div className="wrap">
+        <LifecycleStates
+          copy={{
+            tabs: copy.tabs,
+            tablist: copy.tablist,
+            pause: copy.pause,
+            status: copy.status,
+            outdated: copy.outdated,
+            notes: copy.notes,
+          }}
+          head={
+            <div className="life-head">
+              <Kicker>{copy.label}</Kicker>
+              <h2 className="t-h2" id="life-h">
+                <Lines lines={copy.lines} />
+              </h2>
+              <p className="t-body">{copy.body}</p>
             </div>
-            <CodeRows
-              path={finding.path}
-              label={finding.path}
-              rows={[
-                { n: finding.line, marks: [{ kind: "strike", token: finding.quote, at: 400 }] },
-              ]}
-            />
-            <p className="life-title">
-              <span className="sev-dot" aria-hidden="true" />
-              <strong>{finding.title}</strong> · {finding.severity} · verified
+          }
+          chip={
+            <span className="chip chip-illustration life-chip" aria-describedby="life-cap">
+              {copy.illustration}
+            </span>
+          }
+          file={<ThreadFile onLine={onLine} />}
+          line={<ThreadLine onLine={onLine} />}
+          comment={<ThreadComment />}
+          events={threadEvents(copy)}
+          caption={
+            <p className="t-small life-cap" id="life-cap">
+              {copy.caption}
             </p>
-            {/* The three states' events, stacked: the thread never changes height. */}
-            <div className="stack life-events">
-              <div {...inactive(true)}>
-                <p className="life-event t-small">{copy.pushed}</p>
-              </div>
-              <div {...inactive(false)}>
-                <p className="life-event t-small">{copy.pushed}</p>
-                <p className="life-event t-small">{copy.resolvedBot}</p>
-              </div>
-              <div {...inactive(true)}>
-                <p className="life-event t-small">
-                  <strong>{copy.maintainer}</strong> {copy.reply}
-                </p>
-                <p className="life-event t-small">{copy.resolvedMaintainer}</p>
-              </div>
-            </div>
-          </div>
-          <p className="t-small life-cap" id="life-cap">
-            {copy.caption}
-          </p>
-        </div>
-        <div className="life-text">
-          <Kicker>{copy.label}</Kicker>
-          <h2 className="t-h2">
-            <Lines lines={copy.lines} />
-          </h2>
-          <p className="t-body">{copy.body}</p>
-          <p className="t-lede life-note">{copy.notes.fixed}</p>
-          <ul className="life-anatomy">
-            {copy.keys.map((key, i) => (
-              <li key={key.title}>
-                <KeyGlyph kind={KEYS[i] ?? "tick"} />
-                <h3 className="t-h4">{key.title}</h3>
-                <p className="t-small">{key.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+          }
+          anatomy={
+            <ul className="life-anatomy">
+              {copy.keys.map((key, i) => (
+                <li key={key.title}>
+                  <KeyGlyph kind={KEYS[i] ?? "tick"} />
+                  <h3 className="t-h4">{key.title}</h3>
+                  <p className="t-small">{key.body}</p>
+                </li>
+              ))}
+            </ul>
+          }
+        />
       </div>
     </Section>
   );
