@@ -1,6 +1,6 @@
 /* Built for code you do not trust (security.tsx), on a paper band. The
-   poster of refused paths, each under an ink marker bar; then a printed
-   page. A bar is two filtered passes, each drawn once in a window that
+   poster of refused paths, each struck through in marker; then a printed
+   page. A strike is two filtered passes, each drawn once in a window that
    slides open with scroll (a view timeline per row) while its contents
    slide back the other way: transforms only, the filter never re-runs. */
 
@@ -78,6 +78,9 @@
   top: 0;
   height: 1.2em;
   pointer-events: none;
+  /* Ink on the print: the strokes it crosses stay readable under it. */
+  opacity: 0.9;
+  mix-blend-mode: multiply;
 }
 .home .sec-win {
   position: absolute;
@@ -102,11 +105,11 @@
   overflow: visible;
 }
 .home .sec-ink {
-  fill: var(--umbra);
+  fill: var(--print-ink);
 }
 .home .sec-rim {
   flood-color: var(--black);
-  flood-opacity: 0.5;
+  flood-opacity: 0.35;
 }
 .home .sec-rule {
   display: flex;
