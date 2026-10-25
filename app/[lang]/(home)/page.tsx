@@ -37,7 +37,7 @@ export default async function HomePage({ params }: Props) {
         <Lifecycle copy={copy.lifecycle} onLine={copy.window.pr.onLine} />
         <Security copy={copy.security} locale={lang} />
         <Plans copy={copy.plans} locale={lang} />
-        <Faq copy={copy.faq} />
+        <Faq copy={copy.faq} locale={lang} />
         <Final copy={copy.final} locale={lang} />
       </main>
       <Footer copy={copy.footer} locale={lang} />
