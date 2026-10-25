@@ -1,7 +1,9 @@
-/* The manual: Fumadocs' preset under the site's tokens and restyling. */
+/* The manual: Fumadocs' preset under the site's tokens and the desk. */
 @import "tailwindcss";
 @import "@fumadocs/base-ui/css/neutral.css";
 @import "@fumadocs/base-ui/css/preset.css";
 @import "./tokens.css";
 @import "./docs.css";
+@import "./docs-print.css";
+@import "./docs-ruler.css";
 @import "./global.css";

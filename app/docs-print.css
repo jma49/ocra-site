@@ -1,0 +1,356 @@
+/* The manual's print (app/docs.css draws the desk and the sheet): type,
+   links, code, index cards and ledgers on the sheet. */
+
+/* ---- Print: type on the sheet ---- */
+.docs-desk #nd-page h1 {
+  margin-bottom: 14px;
+  font-weight: 560;
+  font-stretch: 86%;
+  font-size: clamp(2.5rem, 4.2vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+.docs-desk #nd-page h1 + p {
+  margin-bottom: 40px;
+  color: var(--sheet-ink-2);
+  font-size: 1.1875rem;
+  line-height: 1.55;
+}
+.docs-desk #nd-page .prose {
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  color: var(--sheet-ink);
+}
+.docs-desk #nd-page .prose :where(h2) {
+  margin-top: 2.6em;
+  padding-top: 1.1em;
+  border-top: 1px solid var(--sheet-line);
+  font-weight: 560;
+  font-stretch: 92%;
+  font-size: 1.875rem;
+  line-height: 1.12;
+  letter-spacing: -0.016em;
+}
+.docs-desk #nd-page .prose :where(h3) {
+  margin-top: 2em;
+  font-weight: 600;
+  font-size: 1.3125rem;
+  letter-spacing: -0.01em;
+}
+.docs-desk #nd-page .prose :where(strong) {
+  color: var(--sheet-ink);
+  font-weight: 600;
+}
+:lang(zh) .docs-desk #nd-page h1 {
+  font-stretch: 100%;
+  font-weight: 600;
+  font-size: clamp(2.125rem, 3.4vw, 2.75rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+:lang(zh) .docs-desk #nd-page .prose {
+  font-size: 1.03125rem;
+  line-height: 1.9;
+}
+:lang(zh) .docs-desk #nd-page .prose :where(h2) {
+  font-stretch: 100%;
+  font-weight: 600;
+  font-size: 1.625rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+:lang(zh) .docs-desk #nd-page .prose :where(h3) {
+  font-size: 1.1875rem;
+  letter-spacing: 0;
+}
+
+/* Links: ink, underlined lightly; under the pointer the pen draws its
+   stroke beneath (a light CSS cut of the landing page's ink: pressure
+   along the run, pooled where the nib set down). */
+.docs-desk #nd-page .prose a:not([data-card]):not(.peer) {
+  color: var(--sheet-ink);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, var(--sheet-ink) 32%, transparent);
+  text-underline-offset: 4px;
+  background:
+    radial-gradient(circle at 1.5px 50%, var(--pen-ink) 1.5px, transparent 2px) 0 calc(100% - 0.5px)
+    / 0 4px no-repeat,
+    linear-gradient(
+      90deg,
+      var(--pen-ink),
+      color-mix(in srgb, var(--pen-ink) 78%, transparent) 55%,
+      var(--pen-ink) 80%,
+      color-mix(in srgb, var(--pen-ink) 50%, transparent)
+    )
+    0 calc(100% - 1px) / 0 2px no-repeat;
+  box-decoration-break: clone;
+  transition:
+    background-size 120ms var(--e-std),
+    text-decoration-color 150ms var(--e-std);
+}
+@media (hover: hover) {
+  .docs-desk #nd-page .prose a:not([data-card]):not(.peer):hover {
+    text-decoration-color: transparent;
+    background-size:
+      4px 4px,
+      100% 2px;
+    transition:
+      background-size 320ms var(--e-stroke),
+      text-decoration-color 150ms var(--e-std);
+  }
+}
+
+/* Inline code: Maple Mono, a light print on the sheet. */
+.docs-desk #nd-page .prose :not(pre) > code {
+  padding: 0.1em 0.38em;
+  border: 1px solid var(--sheet-line);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--sheet-panel) 70%, transparent);
+  color: var(--sheet-ink);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+/* ---- Code: a cooler printed panel with a ruler scale along its top and
+   numbered lines, like the printouts on the landing page ---- */
+.docs-desk #nd-page figure.shiki {
+  position: relative;
+  margin-block: 1.6em;
+  border: 0;
+  border-radius: 3px;
+  background: var(--sheet-panel);
+  box-shadow:
+    inset 0 0 0 1px var(--sheet-line),
+    0 1px 0 var(--sheet-lit);
+  padding-top: 10px;
+}
+.docs-desk #nd-page figure.shiki::before {
+  content: "";
+  position: absolute;
+  inset: 0 12px auto 48px;
+  height: 9px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, var(--sheet-ink-3) 0 1px, transparent 1px 40px) 0 0 / 100% 9px
+    no-repeat,
+    repeating-linear-gradient(90deg, var(--sheet-ink-3) 0 1px, transparent 1px 8px) 0 0 / 100% 5px
+    no-repeat;
+  opacity: 0.7;
+}
+.docs-desk #nd-page figure.shiki pre {
+  color: var(--sheet-ink);
+  font-family: var(--font-mono);
+  font-size: 0.9375rem;
+  line-height: 1.72;
+}
+.docs-desk #nd-page figure.shiki pre code {
+  counter-reset: ln;
+}
+.docs-desk #nd-page figure.shiki .line::before {
+  counter-increment: ln;
+  content: counter(ln);
+  display: inline-block;
+  width: 2ch;
+  margin-right: 2ch;
+  color: var(--sheet-ink-3);
+  text-align: right;
+  user-select: none;
+}
+.docs-desk #nd-page figure.shiki [class*="max-h-"] {
+  padding-inline: 16px;
+}
+/* Syntax in print: ink, teal and muted ink only. Shiki's GitHub themes
+   mark each token with its own colour; these match those marks, not
+   colours, so every value here is a token. */
+.docs-desk #nd-page figure.shiki span[style] {
+  color: var(--sheet-ink);
+}
+.docs-desk #nd-page figure.shiki span[style*="032F62" i],
+.docs-desk #nd-page figure.shiki span[style*="005CC5" i] {
+  color: var(--sheet-teal);
+}
+.docs-desk #nd-page figure.shiki span[style*="6F42C1" i] {
+  color: var(--sheet-deep);
+}
+.docs-desk #nd-page figure.shiki span[style*="D73A49" i],
+.docs-desk #nd-page figure.shiki span[style*="22863A" i] {
+  font-weight: 500;
+}
+.docs-desk #nd-page figure.shiki span[style*="6A737D" i],
+.docs-desk #nd-page figure.shiki span[style*="E36209" i] {
+  color: var(--sheet-ink-2);
+  font-style: italic;
+}
+.docs-desk #nd-page figure.shiki button {
+  color: var(--sheet-ink-2);
+}
+
+/* ---- Index cards: callouts and the manual's link cards ---- */
+.docs-desk #nd-page .docs-card {
+  --card-lh: 1.72em;
+  position: relative;
+  line-height: var(--card-lh);
+  margin-block: 1.6em;
+  padding: 0 22px 16px;
+  border: 0;
+  border-radius: 3px;
+  color: var(--stock-ink);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 calc(var(--card-lh) - 1px),
+      var(--stock-line) calc(var(--card-lh) - 1px) var(--card-lh)
+    )
+    0 calc(46px + 0.3em) / 100% 100% no-repeat,
+    var(--stock);
+  box-shadow:
+    0 0.5px 1px color-mix(in srgb, var(--umbra) 40%, transparent),
+    3px 8px 18px -10px color-mix(in srgb, var(--umbra) 55%, transparent);
+  rotate: -0.25deg;
+}
+:lang(zh) .docs-desk #nd-page .docs-card {
+  --card-lh: 1.9em;
+}
+.docs-desk #nd-page .docs-card-body :where(p, li) {
+  line-height: inherit;
+}
+.docs-desk #nd-page .docs-card-head {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  height: 46px;
+  margin: 0 -22px 0.3em;
+  padding: 16px 22px 0;
+  border-bottom: 1.5px solid var(--card-rule);
+}
+.docs-desk #nd-page .docs-card-kind {
+  color: var(--sheet-ink-2);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+.docs-desk #nd-page .docs-card[data-kind="warning"] .docs-card-kind {
+  color: var(--stock-ink);
+  font-weight: 500;
+}
+.docs-desk #nd-page .docs-card-title {
+  font-weight: 600;
+}
+.docs-desk #nd-page .docs-card-body > :first-child {
+  margin-top: 0;
+}
+.docs-desk #nd-page .docs-card-body > :last-child {
+  margin-bottom: 0;
+}
+
+/* Link cards: the same stock, the title on the head rule; they lift
+   under the pointer, the shadow loosening as they rise. */
+.docs-desk #nd-page .docs-card-link {
+  margin: 0;
+  padding: 14px 18px 16px;
+  rotate: 0deg;
+  background: var(--stock);
+  box-shadow:
+    0 0.5px 1px color-mix(in srgb, var(--umbra) 40%, transparent),
+    3px 8px 18px -10px color-mix(in srgb, var(--umbra) 55%, transparent);
+  transition:
+    translate 320ms var(--e-settle),
+    box-shadow 320ms var(--e-settle);
+}
+.docs-desk #nd-page .docs-card-link h3 {
+  margin: 0 -18px 10px;
+  padding: 0 18px 9px;
+  border-bottom: 1.5px solid var(--card-rule);
+  font-size: 1rem;
+  font-weight: 600;
+}
+@media (hover: hover) {
+  .docs-desk #nd-page .docs-card-link:hover {
+    translate: 0 -3px;
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--umbra) 24%, transparent),
+      6px 18px 30px -14px color-mix(in srgb, var(--umbra) 60%, transparent);
+  }
+}
+
+/* Tabs: a printed panel, like code. */
+.docs-desk #nd-page .docs-panel {
+  border-color: var(--sheet-line);
+  background: var(--sheet-panel);
+}
+
+/* ---- Tables: typed ledgers ---- */
+.docs-desk #nd-page .prose table {
+  border: 0;
+  border-radius: 0;
+  border-collapse: collapse;
+  background: none;
+  box-shadow: none;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+.docs-desk #nd-page .prose thead {
+  border-top: 2px solid var(--sheet-ink);
+  border-bottom: 1px solid var(--sheet-ink);
+}
+.docs-desk #nd-page .prose th {
+  padding: 9px 14px 8px 0;
+  background: none;
+  color: var(--sheet-ink-2);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: start;
+}
+.docs-desk #nd-page .prose td {
+  padding: 10px 14px 10px 0;
+  border: 0;
+  border-bottom: 1px dashed var(--sheet-line);
+  vertical-align: top;
+}
+.docs-desk #nd-page .prose td:first-child code {
+  white-space: nowrap;
+}
+.docs-desk #nd-page .prose tbody tr:last-child td {
+  border-bottom: 1px solid var(--sheet-ink);
+}
+
+/* The sheet's printed head: the source file and the page's place in the
+   manual, as on the landing page's listings. */
+.docs-desk #nd-page .docs-sheet-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: none;
+  margin: -36px 0 44px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--sheet-ink-3);
+  color: var(--sheet-ink-2);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+.docs-desk #nd-page .docs-sheet-head span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.docs-desk #nd-page .docs-sheet-head span:last-child {
+  flex: none;
+}
+@media (max-width: 767px) {
+  .docs-desk #nd-page .docs-sheet-head {
+    margin: -14px 0 30px;
+    font-size: 0.75rem;
+  }
+}
+
+/* The edit link and the next page: printed small at the sheet's foot. */
+.docs-desk #nd-page > a[href*="/blob/"] {
+  align-self: flex-start;
+  margin-top: 48px;
+  border: 1px solid var(--sheet-line);
+  background: transparent;
+  color: var(--sheet-ink-2);
+}

@@ -1,185 +1,326 @@
-/* The manual in the landing page's language: neutral paper and ink, Archivo
-   at normal width, Maple Mono for code, hairline panels (DESIGN.md,
-   "Manual"). Fumadocs draws the layout; these rules only restyle it, through
-   its element ids and the prose classes. Links and active states are ink;
-   the pen appears only in critical callouts (--color-fd-error). */
+/* The manual on the desk (DESIGN.md, "Manual"). The landing page's desk
+   runs under the whole manual: the nav across the top and the page tree
+   down the left sit on the ink-teal; each page is a printed sheet lying
+   between them; the table of contents is a reading ruler beside it, with the
+   eye row riding to the heading being read (components/docs/toc-ruler.tsx).
+   Dark is the evening desk with the sheet under the lamp. Fumadocs draws the
+   layout (the notebook layout, nav on top); these rules restyle it through
+   its ids, its colour variables and the prose. The pen's ink appears only
+   as the hover stroke under a link; it never colours chrome or code. */
 
-#nd-docs-layout {
-  background-color: var(--paper);
+/* ---- The two palettes: the desk (chrome, dialogs) and the sheet ---- */
+html:has(.docs-desk) {
+  --dd-ground: var(--desk);
+  --dd-ground-hi: var(--desk-hi);
+  --dd-ground-lo: var(--desk-lo);
+  --dd-lamp: color-mix(in srgb, var(--lamp) 9%, transparent);
+  --sheet-bg: var(--print-paper);
+  --sheet-bg-2: var(--print-paper-2);
+  --sheet-ink: var(--print-ink);
+  --sheet-ink-2: var(--print-ink-2);
+  --sheet-ink-3: var(--print-ink-3);
+  --sheet-line: color-mix(in srgb, var(--print-ink) 14%, transparent);
+  --sheet-panel: color-mix(in oklab, var(--print-paper) 90%, var(--card-line));
+  --sheet-teal: var(--print-teal);
+  --sheet-deep: var(--desk-hi);
+  --sheet-lit: color-mix(in srgb, var(--white) 45%, transparent);
+  --stock: var(--card-stock);
+  --stock-ink: var(--print-ink);
+  --stock-line: color-mix(in srgb, var(--card-line) 34%, transparent);
+
+  --color-fd-background: var(--dd-ground);
+  --color-fd-foreground: var(--on-desk);
+  --color-fd-muted: color-mix(in srgb, var(--on-desk) 6%, transparent);
+  --color-fd-muted-foreground: var(--on-desk-2);
+  --color-fd-card: color-mix(in srgb, var(--on-desk) 5%, transparent);
+  --color-fd-card-foreground: var(--on-desk);
+  --color-fd-popover: var(--dd-ground-hi);
+  --color-fd-popover-foreground: var(--on-desk);
+  --color-fd-border: var(--line-desk);
+  --color-fd-primary: var(--on-desk);
+  --color-fd-primary-foreground: var(--dd-ground);
+  --color-fd-secondary: color-mix(in srgb, var(--on-desk) 7%, transparent);
+  --color-fd-secondary-foreground: var(--on-desk);
+  --color-fd-accent: color-mix(in srgb, var(--on-desk) 9%, transparent);
+  --color-fd-accent-foreground: var(--on-desk);
+  --color-fd-ring: var(--on-desk);
+  --focus: var(--on-desk);
+  --select: color-mix(in srgb, var(--print-teal) 26%, transparent);
+  background: var(--dd-ground);
 }
 
-/* Sidebar: night glass in both themes, like the landing page's nav over a
-   night band. */
-#nd-sidebar {
-  --color-fd-card: transparent;
-  --focus: var(--on-night);
-  background: color-mix(in srgb, var(--night-2) 94%, transparent);
-  color: var(--on-night-2);
-  border-color: var(--line-night);
-  /* The build adds the -webkit- copy; written by hand it drops this one. */
-  backdrop-filter: blur(16px);
-  --color-fd-foreground: var(--on-night);
-  --color-fd-muted-foreground: var(--on-night-2);
-  --color-fd-border: var(--line-night);
-  --color-fd-secondary: color-mix(in srgb, var(--on-night) 6%, transparent);
-  --color-fd-muted: color-mix(in srgb, var(--on-night) 6%, transparent);
-  --color-fd-accent: color-mix(in srgb, var(--on-night) 8%, transparent);
-  --color-fd-accent-foreground: var(--on-night);
-  --color-fd-primary: var(--on-night);
-  --color-fd-ring: var(--on-night);
+/* Evening: the room light is down; the sheet is paper in lamp light, dim
+   and warm (sheet-ink 13 : 1, sheet-ink-2 6 : 1 on it). */
+html.dark:has(.docs-desk) {
+  --dd-ground: var(--desk-eve);
+  --dd-ground-hi: color-mix(in srgb, var(--desk-hi) 72%, var(--desk-eve));
+  --dd-ground-lo: var(--desk-eve-lo);
+  --dd-lamp: color-mix(in srgb, var(--lamp) 13%, transparent);
+  --sheet-bg: color-mix(in oklab, var(--lamp) 7%, var(--stone));
+  --sheet-bg-2: color-mix(in oklab, var(--lamp) 5%, var(--paper-2));
+  --sheet-ink: color-mix(in oklab, var(--print-paper) 90%, var(--lamp));
+  --sheet-ink-2: color-mix(in oklab, var(--print-paper) 64%, var(--sheet-bg));
+  --sheet-ink-3: color-mix(in oklab, var(--print-paper) 40%, var(--sheet-bg));
+  --sheet-line: color-mix(in srgb, var(--print-paper) 13%, transparent);
+  --sheet-panel: color-mix(in oklab, var(--paper-2) 90%, var(--card-line));
+  --sheet-teal: var(--print-teal-lamp);
+  --sheet-deep: var(--steel);
+  --sheet-lit: color-mix(in srgb, var(--lamp) 9%, transparent);
+  --stock: color-mix(in oklab, var(--lamp) 12%, var(--stone));
+  --stock-ink: var(--sheet-ink);
+  --stock-line: color-mix(in srgb, var(--card-line) 16%, transparent);
 }
 
-#nd-sidebar a[data-active="true"] {
-  position: relative;
-  background: color-mix(in srgb, var(--on-night) 10%, transparent);
-  color: var(--on-night);
-  font-weight: 600;
-  box-shadow: inset 2px 0 0 var(--on-night);
+/* The desk under everything: grain, the lit middle, the lamp's warmth and
+   the falloff, fixed to the viewport so scrolling moves only the paper. */
+.docs-desk {
+  isolation: isolate;
+  color: var(--on-desk);
+}
+.docs-desk::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 100% at 50% 20%,
+      transparent 46%,
+      color-mix(in srgb, var(--dd-ground-lo) 72%, transparent) 100%
+    ),
+    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
+    radial-gradient(44% 40% at 54% 6%, var(--dd-lamp), transparent 74%),
+    radial-gradient(72% 64% at 50% 18%, var(--dd-ground-hi), transparent 74%),
+    var(--dd-ground);
+  background-blend-mode: normal, overlay, normal, normal, normal;
 }
 
-#nd-sidebar p,
-#nd-sidebar [data-section] {
-  font-weight: 600;
-  color: var(--on-night);
+/* ---- The nav: bare on the desk at the top, smoked glass once scrolled ---- */
+.docs-desk #nd-subnav {
+  font-size: 15px;
+}
+.docs-desk #nd-subnav > [data-header-body] {
+  height: 64px;
+  border-color: transparent;
+  transition: border-color 200ms var(--e-std);
+}
+.docs-desk #nd-subnav[data-transparent="false"] {
+  background: color-mix(in srgb, var(--dd-ground) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(1.1);
+}
+.docs-desk #nd-subnav[data-transparent="false"] > [data-header-body] {
+  border-color: var(--line-desk);
+}
+.docs-desk #nd-subnav a:not(.docs-cta) {
+  color: var(--on-desk-2);
+  transition: color 150ms var(--e-std);
+}
+.docs-desk #nd-subnav a[data-active="true"],
+.docs-desk #nd-subnav a:first-child {
+  color: var(--on-desk);
+}
+.docs-desk .logo {
+  color: var(--on-desk);
+}
+.docs-desk .logo-dark .logo-eyes,
+.docs-desk .eyes-alive .eye,
+.docs-desk .eyes-alive .glint {
+  color: var(--on-desk);
+  fill: var(--on-desk);
+}
+.docs-desk .eyes-alive .iris {
+  fill: var(--dd-ground);
 }
 
-#nd-sidebar kbd {
-  background: color-mix(in srgb, var(--on-night) 8%, transparent);
-  border-color: color-mix(in srgb, var(--on-night) 14%, transparent);
-  color: var(--on-night-2);
+/* The primary call to action: paper on the desk, ink type, as on the
+   landing page. */
+.docs-cta {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--r-ctl);
+  background: var(--print-paper);
+  color: var(--print-ink);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--white) 60%, transparent) inset,
+    0 2px 6px -2px color-mix(in srgb, var(--umbra) 70%, transparent);
+  transition: transform 220ms var(--e-settle);
 }
 
-#nd-sidebar button,
-#nd-sidebar input {
-  border-color: var(--line-night);
+.docs-desk #nd-subnav a {
+  white-space: nowrap;
 }
-
-/* Page title and headings: Archivo at normal width. */
-#nd-page h1 {
-  font-weight: 540;
-  font-stretch: 100%;
-  font-size: clamp(2.2rem, 3.6vw, 3rem);
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-  text-wrap: balance;
+/* The search field in the bar: a slot of the desk, not a white box. */
+.docs-desk #nd-subnav button[data-search-full],
+.docs-desk #nd-subnav button:has(kbd) {
+  max-width: 220px;
+  margin-inline: 24px auto;
+  background: color-mix(in srgb, var(--umbra) 24%, transparent);
+  border-color: var(--line-desk);
+  color: var(--on-desk-2);
 }
-
-#nd-page .prose h2 {
-  font-weight: 540;
-  font-stretch: 100%;
-  font-size: 1.75rem;
-  letter-spacing: -0.03em;
-}
-
-#nd-page .prose h3 {
-  font-weight: 540;
-  font-stretch: 100%;
-  letter-spacing: -0.015em;
-}
-
-:lang(zh) #nd-page h1 {
-  line-height: 1.15;
-}
-
-/* Code: night glass in both themes, Maple Mono. */
-#nd-page .prose pre,
-#nd-page figure.shiki {
+.docs-desk kbd {
+  background: color-mix(in srgb, var(--on-desk) 8%, transparent);
+  border-color: var(--line-desk);
+  color: var(--on-desk-2);
   font-family: var(--font-mono);
 }
 
-#nd-page figure.shiki {
-  background: color-mix(in srgb, var(--night) 94%, transparent);
-  border: 1px solid color-mix(in srgb, var(--white) 8%, transparent);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--white) 6%, transparent),
-    0 24px 60px -30px color-mix(in srgb, var(--black) 45%, transparent);
+/* ---- The page tree on the desk; the open page is a paper slip ---- */
+.docs-desk #nd-sidebar {
+  font-size: 15px;
 }
-
-#nd-page figure.shiki pre {
-  --shiki-light: var(--shiki-dark);
-  --shiki-light-bg: transparent;
-  color: color-mix(in srgb, var(--white) 86%, transparent);
-}
-
-#nd-page figure.shiki span {
-  color: var(--shiki-dark);
-}
-
-#nd-page figure.shiki [data-title],
-#nd-page figure.shiki figcaption {
-  color: var(--on-night-2);
-  border-color: color-mix(in srgb, var(--white) 8%, transparent);
-}
-
-#nd-page .prose :not(pre) > code {
-  background: var(--sheet-2);
-  border-color: var(--line);
-}
-
-/* Callouts, cards, tabs and tables are sheets on the paper. */
-#nd-page .glass,
-#nd-page .prose table {
-  background: var(--sheet);
-  border-color: var(--line);
-  box-shadow: var(--float);
-}
-
-/* Links in prose: ink with a 1 px underline at 30 %, full on hover; the
-   sidebar and the table of contents get a tint that sweeps in. */
-#nd-page .prose :where(p, li, td, blockquote) > a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
-  text-underline-offset: 3px;
-  border-bottom: 0;
-  transition: text-decoration-color 150ms var(--e-std);
-}
-
-#nd-toc a,
-#nd-sidebar a {
-  background-image: linear-gradient(var(--tint), var(--tint));
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 100%;
+.docs-desk #nd-sidebar a,
+#nd-sidebar-mobile a {
+  color: var(--on-desk-2);
+  border-radius: 3px;
   transition:
-    background-size 0.3s var(--e-std),
-    color 150ms var(--e-std);
+    color 150ms var(--e-std),
+    background-color 150ms var(--e-std),
+    translate 260ms var(--e-settle);
 }
-
-#nd-sidebar a {
-  background-image: linear-gradient(
-    color-mix(in srgb, var(--on-night) 8%, transparent),
-    color-mix(in srgb, var(--on-night) 8%, transparent)
-  );
-}
-
-#nd-toc a[data-active="true"] {
-  color: var(--ink);
+.docs-desk #nd-sidebar p,
+#nd-sidebar-mobile p {
+  margin-top: 26px;
+  color: var(--on-desk);
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.docs-desk #nd-sidebar a[data-active="true"],
+#nd-sidebar-mobile a[data-active="true"] {
+  background: var(--sheet-bg);
+  color: var(--sheet-ink);
+  font-weight: 500;
+  translate: 6px 0;
+  box-shadow:
+    0 0.5px 1px color-mix(in srgb, var(--umbra) 55%, transparent),
+    2px 4px 10px -4px color-mix(in srgb, var(--umbra) 80%, transparent);
 }
 
-@media (hover: hover) {
-  #nd-page .prose :where(p, li, td, blockquote) > a:hover {
-    text-decoration-color: var(--ink);
+/* On a new page its slip slides out from under the desk's edge. */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .docs-desk #nd-sidebar a[data-active="true"] {
+    animation: docs-slip 420ms var(--e-settle);
   }
-
-  #nd-toc a:hover {
-    background-size: 100% 100%;
-    color: var(--ink);
-  }
-
-  #nd-sidebar a:hover {
-    background-size: 100% 100%;
-    color: var(--on-night);
-  }
-
-  /* Blocks: the hairline darkens; nothing lifts. */
-  #nd-page .block-hover:hover {
-    border-color: var(--line-2);
+}
+@keyframes docs-slip {
+  from {
+    translate: -10px 0;
+    background-color: transparent;
+    box-shadow: none;
   }
 }
 
-#nd-page .block-hover {
-  transition: border-color 0.2s var(--e-std);
+/* ---- The sheet ---- */
+.docs-desk [data-layout-main] {
+  --pad: 0px;
+  position: relative;
+  padding: 20px var(--pad) 88px;
+}
+/* Its wide shadow on the desk, a layer of its own so the landing can
+   move it apart from the paper. */
+.docs-desk [data-layout-main]::before {
+  content: "";
+  position: absolute;
+  inset: 20px max(var(--pad), calc((100% - 880px) / 2)) 88px;
+  z-index: -1;
+  border-radius: 2px;
+  box-shadow: 10px 34px 60px -18px color-mix(in srgb, var(--umbra) 70%, transparent);
+}
+.docs-desk #nd-page {
+  --color-fd-background: var(--sheet-bg);
+  --color-fd-foreground: var(--sheet-ink);
+  --color-fd-muted: var(--sheet-bg-2);
+  --color-fd-muted-foreground: var(--sheet-ink-2);
+  --color-fd-card: var(--sheet-panel);
+  --color-fd-card-foreground: var(--sheet-ink);
+  --color-fd-popover: var(--sheet-bg);
+  --color-fd-popover-foreground: var(--sheet-ink);
+  --color-fd-border: var(--sheet-line);
+  --color-fd-primary: var(--sheet-ink);
+  --color-fd-primary-foreground: var(--sheet-bg);
+  --color-fd-secondary: var(--sheet-bg-2);
+  --color-fd-secondary-foreground: var(--sheet-ink);
+  --color-fd-accent: color-mix(in srgb, var(--sheet-ink) 6%, transparent);
+  --color-fd-accent-foreground: var(--sheet-ink);
+  --color-fd-ring: var(--sheet-ink);
+  --tw-prose-body: var(--sheet-ink);
+  --focus: var(--sheet-ink);
+  --measure: 100%;
+  --text-measure: 35.5rem;
+  justify-self: center;
+  width: min(100%, 880px);
+  gap: 0;
+  padding: 76px 72px 44px;
+  border-radius: 2px;
+  color: var(--sheet-ink);
+  background:
+    linear-gradient(170deg, var(--sheet-lit), transparent 28%),
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--sheet-bg);
+  background-blend-mode: normal, multiply, normal;
+  box-shadow:
+    inset 1px 1px 0 var(--sheet-lit),
+    0 0.5px 1px color-mix(in srgb, var(--umbra) 55%, transparent),
+    1px 3px 8px color-mix(in srgb, var(--umbra) 30%, transparent);
+}
+.docs-desk #nd-page > * {
+  max-width: var(--measure);
+}
+:lang(zh) .docs-desk #nd-page {
+  --text-measure: 36rem;
+}
+.docs-desk #nd-page > :is(h1, p),
+.docs-desk #nd-page .prose > :is(p, ul, ol, h2, h3, h4, blockquote, .docs-card) {
+  max-width: var(--text-measure);
+}
+
+/* Pages land like a sheet put down: from a little above, a little nearer
+   the camera, its wide shadow loose in the air, tight on contact. */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .docs-desk #nd-page {
+    animation: docs-land 620ms var(--e-settle) backwards;
+  }
+  html.mo .docs-desk [data-layout-main]::before {
+    animation: docs-land-shadow 620ms var(--e-settle) backwards;
+  }
+}
+@keyframes docs-land {
+  from {
+    opacity: 0.55;
+    transform: translate3d(-2px, -12px, 0) rotate(-0.3deg) scale(1.01);
+  }
+  30% {
+    opacity: 1;
+  }
+}
+@keyframes docs-land-shadow {
+  from {
+    opacity: 0.3;
+    transform: translate3d(14px, 26px, 0) scale(1.04);
+  }
+}
+
+@media (max-width: 767px) {
+  .docs-desk [data-layout-main] {
+    --pad: 10px;
+    padding-block: 8px 40px;
+  }
+  .docs-desk [data-layout-main]::before {
+    inset-block: 8px 40px;
+  }
+  .docs-desk #nd-page {
+    padding: 34px 22px 28px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1279px) {
+  .docs-desk [data-layout-main] {
+    --pad: 24px;
+  }
 }
