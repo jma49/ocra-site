@@ -11,7 +11,7 @@ import { useEffect } from "react";
 // - `[data-pen-once]` roots get `.on` once 45 % visible, which draws their
 //   marks once (04-pen.css). `data-pen-once="0.5"` sets another threshold;
 //   `data-pen-once="timeline"` is skipped where scroll timelines draw it
-//   instead (the quiet band's struck words).
+//   instead (the quiet band's struck words) and draws at 50 % elsewhere.
 // - `--vh`, the viewport height the pinned story sizes from, re-measured
 //   only when the width changes (toolbars and full-page captures change the
 //   height alone).
@@ -49,7 +49,8 @@ function penOnce(): () => void {
   for (const el of document.querySelectorAll<HTMLElement>("[data-pen-once]")) {
     const value = el.dataset.penOnce;
     if (value === "timeline" && timeline) continue;
-    const threshold = Number(value) || 0.45;
+    // The quiet band's fallback draws at half visibility (motion.md §7).
+    const threshold = value === "timeline" ? 0.5 : Number(value) || 0.45;
     let io = observers.get(threshold);
     if (!io) {
       io = new IntersectionObserver(
