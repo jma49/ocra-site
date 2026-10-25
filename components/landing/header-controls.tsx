@@ -126,7 +126,8 @@ function usePromoted(): boolean {
   useEffect(() => {
     const sentinel = document.querySelector("[data-promote-sentinel]");
     if (!sentinel) return;
-    const io = new IntersectionObserver(([e]) => {
+    const io = new IntersectionObserver((entries) => {
+      const e = entries.at(-1);
       if (e) setPromoted(!e.isIntersecting && e.boundingClientRect.top < 0);
     });
     io.observe(sentinel);
@@ -155,7 +156,9 @@ function useScrolled() {
   useEffect(() => {
     const sentinel = document.querySelector("[data-top-sentinel]");
     if (!sentinel) return;
-    const io = new IntersectionObserver(([e]) => setScrolled(!e?.isIntersecting), {
+    // A batch can hold several entries for the one sentinel (a resize away
+    // and back); the last is the current one.
+    const io = new IntersectionObserver((entries) => setScrolled(!entries.at(-1)?.isIntersecting), {
       rootMargin: "-72px 0px 0px 0px",
     });
     io.observe(sentinel);

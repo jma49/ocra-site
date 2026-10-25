@@ -18,7 +18,8 @@ export function SecurityPlay() {
     const ctl = new AbortController();
 
     const rise = new IntersectionObserver(
-      ([e]) => {
+      (entries) => {
+        const e = entries.at(-1);
         if (!e?.isIntersecting) return;
         h2.classList.add("risen");
         rise.disconnect();
@@ -37,7 +38,8 @@ export function SecurityPlay() {
     };
     // When the first row's top has crossed 62 % of the viewport.
     const typed = new IntersectionObserver(
-      ([e]) => {
+      (entries) => {
+        const e = entries.at(-1);
         if (!e) return;
         // Already scrolled past it (a link, a reload): the typed state.
         if (!e.isIntersecting && e.boundingClientRect.bottom < 0) {

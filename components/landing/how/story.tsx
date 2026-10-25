@@ -333,7 +333,8 @@ function mount(plan: Plan): () => void {
       });
   };
   // Leaving, the last read settles the push (and Quiet's paper) for good.
-  const io = new IntersectionObserver(([e]) => {
+  const io = new IntersectionObserver((entries) => {
+    const e = entries.at(-1);
     if (e?.isIntersecting) {
       addEventListener("scroll", onScroll, { passive: true });
       onScroll();

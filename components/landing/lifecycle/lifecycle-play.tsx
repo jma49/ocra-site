@@ -53,7 +53,8 @@ export function LifecyclePlay() {
     if (!motionAllowed()) return;
 
     const rise = new IntersectionObserver(
-      ([e]) => {
+      (entries) => {
+        const e = entries.at(-1);
         if (!e?.isIntersecting) return;
         h2.classList.add("risen");
         rise.disconnect();
@@ -235,7 +236,8 @@ export function LifecyclePlay() {
 
     let on = false;
     const near = new IntersectionObserver(
-      ([e]) => {
+      (entries) => {
+        const e = entries.at(-1);
         const vis = !!e?.isIntersecting;
         if (vis && !on) addEventListener("scroll", read, { passive: true });
         if (!vis && on) removeEventListener("scroll", read);
