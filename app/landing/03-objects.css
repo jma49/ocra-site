@@ -154,6 +154,7 @@
 }
 /* "Example run": the recorded run, wherever it appears. */
 .home .chip-example {
+  font-family: var(--font-sans);
   font-weight: 500;
   color: var(--ink);
   background: var(--sheet);
@@ -172,6 +173,7 @@
 }
 /* "Illustration": not recorded. */
 .home .chip-illustration {
+  font-family: var(--font-sans);
   font-weight: 500;
   color: var(--ink-2);
   background: var(--sheet-2);
