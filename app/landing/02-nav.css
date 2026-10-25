@@ -47,6 +47,13 @@
 }
 
 /* ---- The bar ---- */
+/* The ground's share of the bar: registered, so it alone eases (the bare
+   bar becoming a pill) while the bar's colours change in one step. */
+@property --nav-o {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 90%;
+}
 .home .nav-shell {
   position: sticky;
   top: 10px;
@@ -79,9 +86,14 @@
      given both it keeps only the prefixed one, which Chrome ignores. */
   backdrop-filter: blur(20px) saturate(1.1);
   transition:
-    background-color 300ms var(--e-std),
-    box-shadow 300ms var(--e-std),
-    color 300ms var(--e-std);
+    --nav-o 300ms var(--e-std),
+    box-shadow 300ms var(--e-std);
+}
+/* Changing ground (NavShell sets this for two frames): every colour in the
+   bar switches at once, never through a mix of the two grounds. */
+.home .nav[data-swap],
+.home .nav[data-swap] * {
+  transition: none;
 }
 /* From 1024 up the pill's outer edges are the content column's, so the
    logo sits 16 px inside the headline's edge and nothing in the column
@@ -112,30 +124,34 @@
   --cta-t: var(--paper);
 }
 /* Over the desk: bare at the top of the page, so the desk reads from the
-   top edge; a smoked glass pill once scrolled. The promoted call to action
-   is paper on the desk, never the pen's red. */
+   top edge; a smoked glass pill once scrolled, dark enough that a sheet
+   passing under it never greys it. The promoted call to action is paper on
+   the desk, never the pen's red. */
 .home .nav:is([data-on="desk"], [data-on="desk-evening"]) {
   --nav-g: var(--desk);
-  --nav-o: 62%;
   --nav-t: var(--on-desk);
   --nav-a: var(--on-desk-2);
   --nav-l: var(--line-desk);
   --focus: var(--on-desk);
+  box-shadow:
+    inset 0 0 0 1px var(--nav-l),
+    0 12px 28px -16px color-mix(in srgb, var(--umbra) 70%, transparent);
 }
 .home .nav:is([data-on="desk"], [data-on="desk-evening"]):not([data-scrolled]) {
   --nav-o: 0%;
   --nav-l: transparent;
+  box-shadow: none;
   backdrop-filter: none;
 }
 .home .nav[data-promoted]:is([data-on="desk"], [data-on="desk-evening"]) {
   --cta-g: var(--print-paper);
   --cta-t: var(--print-ink);
 }
-/* Over a paper band: a slip of the same paper lying on it, lighter than
-   the smoked glass, its edge and a soft contact shadow under the lamp. */
+/* Over a paper band: a slip of the same paper lying on it, its edge and a
+   soft contact shadow under the lamp; as dense as the glass, so the band's
+   poster type never reads through behind the links. */
 .home .nav[data-on="paper-band"] {
   --nav-g: var(--card-stock);
-  --nav-o: 78%;
   --nav-t: var(--print-ink);
   --nav-a: var(--print-ink-2);
   --nav-l: color-mix(in srgb, var(--print-ink) 9%, transparent);
