@@ -5,8 +5,8 @@ import { FaqPhones } from "./faq-phones";
 import { ArrowGlyph, Lines, Section } from "./section";
 
 // Plain answers (sections.md §10): a sticky head beside six native
-// disclosures, one open at a time (the first, from 600 px: FaqPhones closes
-// it on a phone); the manual has the rest.
+// disclosures, one open at a time (the first, from 1024 px: FaqPhones
+// closes it in one column); the manual has the rest.
 export function Faq({ copy, locale }: { copy: Copy["faq"]; locale: Locale }) {
   return (
     <Section ground="paper-2" className="faq" labelledBy="faq-title">

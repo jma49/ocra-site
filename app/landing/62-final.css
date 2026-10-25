@@ -271,14 +271,29 @@
     --eyes: 42%;
   }
 }
-/* 768: one column, left-aligned: the eyes, then the text. */
+/* 768: still the eyes beside the text (one column would leave the band's
+   right half empty), smaller; the install line scrolls inside its box. */
 @media (max-width: 1023px) {
-  .home .final-grid {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 40px;
+  .home .final {
+    padding-block: var(--pad-band);
   }
-  .home .final-eyes {
-    width: 360px;
+  .home .final-grid {
+    --eyes: 38%;
+  }
+  /* 12.5 px and tighter insets keep the whole command in the 390 px column
+     at 768; narrower, it scrolls inside its box. */
+  .home .final .prompt {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    font-size: 12.5px;
+  }
+  .home .prompt-line {
+    flex: 1 1 auto;
+    padding-inline: 14px 6px;
+  }
+  .home .prompt-copy {
+    padding-inline: 12px;
   }
 }
 /* 390: the eyes at 280 px, the CTAs stacked full width, the install line
@@ -300,6 +315,7 @@
     font-size: min(3.25rem, 18.6cqi);
   }
   .home .final-grid {
+    grid-template-columns: minmax(0, 1fr);
     row-gap: 36px;
   }
   .home .final-eyes {
