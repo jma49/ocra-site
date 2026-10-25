@@ -15,14 +15,14 @@ interface HeroCopy {
 export const hero: Bilingual<HeroCopy> = {
   en: {
     lines: ["Reads first.", "Comments last."],
-    lede: "Open-source AI code review for GitHub and GitLab. Its agents read your repository, quote the exact code they mean, and face a second read before anything reaches your pull request. When there is nothing worth saying, it says nothing.",
+    lede: "Open-source AI code review for GitHub and GitLab. Its agents read your repository, quote the exact code they mean, and face a second read before anything reaches your pull request. When there is nothing worth saying, it leaves no comment on your code.",
     cloud: "Start with ocra Cloud",
     selfHost: "Self-host, Apache-2.0",
     note: "Free during early access. Bring your own model key.",
   },
   zh: {
     lines: ["先读懂，", "再开口。"],
-    lede: "开源的 AI 代码审查，支持 GitHub 和 GitLab。agent 先读你的仓库，引用它所指的那段代码，再经过第二遍复核，才会出现在你的 PR 里。没有值得说的，就什么都不说。",
+    lede: "开源的 AI 代码审查，支持 GitHub 和 GitLab。agent 先读你的仓库，引用它所指的那段代码，再经过第二遍复核，才会出现在你的 PR\u00a0里。没有值得说的，就不在你的代码上留评论。",
     cloud: "开始使用 ocra Cloud",
     selfHost: "自托管，Apache-2.0",
     note: "早期体验期间免费，自带模型 key。",
@@ -81,7 +81,7 @@ export const productWindow: Bilingual<WindowCopy> = {
     },
   },
   zh: {
-    tabs: { pr: "Pull request", terminal: "终端" },
+    tabs: { pr: "拉取请求", terminal: "终端" },
     tablist: "这次示例运行",
     exampleChip: "示例运行",
     urls: {

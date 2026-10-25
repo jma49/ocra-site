@@ -4,8 +4,10 @@ import { cloudUrl, localePath } from "@/lib/shared";
 import { ArrowGlyph, Lines, Section } from "../section";
 import { ProductWindow } from "./product-window";
 
-// The hero: the one-line H1 across the container, the lede and CTAs beside
-// the product window (sections.md §2). Stub from package F; H builds it out.
+// The hero (sections.md §2): the brand line across the container, one line
+// from 1024 px, then the lede, the two ways in and the note beside the
+// product window, which shows ocra doing what the line says. The empty
+// sentinel after the note tells the nav when to promote its CTA.
 export function Hero({
   copy,
   window: win,
