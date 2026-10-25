@@ -74,7 +74,9 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
       // Reading: the ruler slides in under line 29 (the call to isExpired),
       // pauses there, then glides down a row at a time to line 42.
       await until(t0 + 250, signal);
-      ruler.style.setProperty("--row", "0");
+      // On a phone the desk is cropped to the last lines: read from there.
+      const from = narrow ? Math.max(0, row42 - 6) : 0;
+      ruler.style.setProperty("--row", String(from));
       ruler.classList.add("in");
       look(0.9, -0.2);
       await sleep(200, signal);
@@ -83,7 +85,7 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
       const first = ink.runs[0]?.getPointAtLength(0);
       const start = { x: (first?.x ?? 0) + ink.dx, y: (first?.y ?? 0) + ink.dy };
       let enter: Promise<void> | undefined;
-      for (let r = 1; r <= row42; r++) {
+      for (let r = from + 1; r <= row42; r++) {
         ruler.style.setProperty("--row", String(r));
         if (r === row42 - 4)
           enter = rig.to(
@@ -92,7 +94,7 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
             ease.settle,
             signal,
           );
-        await sleep(r > row42 - 3 ? 50 : 28, signal);
+        await sleep(r > row42 - 3 ? 50 : narrow ? 70 : 28, signal);
       }
       // Line 42: the eyes run along it to Date.now(), glance back at
       // expiresAt, and blink; the ruler makes room for the pen.
