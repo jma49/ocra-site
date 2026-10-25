@@ -71,7 +71,7 @@ export function Final({ copy, locale }: { copy: Copy["final"]; locale: Locale })
       <div className="final-lamp" aria-hidden="true" />
       <div className="wrap final-in">
         <div className="final-copy">
-          <h2 className="final-h" id="final-title">
+          <h2 className="t-h2 final-h" id="final-title">
             {copy.lines.map((line, i) => (
               <span key={line} className="final-hl">
                 <span className="final-hli">

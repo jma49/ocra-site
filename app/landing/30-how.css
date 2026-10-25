@@ -10,23 +10,8 @@
 .home .how-head {
   position: relative;
   z-index: 3;
-  padding-top: clamp(96px, 12vh, 140px);
+  padding-top: var(--head-top);
   padding-bottom: clamp(24px, 4vh, 48px);
-}
-.home .how-kicker {
-  margin: 0 0 22px;
-  font: 500 15px / 1.2 var(--font-sans);
-  color: var(--on-desk-2);
-}
-.home .how-h {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(50px, 7.2vw, 104px);
-  font-weight: 500;
-  font-stretch: 72%;
-  line-height: 0.96;
-  letter-spacing: -0.02em;
-  color: var(--on-desk);
 }
 .home .how-hl {
   display: block;
@@ -43,12 +28,6 @@
   font: 400 18px / 1.6 var(--font-sans);
   color: var(--on-desk-2);
   text-wrap: pretty;
-}
-.home .how-h:lang(zh),
-.home:lang(zh) .how-h {
-  font-size: clamp(44px, 6.1vw, 88px);
-  line-height: 1.12;
-  letter-spacing: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -187,7 +166,6 @@
     left: 0;
     right: 0;
     top: 0;
-    padding-top: clamp(120px, 16vh, 160px);
     pointer-events: none;
     opacity: var(--hd, 1);
   }

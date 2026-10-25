@@ -24,21 +24,14 @@
   position: relative;
   z-index: 2;
   height: 100%;
-  padding-top: clamp(96px, 15vh, 150px);
+  padding-top: var(--head-top);
   pointer-events: none;
 }
 .home .life-copy {
   max-width: 380px;
   pointer-events: auto;
 }
-.home .life-kicker {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--on-desk-2);
-}
 .home .life-h {
-  margin-top: 16px;
-  color: var(--on-desk);
   white-space: nowrap;
 }
 .home .life-hl {
@@ -241,6 +234,13 @@ html.mo .home .life .life-world [data-depth] {
   .home .life-world {
     --ws: 0.84;
   }
+  /* The states close up so the last clears the caption under the H2. */
+  .home .life-states {
+    margin-top: 28px;
+  }
+  .home .life-states li {
+    padding-block: 13px 15px;
+  }
 }
 @media (min-width: 1600px) and (min-height: 960px) {
   .home .life-world {
@@ -271,14 +271,9 @@ html.mo .home .life .life-world [data-depth] {
   .home .life-in {
     flex: none;
     height: auto;
-    padding-top: 84px;
   }
   .home .life-copy {
     max-width: 560px;
-  }
-  .home .life-h {
-    margin-top: 10px;
-    font-size: clamp(2.5rem, 9vw, 3.75rem);
   }
   .home .life-states {
     margin-top: 18px;

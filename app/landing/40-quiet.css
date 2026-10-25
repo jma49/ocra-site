@@ -21,7 +21,7 @@ html.mo .home .quiet .paper-band {
   box-shadow: none;
 }
 .home .quiet-in {
-  padding-block: clamp(96px, 12vh, 112px) clamp(72px, 10vh, 104px);
+  padding-block: var(--head-top) clamp(72px, 10vh, 104px);
 }
 @media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
   .home .quiet {
@@ -57,14 +57,6 @@ html.mo .home .quiet .paper-band {
 }
 .home .quiet-h {
   grid-column: 1 / span 7;
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(56px, 7.6vw, 110px);
-  font-weight: 500;
-  font-stretch: 72%;
-  line-height: 0.94;
-  letter-spacing: -0.02em;
-  color: var(--print-ink);
 }
 .home .quiet-hl {
   display: block;
@@ -223,11 +215,6 @@ html.mo .home .quiet-pen {
 }
 
 /* ---- Chinese: its own sizes ---- */
-.home:lang(zh) .quiet-h {
-  font-size: clamp(48px, 6.4vw, 92px);
-  line-height: 1.12;
-  letter-spacing: 0;
-}
 .home:lang(zh) .quiet-words {
   font-size: clamp(52px, 9.2vw, 132px);
   line-height: 1.16;

@@ -71,7 +71,7 @@ export function Lifecycle({ copy }: { copy: Copy["lifecycle"]; onLine?: string }
         <DeskGround />
         <div className="wrap life-in">
           <div className="life-copy">
-            <p className="life-kicker">{copy.label}</p>
+            <p className="t-kicker life-kicker">{copy.label}</p>
             <h2 className="t-h2 life-h" id="life-h">
               {copy.lines.map((line, i) => (
                 <span key={line} className="life-hl">

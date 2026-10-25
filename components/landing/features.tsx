@@ -16,8 +16,8 @@ export function Features({ copy, locale }: { copy: Copy["features"]; locale: Loc
       <DeskGround />
       <div className="wrap feat-grid">
         <div className="feat-copy">
-          <p className="feat-eyebrow">{copy.eyebrow}</p>
-          <h2 className="feat-h" id="features-title">
+          <p className="t-kicker feat-eyebrow">{copy.eyebrow}</p>
+          <h2 className="t-h2 feat-h" id="features-title">
             {copy.lines.map((line, i) => (
               <span key={line} className="feat-hl">
                 <span>

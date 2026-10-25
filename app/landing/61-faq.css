@@ -4,7 +4,7 @@
    lines. The card's printed head rule is blue: red is the pen's. */
 
 .home .faq {
-  padding-block: 128px 120px;
+  padding-block: var(--head-top) 120px;
   overflow-x: clip;
 }
 /* The desk runs on under the paper band's slanted foot (60-plans.css). */
@@ -58,17 +58,7 @@
 }
 .home .fq-head {
   position: sticky;
-  top: 132px;
-}
-.home .fq-h {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(56px, 6.6vw, 96px);
-  font-weight: 500;
-  font-stretch: 72%;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  color: var(--on-desk);
+  top: var(--head-top);
 }
 .home .fq-hl {
   display: block;
@@ -288,14 +278,6 @@
 }
 
 /* ---- Chinese: its own sizes ---- */
-.home .fq-h:lang(zh) {
-  font-family: var(--font-sans);
-  font-size: clamp(44px, 5.8vw, 84px);
-  font-weight: 600;
-  font-stretch: 100%;
-  line-height: 1.12;
-  letter-spacing: 0.02em;
-}
 .home .fq-q button:lang(zh) {
   font-size: 20px;
   letter-spacing: 0.02em;
@@ -308,7 +290,7 @@
 /* ---- Widths ---- */
 @media (max-width: 1023px) {
   .home .faq {
-    padding-block: 112px 104px;
+    padding-bottom: 104px;
   }
   .home .fq-in {
     display: block;
@@ -326,13 +308,7 @@
 }
 @media (max-width: 639px) {
   .home .faq {
-    padding-block: 92px 88px;
-  }
-  .home .fq-h {
-    font-size: clamp(44px, 12.4vw, 64px);
-  }
-  .home .fq-h:lang(zh) {
-    font-size: 11.4vw;
+    padding-bottom: 88px;
   }
   .home .fq-q button {
     grid-template-columns: 38px minmax(0, 1fr) 22px;

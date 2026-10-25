@@ -30,7 +30,7 @@ export function Faq({ copy, locale }: { copy: Copy["faq"]; locale: Locale }) {
       <div className="fq-drop" aria-hidden="true" />
       <div className="wrap fq-in">
         <div className="fq-head">
-          <h2 className="fq-h" id="faq-title">
+          <h2 className="t-h2 fq-h" id="faq-title">
             {copy.lines.map((line, i) => (
               <Fragment key={line}>
                 {i > 0 && locale === "en" ? " " : null}
