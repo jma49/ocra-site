@@ -122,6 +122,7 @@
   color: var(--sheet-ink);
   font-family: var(--font-mono);
   font-size: 0.86em;
+  overflow-wrap: break-word;
 }
 
 /* ---- Code: a cooler printed panel with a ruler scale along its top and
