@@ -1,53 +1,47 @@
-import { MAX_AGENT_STEPS } from "@/lib/landing/engine-facts";
 import type { Bilingual, Lines } from "../define";
 
 interface SecurityCopy {
+  label: string;
   lines: Lines;
   body: string;
-  flow: {
-    repo: string;
-    repoNote: string;
-    gate: string;
-    refused: string;
-    // Read before the struck list, for screen readers.
+  // The poster: the refused paths, each with the rule that refuses it.
+  poster: {
+    caption: string;
+    // Read before the list, for screen readers.
     refusedSr: string;
-    outside: string;
-    agents: string;
-    tools: string;
-    builtins: string;
-    // fill(more, { n })
-    more: string;
-    on: string;
-    off: string;
-    provider: string;
-    providerNote: string;
+    kinds: { secret: string; git: string };
+    // The typed exchange on the first row: who speaks, and its note.
+    agent: string;
+    gate: string;
+    verbatim: string;
+    also: string;
+    alsoRest: string;
   };
   props: { title: string; body: string }[];
+  // Before each property's source path, for screen readers.
+  source: string;
   link: string;
-  // Closes the band: the measured result, its {name} placeholders filled
-  // from lib/landing/measured.ts, and the method's page.
+  // The measured result, its {name} placeholders filled from
+  // lib/landing/measured.ts, and the method's page.
   proof: { label: string; text: string; link: string };
+  // fill(footnote, { steps, tools, n }): the agents' caps.
+  footnote: string;
 }
 
 export const security: Bilingual<SecurityCopy> = {
   en: {
-    lines: ["Built for code you", "do not trust."],
+    label: "Security",
+    lines: ["Built for code", "you do not trust."],
     body: "A diff, a pull request title, an AGENTS.md: anything in the change can be written by an attacker. ocra assumes it is, and publishes its threat model with the code.",
-    flow: {
-      repo: "your repository at the revision under review",
-      repoNote: "diff, files, pull request text: untrusted data",
-      gate: "one gate, enforced in core",
-      refused: "Refused at the gate",
-      refusedSr: "Refused:",
-      outside: "outside the repo",
-      agents: `isolated agents · ${MAX_AGENT_STEPS} steps each`,
-      tools: "Tools the example run's agents called",
-      builtins: "Every OpenCode built-in, off",
-      more: "and {n} more",
-      on: "on",
-      off: "off",
-      provider: "your model provider",
-      providerNote: "the only party that sees the code when you self-host",
+    poster: {
+      caption: "Refused at the gate. One gate, in core, for every agent and every adapter.",
+      refusedSr: "Paths the gate refuses, each with its rule:",
+      kinds: { secret: "secret pattern", git: "git internals, any segment" },
+      agent: "agent",
+      gate: "gate",
+      verbatim: "the refusal, verbatim",
+      also: "Also refused",
+      alsoRest: "and the rest of the secret patterns, and anything outside the repository.",
     },
     props: [
       {
@@ -67,33 +61,30 @@ export const security: Bilingual<SecurityCopy> = {
         body: "Argument arrays, no shell, and only the environment variables a child process needs.",
       },
     ],
+    source: "Enforced in",
     link: "Read the threat model",
     proof: {
       label: "Measured, with its limits",
       // No-break spaces keep each figure with its words.
-      text: "On {changes}\u00a0changes with {known}\u00a0known issues, ocra\u00a0found\u00a0{found}, and every finding it reported was correct.",
+      text: "On {changes} changes with {known} known issues, ocra found {found}, and every finding it reported was correct.",
       link: "Read the method",
     },
+    footnote:
+      "Agents are isolated, {steps} steps each. Every OpenCode built-in is off: {tools} and {n} more.",
   },
   zh: {
+    label: "安全",
     lines: ["为你不信任的", "代码而设计。"],
     body: "diff、PR 标题、AGENTS.md：改动里的任何内容都可能出自攻击者之手。ocra 默认就是这样，并把威胁模型和代码一起公开。",
-    flow: {
-      repo: "被审查版本的仓库",
-      // A no-break space keeps "PR 文本" on one line.
-      repoNote: "diff、文件、PR\u00a0文本：都是不可信数据",
-      gate: "唯一的关口，在核心里强制执行",
-      refused: "在关口被拒绝",
-      refusedSr: "被拒绝：",
-      outside: "仓库之外",
-      agents: `隔离的 agent · 每个 ${MAX_AGENT_STEPS} 步`,
-      tools: "示例运行里 agent 调用的工具",
-      builtins: "OpenCode 内置工具，全部关闭",
-      more: "另外 {n} 个",
-      on: "开启",
-      off: "关闭",
-      provider: "你的模型服务商",
-      providerNote: "自托管时，唯一能看到代码的一方",
+    poster: {
+      caption: "在关口被拒绝。唯一的关口，在核心里，对每个 agent、每个适配器都一样。",
+      refusedSr: "关口拒绝的路径，以及拒绝它的规则：",
+      kinds: { secret: "密钥模式", git: "git 内部文件，任一路径段" },
+      agent: "agent",
+      gate: "关口",
+      verbatim: "拒绝原文",
+      also: "同样被拒绝：",
+      alsoRest: "以及其余的密钥模式，和仓库之外的一切。",
     },
     props: [
       {
@@ -113,13 +104,16 @@ export const security: Bilingual<SecurityCopy> = {
         body: "参数数组、不经过 shell，子进程只拿到它需要的环境变量。",
       },
     ],
+    source: "执行于",
     link: "阅读威胁模型",
     proof: {
       label: "实测，连同局限",
       // No-break spaces keep each figure with its measure word and "ocra"
       // with its verb.
-      text: "在 {changes}\u00a0个改动、{known}\u00a0个已知问题上，ocra\u00a0找到了 {found}\u00a0个，报出的每一条都正确。",
+      text: "在 {changes} 个改动、{known} 个已知问题上，ocra 找到了 {found} 个，报出的每一条都正确。",
       link: "阅读测量方法",
     },
+    footnote:
+      "agent 彼此隔离，每个 {steps} 步。OpenCode 的内置工具全部关闭：{tools}，以及另外 {n} 个。",
   },
 };
