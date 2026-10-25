@@ -6,7 +6,8 @@
 export function seenAt(el: Element, fn: () => void, ratio: number, rootMargin = "0px"): () => void {
   const steps = [0, 0.25, 0.5, 0.75, 0.9, 0.98, 1, ratio].sort((a, b) => a - b);
   const io = new IntersectionObserver(
-    ([e]) => {
+    (entries) => {
+      const e = entries.at(-1);
       if (!e?.isIntersecting) return;
       const need = Math.min(ratio, (innerHeight * 0.7) / Math.max(1, e.boundingClientRect.height));
       if (e.intersectionRatio + 0.005 < need) return;

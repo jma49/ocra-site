@@ -32,7 +32,8 @@ export function pointerLight(root: HTMLElement, damping = 0.06): () => void {
     if (!raf) raf = requestAnimationFrame(frame);
   };
   let on = false;
-  const io = new IntersectionObserver(([e]) => {
+  const io = new IntersectionObserver((entries) => {
+    const e = entries.at(-1);
     const vis = !!e?.isIntersecting;
     if (vis && !on) addEventListener("pointermove", move, { passive: true });
     if (!vis && on) removeEventListener("pointermove", move);

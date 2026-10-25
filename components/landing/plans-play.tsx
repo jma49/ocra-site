@@ -52,7 +52,8 @@ export function PlansPlay() {
     // Gone above the screen without having been in reach.
     const passed = (el: Element) =>
       new Promise<void>((res) => {
-        const io = new IntersectionObserver(([e]) => {
+        const io = new IntersectionObserver((entries) => {
+          const e = entries.at(-1);
           if (!e || e.isIntersecting || e.boundingClientRect.bottom > 0) return;
           io.disconnect();
           res();

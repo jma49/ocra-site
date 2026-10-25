@@ -88,7 +88,8 @@ export function tween(
 // Run `fn` once when `el` is `threshold` in view; returns a disposer.
 export function whenSeen(el: Element, fn: () => void, threshold = 0.45): () => void {
   const io = new IntersectionObserver(
-    ([e]) => {
+    (entries) => {
+      const e = entries.at(-1);
       if (!e?.isIntersecting) return;
       io.disconnect();
       fn();
@@ -113,7 +114,8 @@ export function scrub(el: Element, fn: (p: number) => void): () => void {
   const onScroll = () => {
     if (!raf) raf = requestAnimationFrame(read);
   };
-  const io = new IntersectionObserver(([e]) => {
+  const io = new IntersectionObserver((entries) => {
+    const e = entries.at(-1);
     if (e?.isIntersecting) {
       addEventListener("scroll", onScroll, { passive: true });
       onScroll();
