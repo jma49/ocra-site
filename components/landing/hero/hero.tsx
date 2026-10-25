@@ -2,14 +2,13 @@ import { DeskGround } from "@/components/landing/desk/ground";
 import { InkUnderline, PenTick } from "@/components/landing/desk/hover-ink";
 import { InkLayer } from "@/components/landing/desk/ink";
 import { Card, Clip, Pen, Ruler } from "@/components/landing/desk/objects";
-import { CELL, locate, printRows, Sheet } from "@/components/landing/desk/sheet";
+import { Sheet } from "@/components/landing/desk/sheet";
 import type { Copy } from "@/lib/copy";
 import type { Locale } from "@/lib/i18n";
 import { exampleRun } from "@/lib/landing/example-run";
-import { caret, marginNote, ringAround, underline } from "@/lib/landing/ink/marks";
-import { isAdded, recordedLine } from "@/lib/landing/recorded";
 import { cloudUrl, localePath } from "@/lib/shared";
 import { ArrowGlyph, Section } from "../section";
+import { heroPrint } from "./hero-page";
 import { HeroPlay } from "./hero-play";
 
 // The hero: the brand line beside the desk, where the example run's page is
@@ -17,45 +16,19 @@ import { HeroPlay } from "./hero-play";
 // Painted composed and finished; with motion allowed, 10-hero.css holds the
 // objects in their places before play and HeroPlay plays the review: the
 // lamp warms, the sheet lands, the ruler reads with the eyes on its tab, the
-// pen writes, the finding card is clipped at line 42.
+// pen writes, the finding card is clipped at line 42. Two printouts of the
+// same page: the desk's wide one, and below 1024 px a narrow one of the last
+// lines, whose card lies at the screen's scale so its type stays at 16 px.
 
-const { finding, heroPage } = exampleRun;
-const COLS = 54;
-
-const rows = printRows(
-  Array.from({ length: heroPage.to - heroPage.from + 1 }, (_, i) => {
-    const n = heroPage.from + i;
-    return { n, text: recordedLine(finding.path, n), added: isAdded(finding.path, n) };
-  }),
-  COLS,
-);
-
-// Line 42's operands and where the fix goes, in the code's px.
-const [opA, opB] = heroPage.marked.map((t) => locate(rows, finding.line, t));
-const row42 = opA?.row ?? 0;
-const base = row42 * CELL.row + 19;
-const x = (col: number) => col * CELL.ch;
-const lineEnd = x((rows[row42]?.text.length ?? 0) + 2.4);
-const marks =
-  opA && opB
-    ? [
-        { name: "units", mark: underline(x(opA.col), x(opA.col + opA.len), base + 1, { seed: 3 }) },
-        {
-          name: "now",
-          mark: ringAround(x(opB.col) - 1, row42 * CELL.row + 4, x(opB.len) + 2, 19, { seed: 7 }),
-        },
-        { name: "caret", mark: caret(x(opA.col + opA.len) + 4.8, base + 2.5, { size: 8 }) },
-        { name: "fix", mark: marginNote("* 1000", lineEnd + 4, base + 1, { h: 17 }) },
-      ]
-    : [];
-
-// Where things lie, in the sheet's px (the code starts at CODE).
-const CODE = { x: 44 + 5 * CELL.ch, y: 78 };
+const { finding } = exampleRun;
+const wide = heroPrint(54);
+const narrow = heroPrint(33, 40);
 const WIDTH = 690;
-const RULER_ROW = row42 + 1;
 
 export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: Locale }) {
   const d = copy.desk;
+  const task = exampleRun.tasks[0].id;
+  const card = { title: finding.title, quote: finding.quote, foot: d.card.foot };
   return (
     <Section id="hero" ground="desk" className="hero">
       <DeskGround reach />
@@ -90,45 +63,61 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: Locale }) {
           <span data-promote-sentinel="" />
         </div>
       </div>
-      <div className="hero-scene" role="img" aria-label={d.label}>
+      <div className="hero-scene is-wide" role="img" aria-label={d.label}>
         <div className="hero-world">
           <Sheet
             className="hero-sheet"
             path={finding.path}
             meta={d.meta}
-            rows={rows}
+            rows={wide.rows}
             over={
               <>
-                <Ruler row={RULER_ROW} width={WIDTH + 40} />
+                <Ruler row={wide.rulerRow} width={WIDTH + 40} />
                 <InkLayer
                   id="hero"
                   className="hero-ink"
-                  width={x(COLS) + 120}
-                  height={rows.length * CELL.row + 20}
-                  marks={marks}
+                  width={wide.inkWidth}
+                  height={wide.inkHeight}
+                  marks={wide.marks}
                 />
               </>
             }
           >
             <Card
               className="hero-card"
-              head={[`${finding.severity} · ${exampleRun.tasks[0].id}`, d.card.where]}
-              title={finding.title}
-              quote={finding.quote}
-              foot={d.card.foot}
+              head={[`${finding.severity} · ${task}`, d.card.where]}
+              {...card}
             />
             <Clip className="hero-clip" />
-            <Pen
-              className="hero-pen"
-              rest={{
-                x: CODE.x + x(opB ? opB.col + opB.len : 0) + 8,
-                y: CODE.y + base + 12,
-                r: 60,
-              }}
-              narrow={{ x: CODE.x + lineEnd - 10, y: CODE.y + base + 34, r: 68 }}
-            />
+            <Pen className="hero-pen" rest={{ ...wide.rest, r: 42 }} />
           </Sheet>
         </div>
+      </div>
+      <div className="hero-scene is-narrow" role="img" aria-label={d.label}>
+        <div className="hero-world">
+          <Sheet
+            className="hero-sheet"
+            path={finding.path}
+            meta={d.meta}
+            rows={narrow.rows}
+            over={
+              <>
+                <Ruler row={narrow.rulerRow} width={520} />
+                <InkLayer
+                  id="hero-n"
+                  className="hero-ink"
+                  width={narrow.inkWidth}
+                  height={narrow.inkHeight}
+                  marks={narrow.marks}
+                />
+              </>
+            }
+          >
+            <Pen className="hero-pen" rest={{ ...narrow.noteEnd, r: 58 }} />
+          </Sheet>
+        </div>
+        <Card className="hero-card" head={[finding.severity, d.card.where]} {...card} />
+        <Clip className="hero-clip" />
       </div>
       <p className="hero-caption">
         <span className="hero-caption-ring" aria-hidden="true" />

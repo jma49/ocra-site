@@ -42,14 +42,6 @@ const config = {
         ],
       },
       {
-        // The brand marks' sprite (app/icons.svg/route.ts) is the same file
-        // on every page; a prerendered route only gets s-maxage, which the
-        // browser ignores. A day in the browser, until the next deploy on the
-        // CDN.
-        source: "/icons.svg",
-        headers: [{ key: "Cache-Control", value: "public, max-age=86400, s-maxage=31536000" }],
-      },
-      {
         // The manual's search index (app/api/search/route.ts), prebuilt and
         // fetched on the first search; an hour in the browser, so a deploy
         // that moves a page reaches returning readers soon.

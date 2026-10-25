@@ -3,10 +3,6 @@
    desk foundation is 06–08 (foundation.md). Sections: their packages. */
 @import "./01-base.css";
 @import "./02-nav.css";
-@import "./03-objects.css";
-@import "./03-code.css";
-@import "./04-pen.css";
-@import "./05-motion.css";
 @import "./06-desk.css";
 @import "./07-desk-objects.css";
 @import "./08-ink.css";
@@ -18,7 +14,6 @@
 @import "./32-figure-review.css";
 @import "./40-quiet.css";
 @import "./41-features.css";
-@import "./50-lifecycle-thread.css";
 @import "./50-lifecycle.css";
 @import "./51-security.css";
 @import "./60-plans.css";

@@ -212,6 +212,104 @@ export function stroke(pts: readonly Pt[], nib: Nib = {}): StrokeShape {
   return { outline, centre, length: len, width: Math.max(...w) };
 }
 
+// The bill's hand ("$0.5134", features-bill.tsx): its strokes in the glyph
+// box (0 to 1, the baseline at 1), and the advance.
+type Glyph = [[number, number][][], number];
+const FIGURES: Record<string, Glyph> = {
+  ".": [
+    [
+      [
+        [0.07, 0.93],
+        [0.1, 0.99],
+        [0.13, 0.95],
+      ],
+    ],
+    0.3,
+  ],
+  "3": [
+    [
+      [
+        [0.03, 0.15],
+        [0.17, 0.02],
+        [0.37, -0.01],
+        [0.5, 0.11],
+        [0.47, 0.29],
+        [0.3, 0.43],
+        [0.2, 0.46],
+        [0.4, 0.49],
+        [0.54, 0.64],
+        [0.52, 0.85],
+        [0.34, 0.99],
+        [0.13, 0.99],
+        [-0.01, 0.88],
+      ],
+    ],
+    0.66,
+  ],
+  "4": [
+    [
+      [
+        [0.38, -0.01],
+        [0.21, 0.32],
+        [0.02, 0.67],
+        [0.3, 0.665],
+        [0.6, 0.65],
+      ],
+      [
+        [0.45, 0.28],
+        [0.44, 0.66],
+        [0.43, 1.04],
+      ],
+    ],
+    0.7,
+  ],
+  "5": [
+    [
+      [
+        [0.14, 0.03],
+        [0.11, 0.24],
+        [0.08, 0.47],
+        [0.24, 0.39],
+        [0.42, 0.43],
+        [0.53, 0.61],
+        [0.5, 0.83],
+        [0.35, 0.98],
+        [0.15, 0.99],
+        [0.01, 0.89],
+      ],
+      [
+        [0.13, 0.03],
+        [0.32, 0.02],
+        [0.52, -0.01],
+      ],
+    ],
+    0.66,
+  ],
+  $: [
+    [
+      [
+        [0.5, 0.17],
+        [0.36, 0.05],
+        [0.16, 0.06],
+        [0.06, 0.21],
+        [0.15, 0.38],
+        [0.36, 0.5],
+        [0.5, 0.66],
+        [0.48, 0.86],
+        [0.3, 0.97],
+        [0.1, 0.94],
+        [-0.01, 0.83],
+      ],
+      [
+        [0.29, -0.12],
+        [0.28, 0.5],
+        [0.26, 1.12],
+      ],
+    ],
+    0.68,
+  ],
+};
+
 // Handwritten "* 1000" and the like: single strokes per glyph, in a box `h`
 // px tall, from (x, baseline y), writing slightly uphill.
 export function handwrite(
@@ -281,7 +379,10 @@ export function handwrite(
         ],
         0.5,
       );
-    else if (ch === "0") {
+    else if (ch in FIGURES) {
+      const [strokes, adv] = FIGURES[ch] as Glyph;
+      glyph(strokes, adv);
+    } else if (ch === "0") {
       const pts: [number, number][] = [];
       for (let i = 0; i <= 26; i++) {
         const a = -Math.PI / 2 - 0.35 - (TAU + 0.5) * (i / 26);

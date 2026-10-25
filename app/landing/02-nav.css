@@ -131,11 +131,17 @@
   --cta-g: var(--print-paper);
   --cta-t: var(--print-ink);
 }
+/* Over a paper band: a slip of the same paper lying on it, lighter than
+   the smoked glass, its edge and a soft contact shadow under the lamp. */
 .home .nav[data-on="paper-band"] {
-  --nav-g: var(--print-paper);
+  --nav-g: var(--card-stock);
+  --nav-o: 78%;
   --nav-t: var(--print-ink);
   --nav-a: var(--print-ink-2);
-  --nav-l: color-mix(in srgb, var(--print-ink) 10%, transparent);
+  --nav-l: color-mix(in srgb, var(--print-ink) 9%, transparent);
+  box-shadow:
+    inset 0 0 0 1px var(--nav-l),
+    0 10px 24px -14px color-mix(in srgb, var(--umbra) 30%, transparent);
 }
 .home .nav[data-promoted][data-on="paper-band"] {
   --cta-g: var(--print-ink);
@@ -368,5 +374,27 @@ html:has(.home .nav-shell[data-open]) {
 @keyframes scrim-in {
   from {
     opacity: 0;
+  }
+}
+
+/* On a touch screen wider than a phone (a tablet), the bar's small
+   controls keep the size they are drawn at and take a finger through an
+   invisible hit area centred on them, 44 px on any side that is shorter. */
+@media (pointer: coarse) {
+  .home :is(.nav-links a, .nav-a, .ib, .nav-cta) {
+    position: relative;
+  }
+  .home :is(.nav-links a, .nav-a, .ib, .nav-cta)::before {
+    content: "";
+    position: absolute;
+    inset-block: min(0px, (100% - 44px) / 2);
+    inset-inline: min(0px, (100% - 44px) / 2);
+  }
+}
+/* Reduce motion: the bar follows the ground at once. */
+@media (prefers-reduced-motion: reduce) {
+  .home .nav,
+  .home .nav-cta {
+    transition: none;
   }
 }

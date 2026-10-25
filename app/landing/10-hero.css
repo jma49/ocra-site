@@ -142,8 +142,15 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  /* Faded in from the top, so the light meets the desk above without a seam. */
-  mask-image: linear-gradient(to bottom, transparent, var(--black) 160px);
+  /* Faded in from the top and out to the bottom, so the light meets the
+     desk above and the next section's desk below without a seam. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    var(--black) 160px,
+    var(--black) calc(100% - 180px),
+    transparent
+  );
 }
 .home .hero-scene::before {
   background: radial-gradient(
@@ -171,9 +178,11 @@
 .home .hero-world :is(.desk-sheet, .card) {
   pointer-events: auto;
 }
+/* The whole sheet lies inside the hero, on the desk that goes on into the
+   next section: nothing is cut by the seam between two desk sections. */
 .home .hero-sheet {
   --w: 690px;
-  --h: 1000px;
+  --h: min(752px, calc((clamp(720px, 100svh - 96px, 920px) - 48px) / var(--ws, 1)));
   --r: -1.6deg;
 }
 .home .hero-card {
@@ -189,7 +198,7 @@
 .home .hero-pen {
   --pen-s: 0.82;
 }
-@media (min-width: 1600px) {
+@media (min-width: 1600px) and (min-height: 960px) {
   .home .hero-world {
     --ws: 1.1;
   }
@@ -201,13 +210,21 @@
   }
 }
 
-/* ---- Phone and tablet: the copy, then the desk cropped below it ---- */
+/* ---- Phone and tablet: the copy, then the narrow printout below it ----
+   A page of the last lines printed 33 columns wide, so the code reads at
+   about 13.5 px and line 42 wraps where a printer would; the card lies at the
+   screen's own scale (16 px type) under the code, the pen along the right
+   edge. The ruler reads and is set aside before the card is dealt, so the
+   finished frame is the page, its marks, one card and the pen. */
+.home .hero-scene.is-narrow {
+  display: none;
+}
 @media (max-width: 1023px) {
   .home .hero {
     min-height: 0;
   }
   .home .hero-in {
-    padding-top: 28px;
+    padding-top: 24px;
   }
   .home .hero-copy {
     max-width: 560px;
@@ -217,7 +234,7 @@
   }
   .home .hero-lede {
     font-size: 16px;
-    margin-top: 18px;
+    margin-top: 16px;
   }
   .home .hero-cta {
     gap: 4px 22px;
@@ -226,29 +243,78 @@
   .home .hero-note {
     display: none;
   }
-  .home .hero-scene {
+  .home .hero-scene.is-wide {
+    display: none;
+  }
+  .home .hero-scene.is-narrow {
+    --cx: 16px;
+    --cy: 172px;
+    --cw: 300px;
+    display: block;
     position: relative;
     inset: auto;
-    height: 430px;
-    margin-top: 10px;
+    height: 396px;
+    margin-top: 12px;
   }
-  .home .hero-world {
-    --ws: 0.68;
-    left: max(6px, calc(50% - 300px));
-    top: -214px;
+  .home .is-narrow .hero-world {
+    --ws: 0.84;
+    left: 40px;
+    top: calc(-66px * var(--ws));
   }
-  .home .hero-sheet .ruler {
-    left: -96px;
+  .home .is-narrow .hero-sheet {
+    --w: 560px;
+    --h: 520px;
+    --r: -0.8deg;
   }
-  .home .hero-card {
-    --x: 6px;
-    --y: 548px;
-    scale: 1.17;
-    transform-origin: 0 0;
+  .home .is-narrow .ruler:not(.in),
+  .home .is-narrow .ruler.gone {
+    opacity: 0;
   }
-  .home .hero-clip {
-    --x: 268px;
-    --y: 552px;
+  .home .is-narrow .ruler.gone {
+    translate: -40px 40px;
+    transition:
+      transform 110ms var(--e-glide),
+      translate 420ms var(--e-glide),
+      opacity 320ms var(--e-std);
+  }
+  .home .is-narrow .hero-card {
+    --x: 0px;
+    --y: 0px;
+    --r: -0.6deg;
+    left: var(--cx);
+    top: var(--cy);
+    width: var(--cw);
+    height: 198px;
+  }
+  .home .is-narrow .hero-card .card-face {
+    padding: 16px 18px 0;
+    background-position:
+      0 0,
+      0 76px,
+      0 0,
+      0 0;
+  }
+  .home .is-narrow .hero-card .card-face::before {
+    top: 49px;
+  }
+  .home .is-narrow .hero-card .card-title {
+    margin-top: 7px;
+    font-size: 18px;
+    line-height: 26px;
+    text-wrap: balance;
+  }
+  .home .is-narrow .hero-card .card-quote {
+    white-space: normal;
+  }
+  .home .is-narrow .hero-clip {
+    --x: 40px;
+    --y: -1px;
+    --r: -0.6deg;
+    left: calc(var(--cx) - 40px);
+    top: calc(var(--cy) - 40px);
+  }
+  .home .is-narrow .hero-pen {
+    --pen-s: 0.86;
   }
   .home .hero-caption {
     position: relative;
@@ -259,6 +325,25 @@
   }
   .home .hero-replay {
     bottom: 64px;
+  }
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  .home .hero-scene.is-narrow {
+    --cx: calc(50% - 250px);
+    --cy: 196px;
+    --cw: 340px;
+    height: 440px;
+  }
+  .home .is-narrow .hero-world {
+    --ws: 1;
+    left: calc(50% - 250px);
+  }
+  .home .is-narrow .hero-sheet {
+    --h: 470px;
+  }
+  .home .is-narrow .hero-clip {
+    --x: 142px;
+    --y: 4px;
   }
 }
 

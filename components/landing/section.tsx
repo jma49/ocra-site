@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from "react";
+import type { ReactNode } from "react";
 
 // The grounds a section can stand on (DESIGN.md, Grounds). Night and stone
 // are inset bands; the nav reads `data-ground` to follow the page. The desk
@@ -31,38 +31,6 @@ export function Section({
     >
       {children}
     </section>
-  );
-}
-
-// Chinese runs on without spaces: a line ending in CJK text joins the next
-// one directly.
-const cjk = (text: string) => /[　-鿿＀-￯]$/.test(text);
-
-// A heading's explicit lines (copy `lines`), each a block `span.l`, joined
-// with a space in English and nothing in Chinese, so the accessible name is
-// the sentence. `inline` sets them on one line from that width up (1024: the
-// H1; 1200: the features H2); a display line is clipped, never painted over
-// its neighbour, if a fallback face runs wide.
-export function Lines({ lines, inline }: { lines: readonly string[]; inline?: 1024 | 1200 }) {
-  return (
-    <span className="lines" data-inline={inline}>
-      {lines.map((line, i) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: static copy, never reordered
-        <Fragment key={i}>
-          {i > 0 && !cjk(lines[i - 1] ?? "") ? " " : null}
-          <span className="l">{line}</span>
-        </Fragment>
-      ))}
-    </span>
-  );
-}
-
-// A section label above an H2, only where the H2 does not already say it.
-export function Kicker({ children, id }: { children: ReactNode; id?: string }) {
-  return (
-    <p className="t-kicker" id={id}>
-      {children}
-    </p>
   );
 }
 

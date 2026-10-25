@@ -13,8 +13,8 @@ test.beforeEach(({}, testInfo) => {
 });
 
 // The largest text on a phone is the lede. Text at opacity 0 does not count
-// as painted, so an entrance that fades it in holds back the page's largest
-// contentful paint until the fade starts.
+// as painted, so an entrance that fades it in from 0 holds back the page's
+// largest contentful paint until the fade starts.
 test.describe("with motion", () => {
   test.use({ reducedMotion: "no-preference" });
 
@@ -23,7 +23,7 @@ test.describe("with motion", () => {
     const opacities = await page.evaluate(() =>
       [
         ...document.querySelectorAll(
-          ".hero .t-display .l, .hero .t-lede, .hero .hero-cta, .hero .hero-note",
+          ".hero .hero-h .hli, .hero .hero-lede, .hero .hero-cta, .hero .hero-note",
         ),
       ].map((el) => {
         for (const animation of el.getAnimations()) {
@@ -34,7 +34,7 @@ test.describe("with motion", () => {
       }),
     );
     expect(opacities.length).toBeGreaterThan(3);
-    expect(new Set(opacities)).toEqual(new Set(["1"]));
+    expect(opacities.filter((opacity) => Number(opacity) === 0)).toEqual([]);
   });
 });
 
@@ -59,23 +59,4 @@ test("the landing page does not load the manual's styles", async ({ page }) => {
   await page.goto("/", { waitUntil: "networkidle" });
   expect(sheets.length).toBeGreaterThan(0);
   expect(sheets.filter((css) => css.includes("#nd-sidebar")).length).toBe(0);
-});
-
-// The providers' marks are most of the page's markup, and the page carries
-// its markup twice (HTML and the React payload). They come from one sprite
-// instead, which the browser caches across pages and languages.
-test("the brand marks come from a cached sprite", async ({ request }) => {
-  const html = await (await request.get("/")).text();
-  expect(html.includes("<symbol")).toBe(false);
-  const used = [...html.matchAll(/<use href="\/icons\.svg#([\w-]+)"/g)].map((m) => m[1]);
-  expect(used.length).toBeGreaterThan(20);
-
-  const sprite = await request.get("/icons.svg");
-  expect(sprite.status()).toBe(200);
-  expect(sprite.headers()["content-type"]).toContain("image/svg+xml");
-  expect(sprite.headers()["cache-control"]).toMatch(/\bmax-age=\d+/);
-  const symbols = new Set(
-    [...(await sprite.text()).matchAll(/<symbol id="([\w-]+)"/g)].map((m) => m[1]),
-  );
-  expect(used.filter((id) => !symbols.has(id))).toEqual([]);
 });

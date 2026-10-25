@@ -120,3 +120,45 @@ export function nearEyes(reach = 320): () => void {
     cancelAnimationFrame(raf);
   };
 }
+
+// The primary calls to action lean a few px towards a pointer near them
+// (motion.md: "magnetic CTAs, subtle"), and settle back when it leaves.
+// Sets --mx, --my (px) on `.btn-desk`; 08-ink.css turns them into a
+// translate, so layout never moves.
+export function magnetic(reach = 56, pull = 0.14, max = 5): () => void {
+  if (!finePointer() || !motionAllowed()) return () => {};
+  const offs: (() => void)[] = [];
+  for (const el of document.querySelectorAll<HTMLElement>(".home .btn-desk")) {
+    let raf = 0;
+    let ev: PointerEvent | undefined;
+    const apply = () => {
+      raf = 0;
+      const r = el.getBoundingClientRect();
+      const dx = ev ? ev.clientX - (r.left + r.width / 2) : 0;
+      const dy = ev ? ev.clientY - (r.top + r.height / 2) : 0;
+      const near = ev && Math.abs(dx) < r.width / 2 + reach && Math.abs(dy) < r.height / 2 + reach;
+      const clamp = (v: number) => Math.max(-max, Math.min(max, v * pull));
+      el.style.setProperty("--mx", near ? clamp(dx).toFixed(2) : "0");
+      el.style.setProperty("--my", near ? clamp(dy).toFixed(2) : "0");
+    };
+    const move = (e: PointerEvent) => {
+      ev = e;
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    const leave = () => {
+      ev = undefined;
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    const zone = el.parentElement ?? el;
+    zone.addEventListener("pointermove", move, { passive: true });
+    zone.addEventListener("pointerleave", leave);
+    offs.push(() => {
+      zone.removeEventListener("pointermove", move);
+      zone.removeEventListener("pointerleave", leave);
+      cancelAnimationFrame(raf);
+    });
+  }
+  return () => {
+    for (const off of offs) off();
+  };
+}

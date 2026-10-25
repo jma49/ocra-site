@@ -33,8 +33,8 @@ export default async function HomePage({ params }: Props) {
         <Hero copy={copy.hero} locale={lang} />
         <HowItWorks copy={copy.how} />
         <Statement copy={copy.statement} />
-        <Works copy={copy.works} />
-        <Features copy={copy.features} />
+        <Works copy={copy.works} locale={lang} />
+        <Features copy={copy.features} locale={lang} />
         <Lifecycle copy={copy.lifecycle} onLine={copy.hero.desk.onLine} />
         <Security copy={copy.security} locale={lang} />
         <Plans copy={copy.plans} locale={lang} />

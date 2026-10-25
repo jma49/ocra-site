@@ -17,20 +17,36 @@ const SEEN = "ocra:desk-hero";
 
 const until = (t: number, signal: AbortSignal) => sleep(Math.max(0, t - performance.now()), signal);
 
+// The scene this width shows: the desk's wide page or the phone's narrow one.
+const shown = (hero: HTMLElement) =>
+  [...hero.querySelectorAll<HTMLElement>(".hero-scene")].find(
+    (s) => getComputedStyle(s).display !== "none",
+  );
+
+const seen = () => {
+  try {
+    return sessionStorage.getItem(SEEN) !== null;
+  } catch {
+    return false;
+  }
+};
+
 export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel: string }) {
   const [canReplay, setCanReplay] = useState(false);
   const run = useRef<AbortController | null>(null);
 
   const play = useCallback(async (t0: number) => {
     const hero = document.getElementById("hero");
-    const sheet = hero?.querySelector<HTMLElement>(".hero-sheet");
-    const layer = hero?.querySelector<SVGSVGElement>(".hero-ink");
-    const ruler = hero?.querySelector<HTMLElement>(".ruler");
-    const rigEl = hero?.querySelector<HTMLElement>(".hero-pen");
-    const card = hero?.querySelector<HTMLElement>(".hero-card");
-    const clip = hero?.querySelector<HTMLElement>(".hero-clip");
+    const scene = hero ? shown(hero) : undefined;
+    const sheet = scene?.querySelector<HTMLElement>(".hero-sheet");
+    const layer = scene?.querySelector<SVGSVGElement>(".hero-ink");
+    const ruler = scene?.querySelector<HTMLElement>(".ruler");
+    const rigEl = scene?.querySelector<HTMLElement>(".hero-pen");
+    const card = scene?.querySelector<HTMLElement>(".hero-card");
+    const clip = scene?.querySelector<HTMLElement>(".hero-clip");
     const eyes = ruler?.querySelector<SVGSVGElement>(".ruler-eyes");
-    if (!hero || !sheet || !layer || !ruler || !rigEl || !card || !clip || !eyes) return;
+    if (!hero || !scene || !sheet || !layer || !ruler || !rigEl || !card || !clip || !eyes) return;
+    const narrow = scene.classList.contains("is-narrow");
     run.current?.abort();
     const ctl = new AbortController();
     run.current = ctl;
@@ -51,8 +67,7 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
     };
 
     const ink = strokesOf(layer, sheet, ["units", "now", "caret", "fix"]);
-    const narrow = matchMedia("(max-width: 1023px)").matches && rigEl.dataset.restNarrow;
-    const [rx = 0, ry = 0, rr = 0] = ((narrow || rigEl.dataset.rest) ?? "").split(" ").map(Number);
+    const [rx = 0, ry = 0, rr = 0] = (rigEl.dataset.rest ?? "").split(" ").map(Number);
     const rest = { x: rx, y: ry, r: rr, lift: 0, tilt: 0 };
     const rig = new PenRig(rigEl, { x: rest.x + 520, y: rest.y + 620, r: 52, lift: 1, tilt: 1 });
     const look = (px: number, py = 0) => {
@@ -63,7 +78,7 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
     const row42 = Number(finalRow) - 1;
 
     setDrawn(ink, false);
-    ruler.classList.remove("in");
+    ruler.classList.remove("in", "gone");
     card.classList.remove("dealt");
     clip.classList.remove("bit");
     hero.classList.remove("done");
@@ -71,11 +86,10 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
     setCanReplay(false);
 
     try {
-      // Reading: the ruler slides in under line 29 (the call to isExpired),
-      // pauses there, then glides down a row at a time to line 42.
+      // Reading: the ruler slides in under the page's first line, then
+      // glides down a row at a time to line 42.
       await until(t0 + 250, signal);
-      // On a phone the desk is cropped to the last lines: read from there.
-      const from = narrow ? Math.max(0, row42 - 6) : 0;
+      const from = 0;
       ruler.style.setProperty("--row", String(from));
       ruler.classList.add("in");
       look(0.9, -0.2);
@@ -94,7 +108,7 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
             ease.settle,
             signal,
           );
-        await sleep(r > row42 - 3 ? 50 : narrow ? 70 : 28, signal);
+        await sleep(r > row42 - 3 ? 50 : narrow ? 80 : 28, signal);
       }
       // Line 42: the eyes run along it to Date.now(), glance back at
       // expiresAt, and blink; the ruler makes room for the pen.
@@ -110,14 +124,20 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
           { duration: 170, easing: "ease-in-out" },
         );
       await enter;
-      await write(rig, ink, { speed: 0.4, signal });
+      await write(rig, ink, { speed: 0.5, signal });
       look(0.4, 0.4);
-      // Done writing: the pen lies down, the card is dealt and clipped.
+      // Done writing: the pen lies down, the card is dealt and clipped. On
+      // the phone the ruler is set aside first, to make room for the card.
       const lie = rig.to({ ...rest, lift: 0, tilt: 0 }, 640, ease.glide, signal);
+      if (narrow) ruler.classList.add("gone");
       card.classList.add("dealt");
       const deal = card.animate(
         [
-          { translate: "-180px 420px", rotate: "-18deg", opacity: 0.4 },
+          {
+            translate: narrow ? "-40px 260px" : "-180px 420px",
+            rotate: narrow ? "-9deg" : "-18deg",
+            opacity: 0.4,
+          },
           { translate: "-14px 18px", rotate: "-2deg", opacity: 1, offset: 0.72 },
           { translate: "0px 0px", rotate: "0deg", opacity: 1 },
         ],
@@ -155,14 +175,8 @@ export function HeroPlay({ replay, replayLabel }: { replay: string; replayLabel:
     const hero = document.getElementById("hero");
     if (!hero) return;
     const visible = hero.getBoundingClientRect().bottom > innerHeight * 0.3;
-    if (!motionAllowed() || root.classList.contains("seen") || !visible) {
+    if (!motionAllowed() || root.classList.contains("seen") || seen() || !visible) {
       hero.classList.add("done");
-      const rig = hero.querySelector<HTMLElement>(".hero-pen");
-      const narrow = rig?.dataset.restNarrow;
-      if (rig && narrow && matchMedia("(max-width: 1023px)").matches) {
-        const [x = 0, y = 0, r = 0] = narrow.split(" ").map(Number);
-        new PenRig(rig, { x, y, r, lift: 0, tilt: 0 });
-      }
       setCanReplay(motionAllowed());
       return;
     }
