@@ -1,18 +1,25 @@
-/* How it works below 900 px: the desk is cropped to the stage's top, one
-   card at a time (scene.ts "narrow"), the copy and the scrubber under it. */
+/* How it works below 900 px: the head in the flow above the stage, the
+   desk cropped to one thing at a time (scene.ts "narrow", about 0.65 of
+   world scale, so printed type stays near 10.5 px), the copy and the
+   scrubber under it. Still: the finished desk, then the chapters. */
 
 @media (max-width: 899px) {
-  .home .how-scene {
-    bottom: 46%;
-    mask-image: linear-gradient(to bottom, var(--umbra) 88%, transparent);
-  }
   .home .how-world {
-    transform: translate(-24px, -480px) scale(0.62);
+    transform: translate(calc(50vw - 233px), calc(var(--vh, 100vh) * 0.31 - 530px)) scale(0.647);
+  }
+  .home .how-stage {
+    display: block;
+  }
+  .home .how-scene {
+    position: relative;
+    height: calc(var(--vh, 100vh) * 0.62);
+    mask-image: linear-gradient(to bottom, var(--umbra) 90%, transparent);
   }
   .home .how-side {
-    align-items: flex-end;
-    padding-top: 0;
-    padding-bottom: 82px;
+    padding-block: 24px 96px;
+  }
+  .home .how-ruler {
+    left: -62px;
   }
   .home .how-copy {
     width: 100%;
@@ -25,31 +32,49 @@
     font-size: 13px;
   }
   .home .how-h3 {
-    font-size: 25px;
+    font-size: 26px;
   }
   .home .how-text {
     margin-top: 10px;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.5;
-  }
-  .home .how-legend {
-    display: none;
   }
   .home .how-scrub {
     margin-top: 18px;
   }
   .home .how-stops {
-    font-size: 12px;
+    font-size: 13px;
   }
   .home .how-run {
     left: 20px;
     right: 20px;
     bottom: 22px;
     max-width: none;
-    font-size: 12px;
+    font-size: 13px;
   }
   .home .how-run code {
-    font-size: 12px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 899px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .home .how-world {
+    transform: translate(calc(50vw - 233px), calc(var(--vh, 100vh) * 0.26 - 498px)) scale(0.647);
+  }
+  /* The push takes the whole screen: the crop opens as the camera goes in. */
+  .home .how-scene {
+    position: absolute;
+    height: auto;
+    bottom: calc(48% * (1 - min(1, var(--push) * 2.5)));
+  }
+  .home .how-side {
+    align-items: flex-end;
+    padding-block: 0 78px;
+  }
+  .home .how-legend {
+    display: none;
+  }
+  .home .how-way {
+    height: calc(var(--vh, 100vh) * 2.7);
   }
 }
 @media (max-width: 399px) {

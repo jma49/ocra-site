@@ -11,8 +11,9 @@
   width: 0;
   height: 0;
   transform-origin: 0 0;
-  /* Before the island fits it: the last chapter beside the copy. */
-  transform: translate(calc(100vw - 940px), calc(var(--vh, 100vh) / 2 - 1010px));
+  /* Before the island fits it, and for good when the stage is still: the
+     last chapter (line 42, the finding, the bill) beside the copy. */
+  transform: translate(calc(100vw - 950px), calc(var(--vh, 100vh) / 2 - 770px));
   will-change: transform;
 }
 html.mo .home .how-world [data-depth] {
@@ -35,6 +36,14 @@ html.mo .home .how-world [data-depth] {
   top: 0;
   transform-origin: 50% 40%;
 }
+.home .how-obj[data-gone] {
+  display: none;
+}
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  .home .how-obj[data-gone] {
+    display: block;
+  }
+}
 .home .how-o-sheet {
   width: 690px;
   height: 940px;
@@ -53,9 +62,6 @@ html.mo .home .how-world [data-depth] {
 .home .how-o-clip {
   width: 0;
   height: 0;
-}
-.home .how-o-note {
-  width: 240px;
 }
 .home .how .how-pen {
   z-index: 90;
@@ -88,26 +94,26 @@ html.mo .home .how-world [data-depth] {
   translate: 0 0;
 }
 
-/* ---- Ink on the lock file's head, on line 42, under the bill ---- */
-.home .how-ink-lock {
+/* ---- Ink on the lock file's head and the struck cards' titles (line 42
+   and the bill are laid in the code's px, 07-desk-objects.css) ---- */
+.home :is(.how-ink-lock, .how-ink-card) {
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 1;
   overflow: visible;
   pointer-events: none;
 }
 
-/* ---- The note a set-aside file leaves on the desk ---- */
-.home .how-note {
-  display: flex;
-  flex-direction: column;
+/* ---- The reason a set-aside file keeps, printed under its struck name ---- */
+.home .how-reason {
+  position: absolute;
+  left: 44px;
+  top: 68px;
   margin: 0;
   font: 400 16px / 26px var(--font-mono);
-  color: var(--on-desk-2);
+  color: var(--print-ink-2);
   white-space: nowrap;
-}
-.home .how-note .how-tl:first-child {
-  color: var(--on-desk);
 }
 
 /* ---- Index cards: the candidates and the review matrix ---- */

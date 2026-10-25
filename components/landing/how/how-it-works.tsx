@@ -22,7 +22,9 @@ import {
   CODE,
   COLS,
   FIRST_LINE,
+  type Layout,
   type ObjectId,
+  pens,
   posed,
   poses,
   rowsOf,
@@ -30,15 +32,18 @@ import {
   SHEET_W,
   STACK_H,
   shots,
+  TIMING,
   totalBox,
 } from "./scene";
 import { HowStory } from "./story";
 
 // How it works: the example run replayed on one desk, in five chapters, one
 // per scrubber stop (5 files · 4 tasks · line 42 · 1 reported · $0.5134).
-// The server paints the last chapter, finished; the island (story.tsx) pins
-// the stage, plays each chapter as scroll reaches it, scrubs the scrubber
-// and the camera's push into the paper that Quiet by design starts on.
+// The server paints the last chapter, finished. With motion the stage is
+// pinned under the head and the island (story.tsx) plays each chapter as
+// scroll reaches it, scrubs the scrubber and the camera's push into the
+// paper that Quiet by design is printed on; without it (30-how.css) the
+// chapters are listed beside the finished desk.
 
 const CHAPTERS: readonly ChapterId[] = ["select", "bundle", "review", "verify", "comment"];
 const { finding, files, claims, tasks, skipped, diff, bundles } = exampleRun;
@@ -95,16 +100,24 @@ const lockPath = path("lock");
 const lockMarks = [
   { name: "dele", mark: strike(44, 44 + x(lockPath.length), 37, { width: 2.8, seed: 5 }) },
 ];
+// A card's title struck through, in the card's px (19 px Maple, -0.01 em).
+const titleStrike = (title: string, seed: number) => [
+  { name: "x", mark: strike(22, 22 + title.length * 11.27, 75, { width: 2.6, seed }) },
+];
 
-const plan = {
-  wide: { poses: poses("wide", rows), shots: shots("wide", rows) },
-  narrow: { poses: poses("narrow", rows), shots: shots("narrow", rows) },
-};
+const layout = (l: Layout) => ({
+  poses: poses(l, rows).poses,
+  shots: shots(l, rows),
+  pens: pens(l),
+  timing: TIMING[l],
+});
+const plan = { wide: layout("wide"), narrow: layout("narrow") };
 export type Plan = typeof plan;
 const rulerFrom = rowsOf(rows, FIRST_LINE).last;
 
 // Every object lies in a holder posed in world px (scene.ts); the server
-// paints the last chapter's poses.
+// paints the last chapter's poses, and marks what has left the desk by then
+// (the still story never draws it).
 function Obj({
   id,
   className,
@@ -114,8 +127,14 @@ function Obj({
   className: string;
   children: ReactNode;
 }) {
+  const p = plan.wide.poses[5][id];
   return (
-    <div className={`how-obj ${className}`} data-obj={id} style={posed(plan.wide.poses[5][id])}>
+    <div
+      className={`how-obj ${className}`}
+      data-obj={id}
+      data-gone={p.o === 0 || undefined}
+      style={posed(p)}
+    >
       {children}
     </div>
   );
@@ -135,12 +154,14 @@ function Stages({ stages }: { stages: Copy["how"]["chapters"][ChapterId]["stages
 
 // A claim's card: its number and task, its severity, the title (with the
 // Chinese gloss), the quote where the run recorded one, and the outcome the
-// verifier and the judge gave it, typed on in chapter 4.
+// verifier and the judge gave it, typed on in chapter 4. The two that do
+// not hold carry the pen's strike through their title.
 function ClaimCard({ copy, i }: { copy: Copy["how"]; i: number }) {
   const c = claims[i];
   const id = CARDS[i];
   if (!c || !id) return null;
   const gloss = copy.claimGloss[c.id];
+  const struck = c.outcome === "remembered" || c.outcome === "disproved";
   return (
     <Obj id={id} className="how-o-card">
       <Card
@@ -154,7 +175,17 @@ function ClaimCard({ copy, i }: { copy: Copy["how"]; i: number }) {
         }
         quote={c.id === "expired" ? finding.quote : undefined}
         foot={<span className="how-out">{`→ ${copy.desk.outcomes[c.outcome]}`}</span>}
-      />
+      >
+        {struck ? (
+          <InkLayer
+            id={`how-${id}`}
+            className="how-ink-card"
+            width={520}
+            height={178}
+            marks={titleStrike(c.title, 23 + i)}
+          />
+        ) : null}
+      </Card>
     </Obj>
   );
 }
@@ -173,24 +204,25 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
       <span>{r === 0 ? docsTask : skipped[r - 1] ? d.skip : ""}</span>
     </>
   );
+  const rest = plan.wide.pens.rest;
   return (
     <Section id="how" ground="desk" className="how" labelledBy="how-title">
       <DeskGround />
-      <header className="wrap how-head">
-        <p className="how-kicker">{copy.label}</p>
-        <h2 className="how-h" id="how-title">
-          {copy.lines.map((line, i) => (
-            <span key={line} className="how-hl">
-              <span className="how-hli">
-                {line}
-                {i < copy.lines.length - 1 && /[a-z.]$/i.test(line) ? " " : null}
-              </span>
-            </span>
-          ))}
-        </h2>
-        <p className="how-body">{copy.body}</p>
-      </header>
       <div className="how-pin">
+        <header className="wrap how-head">
+          <p className="how-kicker">{copy.label}</p>
+          <h2 className="how-h" id="how-title">
+            {copy.lines.map((line, i) => (
+              <span key={line} className="how-hl">
+                <span className="how-hli">
+                  {line}
+                  {i < copy.lines.length - 1 && /[a-z.]$/i.test(line) ? " " : null}
+                </span>
+              </span>
+            ))}
+          </h2>
+          <p className="how-body">{copy.body}</p>
+        </header>
         <div className="how-stage" data-ch="5">
           <div className="how-scene" aria-hidden="true">
             <div className="how-world">
@@ -205,13 +237,18 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
                     style={sheetSize(STACK_H)}
                   >
                     {id === "lock" ? (
-                      <InkLayer
-                        id="how-lock"
-                        className="how-ink-lock"
-                        width={260}
-                        height={60}
-                        marks={lockMarks}
-                      />
+                      <>
+                        <InkLayer
+                          id="how-lock"
+                          className="how-ink-lock"
+                          width={260}
+                          height={60}
+                          marks={lockMarks}
+                        />
+                        <p className="how-reason">
+                          <span className="how-tl">{d.setAside}</span>
+                        </p>
+                      </>
                     ) : null}
                   </Sheet>
                 </Obj>
@@ -256,12 +293,6 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
                   </p>
                 </Sheet>
               </Obj>
-              <Obj id="note" className="how-o-note">
-                <p className="how-note">
-                  <span className="how-tl">{lockPath}</span>
-                  <span className="how-tl">{d.setAside}</span>
-                </p>
-              </Obj>
               <Obj id="task" className="how-o-task">
                 <Card
                   className="how-task"
@@ -280,7 +311,7 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
               <Obj id="pin" className="how-o-clip">
                 <Clip />
               </Obj>
-              <Pen className="how-pen" rest={{ x: 600, y: 1150, r: -26 }} />
+              <Pen className="how-pen" rest={rest} />
             </div>
           </div>
           <div className="wrap how-side">
@@ -336,6 +367,7 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
           </p>
           <div className="how-paper" aria-hidden="true" />
         </div>
+        <div className="how-way" aria-hidden="true" />
       </div>
       <div className="sr-only">
         {copy.summary.map((p) => (
