@@ -33,7 +33,8 @@ const NOT_BEFORE = 1000;
 // in view, the page has settled, the code face is in (or 1.5 s have
 // passed), the Pull request tab is selected and the document is visible;
 // it pauses whenever one of those stops holding and resumes where it
-// stopped. Replay rewinds them. Without motion (html.mo) the review is
+// stopped, unless the reader has scrolled past the code: then it finishes.
+// Replay rewinds them. Without motion (html.mo) the review is
 // already finished and this only says so.
 //
 // It also links the comment and line 42 on hover (data-linked).
@@ -132,6 +133,14 @@ export function ReviewClock({ children }: { children: ReactNode }) {
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e) return;
+        // A reader who has read past the code comes back to the finished
+        // review, not to a run paused halfway with its comment unposted.
+        const past = !e.isIntersecting && e.boundingClientRect.bottom <= (e.rootBounds?.top ?? 0);
+        if (past && started && !done()) {
+          for (const a of anims) a.finish();
+          root.dataset.clock = "done";
+          return;
+        }
         const tall = (e.rootBounds?.height ?? innerHeight) * 0.6;
         inView = e.intersectionRatio >= 0.6 || e.intersectionRect.height >= tall;
         update();
