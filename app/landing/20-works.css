@@ -178,8 +178,9 @@ html.mo .home .features .pen-rig {
 
 /* ---- Motion: held before play (works-play.tsx); the server paints it done ---- */
 @media (prefers-reduced-motion: no-preference) {
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo .home .works-h:not(.in) .works-hl > span {
-    translate: 0 108%;
+    translate: 0 125%;
   }
   html.mo .home .works-h.in .works-hl > span {
     transition: translate 1.05s var(--e-enter);

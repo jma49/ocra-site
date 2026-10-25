@@ -31,8 +31,9 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo .home .how-hli {
-    translate: 0 105%;
+    translate: 0 125%;
     transition: translate 1s var(--e-settle);
   }
   html.mo .home .how-hl + .how-hl .how-hli {

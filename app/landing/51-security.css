@@ -408,8 +408,9 @@
   }
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo.hy .home .sec-h:not(.risen) .sec-hli {
-    translate: 0 108%;
+    translate: 0 125%;
   }
   html.mo.hy .home .sec-h .sec-hli {
     transition: translate 1050ms var(--e-settle);

@@ -288,8 +288,9 @@ html.mo .home .final-pen {
   html.mo .home .final:not(.played) .final-word:not(.typing, .typed) {
     visibility: hidden;
   }
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo .home .final-hli {
-    translate: 0 105%;
+    translate: 0 125%;
     transition: translate 1s var(--e-settle);
   }
   html.mo .home .final-hl:nth-child(2) .final-hli {
