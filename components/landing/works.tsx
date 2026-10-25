@@ -1,147 +1,63 @@
+import { Fragment } from "react";
+import { PaperBand } from "@/components/landing/desk/ground";
+import { Pen } from "@/components/landing/desk/objects";
 import type { Copy } from "@/lib/copy";
-import { fill } from "@/lib/copy/define";
-import { brandIcons } from "@/lib/landing/brand-icons";
-import { PROVIDERS } from "@/lib/landing/engine-facts";
-import { MarqueePause } from "./marquee-pause";
-import { Lines, Section } from "./section";
-import { WorksOutput } from "./works-outputs";
+import type { Locale } from "@/lib/i18n";
+import { PROVIDER_IDS, PROVIDERS } from "@/lib/landing/engine-facts";
+import { Section } from "./section";
+import { WorksPlay } from "./works-play";
+import { WorksSpread } from "./works-spread";
 
-// Where ocra reviews, and the `ocra review` flag that points it there
-// (the CLI's --pr, --mr and --from: docs/manual/en/cli.mdx). What it leaves
-// there is copy (copy.leaves).
-const PLATFORMS = [
-  { icon: "github", flag: "--pr" },
-  { icon: "gitlab", flag: "--mr" },
-  { icon: "git", flag: "--from" },
-] as const;
-const ROW_A = [
-  "openai",
-  "anthropic",
-  "gemini",
-  "openrouter",
-  "deepseek",
-  "qwen",
-  "moonshot",
-  "zhipu",
-  "minimax",
-  "mistral",
-  "xai",
-  "groq",
-  "cohere",
-];
-const ROW_B = [
-  "perplexity",
-  "together",
-  "fireworks",
-  "cerebras",
-  "huggingface",
-  "baidu",
-  "hunyuan",
-  "stepfun",
-  "siliconcloud",
-  "volcengine",
-  "deepinfra",
-  "novita",
-  "vercel",
-];
-// Each mark is drawn from the sprite (app/icons.svg/route.ts).
-function Icon({ name }: { name: string }) {
+// Works where you work (concept C, D2): the camera's first full-bleed paper.
+// A poster headline, then one finding printed three times, as GitHub,
+// GitLab and a terminal put it, the pen ringing line 42 in each; under it
+// the providers ocra Cloud reaches, as an index of their ids. Painted
+// finished; WorksPlay prints, types, rings and counts it once in view.
+export function Works({ copy, locale }: { copy: Copy["works"]; locale: Locale }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <use href={`/icons.svg#icon-${name}`} />
-    </svg>
-  );
-}
-
-function Chips({ row, hidden }: { row: readonly string[]; hidden?: boolean }) {
-  return (
-    <ul className="mq-set" aria-hidden={hidden || undefined}>
-      {row.map((n) => (
-        <li key={n} className="mq-chip">
-          <Icon name={n} />
-          <span>{brandIcons[n]?.label}</span>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-// What ocra leaves on the platform, in the tile's mono. The space before
-// the second thing joins the two on a phone's one line; between a desktop
-// tile's two block lines it collapses.
-function Leaves({ items }: { items: Copy["works"]["leaves"]["git"] }) {
-  const [first, second] = items;
-  return (
-    <span className="works-tile-o">
-      <span>{first}</span>
-      {second && (
-        <>
-          {" "}
-          <span>+ {second}</span>
-        </>
-      )}
-    </span>
-  );
-}
-
-// One marquee row: the set twice, the copy hidden from assistive tech, so
-// the track loops seamlessly by moving one set's width (motion.md §15).
-function Row({ row, reverse }: { row: readonly string[]; reverse?: boolean }) {
-  return (
-    <div className={reverse ? "mq-row mq-rev" : "mq-row"}>
-      <div className="mq-track">
-        <Chips row={row} />
-        <Chips row={row} hidden />
-      </div>
-    </div>
-  );
-}
-
-// It runs where you already work, on the model you already pay for
-// (sections.md §3): the H2 on the page's headline step across the grid,
-// the body, then what ocra leaves on each platform, shown, and the provider
-// index headed by its count. From 1200 px the platforms run under the H2
-// and the body moves beside the index (20-works.css); neither takes focus,
-// so moving them leaves the tab order as it was.
-export function Works({ copy }: { copy: Copy["works"] }) {
-  return (
-    <Section ground="paper" className="works" labelledBy="works-title">
-      <div className="wrap works-grid">
-        <h2 className="t-h2 works-h" id="works-title">
-          <Lines lines={copy.lines} />
-        </h2>
-        <p className="t-body works-copy">{copy.body}</p>
-        <ul className="works-tiles" aria-label={copy.platforms}>
-          {PLATFORMS.map(({ icon, flag }) => (
-            <li key={icon} className="works-tile">
-              <span className="works-tile-h">
-                <Icon name={icon} />
-                <span className="t-h4">
-                  {icon === "git" ? copy.local : brandIcons[icon]?.label}
+    <Section id="product" ground="paper-band" className="works" labelledBy="works-title">
+      <PaperBand>
+        <div className="wrap works-in">
+          <header className="works-head">
+            <p className="works-eyebrow">{copy.eyebrow}</p>
+            <h2 className="works-h" id="works-title">
+              {copy.lines.map((line, i) => (
+                <span key={line} className="works-hl">
+                  <span>
+                    {line}
+                    {i < copy.lines.length - 1 && locale === "en" ? " " : null}
+                  </span>
                 </span>
-                <code>{flag}</code>
-              </span>
-              <Leaves items={copy.leaves[icon]} />
-              <WorksOutput platform={icon} copy={copy} />
-            </li>
-          ))}
-        </ul>
-        <div className="works-index">
-          <h3 className="works-gauge">
-            <span className="t-gauge">{PROVIDERS}</span> <span className="t-h4">{copy.gauge}</span>
-          </h3>
-          <div className="mq">
-            <Row row={ROW_A} />
-            <Row row={ROW_B} reverse />
-          </div>
-          <div className="works-foot">
-            <p className="t-small works-more">
-              {fill(copy.more, { count: PROVIDERS - ROW_A.length - ROW_B.length })}
-            </p>
-            <MarqueePause pause={copy.marquee.pause} play={copy.marquee.play} />
+              ))}
+            </h2>
+            <p className="works-lede">{copy.body}</p>
+          </header>
+          <WorksSpread copy={copy} locale={locale} />
+          <div className="works-prov">
+            <h3 className="works-count">
+              <span className="works-num">{PROVIDERS}</span>
+              <span className="works-gauge">{copy.gauge}</span>
+            </h3>
+            <div className="works-ids-at">
+              <p className="works-ids">
+                {PROVIDER_IDS.map((id, i) => (
+                  <Fragment key={id}>
+                    <span className="works-it">
+                      <span className="works-id">{id}</span>
+                      {i < PROVIDER_IDS.length - 1 ? <span className="works-sep"> ·</span> : null}
+                    </span>{" "}
+                  </Fragment>
+                ))}
+              </p>
+              <p className="works-more">{copy.more}</p>
+            </div>
+            <div className="works-pen-at">
+              <Pen className="works-pen" rest={{ x: 0, y: 0, r: -5 }} />
+            </div>
           </div>
         </div>
-      </div>
+      </PaperBand>
+      <WorksPlay />
     </Section>
   );
 }
