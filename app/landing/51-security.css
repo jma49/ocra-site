@@ -15,7 +15,7 @@
   height: 0;
 }
 .home .sec-in {
-  padding-block: clamp(96px, 12vh, 140px) clamp(88px, 11vh, 128px);
+  padding-block: clamp(80px, 10vh, 112px) clamp(64px, 8.5vh, 96px);
 }
 .home .sec-head {
   display: grid;
@@ -52,28 +52,30 @@
 
 /* ---- The poster ---- */
 .home .sec-poster {
-  margin: clamp(64px, 9vh, 104px) 0 0;
+  margin: clamp(48px, 6.5vh, 64px) 0 0;
 }
 .home .sec-poster-cap {
-  padding-top: 18px;
+  padding-top: 16px;
   border-top: 1px solid color-mix(in srgb, var(--print-ink) 34%, transparent);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
+  line-height: 1.45;
   color: var(--print-ink);
 }
+/* Each row is set solid around its path: the path's em is the row. */
 .home .sec-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
   align-items: center;
-  gap: 12px 48px;
-  padding: clamp(14px, 2.2vh, 26px) 0;
+  gap: 8px 48px;
+  padding: clamp(6px, 1.2vh, 12px) 0;
   border-bottom: 1px solid color-mix(in srgb, var(--print-ink) 12%, transparent);
 }
 .home .sec-path {
   position: relative;
   justify-self: start;
   display: inline-block;
-  font: 400 clamp(5.5rem, 1.6rem + 11vw, 12.25rem) / 1 var(--font-mono);
+  font: 400 clamp(4.5rem, 1rem + 8.4vw, 9.5rem) / 1 var(--font-mono);
   font-variant-ligatures: none;
   letter-spacing: 0;
   white-space: nowrap;
@@ -122,8 +124,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 14px;
-  font: 400 16px / 1.5 var(--font-mono);
+  gap: 2px 14px;
+  font: 400 17px / 1.5 var(--font-mono);
   color: var(--print-ink-2);
 }
 .home .sec-rule code {
@@ -146,8 +148,8 @@
 .home .sec-x-who {
   flex: none;
   width: 5ch;
-  font: 400 15px / 1.4 var(--font-mono);
-  color: var(--print-ink-3);
+  font: 400 16px / 1.4 var(--font-mono);
+  color: var(--print-ink-2);
   transition: opacity 260ms var(--e-std);
 }
 .home .sec-x-say {
@@ -155,7 +157,7 @@
   color: var(--print-ink);
 }
 .home .sec-x .sec-rule {
-  margin-top: 10px;
+  margin-top: 6px;
 }
 .home .sec-caret {
   display: inline-block;
@@ -168,10 +170,10 @@
 }
 
 .home .sec-also {
-  margin-top: 36px;
+  margin-top: 28px;
   max-width: 1040px;
   font-size: 16px;
-  line-height: 2;
+  line-height: 1.9;
   color: var(--print-ink-2);
 }
 .home .sec-also-h {
@@ -192,13 +194,13 @@
 .home .sec-page {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 48px 72px;
-  margin-top: clamp(72px, 10vh, 112px);
+  gap: 40px 72px;
+  margin-top: clamp(56px, 7vh, 72px);
 }
 .home .sec-clauses {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 48px 56px;
+  gap: 36px 48px;
 }
 .home .sec-clause {
   padding-top: 18px;
@@ -257,7 +259,7 @@
   margin-top: 20px;
 }
 .home .sec-foot {
-  margin-top: 56px;
+  margin-top: 40px;
   padding-top: 18px;
   border-top: 1px solid color-mix(in srgb, var(--print-ink) 12%, transparent);
   font-size: 15px;
@@ -291,34 +293,94 @@
   }
   .home .sec-row {
     grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
   }
   .home .sec-path {
-    font-size: clamp(5rem, 22vw, 10rem);
+    font-size: clamp(4.5rem, 19vw, 8.5rem);
   }
 }
+/* The phone: each row is its path, then one line of rule; the exchange
+   keeps one line per speaker; the sources fit on one line. */
 @media (max-width: 599px) {
-  .home .sec-path {
-    font-size: 24vw;
+  .home .sec-in {
+    padding-block: 72px 56px;
   }
-  .home .sec-clauses {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 36px;
-  }
-  .home .sec-x-say {
-    font-size: 17px;
-  }
-  .home .sec-caret {
-    font-size: 17px;
-  }
-  .home .sec-x-row {
-    white-space: normal;
-    flex-wrap: wrap;
+  .home .sec-head {
+    gap: 24px;
   }
   .home .sec-lead {
     font-size: 17px;
   }
+  .home .sec-poster {
+    margin-top: 40px;
+  }
+  .home .sec-poster-cap {
+    font-size: 17px;
+  }
+  .home .sec-row {
+    padding: 8px 0 14px;
+  }
+  .home .sec-rule {
+    font-size: 14px;
+    gap: 0 10px;
+  }
+  .home .sec-x {
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .home .sec-x-row {
+    gap: 10px;
+  }
+  .home .sec-x-who {
+    font-size: 14px;
+  }
+  .home .sec-x-say,
+  .home .sec-caret {
+    font-size: 15px;
+  }
+  .home .sec-also {
+    margin-top: 20px;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .home .sec-also code {
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  .home .sec-page {
+    gap: 28px;
+    margin-top: 44px;
+  }
+  .home .sec-clauses {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .home .sec-clause {
+    padding-top: 14px;
+  }
+  .home .sec-clause h3 {
+    font-size: 20px;
+  }
+  .home .sec-clause p {
+    margin-top: 6px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .home .sec-src code {
+    font-size: 14px;
+  }
   .home .sec-proof-t {
-    font-size: 24px;
+    font-size: 22px;
+  }
+  .home .sec-links {
+    margin-top: 10px;
+  }
+  .home .sec-foot {
+    margin-top: 28px;
+    font-size: 14px;
+  }
+  .home .sec-foot code {
+    font-size: 14px;
   }
 }
 

@@ -41,7 +41,7 @@ export const lifecycle: Bilingual<LifecycleCopy> = {
     illustration: "Illustration",
     caption: "The example run's finding after a push. These pushes are not in the recording.",
     scene:
-      "Two printouts of src/auth/session.ts. The second push lies on the first. On the first, line 42 is marked in red, with the fix, times 1000, in the margin; on the second, line 42 is printed with the fix. The finding's card, Every session is treated as expired, critical, has moved to the second push, and the old red mark is ticked: resolved by ocra.",
+      "Two printouts of src/auth/session.ts, lines 40 to 43. The second push lies on the lower half of the first. On the first, line 42 is marked in red, with the fix, times 1000, in the margin; on the second, line 42 is printed with the fix. The finding's card, Every session is treated as expired, critical, lies on the second push, and the old red mark is ticked: resolved by ocra.",
     push: "push {n}",
     thread: { key: "thread", open: "open", resolved: "resolved by ocra" },
   },
@@ -66,7 +66,7 @@ export const lifecycle: Bilingual<LifecycleCopy> = {
     illustration: "示意",
     caption: "示例运行的这条意见在推送之后会怎样。这些推送不在录制里。",
     scene:
-      "两张打印出来的 src/auth/session.ts。第二次推送叠在第一次上面。第一张的第 42 行有红笔标记，页边写着修复：乘以 1000；第二张的第 42 行印着修复后的代码。这条意见的卡片（Every session is treated as expired，critical）已经移到第二张上，旧的红笔标记被打了勾：已由 ocra 解决。",
+      "两张打印出来的 src/auth/session.ts，第 40 到 43 行。第二次推送叠在第一张的下半部分上。第一张的第 42 行有红笔标记，页边写着修复：乘以 1000；第二张的第 42 行印着修复后的代码。这条意见的卡片（Every session is treated as expired，critical）放在第二张上，旧的红笔标记被打了勾：已由 ocra 解决。",
     push: "推送 {n}",
     thread: { key: "讨论", open: "未解决", resolved: "已由 ocra 解决" },
   },

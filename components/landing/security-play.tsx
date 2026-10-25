@@ -30,9 +30,9 @@ export function SecurityPlay() {
     const type = async () => {
       for (const say of says) {
         say.parentElement?.classList.add("on");
+        await sleep(200, ctl.signal);
+        await typeOn(say, { cps: 44, signal: ctl.signal });
         await sleep(260, ctl.signal);
-        await typeOn(say, { cps: 34, signal: ctl.signal });
-        await sleep(380, ctl.signal);
       }
     };
     // When the first row's top has crossed 62 % of the viewport.

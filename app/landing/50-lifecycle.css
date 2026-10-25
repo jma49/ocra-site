@@ -1,11 +1,11 @@
 /* One finding, after you push (lifecycle/lifecycle.tsx), on the desk. A
-   pinned stage: the copy on the left, the desk's world on the right, two
-   printouts of session.ts, the finding's card and the pen. The world is laid
-   out in px of a 1440 x 900 frame; LifecyclePlay moves the objects from
-   where the --*-d* properties say they come from. */
+   briefly pinned stage: the copy on the left, the desk's world on the
+   right, two printouts of session.ts stacked top to bottom, the finding's
+   card under them and the pen. The world is laid out in px of a 1440 x 900
+   frame; LifecyclePlay slides push 2 in from where --r2-d* say. */
 
 .home .life {
-  height: 330vh;
+  height: 155vh;
   overflow-x: clip;
 }
 .home .life-pin {
@@ -106,14 +106,16 @@
 
 .home .life-cap {
   position: absolute;
-  left: max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
+  /* The copy column's left edge (.wrap: the column centred, the gutter
+     inside it). */
+  left: max(var(--gutter), calc((100% - var(--column)) / 2));
   bottom: 28px;
   z-index: 2;
   display: flex;
   align-items: baseline;
   gap: 12px;
-  max-width: 400px;
-  font-size: 13px;
+  max-width: 420px;
+  font-size: 14px;
   line-height: 1.5;
   color: var(--on-desk-3);
 }
@@ -122,7 +124,7 @@
   padding: 2px 8px;
   border: 1px solid var(--line-desk);
   border-radius: 4px;
-  font: 400 12px / 1.4 var(--font-mono);
+  font: 400 13px / 1.4 var(--font-mono);
   color: var(--on-desk-2);
 }
 
@@ -135,12 +137,9 @@
 }
 .home .life-world {
   --ws: 1;
-  --r2-dx: -110px;
-  --r2-dy: 920px;
-  --r2-dr: -7.1deg;
-  --card-dx: 290px;
-  --card-dy: -126px;
-  --card-dr: -5.5deg;
+  --r2-dx: 760px;
+  --r2-dy: 36px;
+  --r2-dr: 4deg;
   position: absolute;
   right: 0;
   top: 50%;
@@ -152,10 +151,12 @@
 .home .life-world :is(.desk-sheet, .card) {
   pointer-events: auto;
 }
-/* The stage is pinned: its objects take the arrival's parallax from
-   LifecyclePlay, not the page's depth timeline. */
-.home .life-world [data-depth] {
+/* The stage is pinned and its objects lie on its sheets: the page's depth
+   timeline (06-desk.css, html.mo) would slide the card, ruler and pen off
+   the lines they belong to. */
+html.mo .home .life .life-world [data-depth] {
   animation: none;
+  translate: none;
 }
 .home :is(.life-r1, .life-r2, .life-penframe) {
   position: absolute;
@@ -163,30 +164,34 @@
   height: 850px;
   transform-origin: 50% 40%;
 }
+/* Push 1 at the top; push 2 slides in from the desk's right edge onto its
+   blank lower half, a little to the left, so neither excerpt is cut. */
 .home .life-r1,
 .home .life-penframe {
-  left: 800px;
-  top: 96px;
-  rotate: -1.8deg;
+  left: 790px;
+  top: 92px;
+  rotate: -1.1deg;
 }
 .home .life-r1 {
   z-index: 1;
 }
 .home .life-r2 {
   z-index: 2;
-  left: 560px;
-  top: 178px;
-  rotate: 1.1deg;
+  left: 742px;
+  top: 334px;
+  rotate: 0.6deg;
 }
 .home .life-sheet {
   --w: 640px;
   --h: 850px;
   --r: 0deg;
 }
+/* The card lies below push 2's code and stays put while push 2 slides in
+   under it. */
 .home .life-card {
-  --x: 640px;
-  --y: 596px;
-  --r: 2deg;
+  --x: 818px;
+  --y: 606px;
+  --r: 1.2deg;
   z-index: 3;
 }
 .home .life-penframe {
@@ -252,11 +257,12 @@
   }
 }
 
-/* ---- Phone and tablet: the copy, then the desk cropped below it to the
-   end of line 42 on both pushes, the card under them ---- */
+/* ---- Phone and tablet: the copy, then the desk below it, cropped past
+   the end of the longest line; the stack reads top to bottom, the card
+   under it ---- */
 @media (max-width: 1023px) {
   .home .life {
-    height: 280vh;
+    height: 150vh;
   }
   .home .life-pin {
     display: flex;
@@ -301,7 +307,7 @@
     z-index: 2;
     margin: 0 var(--gutter);
     padding: 12px 0 0;
-    font-size: 12px;
+    font-size: 14px;
     max-width: none;
   }
   .home .life-scene {
@@ -309,43 +315,41 @@
     inset: auto;
     flex: 1;
     order: 3;
-    margin-top: 6px;
+    margin-top: 14px;
     overflow: hidden;
   }
   .home .life-world {
-    --ws: 0.85;
-    --r2-dx: -80px;
-    --r2-dy: 934px;
-    --r2-dr: -6.6deg;
-    --card-dx: -2px;
-    --card-dy: -100px;
-    --card-dr: -3deg;
-    top: -16px;
-    right: -42px;
+    --ws: 0.8;
+    --r2-dx: 700px;
+    --r2-dy: 30px;
+    --r2-dr: 4deg;
+    top: 0;
+    right: auto;
+    left: max(0px, calc(50% - 320px * var(--ws)));
+    width: 640px;
     transform: scale(var(--ws));
-    transform-origin: 100% 0;
+    transform-origin: 0 0;
   }
   .home .life-r1,
   .home .life-penframe {
-    left: 770px;
+    left: 14px;
     top: 0;
-    rotate: -1deg;
+    rotate: -0.7deg;
   }
   .home .life-r2 {
-    left: 640px;
-    top: 56px;
-    rotate: 0.6deg;
+    left: -6px;
+    top: 238px;
+    rotate: 0.4deg;
   }
   .home .life-card {
-    --x: 886px;
-    --y: 470px;
-    --r: 0deg;
+    --x: 34px;
+    --y: 492px;
+    --r: 0.8deg;
   }
 }
 @media (max-width: 599px) {
   .home .life-world {
-    --ws: 0.74;
-    right: -37px;
+    --ws: 0.62;
   }
 }
 
