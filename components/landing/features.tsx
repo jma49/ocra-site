@@ -8,7 +8,7 @@ import { Section, withCode } from "./section";
 // You set the limits (concept C, D2): back on the desk, one arrangement.
 // The copy on the left, the bill leading; on the right the example run's
 // bill printed on one sheet, which the pen totals in ink. Painted finished;
-// FeaturesPlay prints the rows, brings the pen in and types the footnote.
+// FeaturesPlay prints the rows and the footnote, then brings the pen in.
 export function Features({ copy, locale }: { copy: Copy["features"]; locale: Locale }) {
   const items = [copy.bill, copy.rules, copy.fallback];
   return (

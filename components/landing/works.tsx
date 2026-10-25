@@ -52,7 +52,7 @@ export function Works({ copy, locale }: { copy: Copy["works"]; locale: Locale })
               <p className="works-more">{copy.more}</p>
             </div>
             <div className="works-pen-at">
-              <Pen className="works-pen" rest={{ x: 0, y: 0, r: -5 }} />
+              <Pen className="works-pen" rest={{ x: 0, y: 0, r: -6 }} />
             </div>
           </div>
         </div>

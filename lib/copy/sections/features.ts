@@ -12,16 +12,19 @@ interface FeaturesCopy {
   bill: Item;
   rules: Item;
   fallback: Item;
-  // The example run's bill, printed (features-bill.tsx): its head, what it
-  // lists, the columns, the helper calls' row, and the token footnote the
-  // CLI prints under it. The pen writes the total; `total` names it for
-  // assistive tech.
+  // The example run's bill, printed (features-bill.tsx): its head (the
+  // repository, which phones leave off, and the pull request), what it
+  // lists, the columns, the helper calls' row (phones print the short
+  // label and the count), and the token footnote the CLI prints under it.
+  // The pen writes the total; `total` names it for assistive tech.
   sheet: {
-    head: FromRun;
+    repo: string;
+    pr: FromRun;
     tag: string;
     caption: string;
     cols: { task: string; input: string; cost: string };
     helpers: string;
+    helpersShort: string;
     total: string;
     foot: readonly [FromRun, FromRun];
     note: string;
@@ -47,11 +50,13 @@ export const features: Bilingual<FeaturesCopy> = {
       body: "Each tier can list several models. Overloads move on; a model out of quota is dropped for the rest of the run.",
     },
     sheet: {
-      head: (run) => `acme-api · pull request #${run.pr.number}`,
+      repo: "acme-api",
+      pr: (run) => `pull request #${run.pr.number}`,
       tag: "example run",
       caption: "What this review cost, task by task",
       cols: { task: "task", input: "input", cost: "cost" },
       helpers: "grouping, verification ×2, judge",
+      helpersShort: "helper calls",
       total: "Run total",
       foot: [
         (run) => `tokens ${n(run.usage.input)} in (${n(run.usage.cached)} cached)`,
@@ -76,11 +81,13 @@ export const features: Bilingual<FeaturesCopy> = {
       body: "每一档都可以列出多个模型。过载就换下一个；额度用尽的模型在本次运行中不再使用。",
     },
     sheet: {
-      head: (run) => `acme-api · pull request #${run.pr.number}`,
+      repo: "acme-api",
+      pr: (run) => `pull request #${run.pr.number}`,
       tag: "示例运行",
       caption: "这次审查的花费，按任务列出",
       cols: { task: "任务", input: "输入", cost: "花费" },
       helpers: "分组、核实 ×2、裁判",
+      helpersShort: "辅助调用",
       total: "本次合计",
       foot: [
         (run) => `输入 ${n(run.usage.input)} token（缓存 ${n(run.usage.cached)}）`,
