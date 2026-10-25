@@ -1,10 +1,10 @@
 /* FAQ, on the desk (components/landing/faq.tsx, faq-file.tsx): a file of
-   index cards beside a sticky head. The open card is pulled out of the
-   file, straightened and lifted; its answer sits on the card's pale ruled
+   index cards beside a sticky head, squared up edge to edge. The open card
+   is lifted out of the file; its answer sits on the card's pale ruled
    lines. The card's printed head rule is blue: red is the pen's. */
 
 .home .faq {
-  padding-block: 176px 190px;
+  padding-block: 128px 120px;
   overflow-x: clip;
 }
 /* The desk runs on under the paper band's slanted foot (60-plans.css). */
@@ -58,12 +58,12 @@
 }
 .home .fq-head {
   position: sticky;
-  top: 150px;
+  top: 132px;
 }
 .home .fq-h {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(56px, 7.2vw, 104px);
+  font-size: clamp(56px, 6.6vw, 96px);
   font-weight: 500;
   font-stretch: 72%;
   line-height: 0.92;
@@ -86,51 +86,20 @@
   color: var(--on-desk);
 }
 
-/* ---- The file ---- */
+/* ---- The file: the cards squared up, edges flush; the open one lifted ---- */
 .home .fq-file {
   position: relative;
-  padding: 8px 18px 0 0;
+  padding-top: 6px;
 }
 .home .fq-card {
-  --jx: 0px;
-  --jr: 0deg;
   position: relative;
   z-index: calc(10 - var(--i));
-  transform: translateX(var(--jx)) rotate(var(--jr));
-  transition:
-    transform 0.7s var(--e-settle),
-    --lift 0.5s var(--e-settle);
+  transition: --lift 0.5s var(--e-settle);
 }
 .home .fq-card + .fq-card {
-  margin-top: -12px;
-}
-.home .fq-card:nth-child(1) {
-  --jx: 1px;
-  --jr: -0.25deg;
-}
-.home .fq-card:nth-child(2) {
-  --jx: -2px;
-  --jr: 0.2deg;
-}
-.home .fq-card:nth-child(3) {
-  --jx: 3px;
-  --jr: -0.1deg;
-}
-.home .fq-card:nth-child(4) {
-  --jx: -1px;
-  --jr: 0.28deg;
-}
-.home .fq-card:nth-child(5) {
-  --jx: 2px;
-  --jr: -0.22deg;
-}
-.home .fq-card:nth-child(6) {
-  --jx: -1px;
-  --jr: 0.15deg;
+  margin-top: -10px;
 }
 .home .fq-card.open {
-  --jx: -16px;
-  --jr: 0deg;
   --lift: 0.3;
   z-index: 20;
 }
@@ -194,9 +163,9 @@
   grid-template-columns: 56px minmax(0, 1fr) 28px;
   align-items: center;
   width: 100%;
-  min-height: 84px;
-  padding: 22px 26px 20px 24px;
-  font: 500 23px / 1.25 var(--font-sans);
+  min-height: 78px;
+  padding: 20px 26px 18px 24px;
+  font: 500 22px / 1.25 var(--font-sans);
   letter-spacing: -0.012em;
   color: var(--print-ink);
   cursor: pointer;
@@ -283,10 +252,12 @@
     )
     0 10px / 100% calc(100% - 10px) no-repeat;
 }
+/* The answer starts under the question's first letter and keeps a
+   comfortable measure (about 60 characters). */
 .home .fq-a p {
-  max-width: 62ch;
+  max-width: calc(80px + 60ch + 40px);
   margin: 0;
-  padding: 10px 40px 30px 80px;
+  padding: 8px 40px 28px 80px;
   font: 400 18px / 32px var(--font-sans);
   color: var(--print-ink);
   text-wrap: pretty;
@@ -326,7 +297,7 @@
   letter-spacing: 0.02em;
 }
 .home .fq-q button:lang(zh) {
-  font-size: 21px;
+  font-size: 20px;
   letter-spacing: 0.02em;
 }
 .home .fq-a p:lang(zh) {
@@ -337,7 +308,7 @@
 /* ---- Widths ---- */
 @media (max-width: 1023px) {
   .home .faq {
-    padding-block: 132px 140px;
+    padding-block: 112px 104px;
   }
   .home .fq-in {
     display: block;
@@ -350,25 +321,24 @@
     margin-top: 18px;
   }
   .home .fq-file {
-    margin-top: 48px;
-    padding: 0;
+    margin-top: 40px;
   }
 }
 @media (max-width: 639px) {
   .home .faq {
-    padding-block: 112px 120px;
+    padding-block: 92px 88px;
   }
   .home .fq-h {
-    font-size: clamp(50px, 14vw, 72px);
+    font-size: clamp(44px, 12.4vw, 64px);
   }
   .home .fq-h:lang(zh) {
     font-size: 11.4vw;
   }
   .home .fq-q button {
-    grid-template-columns: 40px minmax(0, 1fr) 22px;
-    min-height: 74px;
-    padding: 18px 16px 16px;
-    font-size: 19px;
+    grid-template-columns: 38px minmax(0, 1fr) 22px;
+    min-height: 66px;
+    padding: 15px 16px 13px;
+    font-size: 18px;
   }
   .home .fq-q button:lang(zh) {
     font-size: 18px;
@@ -381,9 +351,9 @@
     top: -17px;
   }
   .home .fq-a p {
-    padding: 8px 20px 26px 56px;
-    font-size: 16.5px;
-    line-height: 30px;
+    padding: 6px 18px 22px 54px;
+    font-size: 16px;
+    line-height: 28px;
   }
   .home .fq-a p:lang(zh) {
     font-size: 16px;
@@ -392,26 +362,10 @@
     background:
       repeating-linear-gradient(
         180deg,
-        transparent 0 29px,
-        color-mix(in srgb, var(--card-line) 40%, transparent) 29px 30px
+        transparent 0 27px,
+        color-mix(in srgb, var(--card-line) 40%, transparent) 27px 28px
       )
-      0 8px / 100% calc(100% - 8px) no-repeat;
-  }
-  .home .fq-card:nth-child(n) {
-    --jx: 0px;
-    --jr: 0deg;
-  }
-  .home .fq-card:nth-child(even) {
-    --jx: 2px;
-    --jr: 0.25deg;
-  }
-  .home .fq-card:nth-child(3n) {
-    --jx: -2px;
-    --jr: -0.2deg;
-  }
-  .home .fq-card.open:nth-child(n) {
-    --jx: -6px;
-    --jr: 0deg;
+      0 6px / 100% calc(100% - 6px) no-repeat;
   }
 }
 
@@ -427,15 +381,16 @@
     opacity: 1;
     transition: opacity 180ms var(--e-std) calc(var(--tick-at, 360ms) + 420ms);
   }
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo .home .fq-head:not(.in) .fq-hli {
-    translate: 0 106%;
+    translate: 0 125%;
   }
   html.mo .home .fq-head:not(.in) .fq-more {
     opacity: 0;
     translate: 0 12px;
   }
   html.mo .home .fq-head .fq-hli {
-    transition: translate 1s var(--e-settle);
+    transition: translate 0.8s var(--e-settle);
   }
   html.mo .home .fq-head .fq-hl:nth-child(2) .fq-hli {
     transition-delay: 90ms;

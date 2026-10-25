@@ -13,10 +13,11 @@ import { seenAt } from "./seen-ratio";
 
 // The FAQ's file of index cards: an accordion of real buttons, one card open
 // at a time (the first, as the server paints it). Arrow keys, Home and End
-// move between the questions. With motion the cards are dealt onto the desk
-// one at a time on an arc, their shadows tightening as they land, and the
-// open card's number is ticked; a card read later is ticked as it opens.
-// Hover lift, tilt and sheen come from the shared [data-lift] physics.
+// move between the questions. With motion the cards are laid into the file
+// one after another, a short slide each, their shadows tightening as they
+// land, and the open card's number is ticked; a card read later is ticked
+// as it opens. Hover lift, tilt and sheen come from the shared [data-lift]
+// physics.
 
 const pad = (i: number) => String(i + 1).padStart(2, "0");
 
@@ -38,39 +39,27 @@ export function FaqFile({
     const sec = el?.closest<HTMLElement>(".faq");
     const head = sec?.querySelector<HTMLElement>(".fq-head");
     if (!el || !sec || !head || !motionAllowed()) return;
-    const rise = seenAt(head, () => head.classList.add("in"), 0.4);
+    const rise = seenAt(head, () => head.classList.add("in"), 0.3);
     const deal = seenAt(
       el,
       () => {
         const cards = [...el.querySelectorAll<HTMLElement>(".fq-card")];
         // The open card's number is ticked once the file has landed.
-        sec.style.setProperty("--tick-at", "1450ms");
-        setTimeout(() => sec.style.removeProperty("--tick-at"), 2400);
+        sec.style.setProperty("--tick-at", "820ms");
+        setTimeout(() => sec.style.removeProperty("--tick-at"), 1800);
         sec.classList.add("dealt");
         cards.forEach((card, i) => {
           const lift = card.classList.contains("open") ? 0.3 : 0;
           card.animate(
             [
-              {
-                translate: `${300 - i * 14}px ${-210 + i * 6}px`,
-                rotate: `${11 - i * 1.2}deg`,
-                opacity: 0,
-                "--lift": 1,
-              },
-              {
-                translate: `${46 - i * 4}px -26px`,
-                rotate: `${-2.2 + i * 0.3}deg`,
-                opacity: 1,
-                "--lift": 0.55,
-                offset: 0.55,
-              },
+              { translate: "26px -18px", rotate: "1.2deg", opacity: 0, "--lift": 0.9 },
               { translate: "0px 0px", rotate: "0deg", opacity: 1, "--lift": lift },
             ],
-            { duration: 820, delay: i * 125, easing: EASE.settle, fill: "backwards" },
+            { duration: 600, delay: i * 70, easing: EASE.settle, fill: "backwards" },
           );
         });
       },
-      0.5,
+      0.25,
     );
     return () => {
       rise();

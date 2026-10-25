@@ -27,7 +27,7 @@ interface PlansCopy {
 
 export const plans: Bilingual<PlansCopy> = {
   en: {
-    lines: ["Open core.", "Hosted when", "you want it."],
+    lines: ["Open core.", "Hosted when you want it."],
     body: `The engine stays Apache-2.0 and complete without an account. ${CLOUD} is free while it is in early access; you bring the model key.`,
     items: {
       self: {
@@ -74,7 +74,7 @@ export const plans: Bilingual<PlansCopy> = {
     fine: `With ${CLOUD} your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing. If nothing but your provider may see the code, self-host: it is the same engine.`,
   },
   zh: {
-    lines: ["开源核心，", "需要时", "再托管。"],
+    lines: ["开源核心，", "需要时再托管。"],
     body: `引擎保持 Apache-2.0，不需要账号也完整可用。${CLOUD} 早期体验期间免费，模型 key 由你自带。`,
     items: {
       self: {

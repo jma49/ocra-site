@@ -14,16 +14,14 @@ import { ArrowGlyph, Section, withCode } from "./section";
 
 const PLANS: readonly PlanId[] = ["self", "cloud", "team"];
 
-// The figures' ink, measured once in the browser (font-size 200 px, line
-// height 1): the line box's width and the glyphs' ink box, in em. The ring
-// is drawn round the ink in a layer sized from the line box in em (60-plans
-// .css), so it scales with the figure, and a face that sets the word a few
-// per cent wider keeps it centred.
+// The ringed figure's ink, measured once in the browser (font-size 200 px,
+// line height 1): the line box's width and the glyphs' ink box, in em. The
+// ring is drawn round the ink in a layer sized from the line box in em
+// (60-plans.css), so it scales with the figure, and a face that sets the
+// word a few per cent wider keeps it centred.
 const INK: Record<string, { w: number; x: number; y: number; iw: number; ih: number }> = {
   Free: { w: 2.051, x: 0.095, y: 0.145, iw: 1.942, ih: 0.699 },
-  Later: { w: 2.257, x: 0.095, y: 0.145, iw: 2.162, ih: 0.699 },
   免费: { w: 2.08, x: 0.055, y: 0.04, iw: 1.9, ih: 0.92 },
-  稍后: { w: 2.08, x: 0.05, y: 0.045, iw: 1.94, ih: 0.915 },
 };
 // The layer's margin round the line box, in em; 100 units to the em.
 const M = 0.45;
@@ -65,9 +63,8 @@ function priceRing(word: string, seed: number) {
 
 // Plans, on paper (concept C, D4): a typed ledger of three rows between
 // printed rules, the price column the image (Free, Free, Later). The pen
-// rings the plan to start with and lies down by the footnote; hovering or
-// focusing the other available plan rings that one instead (PlansPlay).
-// Painted finished: ocra Cloud ringed, the pen at rest.
+// rings the plan to start with, ocra Cloud, and lies down on the blank paper
+// beside the footnote (PlansPlay). Painted finished: ringed, the pen at rest.
 export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale }) {
   const links: Record<PlanId, string> = {
     self: localePath(locale, "/docs/quickstart"),
@@ -92,42 +89,50 @@ export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale })
             <p className="pl-lede">{copy.body}</p>
           </header>
           <ol className="pl-ledger" aria-labelledby="plans-title">
-            {PLANS.map((id, i) => {
+            {PLANS.map((id) => {
               const p = copy.items[id];
-              const planned = p.planned === true;
-              const { mark, box } = priceRing(p.price, 3 + i * 4);
+              const ringed = id === "cloud";
+              const ink = ringed ? priceRing(p.price, 7) : null;
               return (
                 <li
                   key={id}
-                  className={["pl-row", planned && "planned"].filter(Boolean).join(" ")}
+                  className={["pl-row", p.planned && "planned"].filter(Boolean).join(" ")}
                   data-plan={id}
-                  data-ring={planned ? undefined : ""}
                   aria-labelledby={`plan-${id}`}
                 >
                   <div className="pl-name">
                     <p className="pl-state">{p.state}</p>
-                    <h3 id={`plan-${id}`}>{p.name}</h3>
+                    <h3 id={`plan-${id}`}>
+                      {p.name}
+                      {ringed ? (
+                        <span className="pl-ref" aria-hidden="true">
+                          *
+                        </span>
+                      ) : null}
+                    </h3>
                   </div>
                   <p className="pl-price">
                     <span className="pl-fig">
                       <span className="pl-word">{p.price}</span>
-                      <InkLayer
-                        id={`plan-${id}`}
-                        className={id === "cloud" ? "pl-ring" : "pl-ring off"}
-                        width={box.w}
-                        height={box.h}
-                        marks={[{ name: "ring", mark }]}
-                      />
+                      {ink ? (
+                        <InkLayer
+                          id={`plan-${id}`}
+                          className="pl-ring"
+                          width={ink.box.w}
+                          height={ink.box.h}
+                          marks={[{ name: "ring", mark: ink.mark }]}
+                        />
+                      ) : null}
                     </span>
                     <span className="pl-unit">{p.unit}</span>
                   </p>
-                  <div className="pl-body">
-                    <ul className="pl-points">
-                      {p.points.map((point) => (
-                        <li key={point}>{withCode(point)}</li>
-                      ))}
-                    </ul>
-                    {id === "cloud" ? (
+                  <ul className="pl-points">
+                    {p.points.map((point) => (
+                      <li key={point}>{withCode(point)}</li>
+                    ))}
+                  </ul>
+                  <div className="pl-act">
+                    {ringed ? (
                       <a className="btn btn-desk pl-cta" href={links[id]}>
                         {p.cta}
                         <span className="cta-arrow">
@@ -155,7 +160,7 @@ export function Plans({ copy, locale }: { copy: Copy["plans"]; locale: Locale })
               {copy.fine}
             </p>
             <div className="pl-pen-spot">
-              <Pen className="pl-pen" rest={{ x: 0, y: 0, r: 7 }} />
+              <Pen className="pl-pen" rest={{ x: 0, y: 0, r: 4 }} />
             </div>
           </div>
         </div>

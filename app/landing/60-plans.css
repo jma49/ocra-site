@@ -1,6 +1,7 @@
 /* Plans, on paper (components/landing/plans.tsx): a typed ledger between
-   printed rules, the price column the image. The pen rings the plan to
-   start with and lies by the footnote. The band's foot is cut a hair off
+   printed rules, the price column the image. Each row reads name and
+   action, price, points. The pen rings the plan to start with and lies on
+   the blank paper by the footnote. The band's foot is cut a hair off
    square and lies on the desk (61-faq.css casts its shadow). */
 
 .home .plans .paper-band-face {
@@ -9,7 +10,7 @@
 }
 .home .pl-in {
   position: relative;
-  padding-block: 168px 150px;
+  padding-block: 112px 84px;
 }
 
 /* ---- Head: the headline left, the lede at its foot on the right ---- */
@@ -23,7 +24,7 @@
   grid-column: 1 / 9;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(56px, 7.6vw, 112px);
+  font-size: clamp(56px, 6.6vw, 96px);
   font-weight: 500;
   font-stretch: 72%;
   line-height: 0.92;
@@ -41,9 +42,9 @@
 }
 .home .pl-lede {
   grid-column: 9 / 13;
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   max-width: 36ch;
-  font-size: 19px;
+  font-size: 18px;
   line-height: 1.55;
   color: var(--print-ink-2);
   text-wrap: pretty;
@@ -52,7 +53,7 @@
 /* ---- The ledger: three rows on a 12-column grid, rules printed in ink ---- */
 .home .pl-ledger {
   position: relative;
-  margin: 104px 0 0;
+  margin: 64px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -60,8 +61,9 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto 1fr;
   column-gap: 24px;
-  padding: 36px 0 46px;
+  padding: 26px 0 28px;
 }
 .home .pl-row::before,
 .home .pl-row:last-child::after {
@@ -80,23 +82,32 @@
 }
 .home .pl-name {
   grid-column: 1 / 4;
+  grid-row: 1;
 }
 .home .pl-state {
-  margin: 6px 0 14px;
-  font: 400 16px / 1 var(--font-mono);
+  margin: 4px 0 10px;
+  font: 400 15px / 1 var(--font-mono);
   color: var(--print-ink-2);
 }
 .home .pl-name h3 {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 38px;
+  font-size: 36px;
   font-weight: 500;
   font-stretch: 92%;
   line-height: 1.02;
   letter-spacing: -0.015em;
 }
+/* The footnote's mark, printed after the plan it speaks of. */
+.home .pl-ref {
+  margin-left: 0.1em;
+  font: 400 0.5em / 1 var(--font-mono);
+  vertical-align: 0.8em;
+  color: var(--print-ink-2);
+}
 .home .pl-price {
   grid-column: 4 / 8;
+  grid-row: 1 / 3;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -106,7 +117,7 @@
   position: relative;
   display: inline-block;
   font-family: var(--font-display);
-  font-size: clamp(84px, 9.6vw, 140px);
+  font-size: clamp(80px, 8.3vw, 120px);
   font-weight: 340;
   font-stretch: 108%;
   line-height: 1;
@@ -130,14 +141,6 @@
   width: calc(100% + 0.9em);
   height: 1.9em;
   pointer-events: none;
-  transition: opacity 300ms var(--e-std);
-}
-.home .pl-ring.off .ink-run {
-  stroke-dashoffset: 1;
-}
-.home .pl-ring.off .ink-bleed,
-.home .pl-ring.fade {
-  opacity: 0;
 }
 .home .pl-ring .ink-s.wet .ink-body {
   animation: pl-wet 1.1s var(--e-std) both;
@@ -151,15 +154,14 @@
   }
 }
 .home .pl-unit {
-  margin-top: 22px;
-  font: 400 16px / 1 var(--font-mono);
+  margin-top: 12px;
+  font: 400 15px / 1 var(--font-mono);
   color: var(--print-ink-2);
 }
-.home .pl-body {
-  grid-column: 8 / 13;
-}
 .home .pl-points {
-  margin: 4px 0 0;
+  grid-column: 8 / 13;
+  grid-row: 1 / 3;
+  margin: 2px 0 0;
   padding: 0;
   list-style: none;
   font: 400 16px / 1.6 var(--font-mono);
@@ -170,7 +172,7 @@
   text-indent: -2ch;
 }
 .home .pl-points li + li {
-  margin-top: 4px;
+  margin-top: 2px;
 }
 .home .pl-points li::before {
   content: "– ";
@@ -180,17 +182,29 @@
   font-weight: 500;
   font-size: 1em;
 }
-.home .pl-cta {
-  margin-top: 24px;
+/* The action sits under the plan's name, on the row's foot line. */
+.home .pl-act {
+  grid-column: 1 / 4;
+  grid-row: 2;
+  align-self: end;
+  padding-top: 18px;
 }
-.home .pl-body .ink-link {
+.home .pl-act .ink-link {
   gap: 10px;
+  min-height: 44px;
   font-size: 17px;
 }
-.home .pl-body .btn-desk {
-  height: 54px;
-  padding-inline: 26px 22px;
-  font-size: 17px;
+/* A text link's baseline on the unit's (the button's foot is already on it). */
+@media (min-width: 1024px) {
+  .home .pl-act .ink-link {
+    margin-bottom: -13px;
+  }
+}
+.home .pl-act .btn-desk {
+  height: 50px;
+  padding-inline: 22px 18px;
+  font-size: 16px;
+  white-space: nowrap;
 }
 .home .pl-row.planned :is(h3, .pl-fig) {
   color: var(--print-ink-3);
@@ -199,17 +213,17 @@
   color: var(--print-ink-2);
 }
 
-/* ---- The footnote, and the pen lying beside it ---- */
+/* ---- The footnote, and the pen lying on the blank paper beside it ---- */
 .home .pl-foot {
   position: relative;
-  margin-top: 36px;
+  margin-top: 20px;
 }
 .home .pl-fine {
   position: relative;
   max-width: 66ch;
   margin: 0;
   padding-left: 2ch;
-  font: 400 15px / 1.65 var(--font-mono);
+  font: 400 15px / 1.6 var(--font-mono);
   color: var(--print-ink-2);
   text-wrap: pretty;
 }
@@ -224,7 +238,7 @@
   height: 0;
 }
 .home .pl-pen {
-  --pen-s: 1.05;
+  --pen-s: 1;
 }
 /* The pen lies on the paper with the ink it writes: no parallax of its own. */
 html.mo .home .plans .pl-pen[data-depth] {
@@ -235,7 +249,7 @@ html.mo .home .plans .pl-pen[data-depth] {
 /* ---- Chinese: its own sizes ---- */
 .home .pl-h:lang(zh) {
   font-family: var(--font-sans);
-  font-size: clamp(44px, 5.8vw, 84px);
+  font-size: clamp(44px, 5.4vw, 78px);
   font-weight: 600;
   font-stretch: 100%;
   line-height: 1.12;
@@ -243,20 +257,26 @@ html.mo .home .plans .pl-pen[data-depth] {
 }
 .home .pl-name h3:lang(zh) {
   font-family: var(--font-sans);
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 600;
   font-stretch: 100%;
   letter-spacing: 0.02em;
 }
 .home .pl-fig:lang(zh) {
   font-family: var(--font-sans);
-  font-size: clamp(64px, 7.8vw, 112px);
+  font-size: clamp(60px, 6.8vw, 98px);
   font-weight: 300;
   font-stretch: 100%;
   letter-spacing: 0.04em;
 }
 .home .pl-lede:lang(zh) {
   letter-spacing: 0.02em;
+}
+/* The ring runs lower round Han glyphs: the unit under it steps clear. */
+@media (min-width: 640px) {
+  .home .pl-unit:lang(zh) {
+    margin-top: 24px;
+  }
 }
 
 /* ---- Widths ---- */
@@ -266,36 +286,37 @@ html.mo .home .plans .pl-pen[data-depth] {
     align-items: flex-start;
   }
   .home .pl-pen-spot {
-    margin: 20px 0 0 84px;
+    margin: 30px 0 0 72px;
   }
 }
 @media (max-width: 1199px) {
   .home .pl-foot {
-    padding-bottom: 92px;
+    padding-bottom: 64px;
   }
   .home .pl-pen-spot {
     position: absolute;
     left: 24px;
-    bottom: 52px;
+    bottom: 34px;
   }
 }
 @media (max-width: 1023px) {
   .home .pl-in {
-    padding-block: 132px 120px;
+    padding-block: 104px 72px;
   }
   .home .pl-head {
     display: block;
   }
   .home .pl-lede {
-    margin-top: 26px;
+    margin-top: 22px;
     max-width: 44ch;
   }
   .home .pl-ledger {
-    margin-top: 72px;
+    margin-top: 52px;
   }
   .home .pl-row {
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    row-gap: 18px;
+    grid-template-rows: auto auto 1fr;
+    row-gap: 16px;
   }
   .home .pl-name {
     grid-column: 1;
@@ -304,100 +325,120 @@ html.mo .home .plans .pl-pen[data-depth] {
     grid-column: 1;
     grid-row: 2;
   }
-  .home .pl-body {
+  .home .pl-points {
     grid-column: 2;
-    grid-row: 1 / 3;
+    grid-row: 1 / 4;
+  }
+  .home .pl-act {
+    grid-column: 1;
+    grid-row: 3;
+    padding-top: 2px;
   }
 }
 @media (max-width: 639px) {
   .home .pl-in {
-    padding-block: 108px 96px;
+    padding-block: 88px 64px;
   }
   .home .pl-h {
-    font-size: clamp(50px, 14vw, 72px);
+    font-size: clamp(44px, 12.4vw, 64px);
   }
   .home .pl-h:lang(zh) {
-    font-size: 11.4vw;
+    font-size: 10.6vw;
   }
   .home .pl-lede {
-    font-size: 17px;
+    margin-top: 18px;
+    font-size: 16.5px;
   }
   .home .pl-ledger {
-    margin-top: 56px;
+    margin-top: 40px;
   }
   .home .pl-row {
     display: block;
-    padding: 28px 0 36px;
+    padding: 20px 0 24px;
   }
+  /* The name and its state on one line. */
   .home .pl-name {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
   }
   .home .pl-state {
-    margin: 10px 0 0;
-    font-size: 14px;
+    margin: 0;
+    font-size: 13px;
   }
   .home .pl-name h3 {
-    font-size: 30px;
+    font-size: 28px;
+  }
+  .home .pl-name h3:lang(zh) {
+    font-size: 26px;
   }
   .home .pl-price {
-    margin-top: 20px;
+    margin-top: 10px;
     flex-direction: row;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 14px;
   }
   .home .pl-fig {
-    font-size: 88px;
+    font-size: 76px;
   }
   .home .pl-fig:lang(zh) {
-    font-size: 68px;
+    font-size: 60px;
   }
   .home .pl-unit {
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
   }
   .home .pl-points {
-    margin-top: 20px;
-    font-size: 15px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .home .pl-act {
+    padding-top: 14px;
+  }
+  .home .pl-act .btn-desk {
+    height: 48px;
   }
   .home .pl-fine {
-    font-size: 14px;
+    font-size: 13px;
+    line-height: 1.55;
   }
   .home .pl-pen {
-    --pen-s: 0.74;
+    --pen-s: 0.66;
   }
   .home .pl-foot {
-    padding-bottom: 76px;
+    margin-top: 16px;
+    padding-bottom: 50px;
   }
   .home .pl-pen-spot {
-    left: 6px;
-    bottom: 46px;
+    left: 8px;
+    bottom: 24px;
   }
 }
 
 /* ---- Before play (PlansPlay); the server paints the final state ---- */
 @media (prefers-reduced-motion: no-preference) {
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo .home .pl-head:not(.in) .pl-hli {
-    translate: 0 106%;
+    translate: 0 125%;
   }
   html.mo .home .pl-head:not(.in) .pl-lede {
     opacity: 0;
-    translate: 0 14px;
+    translate: 0 12px;
   }
   html.mo .home .pl-head .pl-hli {
-    transition: translate 1s var(--e-settle);
+    transition: translate 0.8s var(--e-settle);
   }
   html.mo .home .pl-head .pl-hl:nth-child(2) .pl-hli {
-    transition-delay: 90ms;
-  }
-  html.mo .home .pl-head .pl-hl:nth-child(3) .pl-hli {
-    transition-delay: 180ms;
+    transition-delay: 80ms;
   }
   html.mo .home .pl-head .pl-lede {
     transition:
-      opacity 0.7s var(--e-std) 0.3s,
-      translate 0.9s var(--e-settle) 0.3s;
+      opacity 0.6s var(--e-std) 0.2s,
+      translate 0.8s var(--e-settle) 0.2s;
   }
   html.mo .home .pl-row:not(.is-in)::before,
   html.mo .home .pl-row:not(.is-in):last-child::after {
@@ -405,28 +446,28 @@ html.mo .home .plans .pl-pen[data-depth] {
   }
   html.mo .home .pl-row::before,
   html.mo .home .pl-row:last-child::after {
-    transition: scale 1.1s var(--e-glide);
+    transition: scale 0.9s var(--e-glide);
   }
   html.mo .home .pl-row:last-child::after {
-    transition-delay: 0.3s;
+    transition-delay: 0.2s;
   }
-  html.mo .home .pl-row:not(.is-in) :is(.pl-name, .pl-body) {
+  html.mo .home .pl-row:not(.is-in) :is(.pl-name, .pl-points, .pl-act) {
     opacity: 0;
-    translate: 0 14px;
+    translate: 0 10px;
   }
-  html.mo .home .pl-row :is(.pl-name, .pl-body) {
+  html.mo .home .pl-row :is(.pl-name, .pl-points, .pl-act) {
     transition:
-      opacity 0.7s var(--e-std),
-      translate 0.9s var(--e-settle);
+      opacity 0.5s var(--e-std),
+      translate 0.7s var(--e-settle);
   }
-  html.mo .home .pl-row .pl-body {
-    transition-delay: 0.14s;
+  html.mo .home .pl-row :is(.pl-points, .pl-act) {
+    transition-delay: 0.08s;
   }
   html.mo .home .pl-row:not(.is-in) .pl-unit {
     opacity: 0;
   }
   html.mo .home .pl-row .pl-unit {
-    transition: opacity 0.6s var(--e-std) 0.5s;
+    transition: opacity 0.4s var(--e-std) 0.25s;
   }
   html.mo .home .plans .pl-word:not(.typing, .typed) {
     visibility: hidden;
@@ -434,7 +475,7 @@ html.mo .home .plans .pl-pen[data-depth] {
   html.mo .home .plans:not(.pen-on) .pl-pen-spot {
     visibility: hidden;
   }
-  html.mo .home .plans:not(.played) .pl-ring:not(.off) .ink-run {
+  html.mo .home .plans:not(.played) .pl-ring .ink-run {
     stroke-dashoffset: 1;
   }
 }
