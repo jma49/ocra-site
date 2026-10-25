@@ -1,10 +1,19 @@
-/* Security (sections.md §8): the stone band. A statement-scale H2 across
-   the band, the body and the threat model's link under it, then the gate as
-   an instrument (four tiles on the 12-column grid, an arrow in each gap)
-   and the four properties. Text on stone is ink or ink-2 only; the pen
-   writes only on the two sheets, at rest. */
+/* Security (sections.md §8): a night band, a raised slab. A
+   statement-scale H2 across the band, the body and the threat model's link
+   under it, then the gate as an instrument (four tiles on the 12-column
+   grid, an arrow in each gap) and the four properties. Text on the band is
+   on-night or on-night-2 (9 : 1 and up); the two middle tiles are sheets
+   laid on it, in ink, and the pen writes only there, at rest. */
 .home .security {
+  --sec-2: var(--on-night-2);
   padding-block: var(--pad-band);
+}
+/* Dark: this band carries sheets, so it sits a step above the other night
+   bands (1.28 : 1 from the page, not 1.24), and its sheets a step above
+   it: lighter is higher. Its secondary text is lifted to keep 8 : 1. */
+.dark .home .security {
+  --sec-2: color-mix(in srgb, var(--on-night) 30%, var(--on-night-2));
+  background: color-mix(in srgb, var(--night) 70%, var(--night-2));
 }
 .home .sec-intro {
   display: grid;
@@ -37,7 +46,7 @@
   }
 }
 .home .sec-intro .t-body {
-  color: var(--ink-2);
+  color: var(--sec-2);
 }
 .home .sec-link {
   display: inline-flex;
@@ -65,7 +74,7 @@
   border-radius: var(--r-card);
 }
 .home .sec-tile .t-h4 {
-  color: var(--ink);
+  color: var(--on-night);
 }
 .home .sec-title > :not(.sr-only) {
   display: block;
@@ -85,27 +94,45 @@
 }
 .home .sec-tile .t-small {
   margin-top: 10px;
-  color: var(--ink-2);
+  color: var(--sec-2);
 }
 .home .sec-quiet .t-small {
   text-wrap: balance;
 }
-/* The two ends of the flow: quiet outlines, centred on the row. */
+/* The two ends of the flow, outside ocra: outlines drawn on the night,
+   centred on the row. */
 .home .sec-quiet {
   align-self: center;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line-night-2);
   transition: box-shadow 200ms var(--e-std);
 }
 @media (hover: hover) {
   .home .sec-quiet:hover {
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 34%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-night) 40%, transparent);
   }
 }
-/* The gate and the agents: sheets laid on the stone, so the pen can write. */
+/* The gate and the agents: sheets laid on the band, in ink, so the pen can
+   write (in its paper colour, not the night's). */
 .home .sec-tile.sheet {
   overflow: visible;
   border-radius: var(--r-card);
   box-shadow: var(--float);
+  color: var(--ink);
+}
+.home .sec-tile.sheet .t-h4 {
+  color: var(--ink);
+}
+.home .security .sheet .mk {
+  stroke: var(--pen);
+}
+.dark .home .sec-tile.sheet {
+  background: color-mix(in srgb, var(--white) 5%, var(--sheet));
+}
+.dark .home .security :is(.sec-chip, .sec-answer) {
+  background: color-mix(in srgb, var(--white) 5%, var(--sheet-2));
+}
+.dark .home .sec-ask {
+  color: var(--ink-2);
 }
 .home .sec-core {
   z-index: var(--z-over);
@@ -199,7 +226,7 @@
   place-items: center;
   font-size: 32px;
   line-height: 1;
-  color: var(--ink-2);
+  color: var(--sec-2);
 }
 .home .sec-flow .arrow-glyph {
   display: block;
@@ -218,11 +245,11 @@
   row-gap: 28px;
   margin-top: 56px;
   padding-top: 28px;
-  border-top: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  border-top: 1px solid var(--line-night-2);
 }
 .home .sec-props .t-small {
   margin-top: 8px;
-  color: var(--ink-2);
+  color: var(--sec-2);
 }
 
 /* ---- 600 to 1199: the ends as full-width strips, the two sheets side by

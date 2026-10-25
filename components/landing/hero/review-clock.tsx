@@ -17,21 +17,20 @@ const hold = (anims: Animation[]) => {
   for (const a of anims) if (a.playState === "running") a.pause();
 };
 
-const targetOf = (a: Animation) =>
-  a.effect instanceof KeyframeEffect ? (a.effect.target ?? null) : null;
-
-// How long the theatre may wait for the code face before it plays anyway.
-const FONT_WAIT = 1500;
-// The page has settled by then (motion.md §3): the theatre never overlaps
-// the load.
-const NOT_BEFORE = 1000;
+// How long after navigation the theatre may wait for the code face before
+// it plays anyway.
+const FONT_WAIT = 1100;
+// The hero's entrance is about over by then (10-hero.css): the theatre
+// starts as the desk comes to rest, within a second of navigation.
+const NOT_BEFORE = 760;
 
 // The hero's clock (motion.md §4). The theatre is CSS animations inside
 // #review (13-hero-run.css), held paused until this mounts; from then on
 // this owns them through the Web Animations API, so nothing else ever
 // touches their play state. It plays them once the code is at least 60 %
-// in view, the page has settled, the code face is in (or 1.5 s have
-// passed), the Pull request tab is selected and the document is visible;
+// in view, the page has settled, the code face is in (or 1.1 s have
+// passed since navigation), the Pull request tab is selected and the
+// document is visible;
 // it pauses whenever one of those stops holding and resumes where it
 // stopped, unless the reader has scrolled past the code: then it finishes.
 // Replay rewinds them. Without motion (html.mo) the review is
@@ -62,7 +61,6 @@ export function ReviewClock({ children }: { children: ReactNode }) {
 
     const code = root.querySelector<HTMLElement>(".code");
     const pane = root.closest<HTMLElement>("[role='tabpanel']");
-    const hero = root.closest(".hero");
     let inView = false;
     let settled = false;
     let fontIn = false;
@@ -99,12 +97,14 @@ export function ReviewClock({ children }: { children: ReactNode }) {
       }
     };
 
-    // The page has settled: the hero's entrance (the desk's settle, the
-    // copy's rise) is over, and a second has passed since navigation.
+    // The page has settled: the desk the review sits on has come to rest
+    // (its own entrance, not the copy's beside it), and NOT_BEFORE has
+    // passed.
     const settle =
-      hero
-        ?.getAnimations({ subtree: true })
-        .filter((a) => a.playState !== "finished" && !root.contains(targetOf(a))) ?? [];
+      root
+        .closest(".product")
+        ?.getAnimations()
+        .filter((a) => a.playState !== "finished") ?? [];
     const wait = Math.max(0, NOT_BEFORE - performance.now());
     const timer = window.setTimeout(() => {
       Promise.all(settle.map((a) => a.finished.catch(() => {}))).then(() => {
@@ -115,10 +115,13 @@ export function ReviewClock({ children }: { children: ReactNode }) {
     cleanups.push(() => window.clearTimeout(timer));
 
     const family = code ? getComputedStyle(code).fontFamily.split(",")[0]?.trim() : "";
-    const fontTimer = window.setTimeout(() => {
-      fontIn = true;
-      update();
-    }, FONT_WAIT);
+    const fontTimer = window.setTimeout(
+      () => {
+        fontIn = true;
+        update();
+      },
+      Math.max(0, FONT_WAIT - performance.now()),
+    );
     cleanups.push(() => window.clearTimeout(fontTimer));
     if (family) {
       document.fonts.load(`13px ${family}`).then(

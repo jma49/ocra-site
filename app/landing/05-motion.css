@@ -91,7 +91,7 @@
 }
 
 /* Reduce motion: state changes land at once. Sections add their own
-   finished states; the marquee keeps running at half speed (motion.md §15). */
+   finished states; nothing loops (the marquee stands still, 20-works.css). */
 @media (prefers-reduced-motion: reduce) {
   .home .nav,
   .home .nav-cta,

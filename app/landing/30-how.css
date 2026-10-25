@@ -73,15 +73,19 @@
 }
 
 /* ---- The meter row (pinned only) ---- */
+.home .how-run {
+  --rail-top: 76px;
+  --rail-h: 44px;
+}
 .home .meter-row {
   display: none;
   position: sticky;
-  top: 76px;
+  top: var(--rail-top);
   z-index: 3;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  height: 44px;
+  height: var(--rail-h);
   margin-top: 60px;
   background: var(--paper-2);
   /* Also covers the slit between the floating nav and the row. */
@@ -268,13 +272,22 @@
 }
 
 /* ---- Pinned ---- */
+/* The desk hangs 16 px under the meter row, in flow and stuck alike, and
+   never slides under it: the row's bottom margin is the desk and 40 px, so
+   its margin box (which a sticky box keeps inside .how-run) lets it go
+   24 px of scroll before the figure, and both leave together. The story's
+   negative margin takes that margin back. */
 @media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  html.mo .home .how-run {
+    --desk-h: 600px;
+  }
   html.mo .home .meter-row {
     display: flex;
+    margin-bottom: calc(var(--desk-h) + 40px);
   }
   html.mo .home .story {
     row-gap: 0;
-    margin-top: 12px;
+    margin-top: calc(16px - var(--desk-h) - 40px);
   }
   html.mo .home .step {
     min-height: min(calc(var(--vh, 100svh) * 0.55), 460px);
@@ -289,7 +302,7 @@
   html.mo .home .fig {
     grid-row: 1 / 5;
     position: sticky;
-    top: 132px;
+    top: calc(var(--rail-top) + var(--rail-h) + 16px);
     align-self: start;
     z-index: 2;
   }

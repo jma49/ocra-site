@@ -5,9 +5,11 @@ import { type ReactNode, useEffect, useRef } from "react";
 // The same query as 30-how.css's pinned block (which also needs html.mo).
 const PIN =
   "(min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference)";
-// When figure 4's beats move the meter on: filter, verify, judge, verdict.
-const BEATS = [0, 800, 1600, 2100];
-// The leaving figure's body fades for 350 ms; its marks reset after that.
+// When figure 4's beats move the meter on: filter, verify, judge, verdict
+// (figure-verify.tsx).
+const BEATS = [0, 200, 380, 480];
+// The leaving figure's body moves out for 320 ms (31-figures.css); its marks
+// reset after that.
 const SWAP = 400;
 
 // The scroll story's island (motion.md §6). Scroll picks the step, time plays
@@ -74,17 +76,19 @@ function run(root: HTMLElement, pass: string): () => void {
     void fig.offsetWidth;
     fig.classList.add("on");
   };
-  // Step 1 reaches the middle before its figure has stuck in place: its
-  // marks wait until the figure is nine-tenths in view.
+  // A figure's marks wait until it is 40 % in view, as unpinned figures do:
+  // step 1 reaches the middle before its figure has stuck in place, and its
+  // figure shows before step 1 gets there (setup watches it from the
+  // start), so no figure is in plain view still waiting for its marks.
   const seen = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
-        if (e.intersectionRatio < 0.9) continue;
+        if (e.intersectionRatio < 0.4) continue;
         seen.unobserve(e.target);
         if (e.target === figs[current - 1]) play(e.target as HTMLElement);
       }
     },
-    { threshold: 0.9 },
+    { threshold: 0.4 },
   );
   const playInView = (fig: HTMLElement) => {
     const box = fig.getBoundingClientRect();
@@ -129,6 +133,8 @@ function run(root: HTMLElement, pass: string): () => void {
     pinned = motion() && pin.matches;
     if (pinned) {
       for (const [i, fig] of figs.entries()) fig.inert = i + 1 !== current;
+      const shown = figs[current - 1];
+      if (shown && !shown.classList.contains("on")) seen.observe(shown);
       io = new IntersectionObserver(
         (entries) => {
           if (performance.now() < lockedUntil) return;

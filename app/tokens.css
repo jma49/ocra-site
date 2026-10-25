@@ -10,8 +10,11 @@
   --stone: #bdbdbd;
   --sheet: #ffffff;
   --sheet-2: #f2f2f2;
-  --night: #1a1a1a;
-  --night-2: #262626;
+  /* Night is the pen's own dark, red ink rather than a neutral black
+     (OKLCH 21.7 % 0.030 16; night-2 26.9 %): on-night 15.7 : 1, on-night-3
+     5.9 : 1, pen-night marks 5.5 : 1. */
+  --night: #261415;
+  --night-2: #342021;
 
   /* Ink: text, the primary button and every UI state. */
   --ink: #141414;
@@ -43,10 +46,36 @@
   --focus: var(--ink);
   --select: color-mix(in srgb, var(--ink) 16%, transparent);
 
-  /* The one shadow: sheets on a desk, the thread, the gate tile, the drawer. */
+  /* The one shadow: sheets on a desk, the thread, the gate tile, the drawer.
+     Two layers under one light from the top left: a tight contact shadow
+     where the sheet touches, and a wide ambient one falling down and right. */
   --float:
-    0 24px 60px -22px color-mix(in srgb, var(--black) 16%, transparent),
-    0 6px 18px -10px color-mix(in srgb, var(--black) 8%, transparent);
+    0 0 0 0.5px color-mix(in srgb, var(--black) 7%, transparent),
+    0 1px 2px color-mix(in srgb, var(--black) 14%, transparent),
+    6px 30px 46px -20px color-mix(in srgb, var(--black) 28%, transparent),
+    2px 10px 18px -10px color-mix(in srgb, var(--black) 10%, transparent);
+
+  /* The desk: stone lit from the top left, about 6 % lighter where the light
+     falls, a lit top edge, a shaded foot, and the slab's own shadow on the
+     page. 03-objects.css paints it; sections never restyle it. */
+  --desk-face:
+    radial-gradient(
+      90% 80% at 12% 0%,
+      color-mix(in srgb, var(--white) 26%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--white) 10%, var(--stone)) 0%,
+      var(--stone) 48%,
+      color-mix(in srgb, var(--black) 5%, var(--stone)) 100%
+    );
+  --desk-edge:
+    inset 0 1px 0 color-mix(in srgb, var(--white) 60%, transparent),
+    inset 1px 0 0 color-mix(in srgb, var(--white) 22%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--black) 9%, transparent),
+    0 1px 2px color-mix(in srgb, var(--black) 8%, transparent),
+    4px 28px 56px -30px color-mix(in srgb, var(--black) 38%, transparent);
 
   /* Curves (motion.md §1); no other timing function in landing code. */
   --e-enter: cubic-bezier(0.22, 1, 0.36, 1);
@@ -59,6 +88,8 @@
   --r-ctl: 10px;
   --r-sheet: 14px;
   --r-card: 16px;
+  /* The desk: the sheet's radius plus its 10 px rim. */
+  --r-desk: 24px;
   --r-band: 28px;
 
   /* The wordmark's width: one token, so it can return to 100 % in one line. */
@@ -100,8 +131,9 @@
   --stone: #1e1e1e;
   --sheet: #232323;
   --sheet-2: #2a2a2a;
-  --night: #262626;
-  --night-2: #313131;
+  /* Raised 1.24 : 1 above the page; on-night-3 6.0 : 1 (night-2 5.3). */
+  --night: #352122;
+  --night-2: #3e2a2b;
   --ink: #ededed;
   --ink-2: #b4b4b4;
   --ink-3: #969696;
@@ -112,6 +144,26 @@
   --pen-wash: #331b1a;
   --amber: #efad48;
   --float:
-    0 0 0 1px color-mix(in srgb, var(--white) 6%, transparent),
-    0 24px 60px -22px color-mix(in srgb, var(--black) 60%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--white) 7%, transparent),
+    0 1px 2px color-mix(in srgb, var(--black) 55%, transparent),
+    6px 30px 50px -20px color-mix(in srgb, var(--black) 72%, transparent);
+  /* The dark desk sits on the page by its light and its rim, not by its
+     value alone: about 1.35 : 1 where the light falls, never below the
+     stone's own 1.12 : 1 at its foot, and a white rim all round. */
+  --desk-face:
+    radial-gradient(
+      90% 80% at 12% 0%,
+      color-mix(in srgb, var(--white) 6%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--white) 5%, var(--stone)) 0%,
+      color-mix(in srgb, var(--white) 1.5%, var(--stone)) 55%,
+      var(--stone) 100%
+    );
+  --desk-edge:
+    inset 0 0 0 1px color-mix(in srgb, var(--white) 8%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--white) 12%, transparent),
+    4px 30px 60px -28px color-mix(in srgb, var(--black) 80%, transparent);
 }

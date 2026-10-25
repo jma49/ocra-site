@@ -1,10 +1,10 @@
-/* The terminal pane (motion.md §5): the run as the CLI printed it. With
-   motion, once the visitor opens the pane ([data-opened], window-tabs.tsx)
-   and each time it is shown again, the command types (--k counts the
-   characters, steps(n)) and each block of output wipes in at the recorded
-   time compressed 20 times. Every character is rendered from the start and
-   only clipped, and only under html.mo, so the pane never changes size and
-   is complete without JavaScript or with Reduce motion. */
+/* The terminal pane (motion.md §5): the run as the CLI printed it. It
+   opens with the command and the run's setup already printed; with motion,
+   once the visitor opens the pane ([data-opened], window-tabs.tsx) and each
+   time it is shown again, each later block wipes in at its recorded time,
+   compressed (terminal.tsx). Every character is rendered from the start
+   and only clipped, and only under html.mo, so the pane never changes size
+   and is complete without JavaScript or with Reduce motion. */
 .home .term {
   flex: 1 1 auto;
   min-height: 0;
@@ -38,12 +38,6 @@
 .home .term-sign {
   color: var(--ink-3);
 }
-.home .term .cmd {
-  display: inline-block;
-}
-.home .term .cursor {
-  display: none;
-}
 .home .term-d {
   color: var(--ink-3);
 }
@@ -62,23 +56,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html.mo .home [data-opened] > .term-pane .cmd {
-    clip-path: inset(0 calc(100% - var(--k) * 1ch) 0 0);
-    animation: type var(--d) steps(var(--n)) var(--t) both;
-  }
-  /* A block cursor rides the typing, then goes. */
-  html.mo .home [data-opened] > .term-pane .cursor {
-    display: inline-block;
-    width: 0.6em;
-    height: 1.15em;
-    margin-inline-start: calc(var(--n) * -1ch);
-    vertical-align: -0.22em;
-    background: var(--ink);
-    animation:
-      term-cursor var(--d) steps(var(--n)) var(--t) both,
-      term-cursor-off 1ms linear calc(var(--t) + var(--d)) forwards;
-  }
-  html.mo .home [data-opened] > .term-pane .term-line:not(.term-c) {
+  html.mo .home [data-opened] > .term-pane .term-later {
     animation: term-wipe 120ms var(--e-std) var(--t) both;
   }
 }
@@ -88,20 +66,5 @@
   }
   to {
     clip-path: inset(0 -1ch 0 0);
-  }
-}
-@keyframes term-cursor {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(calc(var(--n) * 1ch));
-  }
-}
-/* Hidden at both ends: a 1 ms step can stop a hair short of its end. */
-@keyframes term-cursor-off {
-  from,
-  to {
-    visibility: hidden;
   }
 }

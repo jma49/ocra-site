@@ -25,23 +25,23 @@ function quoteArrow() {
       from={{ x: end + 1, y: mid(QUOTE_ROW) }}
       to={{ x: end + 0.6, y: mid(ANCHOR_ROW) }}
       dir="right"
-      at={1350}
+      at={480}
     />
   );
 }
 
 // Story figure 3, review · anchor: the agent quotes code, ocra finds the
-// quote in the diff and anchors the finding to that line. The reader sweeps
-// lines 40–42 and parks on 42 (31-figures.css), then the margin bar grows,
+// quote in the diff and anchors the finding to that line. Its text, the
+// note included, is whole from the first frame. The reader sweeps lines
+// 40–42 and parks on 42 (32-figure-review.css), then the margin bar grows,
 // the arrow joins the quote under the code to its line and the `L42`
-// figure is ringed.
-// Beats (ms after `.on`): sweep 400–1080; bar 1150; arrow 1350; ring 1700;
-// the note at 2200.
+// figure is ringed, all by 800 ms.
+// Beats (ms after `.on`): sweep 120–340; bar 420; arrow 480; ring 560.
 export function FigureReview({ f }: { f: Copy["how"]["figures"] }) {
   return (
     <>
       <div className="fig-l42">
-        <Ringed at={1700} w={1.16} h={0.9} className="t-figure l42">
+        <Ringed at={560} w={1.16} h={0.9} className="t-figure l42">
           L{finding.line}
         </Ringed>
         <p className="fig-found">
@@ -57,7 +57,7 @@ export function FigureReview({ f }: { f: Copy["how"]["figures"] }) {
         rows={[
           { n: finding.line - 2, hide: "phone" },
           { n: finding.line - 1 },
-          { n: finding.line, anchor: 1150 },
+          { n: finding.line, anchor: 420 },
           { n: finding.line + 1, hide: "phone" },
           { key: "label", custom: <span className="fig-quotes">{f.quotes}</span> },
           { key: "quote", custom: <span className="fig-quote">{finding.quote}</span> },

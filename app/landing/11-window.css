@@ -5,33 +5,7 @@
 .home .product {
   margin: 0;
 }
-/* The desk as a slab under a soft top light: brighter where the light
-   falls, a lit rim along its top edge, a hair of shade along its foot. Only
-   light on the stone's own value; nothing is drawn on it. */
-.home .hero .desk {
-  background:
-    radial-gradient(
-      120% 60% at 50% 0%,
-      color-mix(in srgb, var(--white) 20%, transparent),
-      transparent 72%
-    ),
-    var(--stone);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--white) 45%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--black) 6%, transparent);
-}
-.dark .home .hero .desk {
-  background:
-    radial-gradient(
-      120% 60% at 50% 0%,
-      color-mix(in srgb, var(--white) 4%, transparent),
-      transparent 72%
-    ),
-    var(--stone);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--white) 6%, transparent),
-    inset 0 1px 0 color-mix(in srgb, var(--white) 9%, transparent);
-}
+/* The desk's light and the papers under the shown sheet: 03-objects.css. */
 .home .hero .desk-top {
   display: flex;
   align-items: center;
@@ -164,22 +138,26 @@ html.mo.hy .home .replay {
   font-size: 12.5px;
 }
 
-/* ---- Caption and key ---- */
-/* From 1200 px the caption is a side caption in the four columns beside
-   the desk (it stays the figure's own figcaption): it follows the note,
-   so the whole column reads lede, ways in, note, then what the example
-   is, inside the first screen in both languages. Where that would run past
-   the desk's foot (a long lede at 1200 px), or without anchor positioning,
-   it stands on the desk's foot instead. Below 1200 it runs under the desk. */
+/* ---- Caption and key: the desk's foot ---- */
+/* Under the sheets, on the stone: what the example is, and the key to the
+   pen's three marks beside it, set off by a hairline (one column below
+   1024 px, the key a row under the caption). In ink, for the stone's
+   darker foot. */
 .home .product-cap {
   display: grid;
-  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  padding: 4px 8px 2px;
+  color: var(--ink);
+}
+.dark .home .product-cap {
   color: var(--ink-2);
 }
 .home .product-what {
   display: grid;
-  gap: 8px;
-  max-width: 62ch;
+  gap: 6px;
+  max-width: 68ch;
 }
 .home .product-key {
   display: flex;
@@ -192,39 +170,17 @@ html.mo.hy .home .replay {
   gap: 8px;
   white-space: nowrap;
 }
-@media (min-width: 1200px) {
-  .home .hero-grid {
-    position: relative;
-  }
-  .home .hero-note {
-    anchor-name: --hero-note;
-  }
+@media (min-width: 1024px) {
   .home .product-cap {
-    position: absolute;
-    left: 0;
-    bottom: 14px;
-    /* Four of the grid's twelve columns. */
-    width: calc((100% - 11 * var(--gap)) / 3 + 3 * var(--gap));
-    padding-top: 16px;
-    border-top: 1px solid var(--line-2);
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 28px;
+    align-items: start;
   }
-  @supports (anchor-name: --a) {
-    .home .product-cap {
-      top: calc(anchor(--hero-note bottom) + 48px);
-      bottom: auto;
-      position-try-fallbacks: --cap-foot;
-    }
-  }
-}
-@position-try --cap-foot {
-  top: auto;
-  bottom: 14px;
-}
-@media (max-width: 1199px) {
-  .home .product-cap {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-    padding: 16px 8px 0;
+  .home .product-key {
+    flex-direction: column;
+    gap: 4px;
+    padding-inline-start: 20px;
+    border-inline-start: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
   }
 }
 
@@ -279,7 +235,8 @@ html.mo.hy .home .replay {
     white-space: nowrap;
   }
   .home .product-cap {
-    padding: 14px 12px 0;
+    margin-top: 8px;
+    padding: 2px 4px 2px;
   }
   .home .product-key {
     gap: 6px 16px;

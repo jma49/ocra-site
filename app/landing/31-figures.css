@@ -4,9 +4,10 @@
    holding one sheet: the example's pull request bar with the Example run
    chip, then a body in three parts, its head, its content and a foot (the
    tier, the plan line, the verdict) kept at the bottom, so the four line up
-   as they swap. Pinned, the desk is 600 px and a body at most 480. Marks
-   draw by the pen's "on" mode (04-pen.css); beats marks cannot play wait
-   for `.on` under html.mo. Figures 3 and 4: 32-figure-review.css. */
+   as they swap. Pinned, the desk is --desk-h (600 px, 30-how.css) and a
+   body at most 480. A figure's text is whole from its first frame; its
+   marks draw by the pen's "on" mode (04-pen.css), all within 800 ms of
+   `.on`. Figures 3 and 4: 32-figure-review.css. */
 
 .home .fig .sheet {
   display: flex;
@@ -73,7 +74,7 @@
   html.mo .home .fig .desk {
     display: flex;
     flex-direction: column;
-    height: 600px;
+    height: var(--desk-h);
   }
   html.mo .home .fig .sheet {
     flex: 1;
@@ -107,12 +108,13 @@
     opacity: 0;
     transform: translateY(16px);
   }
-  /* The fade is shorter than the move, so a fast scroll through the steps
-     never shows two bodies half faded over each other for long. */
+  /* The fade is shorter than the move, and the leaving body is gone as the
+     entering one rises, so neither a fast scroll nor a still 150 ms in
+     shows two bodies half faded over each other. */
   html.mo .home .how-run[data-swap] .fig-body {
     transition:
-      opacity 200ms var(--e-enter),
-      transform 350ms var(--e-enter);
+      opacity 120ms var(--e-enter),
+      transform 320ms var(--e-enter);
   }
   html.mo .home .fig.is-out .fig-body {
     transform: translateY(-12px);
@@ -122,8 +124,8 @@
     transform: none;
   }
   html.mo .home .how-run[data-swap] .fig.is-on .fig-body {
-    transition-duration: 240ms, 350ms;
-    transition-delay: 100ms;
+    transition-duration: 180ms, 320ms;
+    transition-delay: 60ms;
   }
   /* The five files share the room the desk leaves, evenly. */
   html.mo .home .fig-files {
@@ -262,33 +264,20 @@
   background: var(--sheet-2);
   font-size: 13.5px;
 }
-.home .fig-typed {
+.home .fig-cmd {
   --fs: 13.5;
   color: var(--ink);
-}
-.home .fig-typed code {
-  --k: var(--n);
 }
 .home .fig-plan-note {
   color: var(--ink-3);
 }
-/* Its beats: ticks pop in their cells; the command types after its "$ ". */
+/* Its ticks pop in their cells as they draw. */
 @media (prefers-reduced-motion: no-preference) {
   html.mo .home .fig:not(.on) .fig-matrix .mk-tick {
     transform: scale(0.7);
   }
   html.mo .home .fig.on .fig-matrix .mk-tick {
     transition: transform 240ms var(--e-pop) var(--t);
-  }
-  html.mo .home .fig-typed code {
-    clip-path: inset(-0.2em calc(100% - var(--k) * 1ch) -0.2em 0);
-  }
-  html.mo .home .fig:not(.on) .fig-typed code {
-    --k: 2;
-  }
-  /* 18 characters after "$ ", 30 ms each. */
-  html.mo .home .fig.on .fig-typed code {
-    transition: --k 540ms steps(18) 1300ms;
   }
 }
 

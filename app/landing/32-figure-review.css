@@ -1,6 +1,6 @@
 /* The story figures, part two (sections.md §4, motion.md §6 and §8;
    package S): figure 3 (review · anchor) with the reader on line 42, and
-   figure 4 (filter · verify · judge · verdict) with the kinetic verdict.
+   figure 4 (filter · verify · judge · verdict) and its verdict.
    The frame, the pinned swap and figures 1–2: 31-figures.css. */
 
 /* ---- 3 · review · anchor ---- */
@@ -146,8 +146,8 @@
   display: none;
 }
 
-/* The verdict: absolutely placed in a fixed row, so tightening it moves
-   nothing (motion.md §8); "1 verified critical" on its own line. */
+/* The verdict: absolutely placed in a fixed row, at its finished stretch
+   from the first frame; "1 verified critical" on its own line. */
 .home .fig-verdict {
   display: grid;
   gap: 8px;
@@ -237,62 +237,40 @@
     opacity: 0;
   }
   html.mo .home .fig.on .fig-code .ln[data-anchor] {
-    transition: background-color 60ms var(--e-std) 800ms;
+    transition: background-color 60ms var(--e-std) 340ms;
   }
   html.mo .home .fig:not(.on) .fig-code .ln[data-anchor] .ln-n {
     color: var(--ink-3);
   }
   html.mo .home .fig.on .fig-code .ln[data-anchor] .ln-n {
-    transition: color 300ms var(--e-std) 1150ms;
+    transition: color 240ms var(--e-std) 420ms;
   }
   html.mo .home .fig.on .fig-code .ln[data-n="40"] .rd {
     animation:
-      rd-in 50ms var(--e-enter) 400ms both,
-      rd-out 40ms var(--e-std) 480ms forwards;
+      rd-in 40ms var(--e-enter) 120ms both,
+      rd-out 30ms var(--e-std) 170ms forwards;
   }
   html.mo .home .fig.on .fig-code .ln[data-n="41"] .rd {
     animation:
-      rd-in 50ms var(--e-enter) 530ms both,
-      rd-out 40ms var(--e-std) 750ms forwards;
+      rd-in 40ms var(--e-enter) 200ms both,
+      rd-out 30ms var(--e-std) 310ms forwards;
   }
   html.mo .home .fig.on .fig-code .ln[data-n="40"] {
-    animation: fig-read 80ms linear 400ms;
+    animation: fig-read 60ms linear 120ms;
   }
   html.mo .home .fig.on .fig-code .ln[data-n="41"] {
-    animation: fig-read 220ms linear 530ms;
+    animation: fig-read 140ms linear 200ms;
   }
   html.mo .home .fig.on .fig-code .ln[data-anchor] .rd {
-    animation: rd-in 50ms var(--e-enter) 800ms both;
+    animation: rd-in 40ms var(--e-enter) 340ms both;
   }
   html.mo .home .fig.on .fig-code .is-reader {
-    animation: fig-glance 1700ms var(--e-std) 800ms both;
-  }
-  html.mo .home .fig:not(.on) .fig-found-note {
-    clip-path: inset(-4px 100% -4px -4px);
-  }
-  html.mo .home .fig.on .fig-found-note {
-    clip-path: inset(-4px);
-    transition: clip-path 420ms var(--e-std) 2200ms;
+    animation: fig-glance 1100ms var(--e-std) 340ms both;
   }
 
-  /* 4: the verdict tightens, then the double underline (Marked) draws. */
-  html.mo .home .fig:not(.on) .verdict {
-    font-stretch: 100%;
-    color: var(--ink-3);
-  }
-  html.mo .home .fig:not(.on) .verdict:lang(zh) {
-    letter-spacing: 0.14em;
-  }
-  html.mo .home .fig.on .verdict {
-    transition:
-      font-stretch 800ms var(--e-enter) 2100ms,
-      letter-spacing 800ms var(--e-enter) 2100ms,
-      color 500ms var(--e-std) 2100ms;
-  }
-}
-@media (max-width: 599px) and (prefers-reduced-motion: no-preference) {
-  html.mo .home .fig:not(.on) .verdict {
-    font-stretch: 88%;
+  /* 4: the wrap-safe bands draw as fast as the strikes from 600 px. */
+  html.mo .home .fig.on .fig-narrow .pw {
+    transition-duration: 260ms;
   }
 }
 @keyframes fig-read {

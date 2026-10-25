@@ -1,7 +1,9 @@
-import type { Bilingual } from "../define";
+import type { Bilingual, Lines } from "../define";
 
 interface WorksCopy {
-  title: string;
+  // Two set lines from 1200 px; one balanced sentence below, Chinese
+  // breaking only at its phrase boundaries (\u200b) or punctuation.
+  lines: Lines;
   body: string;
   // The platform tiles' list label (not shown).
   platforms: string;
@@ -15,7 +17,7 @@ interface WorksCopy {
 
 export const works: Bilingual<WorksCopy> = {
   en: {
-    title: "Reviews where your team already works, with the model you already pay for.",
+    lines: ["Reviews where your team already works,", "with the model you already pay for."],
     body: "Pull requests on GitHub, merge requests on GitLab, or any local branch. Bring a key from any of 45 providers, or your own OpenAI-compatible endpoint.",
     platforms: "Platforms",
     more: "and {count} more through ocra Cloud, or any OpenAI-compatible endpoint you run.",
@@ -24,7 +26,7 @@ export const works: Bilingual<WorksCopy> = {
     marquee: { pause: "Pause the provider marks", play: "Play the provider marks" },
   },
   zh: {
-    title: "在团队已经在用的地方审查，用你已经在付费的模型。",
+    lines: ["在团队已经在用的地方\u200b审查，", "用你已经在付费的\u200b模型。"],
     body: "GitHub 上的 pull request、GitLab 上的 merge request，或任何本地分支。可以用 45\u00a0家模型服务商中任意一家的 key，或你自己的 OpenAI 兼容端点。",
     platforms: "平台",
     more: "另有 {count}\u00a0家可通过 ocra Cloud 接入，也可以接你自己运行的任何 OpenAI 兼容端点。",

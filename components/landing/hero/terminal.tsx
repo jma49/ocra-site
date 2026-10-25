@@ -28,14 +28,15 @@ const PREFIX = "[ocra] ";
 const hang = (line: string) =>
   line.startsWith(PREFIX) ? PREFIX.length : line.length - line.trimStart().length;
 
-// The typed command at 38 ms a character after a short beat, then each block
-// at the recorded time compressed 20 times (12-terminal.css plays it).
-const TYPE_AT = 160;
-const PER_CHAR = 38;
-const COMPRESS = 20;
-const typed = exampleRun.command.length;
-const outputAt = TYPE_AT + typed * PER_CHAR + 180;
-const blockAt = printedAt().map((t) => Math.round(outputAt + t / COMPRESS));
+// The pane opens with the command and its first block (the run's setup,
+// printed in its first three seconds) already on screen; each later block
+// follows at its recorded time after that block, compressed 80 times, from
+// a short beat (12-terminal.css plays it). The whole run is in by about
+// 1.3 s.
+const BEAT = 200;
+const COMPRESS = 80;
+const [setupAt = 0, ...laterAt] = printedAt();
+const blockAt = laterAt.map((t) => Math.round(BEAT + (t - setupAt) / COMPRESS));
 
 // The terminal pane: the same run as the CLI printed it, verbatim
 // (terminalLines; recorded.ts checks every line), one row per printed line
@@ -43,7 +44,7 @@ const blockAt = printedAt().map((t) => Math.round(outputAt + t / COMPRESS));
 // The whole text is rendered and only clipped while it plays, so the pane
 // never changes size.
 export function Terminal({ copy }: { copy: Copy["window"] }) {
-  const [, ...blocks] = terminalLines;
+  const [, setup, ...later] = terminalLines;
   return (
     <div className="term-pane">
       <div className="sheet-bar">
@@ -60,35 +61,42 @@ export function Terminal({ copy }: { copy: Copy["window"] }) {
         // biome-ignore lint/a11y/noNoninteractiveTabindex: output that scrolls must take focus to scroll by keyboard
         tabIndex={0}
       >
-        <span
-          className="term-line term-c"
-          style={
-            { "--n": typed, "--t": `${TYPE_AT}ms`, "--d": `${typed * PER_CHAR}ms` } as CSSProperties
-          }
-        >
+        <span className="term-line term-c">
           <span className="term-sign">$ </span>
-          <span className="cmd">{exampleRun.command}</span>
-          <span className="cursor" aria-hidden="true" />
+          {exampleRun.command}
         </span>
-        {blocks.map(([text, tone], i) => (
-          <span
-            key={text}
-            className={tone ? `term-line term-${tone}` : "term-line"}
-            style={{ "--t": `${blockAt[i]}ms` } as CSSProperties}
-          >
-            {text.split("\n").map((line, n) => (
-              <span
-                // biome-ignore lint/suspicious/noArrayIndexKey: fixed recorded lines, never reordered
-                key={n}
-                className="term-row"
-                style={{ "--in": hang(line) } as CSSProperties}
-              >
-                {line}
-              </span>
-            ))}
-          </span>
+        {setup && <Block block={setup} />}
+        {later.map((block, i) => (
+          <Block key={block[0]} block={block} at={blockAt[i]} />
         ))}
       </pre>
     </div>
+  );
+}
+
+// One printed block; with `at`, it wipes in at that time once the pane opens.
+function Block({
+  block: [text, tone],
+  at,
+}: {
+  block: (typeof terminalLines)[number];
+  at?: number;
+}) {
+  return (
+    <span
+      className={`term-line${tone ? ` term-${tone}` : ""}${at === undefined ? "" : " term-later"}`}
+      style={at === undefined ? undefined : ({ "--t": `${at}ms` } as CSSProperties)}
+    >
+      {text.split("\n").map((line, n) => (
+        <span
+          // biome-ignore lint/suspicious/noArrayIndexKey: fixed recorded lines, never reordered
+          key={n}
+          className="term-row"
+          style={{ "--in": hang(line) } as CSSProperties}
+        >
+          {line}
+        </span>
+      ))}
+    </span>
   );
 }

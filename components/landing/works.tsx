@@ -2,7 +2,7 @@ import type { Copy } from "@/lib/copy";
 import { fill } from "@/lib/copy/define";
 import { brandIcons } from "@/lib/landing/brand-icons";
 import { MarqueePause } from "./marquee-pause";
-import { Section } from "./section";
+import { Lines, Section } from "./section";
 
 // Where ocra reviews, and the `ocra review` flag that points it there
 // (the CLI's --pr, --mr and --from: docs/manual/en/cli.mdx).
@@ -81,15 +81,16 @@ function Row({ row, reverse }: { row: readonly string[]; reverse?: boolean }) {
 }
 
 // It runs where you already work, on the model you already pay for
-// (sections.md §3): the platforms beside the provider index, headed by 45.
+// (sections.md §3): the H2 on the page's headline step across the grid,
+// then the platforms beside the provider index, headed by 45.
 export function Works({ copy }: { copy: Copy["works"] }) {
   return (
     <Section ground="paper" className="works" labelledBy="works-title">
       <div className="wrap works-grid">
+        <h2 className="t-h2 works-h" id="works-title">
+          <Lines lines={copy.lines} />
+        </h2>
         <div className="works-copy">
-          <h2 className="t-h2s" id="works-title">
-            {copy.title}
-          </h2>
           <p className="t-body">{copy.body}</p>
           <ul className="works-tiles" aria-label={copy.platforms}>
             {PLATFORMS.map(({ icon, flag }) => (

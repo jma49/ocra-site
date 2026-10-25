@@ -11,9 +11,10 @@
    42's marks and notes carry their own --t (review.tsx) and play through
    04-pen.css's clock mode.
 
-   Without motion, Reduce motion, failed hydration or once done: only line
-   42's eyes show, looking at Date.now(); every mark, the comment and the
-   summary row are there. */
+   Until the comment lands, a placeholder holds its place and says what the
+   reader is doing. Without motion, Reduce motion, failed hydration or once
+   done: only line 42's eyes show, looking at Date.now(); every mark, the
+   comment and the summary row are there, and the placeholder is not. */
 
 /* The reading band of a row, under its text. */
 .home #review .ln {
@@ -46,87 +47,152 @@
   html.mo .home #review :where(.ln[data-n="16"] .rd) {
     animation:
       rd-pop 200ms var(--e-pop) both,
-      rd-out 40ms var(--e-std) 320ms forwards;
+      rd-out 40ms var(--e-std) 170ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="16"])::before {
     animation:
       rd-band 60ms var(--e-std) both,
-      rd-out 40ms var(--e-std) 320ms forwards;
+      rd-out 40ms var(--e-std) 170ms forwards;
   }
-  /* 320 ms: to 21, the other half of the evidence. */
+  /* 170 ms: to 21, the other half of the evidence. */
   html.mo .home #review :where(.ln[data-n="21"] .rd) {
     animation:
-      rd-in 50ms var(--e-enter) 320ms both,
-      rd-out 40ms var(--e-std) 670ms forwards;
+      rd-in 50ms var(--e-enter) 170ms both,
+      rd-out 40ms var(--e-std) 340ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="21"])::before {
     animation:
-      rd-band 50ms var(--e-enter) 320ms both,
-      rd-out 40ms var(--e-std) 670ms forwards;
+      rd-band 50ms var(--e-enter) 170ms both,
+      rd-out 40ms var(--e-std) 340ms forwards;
   }
-  /* 670 ms: a skim of 40. */
+  /* 340 ms: a skim of 40. */
   html.mo .home #review :where(.ln[data-n="40"] .rd) {
     animation:
-      rd-in 50ms var(--e-enter) 670ms both,
-      rd-out 40ms var(--e-std) 800ms forwards;
+      rd-in 50ms var(--e-enter) 340ms both,
+      rd-out 40ms var(--e-std) 400ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="40"])::before {
     animation:
-      rd-band 50ms var(--e-enter) 670ms both,
-      rd-out 40ms var(--e-std) 800ms forwards;
+      rd-band 50ms var(--e-enter) 340ms both,
+      rd-out 40ms var(--e-std) 400ms forwards;
   }
-  /* 800 ms: 41 read. */
+  /* 400 ms: 41 read. */
   html.mo .home #review :where(.ln[data-n="41"] .rd) {
     animation:
-      rd-in 50ms var(--e-enter) 800ms both,
-      rd-out 40ms var(--e-std) 1110ms forwards;
+      rd-in 50ms var(--e-enter) 400ms both,
+      rd-out 40ms var(--e-std) 530ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="41"])::before {
     animation:
-      rd-band 50ms var(--e-enter) 800ms both,
-      rd-out 40ms var(--e-std) 1110ms forwards;
+      rd-band 50ms var(--e-enter) 400ms both,
+      rd-out 40ms var(--e-std) 530ms forwards;
   }
-  /* 1110 ms: 42 read with a scan; 1480 ms away to 43; 1600 ms back to park. */
+  /* 530 ms: 42 read with a scan; 760 ms away to 43; 820 ms back to park. */
   html.mo .home #review :where(.ln[data-n="42"] .rd) {
     animation:
-      rd-in 50ms var(--e-enter) 1110ms both,
-      rd-out 40ms var(--e-std) 1480ms forwards,
-      rd-in 50ms var(--e-enter) 1600ms forwards;
+      rd-in 50ms var(--e-enter) 530ms both,
+      rd-out 40ms var(--e-std) 760ms forwards,
+      rd-in 50ms var(--e-enter) 820ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="42"])::before {
     animation:
-      rd-band 50ms var(--e-enter) 1110ms both,
-      rd-out 40ms var(--e-std) 1480ms forwards,
-      rd-band 50ms var(--e-enter) 1600ms forwards;
+      rd-band 50ms var(--e-enter) 530ms both,
+      rd-out 40ms var(--e-std) 760ms forwards,
+      rd-band 50ms var(--e-enter) 820ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="43"] .rd) {
     animation:
-      rd-in 50ms var(--e-enter) 1480ms both,
-      rd-out 40ms var(--e-std) 1600ms forwards;
+      rd-in 50ms var(--e-enter) 760ms both,
+      rd-out 40ms var(--e-std) 820ms forwards;
   }
   html.mo .home #review :where(.ln[data-n="43"])::before {
     animation:
-      rd-band 50ms var(--e-enter) 1480ms both,
-      rd-out 40ms var(--e-std) 1600ms forwards;
+      rd-band 50ms var(--e-enter) 760ms both,
+      rd-out 40ms var(--e-std) 820ms forwards;
   }
 
   /* The parked eyes' glint: the scan, a glance at each mark as the pen
      makes it, down at the comment as it lands, back to Date.now(). */
   html.mo .home #review :where(.ln[data-anchor] .is-reader) {
-    animation: rd-glance 5220ms linear both;
+    animation: rd-glance 2300ms linear both;
   }
-  /* 1700 ms: the anchored line's number turns ink with the margin bar. */
+  /* Its two blinks (03-code.css), on this clock: as it parks on line 42,
+     and once the pen is done. Longhands only, so the hold above keeps
+     them paused until the clock plays them. */
+  html.mo .home #review .ln[data-anchor] .is-reader .lids {
+    animation-duration: 1300ms;
+    animation-delay: 790ms;
+  }
+  /* 860 ms: the anchored line's number turns ink with the margin bar. */
   html.mo .home #review :where(.ln[data-anchor] .ln-n) {
-    animation: rd-num 300ms var(--e-std) 1700ms both;
+    animation: rd-num 300ms var(--e-std) 860ms both;
   }
 
-  /* 4020 ms: comments last. 4170 ms: the summary row, posted with it. */
+  /* Until the comment lands, its place says what the reader is doing:
+     reading, then, from the margin bar on, checking the line. */
+  html.mo .home #review :where(.pending) {
+    display: flex;
+    animation: rv-gone 1ms linear 2040ms forwards;
+  }
+  html.mo .home #review :where(.pending-read) {
+    animation: rv-gone 1ms linear 860ms forwards;
+  }
+  html.mo .home #review :where(.pending-check) {
+    visibility: hidden;
+    animation: rv-shown 1ms linear 860ms forwards;
+  }
+  html.mo .home #review :where(.pending-eyes) {
+    animation: rv-look 1800ms linear both;
+  }
+
+  /* 1500 ms: comments last, landing over the placeholder. 1580 ms: the
+     summary row, posted with it. */
   html.mo .home #review :where(.comment) {
-    animation: rv-land 800ms var(--e-enter) 4020ms both;
+    animation: rv-land 520ms var(--e-enter) 1500ms both;
   }
   html.mo .home #review :where(.summary-row) {
-    animation: rv-wipe 400ms var(--e-std) 4170ms both;
+    animation: rv-wipe 360ms var(--e-std) 1580ms both;
   }
+}
+
+/* The placeholder: the comment's own slot, outlined, under it in the same
+   cell, with what the reader is doing at its centre (a state of the run,
+   not a comment: no author, no avatar); the comment is opaque and covers
+   it as it lands. */
+.home #review .review-foot > .pending,
+.home #review .review-foot > .comment {
+  grid-area: 1 / 1;
+}
+.home #review .review-foot > .comment {
+  position: relative;
+  z-index: 1;
+}
+.home #review .pending {
+  display: none;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px dashed var(--line-2);
+  border-radius: var(--r-ctl);
+  font-size: 13.5px;
+  line-height: 20px;
+  color: var(--ink-3);
+}
+.home #review .pending-eyes {
+  flex: none;
+  color: var(--ink-2);
+}
+.home #review .pending-says {
+  display: grid;
+  min-width: 0;
+}
+.home #review .pending-says > span {
+  grid-area: 1 / 1;
+}
+.home #review .pending-says > span::after {
+  content: "\2026";
 }
 
 @keyframes rd-pop {
@@ -155,42 +221,42 @@
     color: var(--ink);
   }
 }
-/* 0 → 5220 ms: 1160 scan from -0.3 (320 ms), 1900 glance at expiresAt
-   (160 ms), 2640 at Date.now(), 3330 at the caret, 4020 down at the
-   comment (400 ms), 4820 back to Date.now() (400 ms). */
+/* 0 → 2300 ms: 580 scan from -0.3 (180 ms), 900 glance at expiresAt
+   (120 ms), 1100 at Date.now(), 1290 at the caret, 1500 down at the
+   comment (300 ms), 1900 back to Date.now() (400 ms). */
 @keyframes rd-glance {
   0%,
-  22.22% {
+  25.22% {
     --px: -0.3;
     --py: 0;
     animation-timing-function: var(--e-std);
   }
-  28.35%,
-  36.4% {
+  33.04%,
+  39.13% {
     --px: 0.7;
     --py: 0;
     animation-timing-function: var(--e-enter);
   }
-  39.46%,
-  50.57% {
+  44.35%,
+  47.83% {
     --px: 0.45;
     --py: 0.35;
     animation-timing-function: var(--e-enter);
   }
-  53.64%,
-  63.79% {
+  53.04%,
+  56.09% {
     --px: 0.85;
     --py: 0.35;
     animation-timing-function: var(--e-enter);
   }
-  66.86%,
-  77.01% {
+  61.3%,
+  65.22% {
     --px: 0.6;
     --py: -0.2;
     animation-timing-function: var(--e-enter);
   }
-  84.67%,
-  92.34% {
+  78.26%,
+  82.61% {
     --px: 0.2;
     --py: 1;
     animation-timing-function: var(--e-enter);
@@ -210,6 +276,37 @@
     transform: none;
   }
 }
+/* Discrete: hidden, or shown, from the animation's end (a 1 ms step can
+   stop a hair short of it, so both ends hold the value). */
+@keyframes rv-gone {
+  from,
+  to {
+    visibility: hidden;
+  }
+}
+@keyframes rv-shown {
+  from,
+  to {
+    visibility: visible;
+  }
+}
+/* The placeholder's eye row looks across the line as the reader reads. */
+@keyframes rv-look {
+  0%,
+  20% {
+    transform: none;
+    animation-timing-function: var(--e-enter);
+  }
+  30%,
+  44% {
+    transform: translateX(2px);
+    animation-timing-function: var(--e-enter);
+  }
+  52%,
+  100% {
+    transform: none;
+  }
+}
 @keyframes rv-wipe {
   from {
     clip-path: inset(0 0 100% 0 round 8px);
@@ -225,10 +322,10 @@
   transition: stroke-width 200ms var(--e-std);
 }
 .home #review[data-linked] .mk-wipe path {
-  stroke-width: 2.4px;
+  stroke-width: 3.4px;
 }
 .home #review[data-linked] .mk-dash path {
-  --sw: calc(240 / var(--fs, 13.5));
+  --sw: calc(340 / var(--fs, 13.5));
 }
 /* The row itself takes the deeper band; the played band under it steps
    aside, so the two never stack. */
