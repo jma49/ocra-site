@@ -395,3 +395,26 @@
 .home .prompt .prompt-sign {
   color: var(--on-night-3);
 }
+
+/* ---- Touch: a 44 px target for every small control ----
+   Phones draw these controls 44 px tall (each file's max-width: 599px
+   rules); on any other touch screen, a tablet at any width, they keep the
+   size they are drawn at and take a finger through an invisible hit area
+   centred on them, 44 px on any side that is shorter. One list, so a new
+   small control is added here. The final band's Copy has its own. A
+   paper clips what it holds, so a bar with a control in it (the hero's
+   Replay) is as tall as on a phone: 44 px and its hairline. */
+@media (pointer: coarse) {
+  .home .sheet-bar:has(> button) {
+    min-height: 45px;
+  }
+  .home :is(.nav-links a, .nav-a, .ib, .nav-cta, .seg [role="tab"], .replay, .life-pause) {
+    position: relative;
+  }
+  .home :is(.nav-links a, .nav-a, .ib, .nav-cta, .seg [role="tab"], .replay, .life-pause)::before {
+    content: "";
+    position: absolute;
+    inset-block: min(0px, (100% - 44px) / 2);
+    inset-inline: min(0px, (100% - 44px) / 2);
+  }
+}
