@@ -1,6 +1,7 @@
 // The engine's numbers and names that the copy states as facts. They live
-// here once, and scripts/engine-facts.test.mjs compares them with the
-// engine's source (CI checks the engine out next to this repository).
+// here once. scripts/engine-facts.test.mjs compares them with the engine's
+// source where the engine is checked out next to this repository (../ocra,
+// or OCRA_DIR), and skips elsewhere, CI included.
 
 // How many steps a review agent may take before it is stopped:
 // MAX_AGENT_STEPS in ocra's packages/core/src/runtime/attempt.ts.
