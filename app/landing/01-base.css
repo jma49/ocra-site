@@ -20,6 +20,8 @@
 
 .home {
   --font-display: "Archivo", "Ocra Narrow", "Archivo Fallback", var(--font-sans);
+  /* The content column: .wrap, and the nav pill's edges from 1024 up. */
+  --column: 1280px;
   --gutter: 40px;
   --gap: 56px;
   --pad: 120px;
@@ -68,7 +70,7 @@
 
 .home .wrap {
   width: 100%;
-  max-width: calc(1280px + 2 * var(--gutter));
+  max-width: calc(var(--column) + 2 * var(--gutter));
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
