@@ -43,8 +43,10 @@
 }
 .home .nav {
   --nav-g: var(--paper);
-  /* Paper grounds have no glass: near-opaque, so text never shows through. */
-  --nav-o: 96%;
+  /* Frosted on every ground: 90 % of the ground under a 20 px blur, so the
+     page's largest type (a 148 px line, the $0.5134) never reads through
+     the bar, only a soft shift of tone. */
+  --nav-o: 90%;
   --nav-t: var(--ink);
   --nav-a: var(--ink-2);
   --nav-l: color-mix(in srgb, var(--ink) 8%, transparent);
@@ -62,6 +64,9 @@
   background: color-mix(in srgb, var(--nav-g) var(--nav-o), transparent);
   box-shadow: inset 0 0 0 1px var(--nav-l);
   color: var(--nav-t);
+  /* Only the standard property: the CSS build adds the -webkit- one, and
+     given both it keeps only the prefixed one, which Chrome ignores. */
+  backdrop-filter: blur(20px) saturate(1.1);
   transition:
     background-color 300ms var(--e-std),
     box-shadow 300ms var(--e-std),
@@ -72,18 +77,14 @@
 }
 .home .nav[data-on="stone"] {
   --nav-g: var(--stone);
-  --nav-o: 94%;
   --nav-a: var(--ink);
 }
 .home .nav[data-on="night"] {
   --nav-g: var(--night-2);
-  --nav-o: 92%;
   --nav-t: var(--on-night);
   --nav-a: var(--on-night-2);
   --nav-l: var(--line-night);
   --focus: var(--on-night);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 .home .nav[data-promoted] {
   --cta-g: var(--ink);
