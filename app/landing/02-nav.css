@@ -83,6 +83,16 @@
     box-shadow 300ms var(--e-std),
     color 300ms var(--e-std);
 }
+/* From 1024 up the pill's outer edges are the content column's, so the
+   logo sits 16 px inside the headline's edge and nothing in the column
+   shows beside the pill as the page scrolls under it. Below, it keeps the
+   bands' 12 px inset (the drawer lives there too). */
+@media (min-width: 1024px) {
+  .home .nav {
+    width: calc(100% - 2 * var(--gutter));
+    max-width: var(--column);
+  }
+}
 .home .nav[data-on="paper-2"] {
   --nav-g: var(--paper-2);
 }
