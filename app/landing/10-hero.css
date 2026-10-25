@@ -1,7 +1,7 @@
 /* The hero (hero/hero.tsx): the brand line beside the desk. The desk is
-   painted composed and finished; with motion allowed and on a first visit
-   (not html.seen), the states below hold the objects before HeroPlay plays
-   them (.live), and .done is the finished desk. */
+   painted composed and finished; with motion allowed, the states below
+   hold the objects before HeroPlay plays them (.live), and .done is the
+   finished desk. */
 
 .home:has(.hero[data-ground="desk"]) .announce {
   position: relative;
@@ -415,35 +415,35 @@
   }
 }
 
-/* ---- Before play (first visit, motion allowed) ---- */
+/* ---- Before play (motion allowed) ---- */
 @media (prefers-reduced-motion: no-preference) {
-  html.mo:not(.seen) .home .hero:not(.done) .desk-lamp {
+  html.mo .home .hero:not(.done) .desk-lamp {
     animation: lamp-warm 1100ms var(--e-std) both;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .hero-sheet {
+  html.mo .home .hero:not(.done) .hero-sheet {
     animation: sheet-land 900ms var(--e-settle) both;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .hero-h .hli {
+  html.mo .home .hero:not(.done) .hero-h .hli {
     animation: line-rise 700ms var(--e-settle) both;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .hero-h .hl + .hl .hli {
+  html.mo .home .hero:not(.done) .hero-h .hl + .hl .hli {
     animation-delay: 90ms;
   }
-  html.mo:not(.seen) .home .hero:not(.done) :is(.hero-lede, .hero-cta, .hero-note) {
+  html.mo .home .hero:not(.done) :is(.hero-lede, .hero-cta, .hero-note) {
     animation: copy-rise 640ms var(--e-settle) 220ms both;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .ruler:not(.in) {
+  html.mo .home .hero:not(.done) .ruler:not(.in) {
     opacity: 0;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .ruler {
+  html.mo .home .hero:not(.done) .ruler {
     --nudge: 0px;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .ink-run {
+  html.mo .home .hero:not(.done) .ink-run {
     stroke-dashoffset: 1;
   }
-  html.mo:not(.seen) .home .hero:not(.done) .hero-card:not(.dealt),
-  html.mo:not(.seen) .home .hero:not(.done) .hero-clip:not(.bit),
-  html.mo:not(.seen) .home .hero:not(.done, .live) .hero-pen {
+  html.mo .home .hero:not(.done) .hero-card:not(.dealt),
+  html.mo .home .hero:not(.done) .hero-clip:not(.bit),
+  html.mo .home .hero:not(.done, .live) .hero-pen {
     opacity: 0;
   }
 }
