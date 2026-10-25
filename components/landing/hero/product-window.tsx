@@ -4,12 +4,12 @@ import { ExampleChip, Review } from "./review";
 import { Terminal } from "./terminal";
 import { WindowTabs } from "./window-tabs";
 
-// The desk under the hero: two tabs over two stacked sheets (the pull
-// request as ocra posts on it, the terminal as the CLI printed it), the
-// Example run chip, and along the desk's foot the caption that says what
-// the example is, with the key to the pen's three marks. In Chinese the
-// caption adds a gloss of the comment, which stays English inside the
-// window.
+// The desk under the hero: two tabs and the Example run chip over two
+// papers laid one on the other (the pull request as ocra posts on it, the
+// terminal as the CLI printed it), and along the desk's foot the caption
+// that says what the example is, with the key to the pen's three marks. In
+// Chinese the caption adds a gloss of the comment, which stays English
+// inside the window.
 export function ProductWindow({ copy }: { copy: Copy["window"] }) {
   return (
     <WindowTabs

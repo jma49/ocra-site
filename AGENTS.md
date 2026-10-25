@@ -6,7 +6,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 
 - Next.js (App Router) + [Fumadocs](https://fumadocs.dev) + Tailwind CSS, deployed on Vercel.
 - Two languages: English at `/`, Chinese at `/zh`. Every page and every string exists in both.
-- `npm run verify`: `check` (Biome with warnings as errors, the colour check, knip), the build, `typecheck`, the schema check and the code face's glyph check. CI runs it; run it before every push.
+- `npm run verify`: `check` (Biome with warnings as errors, the colour check, knip, `npm test`), the build, `typecheck`, the schema check and the code face's glyph check. CI runs it; run it before every push.
 - **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`. Deploy as Working with agents says, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, which must be on `origin/main`, through a logged-in, pinned Vercel CLI), then open the changed pages live. Each deploy costs one build.
 
 | Path | Contents |
@@ -48,6 +48,7 @@ Read this before touching routing, the docs layout or MDX; it saves reading `@fu
 
 - **Say only what is true today.** The project is early: no invented customers, logos, testimonials, statistics or benchmark results. Planned features are labeled as planned.
 - Examples of ocra output are labeled as examples and must be technically correct: a code review product cannot show a wrong bug. The landing page's example (the pull request and terminal in the hero window, the step pictures, the finding) is one recorded run from `scripts/demo-video/`, and every number, file and line of it lives in `lib/landing/example-run.ts` (copy that quotes it is a function of the run). When ocra's output changes, record it again and update that one file rather than editing components or copy.
+- The engine's numbers the copy states as facts (an agent's step cap, the provider count) live in `lib/landing/engine-facts.ts`, never in a copy string; `npm test` compares them with the engine's source when `../ocra` is checked out.
 - The design is original. The site may borrow the structure of other product pages but never their copy, visuals or branding.
 
 ## Design

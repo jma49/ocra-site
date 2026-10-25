@@ -29,9 +29,15 @@
   }
 }
 @media (max-width: 599px) {
+  /* 12.5 px above and below: room for the link's 44 px target whether the
+     sentence takes one line or two, without reaching under the bar. */
   .home .announce p {
     font-size: 13px;
-    padding: 9px 20px;
+    padding: 12.5px 20px;
+  }
+  /* Inline padding: a taller target, the same line height. */
+  .home .announce a {
+    padding-block: 15px;
   }
 }
 
@@ -166,7 +172,7 @@ html:not(.dark) .home .theme-sun,
   transition:
     background-color 300ms var(--e-std),
     color 300ms var(--e-std),
-    transform 120ms var(--e-std);
+    transform 200ms var(--e-std);
 }
 @media (hover: hover) {
   .home .nav-links a:hover,
@@ -267,9 +273,31 @@ html:not(.dark) .home .theme-sun,
     background: var(--tint);
   }
 }
+/* While the drawer is open the page lies under a frosted scrim (and is
+   inert, header-controls.tsx); a tap on it closes the drawer. The bar
+   keeps only the logo and the close button: the drawer has the theme row
+   and the call to action. The scrim sits under the bar and the drawer
+   inside the header's stacking order. */
+.home .nav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-under);
+  display: none;
+  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  backdrop-filter: blur(6px);
+}
+.home .nav-shell[data-open] .nav-scrim {
+  display: block;
+}
+.home .nav-shell[data-open] :is(.nav-cta, .nav-theme) {
+  display: none;
+}
 @media (prefers-reduced-motion: no-preference) {
   .home .nav-shell[data-open] .drawer {
     animation: drawer-in 260ms var(--e-enter);
+  }
+  .home .nav-shell[data-open] .nav-scrim {
+    animation: scrim-in 260ms var(--e-std);
   }
 }
 @keyframes drawer-in {
@@ -278,5 +306,10 @@ html:not(.dark) .home .theme-sun,
   }
   to {
     clip-path: inset(0 round 12px);
+  }
+}
+@keyframes scrim-in {
+  from {
+    opacity: 0;
   }
 }

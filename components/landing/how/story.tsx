@@ -8,17 +8,20 @@ const PIN =
 // When figure 4's beats move the meter on: filter, verify, judge, verdict
 // (figure-verify.tsx).
 const BEATS = [0, 200, 380, 480];
-// The leaving figure's body moves out for 320 ms (31-figures.css); its marks
-// reset after that.
-const SWAP = 400;
+// The bodies crossfade for 220 ms (31-figures.css); the leaving figure's
+// marks reset after that.
+const SWAP = 260;
 
 // The scroll story's island (motion.md §6). Scroll picks the step, time plays
-// it: pinned, an IntersectionObserver on a line at the viewport's middle sets
-// the step, and the step's figure swaps in and gets `.on`, which draws its
-// marks (04-pen.css, data-pen="on"). Unpinned with motion, each figure plays
-// once when 40 % visible. Without motion nothing plays: the server rendered
-// every figure finished. No scroll listener; the step buttons scroll to
-// their step. The server renders step 1 as current, so nothing jumps.
+// it. Pinned, the whole stage (meter, step list and sheet) holds still on
+// its band while the reader scrolls past four invisible cues, one per step
+// (30-how.css lays them out); an IntersectionObserver on a line at the
+// viewport's middle sets the step from the cue crossing it, and the step's
+// figure swaps in and gets `.on`, which draws its marks (04-pen.css,
+// data-pen="on"). Unpinned with motion, each figure plays once when 40 %
+// visible. Without motion nothing plays: the server rendered every figure
+// finished. No scroll listener; the step buttons scroll to their step. The
+// server renders step 1 as current, so nothing jumps.
 export function Story({ pass, children }: { pass: string; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => (ref.current ? run(ref.current, pass) : undefined), [pass]);
@@ -34,6 +37,8 @@ function run(root: HTMLElement, pass: string): () => void {
   const story = root.querySelector<HTMLElement>(".story");
   const steps = all(".step");
   const figs = all(".fig");
+  const cues = all(".how-cue");
+  const stage = root.querySelector<HTMLElement>(".how-stage");
   const stages = all(".meter li");
   const passed = root.querySelector(".meter-pass");
   const motion = () => document.documentElement.classList.contains("mo");
@@ -49,7 +54,7 @@ function run(root: HTMLElement, pass: string): () => void {
     return id;
   };
   const leaving = new Map<HTMLElement, number>();
-  let beats: number[] = [];
+  let meterBeats: number[] = [];
   let swapping = 0;
   let pinned = false;
   let current = 1;
@@ -57,7 +62,7 @@ function run(root: HTMLElement, pass: string): () => void {
   let io: IntersectionObserver | undefined;
 
   const meter = (n: number) => {
-    for (const id of beats) clearTimeout(id);
+    for (const id of meterBeats) clearTimeout(id);
     const at = (g: number, k: number) => {
       for (const li of stages) {
         const lg = Number(li.dataset.g);
@@ -67,7 +72,7 @@ function run(root: HTMLElement, pass: string): () => void {
       }
     };
     at(n, 0);
-    beats = n === 4 ? BEATS.slice(1).map((ms, k) => later(() => at(4, k + 1), ms)) : [];
+    meterBeats = n === 4 ? BEATS.slice(1).map((ms, k) => later(() => at(4, k + 1), ms)) : [];
   };
 
   const play = (fig: HTMLElement) => {
@@ -77,9 +82,9 @@ function run(root: HTMLElement, pass: string): () => void {
     fig.classList.add("on");
   };
   // A figure's marks wait until it is 40 % in view, as unpinned figures do:
-  // step 1 reaches the middle before its figure has stuck in place, and its
-  // figure shows before step 1 gets there (setup watches it from the
-  // start), so no figure is in plain view still waiting for its marks.
+  // figure 1 rises into view with the stage before it pins (setup watches
+  // it from the start), so no figure is in plain view still waiting for
+  // its marks.
   const seen = new IntersectionObserver(
     (entries) => {
       for (const e of entries) {
@@ -144,7 +149,7 @@ function run(root: HTMLElement, pass: string): () => void {
         },
         { rootMargin: "-50% 0px -50% 0px" },
       );
-      for (const step of steps) io.observe(step);
+      for (const cue of cues) io.observe(cue);
       return;
     }
     for (const fig of figs) fig.inert = false;
@@ -172,11 +177,23 @@ function run(root: HTMLElement, pass: string): () => void {
     const n = Number(button?.dataset.go);
     const step = steps[n - 1];
     if (!step) return;
-    const smooth = !reduce.matches;
-    step.scrollIntoView({ block: "center", behavior: smooth ? "smooth" : "auto" });
-    if (!pinned) return;
-    // The smooth scroll passes the steps in between: hold the observer.
-    lockedUntil = performance.now() + (smooth ? 900 : 0);
+    const behavior = reduce.matches ? "auto" : "smooth";
+    if (!pinned || !stage) {
+      step.scrollIntoView({ block: "center", behavior });
+      return;
+    }
+    // The stage holds still, so the page scrolls to a third of the way
+    // into the step's beat (30-how.css): the stage pins when the run's top
+    // is its pad above the stage's sticky top.
+    const beat = Number.parseFloat(getComputedStyle(root).getPropertyValue("--beat"));
+    const pin =
+      root.getBoundingClientRect().top +
+      scrollY +
+      Number.parseFloat(getComputedStyle(root).paddingTop) -
+      Number.parseFloat(getComputedStyle(stage).top);
+    scrollTo({ top: pin + (n - 1 + 1 / 3) * beat, behavior });
+    // The smooth scroll passes the cues in between: hold the observer.
+    lockedUntil = performance.now() + (behavior === "smooth" ? 900 : 0);
     select(n);
   };
 

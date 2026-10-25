@@ -48,6 +48,24 @@
   color: var(--pen);
   font-weight: 500;
 }
+/* Lying under the pull request (11-window.css), the terminal shows the end
+   of its run, as a terminal left open after a run does: under its bar, the
+   verdict line, what came before scrolled away until it comes back on top.
+   What follows lies under the pull request; it is not drawn, so the strip
+   of this paper beside that one stays clean. */
+.home .hero .pane-terminal[data-inactive] .term {
+  padding-top: 3px;
+  overflow: hidden;
+}
+.home .hero .pane-terminal[data-inactive] [data-at="before"] {
+  display: none;
+}
+.home
+  .hero
+  .pane-terminal[data-inactive]
+  :is([data-at="after"], [data-at="verdict"] .term-row ~ .term-row) {
+  visibility: hidden;
+}
 @media (max-width: 599px) {
   .home .term {
     padding: 12px 12px 16px;

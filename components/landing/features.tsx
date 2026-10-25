@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { Copy } from "@/lib/copy";
 import type { BillRow } from "@/lib/copy/sections/features";
 import { exampleRun, formatCount } from "@/lib/landing/example-run";
+import { FeaturesBook } from "./features-book";
 import { Marked, Tick } from "./pen/marks";
 import { Lines, Section, withCode } from "./section";
 
@@ -184,10 +185,10 @@ function Chain({ fb }: { fb: Copy["features"]["fallback"] }) {
   );
 }
 
-// Your rules, your budget, your models (sections.md §6): the example run's
-// bill carries the section, call by call; the rules file and the model
-// chain sit beside it. The bars grow in the order the run made the calls,
-// then the total is double-underlined, when the bill comes into view.
+// You set the limits (sections.md §6): the example run's bill carries the
+// section, call by call; the rules file and the model chain sit beside it.
+// The bars grow in the order the run made the calls, then the total is
+// double-underlined, when the bill comes into view (FeaturesBook).
 export function Features({ copy }: { copy: Copy["features"] }) {
   const b = copy.bill;
   const fb = copy.fallback;
@@ -195,13 +196,13 @@ export function Features({ copy }: { copy: Copy["features"] }) {
     <Section ground="paper" className="features" labelledBy="features-title">
       <div className="wrap">
         <h2 className="t-h2 feat-title" id="features-title">
-          <Lines lines={copy.lines} inline={1200} />
+          <Lines lines={copy.lines} />
         </h2>
         <div className="feat-grid">
           <div className="feat-bill">
             <h3 className="t-h3">{b.title}</h3>
             <p className="t-body">{withCode(b.body)}</p>
-            <div className="feat-book" data-pen="on" data-pen-once="0.8">
+            <FeaturesBook>
               <Ledger b={b} />
               <div className="feat-foot">
                 <div className="feat-sums">
@@ -224,7 +225,7 @@ export function Features({ copy }: { copy: Copy["features"] }) {
                   </span>
                 </p>
               </div>
-            </div>
+            </FeaturesBook>
           </div>
           <div className="feat-side">
             <div className="feat-rules">

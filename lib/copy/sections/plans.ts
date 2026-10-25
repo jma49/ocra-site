@@ -1,3 +1,4 @@
+import { PROVIDERS } from "@/lib/landing/engine-facts";
 import type { Bilingual, Lines } from "../define";
 
 // The product's name never breaks across lines in prose: a no-break space
@@ -49,7 +50,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "bring your own key",
         points: [
           "Sign in with GitHub; `ocra login` from any machine",
-          "Keys for 45 providers, encrypted, checked on save where the provider allows",
+          `Keys for ${PROVIDERS} providers, encrypted, checked on save where the provider allows`,
           "Usage, spend and review counts by day",
           "Default models chosen once, on the web",
         ],
@@ -96,7 +97,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "自带 key",
         points: [
           "用 GitHub 登录；任何机器上 `ocra login`",
-          "45 家服务商的 key，加密保存，服务商支持时在保存时校验",
+          `${PROVIDERS} 家服务商的 key，加密保存，服务商支持时在保存时校验`,
           "按天统计用量、花费和审查次数",
           "在网页上一次选好默认模型",
         ],

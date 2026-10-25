@@ -6,12 +6,12 @@ colors:
   primary: "#141414"
   signal: "#BD2718"
   paper: "#F7F7F7"
-  paper-2: "#EDEDED"
-  stone: "#BDBDBD"
+  paper-2: "#F1ECEC"
+  stone: "#C3BBBB"
   sheet: "#FFFFFF"
   sheet-2: "#F2F2F2"
-  night: "#1A1A1A"
-  night-2: "#262626"
+  night: "#261415"
+  night-2: "#342021"
   ink: "#141414"
   ink-2: "#4A4A4A"
   ink-3: "#666666"
@@ -27,12 +27,12 @@ colors:
   white: "#FFFFFF"
   black: "#000000"
   paper-dark: "#121212"
-  paper-2-dark: "#181818"
-  stone-dark: "#1E1E1E"
+  paper-2-dark: "#1B1717"
+  stone-dark: "#211D1D"
   sheet-dark: "#232323"
   sheet-2-dark: "#2A2A2A"
-  night-dark: "#262626"
-  night-2-dark: "#313131"
+  night-dark: "#352122"
+  night-2-dark: "#3E2A2B"
   ink-dark: "#EDEDED"
   ink-2-dark: "#B4B4B4"
   ink-3-dark: "#969696"
@@ -312,8 +312,8 @@ The landing page, the manual and the 404 page share one look: ink on neutral pap
 
 ## Colors
 
-- **Ink and neutral paper** carry the page: `paper` is the page, `paper-2` the alternate band (how it works, lifecycle, FAQ), `ink` the text, `ink-2` body copy and ledes, `ink-3` captions, line numbers and meta. Every grey is neutral (chroma 0): no ivory, no blue.
-- **Stone** is a neutral concrete mid-tone: the desk under every product view (hero, story figures) and the security band. On stone, text is `ink` or `ink-2` only (`ink-3` and the pen fall under 4.5 : 1 there).
+- **Ink and neutral paper** carry the page: `paper` is the page, `paper-2` the alternate band (how it works, lifecycle, FAQ), `ink` the text, `ink-2` body copy and ledes, `ink-3` captions, line numbers and meta. The page, the sheets, the inks and the lines are neutral (chroma 0): no ivory, no blue. The two mid-tones, `paper-2` and `stone`, carry a trace of the night's hue (OKLCH h 17, chroma under 0.01) at their neutral lightness, so every screen holds a little of ocra's own colour and no contrast changes.
+- **Stone** is a concrete mid-tone with that trace of the night's hue: the desk under every product view (hero, story figures) and the security band. On stone, text is `ink` or `ink-2` only (`ink-3` and the pen fall under 4.5 : 1 there).
 - **Sheets** (`sheet`, insets `sheet-2`) are the objects on a desk or a band: code, the thread, the gate tile, the Cloud plan row.
 - **Night** (`night`, raised surface `night-2`; text `on-night`, `on-night-2`, `on-night-3`) is two inset bands: the statement and the final band with the footer.
 - **The pen** (`pen`, cinnabar, OKLCH h 30 light / h 21 dark) is the one signal. It marks only where ocra acts on the reviewed change: a finding, a quote, an anchor, a strike through what was set aside, skipped, disproved, refused or out of scope, a tick for what was read or verified, the bottom line of a bill or verdict, ocra's verdict mark. **Never UI chrome** (navigation, tabs, progress, step numbers, the meter, plan states, selection, focus, links), never our own marketing claims. On night it is `pen-night` and draws marks only, never text. It never writes on stone: there it writes on a sheet laid on the stone. `pen-wash` sits only behind inserted code (`* 1000`): a red row would read as a deleted line.
@@ -348,7 +348,7 @@ One family, **Archivo**, in two widths (`next/font`, the only preloaded face, `d
 
 ## Elevation
 
-One shadow, `--float`, only for sheets on a desk, the lifecycle thread, the gate tile and the nav drawer; in dark it carries its own 6 % white ring. Everything else is flat. The nav is near-opaque on paper (96 %) and blurs only over night.
+One shadow, `--float`, only for sheets on a desk, the lifecycle thread, the gate tile, the nav drawer and a platform tile under the pointer; in dark it carries its own 6 % white ring. Everything else is flat. The nav is frosted on every ground (90 % of the ground under a 20 px blur). The open phone drawer lies over a frosted scrim (`paper` at 60 %, 6 px blur) that closes it on a tap; the page under it is inert and the bar drops its call to action, which the drawer repeats.
 
 ## Shapes
 
@@ -360,7 +360,7 @@ Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls
 - **Icons**: white eyes with night pupils on the night tile (`app/icon.svg`, `apple-icon.tsx`, `opengraph-image.tsx`, `favicon.ico`).
 - **Primitives** (`components/landing/`): `Section`, `Lines`, `Kicker`, `ArrowGlyph`, `withCode` (`section.tsx`); `CodeRows` and `InkCode` (`code.tsx`: recorded lines read at build time, reader rail, ink overlay, folds, custom rows); `Comment` and `BotAvatar` (`comment.tsx`); `CodeMark` (`pen/code-mark.tsx`); `Marked`, `Band`, `Note`, `Tick`, `Bar`, `Ringed`, `Arrow`, `KeyGlyph` (`pen/marks.tsx`); `tabPattern` and `inactive` (`tabs.ts`).
 - **The pen** draws server-rendered SVG strokes from `lib/landing/pen.ts` (pure geometry, one hand): underline, double underline, strike, ring, caret, box, arrow, tick, margin bar, the verdict mark (a pen dot for 🔴, an octagon for 🛑). Underlines and strikes draw by a left-to-right wipe with a non-scaling stroke; rings, carets, boxes, arrows and ticks by dash in uniformly scaled units. Every mark is `aria-hidden` and has a text equivalent.
-- **Buttons** (`app/global.css`): `.btn` 48 px (`.btn-sm` 38, 44 on phones), `.btn-primary` (ink; on night, on-night), `.btn-quiet` (a `line-2` ring). No lift, no shadow, no sheen.
+- **Buttons** (`app/global.css`): `.btn` 48 px (`.btn-sm` 38, 44 on phones), `.btn-primary` (ink; on night, on-night), `.btn-quiet` (a `line-2` ring). Under a pointer a button gives to `scale(.98)` over 200 ms and its arrow leans 3 px; pressed, `scale(.96)` (touch: `.98`). No lift, no shadow, no sheen.
 - **Sheets and desks**: a sheet (`.sheet`, radius 14, a 42 px `sheet-2` bar) lies on a stone desk (`.desk`, radius 28, 14 px padding) with `--float`, or flat on paper with an inset `line` ring. Chips: stage chips (mono, a kind shape: filled square = code, ring = model), the **Example run** chip (Archivo, a hollow ring, pointing at the nearest example caption) and the **Illustration** chip (on the lifecycle thread and the bill's fallback line).
 - **Stacked variants**: tab panels, lifecycle states, story figures, the terminal's text and the Copy label share one grid cell sized by the tallest; an inactive one is `inert` and hidden, never transparent alone, so switching never moves the page.
 - **Islands** (the only client code): `header-controls.tsx` (menu, theme, the nav following the ground, the CTA's promotion), `hero/window-tabs.tsx`, `hero/review-clock.tsx`, `how/story.tsx`, `lifecycle/lifecycle-states.tsx`, `marquee-pause.tsx`, `copy-command.tsx`, `faq-phones.tsx` and `motion.tsx`. Sections render on the server and pass their islands server-rendered children and small copy slices.
@@ -377,6 +377,7 @@ Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls
 - **The pen's two modes** (`04-pen.css`): `data-pen="clock"` plays CSS animations a clock island owns (the hero); `data-pen="on"` plays transitions when the root gains `.on` (story figures, the lifecycle's Fixed state, `data-pen-once` roots). Static marks (the gate, the fallback line, legends) carry neither.
 - **The final eyes** follow the pointer only while the band is within a viewport of the screen and blink only in view; on touch screens they glance round now and then; the manual's logo keeps its own blink.
 - Curves: `--e-enter`, `--e-std`, `--e-pop`, linear for scrubbed animations and the marquee, `steps(n)` for typing only. Nothing reveals on scroll; only recorded events draw on entry.
+- **Pointer feedback** (`@media (hover: hover)`, never moving layout): buttons give to `.98` and their arrow leans 3 px; FAQ rows take the `tint` (4 px inside their rules) and their plus or cross turns a quarter, so a hover never shows the other state; platform tiles lift 2 px onto `--float`; flat sheets darken their ring to `line-2`.
 - **Reduce motion**: every finished state at first paint; pointer-driven motion (the final eyes) still runs; the marquee runs at half speed with its pause button.
 
 ## Do's and Don'ts

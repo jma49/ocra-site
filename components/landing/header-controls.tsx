@@ -82,10 +82,16 @@ function usePromoted(): boolean {
   return promoted;
 }
 
+// The drawer exists below this width (02-nav.css).
+const WIDE = "(min-width: 1024px)";
+
 // The sticky header: the bar (logo, links, controls) and the phone drawer.
-// The menu closes on a tap outside it, on a link in it, on Escape (focus
-// returns to its button) and once the page scrolls 40 px; the scroll
-// listener exists only while it is open.
+// While the drawer is open a scrim covers the page and the page is inert,
+// so the drawer is the only thing to read, tap or tab to. It closes on a
+// tap outside the bar and the drawer (the scrim), on a link in it, on
+// Escape (focus returns to its button), once the page scrolls 40 px, and
+// when the window grows past the drawer; those listeners exist only while
+// it is open.
 export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode }) {
   const [open, setOpen] = useState(false);
   const shell = useRef<HTMLElement>(null);
@@ -97,7 +103,7 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
     if (!open) return;
     const close = () => setOpen(false);
     const outside = (e: PointerEvent) => {
-      if (!shell.current?.contains(e.target as Node)) close();
+      if (!(e.target as Element).closest?.(".nav, .drawer")) close();
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
@@ -108,13 +114,21 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
     const scrolled = () => {
       if (Math.abs(scrollY - startY) > 40) close();
     };
+    const wide = matchMedia(WIDE);
+    const page = [...(shell.current?.parentElement?.children ?? [])].filter(
+      (el): el is HTMLElement => el instanceof HTMLElement && el !== shell.current && !el.inert,
+    );
+    for (const el of page) el.inert = true;
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", onKey);
     addEventListener("scroll", scrolled, { passive: true });
+    wide.addEventListener("change", close);
     return () => {
+      for (const el of page) el.inert = false;
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", onKey);
       removeEventListener("scroll", scrolled);
+      wide.removeEventListener("change", close);
     };
   }, [open]);
 
@@ -135,6 +149,7 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
         <div className="drawer" id="site-menu">
           {drawer}
         </div>
+        <div className="nav-scrim" aria-hidden="true" />
       </header>
     </Menu>
   );

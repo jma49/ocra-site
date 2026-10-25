@@ -1,11 +1,12 @@
 /* The hero (sections.md §2): the brand line across the container (one line
    from 1024 px, two below), then the lede, the two ways in and the note in
-   four columns beside the desk in eight (one column below 1200 px); what
-   the example is runs along the desk's foot (11-window.css). The load: the
-   line rises out of a mask, the copy and the desk follow, and the review
-   starts as they settle; nothing blurs, nothing moves sideways. */
+   four columns beside the desk in eight (one column below 1200 px), and
+   the desk's oxblood plane (its papers and caption: 11-window.css). The
+   load: the line rises out of a mask, the copy and the desk follow, and
+   the review starts as they settle; nothing blurs, nothing moves
+   sideways. */
 .home .hero {
-  padding-block: 24px 64px;
+  padding-block: 16px 64px;
 }
 .home .hero-head {
   container-type: inline-size;
@@ -15,12 +16,19 @@
 .home .hero h1 {
   margin-inline-start: -0.035em;
 }
+/* The one line has no descenders: a tighter box, so the desk's papers and
+   the summary card on them are in the first screen at 1440 × 900. */
+@media (min-width: 1024px) {
+  .home .hero h1 {
+    line-height: 0.8;
+  }
+}
 .home .hero-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gap);
   align-items: start;
-  margin-top: 28px;
+  margin-top: 24px;
 }
 .home .hero-copy {
   grid-column: 1 / span 4;
@@ -137,6 +145,72 @@
     width: auto;
     margin-inline: -12px;
   }
+}
+
+/* ---- The desk: one ocra-coloured plane ----
+   The hero's desk is the night's oxblood, the hue the slabs carry, so the
+   first screen holds ocra's colour and the papers stand off it; under one
+   light from the top left like every desk, a lit rim and its own shadow on
+   the page (the papers on it: 11-window.css). In dark the plane sits
+   between the page and the sheets (lighter is higher). Its own type and
+   controls are set as on night; inside the papers everything is as on a
+   sheet. */
+.home .hero .desk {
+  --plane: var(--night);
+  --focus: var(--on-night);
+  background:
+    radial-gradient(
+      70% 70% at 10% 0%,
+      color-mix(in srgb, var(--white) 7%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--white) 4%, var(--plane)) 0%,
+      var(--plane) 50%,
+      color-mix(in oklab, var(--black) 10%, var(--plane)) 100%
+    )
+    var(--plane);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white) 12%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--white) 5%, transparent),
+    0 1px 2px color-mix(in srgb, var(--black) 10%, transparent),
+    4px 28px 56px -30px color-mix(in srgb, var(--black) 45%, transparent);
+  color: var(--on-night);
+}
+.dark .home .hero .desk {
+  --plane: color-mix(in oklab, var(--night) 60%, var(--paper));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--white) 8%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--white) 10%, transparent),
+    4px 30px 60px -28px color-mix(in srgb, var(--black) 80%, transparent);
+}
+.home .hero .pane {
+  --focus: var(--ink);
+  color: var(--ink);
+}
+.home .hero .desk .seg {
+  background: color-mix(in srgb, var(--on-night) 9%, transparent);
+}
+.home .hero .desk .seg [role="tab"] {
+  color: var(--on-night);
+}
+.home .hero .desk .seg [role="tab"][aria-selected="true"] {
+  color: var(--ink);
+  box-shadow: none;
+}
+@media (hover: hover) {
+  .home .hero .desk .seg [role="tab"]:not([aria-selected="true"]):hover {
+    background: color-mix(in srgb, var(--on-night) 10%, transparent);
+    color: var(--on-night);
+  }
+}
+.home .hero .desk-chip {
+  color: var(--on-night);
+  background: color-mix(in srgb, var(--on-night) 9%, transparent);
+}
+.home .hero .desk-chip::before {
+  box-shadow: inset 0 0 0 1.3px var(--on-night);
 }
 
 /* Chinese: the system face draws its glyphs to the box, so no optical

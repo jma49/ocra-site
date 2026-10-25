@@ -1,3 +1,4 @@
+import { MAX_AGENT_STEPS } from "@/lib/landing/engine-facts";
 import type { Bilingual, Lines } from "../define";
 
 interface SecurityCopy {
@@ -23,6 +24,9 @@ interface SecurityCopy {
   };
   props: { title: string; body: string }[];
   link: string;
+  // Closes the band: the measured result, its {name} placeholders filled
+  // from lib/landing/measured.ts, and the method's page.
+  proof: { label: string; text: string; link: string };
 }
 
 export const security: Bilingual<SecurityCopy> = {
@@ -36,7 +40,7 @@ export const security: Bilingual<SecurityCopy> = {
       refused: "Refused at the gate",
       refusedSr: "Refused:",
       outside: "outside the repo",
-      agents: "isolated agents · 30 steps each",
+      agents: `isolated agents · ${MAX_AGENT_STEPS} steps each`,
       tools: "Tools the example run's agents called",
       builtins: "Every OpenCode built-in, off",
       more: "and {n} more",
@@ -64,6 +68,12 @@ export const security: Bilingual<SecurityCopy> = {
       },
     ],
     link: "Read the threat model",
+    proof: {
+      label: "Measured, with its limits",
+      // No-break spaces keep each figure with its words.
+      text: "On {changes}\u00a0changes with {known}\u00a0known issues, ocra\u00a0found\u00a0{found}, and every finding it reported was correct.",
+      link: "Read the method",
+    },
   },
   zh: {
     lines: ["为你不信任的", "代码而设计。"],
@@ -76,7 +86,7 @@ export const security: Bilingual<SecurityCopy> = {
       refused: "在关口被拒绝",
       refusedSr: "被拒绝：",
       outside: "仓库之外",
-      agents: "隔离的 agent · 每个 30 步",
+      agents: `隔离的 agent · 每个 ${MAX_AGENT_STEPS} 步`,
       tools: "示例运行里 agent 调用的工具",
       builtins: "OpenCode 内置工具，全部关闭",
       more: "另外 {n} 个",
@@ -104,5 +114,12 @@ export const security: Bilingual<SecurityCopy> = {
       },
     ],
     link: "阅读威胁模型",
+    proof: {
+      label: "实测，连同局限",
+      // No-break spaces keep each figure with its measure word and "ocra"
+      // with its verb.
+      text: "在 {changes}\u00a0个改动、{known}\u00a0个已知问题上，ocra\u00a0找到了 {found}\u00a0个，报出的每一条都正确。",
+      link: "阅读测量方法",
+    },
   },
 };

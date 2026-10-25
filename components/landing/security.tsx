@@ -3,6 +3,7 @@ import type { Copy } from "@/lib/copy";
 import { fill } from "@/lib/copy/define";
 import type { Locale } from "@/lib/i18n";
 import { exampleRun } from "@/lib/landing/example-run";
+import { measured } from "@/lib/landing/measured";
 import { localePath } from "@/lib/shared";
 import { InkCode } from "./code";
 import { Marked, Tick } from "./pen/marks";
@@ -39,6 +40,22 @@ const split = (title: string) => {
   return at < 0 ? { what: title, how: "" } : { what: title.slice(0, at), how: title.slice(at + 3) };
 };
 
+// The measured result's sentence with its numbers set apart (fill's
+// placeholders, each a figure from measured.ts).
+function Figures({ text }: { text: string }) {
+  return text.split(/\{(\w+)\}/).map((part, i) => {
+    if (i % 2 === 0) return part;
+    const value = measured[part as keyof typeof measured];
+    if (value === undefined) throw new Error(`security: no measured value for {${part}}`);
+    return (
+      // biome-ignore lint/suspicious/noArrayIndexKey: a fixed split of static copy
+      <span key={i} className="sec-n">
+        {value}
+      </span>
+    );
+  });
+}
+
 // Between two tiles of the gate: an arrow in the gap beside the tiles, a
 // Maple ↓ above a tile where they stack (phones).
 function Flow() {
@@ -51,18 +68,20 @@ function Flow() {
 }
 
 // Built for code you do not trust: a night band and the gate that enforces
-// it (sections.md §8). The gate is standing policy, so its marks are drawn
-// at rest, and only on the two sheets laid on the band. The tools ticked are
-// the ones the example run's agents called (recorded.ts checks them against
-// the transcript).
+// it (sections.md §8), led by the gate rather than a statement head, so it
+// does not open like Quiet, the night band before it. The gate is standing
+// policy, so its marks are drawn at rest, and only on the two sheets laid on
+// the band. The tools ticked are the ones the example run's agents called
+// (recorded.ts checks them against the transcript). The band closes on the
+// one measured result, with its sample size.
 export function Security({ copy, locale }: { copy: Copy["security"]; locale: Locale }) {
   const f = copy.flow;
   return (
     <Section id="security" ground="night" className="security" labelledBy="sec-h">
       <div className="wrap">
         <div className="sec-head">
-          <h2 className="t-band sec-h" id="sec-h">
-            <Lines lines={copy.lines} />
+          <h2 className="t-h2 sec-h" id="sec-h">
+            <Lines lines={copy.lines} inline={1200} />
           </h2>
           <div className="sec-intro">
             <p className="t-body">{copy.body}</p>
@@ -73,7 +92,7 @@ export function Security({ copy, locale }: { copy: Copy["security"]; locale: Loc
           </div>
         </div>
         <ol className="sec-gate">
-          <li className="sec-tile sec-quiet">
+          <li className="sec-tile sec-end">
             <h3 className="t-h4">{f.repo}</h3>
             <p className="t-small">{f.repoNote}</p>
           </li>
@@ -137,7 +156,7 @@ export function Security({ copy, locale }: { copy: Copy["security"]; locale: Loc
               </li>
             </ul>
           </li>
-          <li className="sec-tile sec-quiet">
+          <li className="sec-tile sec-end">
             <Flow />
             <h3 className="t-h4">{f.provider}</h3>
             <p className="t-small">{f.providerNote}</p>
@@ -151,6 +170,16 @@ export function Security({ copy, locale }: { copy: Copy["security"]; locale: Loc
             </li>
           ))}
         </ul>
+        <div className="sec-proof">
+          <h3 className="t-h4">{copy.proof.label}</h3>
+          <p className="t-statement-body sec-proof-text">
+            <Figures text={copy.proof.text} />
+          </p>
+          <a className="link sec-link" href={localePath(locale, "/docs/quality")}>
+            {copy.proof.link}
+            <ArrowGlyph />
+          </a>
+        </div>
       </div>
     </Section>
   );

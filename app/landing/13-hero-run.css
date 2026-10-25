@@ -146,19 +146,26 @@
   }
 
   /* 1500 ms: comments last, landing over the placeholder. 1580 ms: the
-     summary row, posted with it. */
+     summary, posted with it: a card laid on the corner (11-window.css), or
+     below 600 px the row that closes the sheet. */
   html.mo .home #review :where(.comment) {
     animation: rv-land 520ms var(--e-enter) 1500ms both;
   }
+  html.mo .home #review :where(.summary-row) {
+    animation: rv-place 420ms var(--e-enter) 1580ms both;
+  }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 599px) {
   html.mo .home #review :where(.summary-row) {
     animation: rv-wipe 360ms var(--e-std) 1580ms both;
   }
 }
 
-/* The placeholder: the comment's own slot, outlined, under it in the same
-   cell, with what the reader is doing at its centre (a state of the run,
-   not a comment: no author, no avatar); the comment is opaque and covers
-   it as it lands. */
+/* The placeholder: one row at the top of the comment's own slot, under it
+   in the same cell, saying what the reader is doing (a state of the run,
+   not a comment: no author, no avatar). The comment, already laid out in
+   the cell, keeps its height; it is opaque and covers the row as it
+   lands. */
 .home #review .review-foot > .pending,
 .home #review .review-foot > .comment {
   grid-area: 1 / 1;
@@ -169,16 +176,23 @@
 }
 .home #review .pending {
   display: none;
-  align-self: stretch;
+  align-self: start;
   align-items: center;
-  justify-content: center;
   gap: 10px;
-  padding: 12px 16px;
-  border: 1px dashed var(--line-2);
+  height: 48px;
+  padding: 0 16px;
   border-radius: var(--r-ctl);
+  background: var(--sheet-2);
   font-size: 13.5px;
   line-height: 20px;
   color: var(--ink-3);
+}
+@media (max-width: 599px) {
+  .home #review .pending {
+    height: 44px;
+    padding: 0 13px;
+    font-size: 13px;
+  }
 }
 .home #review .pending-eyes {
   flex: none;
@@ -307,12 +321,71 @@
     transform: none;
   }
 }
+/* The summary card is laid down on the corner: it settles from a hair
+   above as it fades in, never clipped (a clip would cut its shadow). */
+@keyframes rv-place {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 @keyframes rv-wipe {
   from {
     clip-path: inset(0 0 100% 0 round 8px);
   }
   to {
     clip-path: inset(0 round 8px);
+  }
+}
+
+/* ---- Replay, in the review's bar: it plays the theatre again ---- */
+.home .replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 30px;
+  margin-inline-start: auto;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  /* Replay plays the theatre: it exists only once the clock does. */
+  visibility: hidden;
+  transition:
+    background-color 150ms var(--e-std),
+    color 150ms var(--e-std);
+}
+html.mo.hy .home .replay {
+  visibility: visible;
+}
+.home .replay svg {
+  display: block;
+  transition: transform 450ms var(--e-enter);
+}
+.home .replay:active svg {
+  transform: rotate(-200deg);
+}
+@media (hover: hover) {
+  .home .replay:hover {
+    background: var(--tint);
+    color: var(--ink);
+  }
+}
+@media (max-width: 599px) {
+  .home .replay {
+    height: 44px;
+    margin-inline-end: -6px;
   }
 }
 

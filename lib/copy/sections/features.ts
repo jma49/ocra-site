@@ -30,7 +30,7 @@ interface FeaturesCopy {
 
 export const features: Bilingual<FeaturesCopy> = {
   en: {
-    lines: ["Your rules, your budget,", "your models."],
+    lines: ["You set the limits."],
     rules: {
       title: "Your team's rules, without writing a plugin",
       body: "Put review rules in `.ocra/rules.json` on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
@@ -67,7 +67,7 @@ export const features: Bilingual<FeaturesCopy> = {
     },
   },
   zh: {
-    lines: ["你的规则、你的预算，", "你的模型。"],
+    lines: ["限度由你来定。"],
     rules: {
       title: "团队规则，不用写插件",
       body: "把审查规则写进基础分支上的 `.ocra/rules.json`。本地审查时，插件还能通过一套很小的接口添加规则、审查员、工具和监听器。",

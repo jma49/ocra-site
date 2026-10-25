@@ -1,13 +1,28 @@
 /* How it works (sections.md §4; package S): the head, the meter row, the
    story grid in reading order (step n, then figure n), steps and their
    numerals. Pinned (≥ 1200 × 760, html.mo, motion allowed; the island uses
-   the same query): the figures share one sticky place beside the steps and
-   the meter sticks above them. Otherwise (narrow, short, no JS, Reduce
-   motion) each step flows with its figure: beside it from 1200 px, above it
-   below that. The figures themselves: 31-figures.css. */
+   the same query): the meter row, the step list and the figures, stacked
+   in one place, hold still as one stage on a full-bleed band. Otherwise
+   (narrow, short, no JS, Reduce motion) each step flows with its figure:
+   beside it from 1200 px, above it below that. The figures and the band's
+   paint: 31-figures.css. */
 
 .home .how {
+  /* The pinned stage's band: the hero desk's plane (the stone warmed
+     toward the night), so the product lies on the same desk in both. */
+  --how-band: color-mix(in oklab, var(--night) 14%, var(--stone));
+  --how-light: color-mix(in srgb, var(--white) 30%, transparent);
+  /* Text printed on the band; the active step lies on a sheet instead. */
+  --how-ink: color-mix(in oklab, var(--ink) 88%, var(--how-band));
+  --how-ink-2: color-mix(in oklab, var(--ink) 72%, var(--how-band));
+  --how-rule: color-mix(in srgb, var(--ink) 14%, transparent);
   padding-block: var(--pad);
+}
+.dark .home .how {
+  --how-band: color-mix(in oklab, var(--night) 60%, var(--stone));
+  --how-light: color-mix(in srgb, var(--white) 5%, transparent);
+  --how-ink: var(--ink-2);
+  --how-ink-2: var(--ink-3);
 }
 
 /* ---- Head: 7/5, bottom-aligned ---- */
@@ -77,28 +92,23 @@
   --rail-top: 76px;
   --rail-h: 44px;
 }
-.home .meter-row {
+.home :is(.meter-row, .how-cues) {
   display: none;
-  position: sticky;
-  top: var(--rail-top);
-  z-index: 3;
+}
+.home .meter-row {
+  position: relative;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
   height: var(--rail-h);
-  margin-top: 60px;
-  background: var(--paper-2);
-  /* Also covers the slit between the floating nav and the row. */
-  box-shadow:
-    inset 0 -1px 0 var(--line-2),
-    0 -12px 0 var(--paper-2);
+  box-shadow: inset 0 -1px 0 var(--how-rule);
 }
 .home .meter {
   display: flex;
   align-items: center;
   min-width: 0;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
 }
 .home .meter li {
@@ -169,17 +179,16 @@
 }
 @supports (animation-timeline: view()) {
   .home .how-run {
-    timeline-scope: --story;
-  }
-  .home .story {
     view-timeline: --story block;
   }
-  /* From step 1 reaching the viewport's middle to step 4 leaving it. */
+  /* From the stage pinning (the run's top a band's pad above the rail's
+     place) to its letting go: the rule fills as the cues pass. */
   .home .meter-rule {
+    --pin: calc(var(--vh, 100vh) - var(--pin-top, 0px) + var(--band-pad, 0px));
     transition: none;
     animation: grow linear both;
     animation-timeline: --story;
-    animation-range: cover 16% cover 84%;
+    animation-range: cover var(--pin) cover calc(var(--pin) + var(--runway, 0px));
   }
 }
 
@@ -223,7 +232,6 @@
   cursor: pointer;
 }
 .home .step-n {
-  position: relative;
   flex: none;
   width: var(--num);
   font-family: var(--font-display);
@@ -234,19 +242,6 @@
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   transition: color 500ms var(--e-std);
-}
-/* The active step's numeral: an ink underline (pinned only). */
-.home .step-n::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 0.5em;
-  bottom: -10px;
-  height: 2px;
-  background: var(--ink);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 300ms var(--e-std);
 }
 .home .step-t {
   transition: color 500ms var(--e-std);
@@ -271,40 +266,141 @@
   white-space: nowrap;
 }
 
-/* ---- Pinned ---- */
-/* The desk hangs 16 px under the meter row, in flow and stuck alike, and
-   never slides under it: the row's bottom margin is the desk and 40 px, so
-   its margin box (which a sticky box keeps inside .how-run) lets it go
-   24 px of scroll before the figure, and both leave together. The story's
-   negative margin takes that margin back. */
+/* ---- Pinned: one stage on a full-bleed band ----
+   The stage (the meter row, the step list and the one sheet) holds still
+   under the nav while the reader scrolls past four cues (story.tsx), on
+   the run's band, edge to edge; the sheet lies on it with no desk. Every
+   step stays in view, so the rail never cuts one, and the list fills the
+   column beside the sheet: the active step lies on a sheet of its own. */
 @media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
   html.mo .home .how-run {
-    --desk-h: 600px;
+    --band-pad: 36px;
+    /* The scroll each step holds the stage for; the fourth holds it for
+       0.6 of one, so the runway is 3.6 beats. */
+    --beat: 300px;
+    --runway: calc(3.6 * var(--beat));
+    /* 600 px at the shortest pinned viewport (760), up to 680. */
+    --sheet-h: clamp(600px, calc(var(--vh, 100vh) - 220px), 680px);
+    --stage-h: calc(var(--rail-h) + 20px + var(--sheet-h));
+    /* Under the nav, or centred in a viewport taller than stage and nav. */
+    --pin-top: max(var(--rail-top), calc((var(--vh, 100vh) - var(--stage-h)) / 2));
+    position: relative;
+    isolation: isolate;
+    /* The band's light (31-figures.css) ends with the band. */
+    clip-path: inset(0 -100vw);
+    min-height: calc(var(--band-pad) * 2 + var(--stage-h) + var(--runway));
+    margin-top: 72px;
+    padding-block: var(--band-pad);
+  }
+  html.mo .home .how-stage {
+    position: sticky;
+    top: var(--pin-top);
   }
   html.mo .home .meter-row {
     display: flex;
-    margin-bottom: calc(var(--desk-h) + 40px);
+    --ink-3: var(--how-ink-2);
+    --ink-2: var(--how-ink);
+    --line-2: var(--how-rule);
   }
   html.mo .home .story {
-    row-gap: 0;
-    margin-top: calc(16px - var(--desk-h) - 40px);
+    --num: 30px;
+    grid-template-rows: repeat(4, auto);
+    row-gap: 10px;
+    height: var(--sheet-h);
+    margin-top: 20px;
   }
+  html.mo .home .how-cues {
+    display: block;
+    position: absolute;
+    inset-inline: 0;
+    top: calc(var(--vh, 100vh) / 2 - var(--pin-top) + var(--band-pad));
+    visibility: hidden;
+    pointer-events: none;
+  }
+  html.mo .home .how-cue {
+    display: block;
+    height: var(--beat);
+  }
+  /* The first and last cues reach past the run, so a jump into the story
+     from anywhere finds the step it lands on. */
+  html.mo .home .how-cue:first-child {
+    height: calc(var(--beat) + var(--vh, 100vh));
+    margin-top: calc(-1 * var(--vh, 100vh));
+  }
+  html.mo .home .how-cue:last-child {
+    height: calc(var(--beat) + var(--vh, 100vh));
+  }
+
+  /* The step list. */
   html.mo .home .step {
-    min-height: min(calc(var(--vh, 100svh) * 0.55), 460px);
-    padding-block: 32px 24px;
+    position: relative;
+    align-self: stretch;
+    padding: 18px 0 16px;
   }
-  html.mo .home .step:not(.is-on) :is(.step-n, .step-t, .step-text, .step-text code) {
-    color: var(--ink-3);
+  html.mo .home .step::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0 -22px;
+    border-radius: var(--r-card);
+    background: var(--sheet);
+    box-shadow: var(--float);
+    opacity: 0;
+    transition: opacity 300ms var(--e-std);
   }
-  html.mo .home .step.is-on .step-n::after {
-    transform: none;
+  html.mo .home .step.is-on::before {
+    opacity: 1;
   }
-  html.mo .home .fig {
-    grid-row: 1 / 5;
-    position: sticky;
-    top: calc(var(--rail-top) + var(--rail-h) + 16px);
-    align-self: start;
-    z-index: 2;
+  html.mo .home .step + .fig + .step::after {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--how-rule);
+    transition: opacity 300ms var(--e-std);
+  }
+  html.mo .home :is(.step.is-on + .fig + .step, .step.is-on)::after {
+    opacity: 0;
+  }
+  html.mo .home .step-go {
+    gap: 14px;
+  }
+  html.mo .home .step-n {
+    font-size: 44px;
+  }
+  html.mo .home .step-stages {
+    display: none;
+  }
+  html.mo .home .step .step-text {
+    margin-top: 8px;
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+  /* Where the column or the sheet is shorter, the list still fits beside
+     the sheet: the text runs under the numeral, then a half step smaller. */
+  @media (max-width: 1439px) {
+    html.mo .home .step .step-text {
+      margin-inline-start: 0;
+      font-size: 15px;
+    }
+  }
+  @media (max-height: 879px) {
+    html.mo .home .step {
+      padding-block: 14px 12px;
+    }
+    html.mo .home .step .step-text {
+      margin-top: 6px;
+      font-size: 14.5px;
+      line-height: 1.45;
+    }
+  }
+  html.mo .home .step:not(.is-on) :is(.step-n, .step-t) {
+    color: var(--how-ink);
+  }
+  html.mo .home .step:not(.is-on) :is(.step-text, .step-text code) {
+    color: var(--how-ink-2);
   }
 }
 @media (hover: hover) and (min-width: 1200px) and (min-height: 760px) and (
