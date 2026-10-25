@@ -1,0 +1,342 @@
+/* The manual's bar, its drawer and the table of contents strip on a phone
+   (app/docs.css draws the desk and the sheet). The bar repeats the landing
+   page's (app/landing/02-nav.css, scoped to .home, so its sizes are
+   restated here): the same logo, links, controls and call to action, bare
+   on the desk at the top and smoked glass once the page has moved. */
+
+#nd-notebook-layout:has(.docs-bar) {
+  --fd-header-height: 64px;
+}
+.docs-bar {
+  grid-area: header;
+  position: sticky;
+  top: var(--fd-docs-row-1);
+  z-index: 30;
+  color: var(--on-desk);
+}
+/* The glass is a layer of its own, faded in, so the bar never repaints
+   its blur on the way. Over the manual's text it is far denser than the
+   landing page's: where the blur is not drawn (some phones, software
+   rendering) the lines under it must still not read through. */
+.docs-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--dd-ground) 95%, transparent);
+  box-shadow: inset 0 -1px 0 var(--line-desk);
+  backdrop-filter: blur(18px) saturate(1.1);
+  opacity: 0;
+  transition: opacity 260ms var(--e-std);
+}
+.docs-bar[data-scrolled]::before {
+  opacity: 1;
+}
+.docs-bar-body {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: var(--fd-header-height);
+  padding: 0 14px 0 18px;
+}
+.docs-logo {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding-inline: 6px;
+  border-radius: 8px;
+  color: var(--on-desk);
+  text-decoration: none;
+}
+
+/* Links and plain controls: the landing bar's 36 px tabs. */
+.docs-nav-links {
+  margin-inline-start: 18px;
+}
+.docs-nav-links ul {
+  display: flex;
+  gap: 2px;
+}
+.docs-nav-links a,
+.docs-nav-a {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 11px;
+  border-radius: var(--r-tab);
+  color: var(--on-desk-2);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 150ms var(--e-std),
+    color 150ms var(--e-std);
+}
+.docs-nav-links a[aria-current="page"] {
+  color: var(--on-desk);
+}
+.docs-bar-r {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-inline-start: auto;
+}
+.docs-slot,
+.docs-bar-r > span {
+  display: contents;
+}
+.docs-ib,
+#nd-sidebar-mobile > div:last-child > button:not([data-theme-toggle]),
+#nd-sidebar-mobile > div:first-child > button {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--on-desk-2);
+  cursor: pointer;
+  transition:
+    background-color 150ms var(--e-std),
+    color 150ms var(--e-std);
+}
+.docs-ib svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.docs-menu svg {
+  width: 18px;
+  height: 18px;
+}
+:root:has(.docs-desk):not(.dark) .theme-sun,
+:root:has(.docs-desk).dark .theme-moon {
+  display: none;
+}
+
+/* The search field: a slot cut in the desk, the shortcut in mono. */
+.docs-search {
+  width: 216px;
+  height: 36px;
+  margin-inline-end: 10px;
+  padding: 0 6px 0 11px;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: color-mix(in srgb, var(--umbra) 26%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line-desk);
+  color: var(--on-desk-3);
+  font-size: 14px;
+  transition:
+    box-shadow 150ms var(--e-std),
+    color 150ms var(--e-std);
+}
+.docs-search kbd {
+  border: 0;
+  background: color-mix(in srgb, var(--on-desk) 9%, transparent);
+  color: var(--on-desk-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* The call to action: the landing bar's, smoked on the desk; paper is the
+   page's own primary button, not the bar's. */
+.docs-cta {
+  margin-inline-start: 6px;
+  background: color-mix(in srgb, var(--on-desk) 9%, transparent);
+  color: var(--on-desk);
+}
+@media (hover: hover) {
+  .docs-nav-links a:hover,
+  .docs-nav-a:hover,
+  .docs-ib:hover {
+    background: color-mix(in srgb, var(--on-desk) 7%, transparent);
+    color: var(--on-desk);
+  }
+  .docs-search:hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--on-desk) 26%, transparent);
+    color: var(--on-desk-2);
+  }
+  .docs-cta:hover {
+    background: color-mix(in srgb, var(--on-desk) 14%, transparent);
+  }
+}
+
+/* Widths: the landing bar's. The sections go into the page tree below
+   1024 px; below 768 the bar keeps the logo, search and the drawer. Where
+   the sections and the search field would crowd the bar (1024 to 1199 px,
+   and phones) the search is its icon. */
+.docs-narrow,
+.docs-search-sm {
+  display: none;
+}
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .docs-search {
+    display: none;
+  }
+  .docs-search-sm {
+    display: inline-grid;
+  }
+}
+@media (max-width: 1023px) {
+  .docs-nav-links,
+  .docs-nav-a {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  #nd-notebook-layout:has(.docs-bar) {
+    --fd-header-height: 56px;
+  }
+  .docs-bar-body {
+    padding: 0 8px 0 12px;
+  }
+  .docs-bar-r > .docs-wide,
+  .docs-search {
+    display: none;
+  }
+  .docs-narrow,
+  .docs-search-sm {
+    display: inline-grid;
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ---- The drawer on a phone: a strip of the desk slid over the page ----
+   The landing page's sections, GitHub and sign in in two columns, then the
+   page tree, then the language, the theme and the call to action. */
+#nd-sidebar-mobile {
+  width: min(86%, 360px);
+  border: 0;
+  color: var(--on-desk);
+  background:
+    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
+    radial-gradient(90% 50% at 70% 0%, var(--dd-ground-hi), transparent 80%),
+    var(--dd-ground);
+  background-blend-mode: overlay, normal, normal;
+  box-shadow:
+    -1px 0 0 var(--line-desk),
+    -30px 0 60px -24px color-mix(in srgb, var(--umbra) 80%, transparent);
+}
+#nd-sidebar .docs-drawer-logo {
+  display: none;
+}
+#nd-sidebar-mobile > div:first-child {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 8px 0 10px;
+}
+#nd-sidebar-mobile > div:first-child > button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+}
+#nd-sidebar-mobile [data-id$="-viewport"] {
+  padding: 4px 16px 24px;
+}
+#nd-sidebar-mobile [data-id$="-viewport"] > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8px;
+}
+#nd-sidebar-mobile [data-id$="-viewport"] > div > :not(.lg\:hidden) {
+  grid-column: 1 / -1;
+}
+#nd-sidebar-mobile a.lg\:hidden {
+  min-height: 40px;
+  padding-inline: 8px;
+  color: var(--on-desk-2);
+  font-size: 15px;
+}
+:is(#nd-sidebar, #nd-sidebar-mobile) a.lg\:hidden svg {
+  order: 1;
+  width: 13px;
+  height: 13px;
+  opacity: 0.7;
+}
+/* The rule between the site and the manual, over the first group's label,
+   wherever the site's links are in the page tree (below 1024 px). */
+@media (max-width: 1023px) {
+  :is(#nd-sidebar, #nd-sidebar-mobile) a.lg\:hidden.mb-4 {
+    margin-bottom: 0;
+  }
+  :is(#nd-sidebar, #nd-sidebar-mobile) a.lg\:hidden + p {
+    margin-top: 14px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line-desk);
+  }
+}
+#nd-sidebar-mobile a:not(.lg\:hidden) {
+  min-height: 42px;
+  font-size: 16px;
+}
+#nd-sidebar-mobile > div:last-child {
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line-desk);
+}
+#nd-sidebar-mobile > div:last-child > button {
+  width: 44px;
+  height: 44px;
+}
+#nd-sidebar-mobile > div:last-child > button svg {
+  width: 18px;
+  height: 18px;
+  color: inherit;
+}
+#nd-sidebar-mobile .btn.docs-cta {
+  margin-inline-start: auto;
+  height: 44px;
+  padding-inline: 16px;
+  background: var(--print-paper);
+  color: var(--print-ink);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--white) 80%, transparent),
+    0 1px 2px color-mix(in srgb, var(--umbra) 40%, transparent),
+    2px 10px 22px -10px color-mix(in srgb, var(--umbra) 70%, transparent);
+}
+/* The page under the drawer dims like the desk under the search card. */
+div:has(+ #nd-sidebar-mobile) {
+  background: color-mix(in srgb, var(--umbra) 46%, transparent);
+}
+
+/* ---- The table of contents strip under the bar, below 1280 px ---- */
+.docs-desk [data-toc-popover] > header {
+  border-color: var(--line-desk);
+  background: color-mix(in srgb, var(--dd-ground) 95%, transparent);
+  backdrop-filter: blur(18px) saturate(1.1);
+  color: var(--on-desk-2);
+}
+.docs-desk [data-toc-popover] > header[class*="shadow"] {
+  box-shadow: 0 24px 40px -24px color-mix(in srgb, var(--umbra) 90%, transparent);
+}
+.docs-desk [data-toc-popover-trigger] {
+  color: var(--on-desk-2);
+  font-size: 14px;
+}
+.docs-desk [data-toc-popover-trigger] [role="progressbar"] {
+  color: var(--on-desk);
+}
+.docs-desk [data-toc-popover-content] a {
+  color: var(--on-desk-2);
+  font-size: 15px;
+}
+.docs-desk [data-toc-popover-content] a[data-active="true"] {
+  color: var(--on-desk);
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-bar::before {
+    transition: none;
+  }
+}

@@ -49,26 +49,31 @@ html:has(.docs-desk) {
   background: var(--dd-ground);
 }
 
-/* Evening: the room light is down; the sheet is paper in lamp light, dim
-   and warm (sheet-ink 13 : 1, sheet-ink-2 6 : 1 on it). */
+/* Evening: the room light is down and the sheet is charcoal stock, a
+   neutral grey barely warmed by the lamp (OKLCH 27 % 0.005 at hue 70, so
+   it never reads as brown), lighter than the ink-teal desk around it.
+   Print on it: sheet-ink 11.2 : 1, sheet-ink-2 6.9 : 1, sheet-ink-3 (line
+   numbers, the head's rule) 4.8 : 1. The index cards are a lighter stock
+   of the same grey (sheet-ink 9.9 : 1 on it). */
 html.dark:has(.docs-desk) {
   --dd-ground: var(--desk-eve);
   --dd-ground-hi: color-mix(in srgb, var(--desk-hi) 72%, var(--desk-eve));
   --dd-ground-lo: var(--desk-eve-lo);
   --dd-lamp: color-mix(in srgb, var(--lamp) 13%, transparent);
-  --sheet-bg: color-mix(in oklab, var(--lamp) 7%, var(--stone));
-  --sheet-bg-2: color-mix(in oklab, var(--lamp) 5%, var(--paper-2));
-  --sheet-ink: color-mix(in oklab, var(--print-paper) 90%, var(--lamp));
-  --sheet-ink-2: color-mix(in oklab, var(--print-paper) 64%, var(--sheet-bg));
-  --sheet-ink-3: color-mix(in oklab, var(--print-paper) 40%, var(--sheet-bg));
-  --sheet-line: color-mix(in srgb, var(--print-paper) 13%, transparent);
-  --sheet-panel: color-mix(in oklab, var(--paper-2) 90%, var(--card-line));
+  --charcoal: color-mix(in oklab, var(--white) 23%, var(--black));
+  --sheet-bg: color-mix(in oklab, var(--lamp) 7%, var(--charcoal));
+  --sheet-bg-2: color-mix(in oklab, var(--sheet-bg) 86%, var(--desk-eve-lo));
+  --sheet-ink: color-mix(in oklab, var(--print-paper) 90%, var(--sheet-bg));
+  --sheet-ink-2: color-mix(in oklab, var(--print-paper) 69%, var(--sheet-bg));
+  --sheet-ink-3: color-mix(in oklab, var(--print-paper) 55%, var(--sheet-bg));
+  --sheet-line: color-mix(in srgb, var(--print-paper) 12%, transparent);
+  --sheet-panel: color-mix(in oklab, var(--sheet-bg) 70%, var(--desk-eve-lo));
   --sheet-teal: var(--print-teal-lamp);
   --sheet-deep: var(--steel);
-  --sheet-lit: color-mix(in srgb, var(--lamp) 9%, transparent);
-  --stock: color-mix(in oklab, var(--lamp) 12%, var(--stone));
+  --sheet-lit: color-mix(in srgb, var(--print-paper) 3%, transparent);
+  --stock: color-mix(in oklab, var(--lamp) 7%, color-mix(in oklab, var(--white) 27%, var(--black)));
   --stock-ink: var(--sheet-ink);
-  --stock-line: color-mix(in srgb, var(--card-line) 16%, transparent);
+  --stock-line: color-mix(in srgb, var(--card-line) 22%, transparent);
 }
 
 /* The desk under everything: grain, the lit middle, the lamp's warmth and
@@ -94,81 +99,6 @@ html.dark:has(.docs-desk) {
     radial-gradient(72% 64% at 50% 18%, var(--dd-ground-hi), transparent 74%),
     var(--dd-ground);
   background-blend-mode: normal, overlay, normal, normal, normal;
-}
-
-/* ---- The nav: bare on the desk at the top, smoked glass once scrolled ---- */
-.docs-desk #nd-subnav {
-  font-size: 15px;
-}
-.docs-desk #nd-subnav > [data-header-body] {
-  height: 64px;
-  border-color: transparent;
-  transition: border-color 200ms var(--e-std);
-}
-.docs-desk #nd-subnav[data-transparent="false"] {
-  background: color-mix(in srgb, var(--dd-ground) 82%, transparent);
-  backdrop-filter: blur(14px) saturate(1.1);
-}
-.docs-desk #nd-subnav[data-transparent="false"] > [data-header-body] {
-  border-color: var(--line-desk);
-}
-.docs-desk #nd-subnav a:not(.docs-cta) {
-  color: var(--on-desk-2);
-  transition: color 150ms var(--e-std);
-}
-.docs-desk #nd-subnav a[data-active="true"],
-.docs-desk #nd-subnav a:first-child {
-  color: var(--on-desk);
-}
-.docs-desk .logo {
-  color: var(--on-desk);
-}
-.docs-desk .logo-dark .logo-eyes,
-.docs-desk .eyes-alive .eye,
-.docs-desk .eyes-alive .glint {
-  color: var(--on-desk);
-  fill: var(--on-desk);
-}
-.docs-desk .eyes-alive .iris {
-  fill: var(--dd-ground);
-}
-
-/* The primary call to action: paper on the desk, ink type, as on the
-   landing page. */
-.docs-cta {
-  display: inline-flex;
-  align-items: center;
-  height: 38px;
-  padding: 0 16px;
-  border-radius: var(--r-ctl);
-  background: var(--print-paper);
-  color: var(--print-ink);
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-  box-shadow:
-    0 1px 0 color-mix(in srgb, var(--white) 60%, transparent) inset,
-    0 2px 6px -2px color-mix(in srgb, var(--umbra) 70%, transparent);
-  transition: transform 220ms var(--e-settle);
-}
-
-.docs-desk #nd-subnav a {
-  white-space: nowrap;
-}
-/* The search field in the bar: a slot of the desk, not a white box. */
-.docs-desk #nd-subnav button[data-search-full],
-.docs-desk #nd-subnav button:has(kbd) {
-  max-width: 220px;
-  margin-inline: 24px auto;
-  background: color-mix(in srgb, var(--umbra) 24%, transparent);
-  border-color: var(--line-desk);
-  color: var(--on-desk-2);
-}
-.docs-desk kbd {
-  background: color-mix(in srgb, var(--on-desk) 8%, transparent);
-  border-color: var(--line-desk);
-  color: var(--on-desk-2);
-  font-family: var(--font-mono);
 }
 
 /* ---- The page tree on the desk; the open page is a paper slip ---- */

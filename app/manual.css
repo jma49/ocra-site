@@ -4,6 +4,7 @@
 @import "@fumadocs/base-ui/css/preset.css";
 @import "./tokens.css";
 @import "./docs.css";
+@import "./docs-nav.css";
 @import "./docs-print.css";
 @import "./docs-ruler.css";
 @import "./global.css";
