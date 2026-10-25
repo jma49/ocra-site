@@ -16,8 +16,8 @@
   background: color-mix(in srgb, var(--night-2) 94%, transparent);
   color: var(--on-night-2);
   border-color: var(--line-night);
+  /* The build adds the -webkit- copy; written by hand it drops this one. */
   backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
   --color-fd-foreground: var(--on-night);
   --color-fd-muted-foreground: var(--on-night-2);
   --color-fd-border: var(--line-night);
