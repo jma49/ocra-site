@@ -14,6 +14,8 @@ interface HowCopy {
   legend: Record<StageKind, string>;
   steps: Record<
     StepId,
+    // zh titles mark where a line may break (U+200B; 30-how.css keeps the
+    // phrases whole), so a narrow column never splits a word.
     { title: string; stages: { name: string; kind: StageKind }[]; text: string }
   >;
   figures: {
@@ -29,6 +31,9 @@ interface HowCopy {
     // fill(bundleFiles[n === 1 ? "one" : "other"], { n })
     bundleFiles: { one: string; other: string };
     task: string;
+    // The matrix table's caption and its row-header column (screen readers).
+    matrix: string;
+    reviewer: string;
     skipDocs: string;
     readOnly: string;
     quotes: string;
@@ -80,7 +85,7 @@ export const how: Bilingual<HowCopy> = {
           { name: "review", kind: "model" },
           { name: "anchor", kind: "code" },
         ],
-        text: "An isolated agent reads the exact revision with read-only tools and stops after 20 steps. It quotes the code; ocra finds the quote in the diff and pins the comment there. The model never picks the line.",
+        text: "An isolated agent reads the exact revision with read-only tools and stops after 30 steps. It quotes the code; ocra finds the quote in the diff and pins the comment there. The model never picks the line.",
       },
       verify: {
         title: "Only what holds up on a second read",
@@ -109,8 +114,10 @@ export const how: Bilingual<HowCopy> = {
       tasks: (run) => `${run.tasks.length} tasks`,
       bundleFiles: { one: "{n} file", other: "{n} files" },
       task: "task",
+      matrix: "Review tasks per bundle and reviewer",
+      reviewer: "Reviewer",
       skipDocs: "skip: docs",
-      readOnly: "read-only, 20 steps",
+      readOnly: "read-only · capped at 30 steps",
       quotes: "The agent quotes",
       found: "ocra finds it in the diff",
       planNote:
@@ -140,7 +147,7 @@ export const how: Bilingual<HowCopy> = {
     legend: { code: "确定性", model: "需判断" },
     steps: {
       select: {
-        title: "只读值得读的文件",
+        title: "只读\u200b值得读的文件",
         stages: [
           { name: "select", kind: "code" },
           { name: "triage", kind: "code" },
@@ -148,7 +155,7 @@ export const how: Bilingual<HowCopy> = {
         text: "二进制、锁文件、生成的代码和疑似密钥会被搁置，每个都记录原因。涉及 auth/、CI workflow 这类敏感路径的改动直接定为 full 档。",
       },
       bundle: {
-        title: "每组、每个审查员一个任务",
+        title: "每组、\u200b每个审查员\u200b一个任务",
         stages: [
           { name: "bundle", kind: "model" },
           { name: "matrix", kind: "code" },
@@ -156,15 +163,15 @@ export const how: Bilingual<HowCopy> = {
         text: "由轻量模型把该一起看的文件分成组。correctness 总会运行；security 和 performance 跳过文档和测试。`--plan` 能在调用模型之前列出全部任务。",
       },
       review: {
-        title: "每条意见都引用它说的代码",
+        title: "每条意见\u200b都引用它说的代码",
         stages: [
           { name: "review", kind: "model" },
           { name: "anchor", kind: "code" },
         ],
-        text: "每个隔离的 agent 用只读工具读取被审查的那个版本，最多执行 20 步。它引用代码，ocra 在 diff 里找到这段引用，把评论钉在那里。行号从来不由模型决定。",
+        text: "每个隔离的 agent 用只读工具读取被审查的那个版本，最多执行 30 步。它引用代码，ocra 在 diff 里找到这段引用，把评论钉在那里。行号从来不由模型决定。",
       },
       verify: {
-        title: "只留下经得起重读的意见",
+        title: "只留下\u200b经得起重读的意见",
         stages: [
           { name: "filter", kind: "code" },
           { name: "verify", kind: "model" },
@@ -190,8 +197,10 @@ export const how: Bilingual<HowCopy> = {
       tasks: (run) => `${run.tasks.length} 个任务`,
       bundleFiles: { one: "{n} 个文件", other: "{n} 个文件" },
       task: "任务",
+      matrix: "每个 bundle 与审查员的审查任务",
+      reviewer: "审查员",
       skipDocs: "跳过：文档",
-      readOnly: "只读，20 步",
+      readOnly: "只读 · 最多 30 步",
       quotes: "agent 的引用",
       found: "ocra 在 diff 中找到它",
       planNote: "在付费调用任何模型之前列出任务。它跳过分组，所以每个文件一个 bundle。",
