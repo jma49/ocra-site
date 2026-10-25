@@ -1,271 +1,185 @@
-/* Final: the second night band, its top corners rounded, the footer
-   continuing it below. The eye row at its largest beside a three-line H2,
-   the CTAs and the install sheet with its Copy button (package C). */
+/* Final (P1): the evening desk. The room light falls as the band enters (a
+   scroll timeline), the lamp clicks on over the last sheet, the fix and the
+   install command are typed, the pen ticks line 42 (final-play.tsx). Every
+   state below is the finished one; pre-play states only under html.mo. */
+
 .home .final {
-  padding-block: var(--pad-band) 80px;
-}
-/* The band lies on the FAQ's ground, which carries on round it to the page's
-   end: the section is full-bleed in paper-2 and draws the night slab inside
-   itself (isolated, so the slab sits under the content), so no other grey
-   shows at the slab's corners or beside it. The footer does the same. */
-.home .final.band {
-  position: relative;
-  isolation: isolate;
-  margin-inline: 0;
-  padding-inline: 12px;
-  border-radius: 0;
-  background: var(--paper-2);
-}
-.home .final.band::before {
-  content: "";
-  position: absolute;
-  inset: 0 12px;
-  z-index: -1;
-  border-radius: var(--r-band) var(--r-band) 0 0;
-  background: var(--night);
-}
-.home .final-grid {
-  --eyes: clamp(440px, 50vw - 160px, 560px);
-  display: grid;
-  grid-template-columns: minmax(0, var(--eyes)) minmax(0, 1fr);
-  column-gap: var(--gap);
-  align-items: center;
+  overflow: clip;
+  padding-block: clamp(112px, 15vh, 168px) clamp(72px, 9vh, 112px);
 }
 
-/* The H2 fills its column: "you already know." is 5.31 em wide (measured),
-   so the size is capped at the column's width over 5.38 em (a container
-   query) and the line never clips between the breakpoints. The zh line
-   is seven full-width glyphs, 7 em. */
-.home .final-text {
-  container-type: inline-size;
-  min-width: 0;
+/* The join with the desk above: its tone carried over the first screen. */
+.home .final-dusk {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--desk) 0,
+    color-mix(in srgb, var(--desk) 0%, transparent) 280px
+  );
 }
-.home .final .t-final {
-  font-size: min(clamp(3rem, 1.18rem + 7.5vw, 7.375rem), 18.6cqi);
+.home .final-dusk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 66% 70%,
+    transparent 30%,
+    color-mix(in srgb, var(--desk-eve-lo) 80%, transparent)
+  );
+  opacity: 0.8;
 }
-.home .final .t-final:lang(zh) {
-  font-size: min(clamp(3rem, 2.07rem + 3.81vw, 5.5rem), 14.2cqi);
+/* The lamp's pool over the sheet. */
+.home .final-lamp {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    34% 46% at 70% 64%,
+    color-mix(in srgb, var(--lamp) 34%, transparent),
+    color-mix(in srgb, var(--lamp) 8%, transparent) 55%,
+    transparent 78%
+  );
+  mix-blend-mode: soft-light;
+  transform: translate3d(calc(var(--lx, 0) * 2%), calc(var(--ly, 0) * 2%), 0);
+}
+
+.home .final-in {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 56px;
+  min-height: 640px;
+}
+.home .final-copy {
+  grid-column: 1 / span 6;
+  position: relative;
+  z-index: 1;
+}
+.home .final-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(52px, 6.4vw, 92px);
+  font-weight: 500;
+  font-stretch: 72%;
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  color: var(--on-desk);
+}
+.home:lang(zh) .final-h {
+  font-size: clamp(44px, 5.2vw, 76px);
+  line-height: 1.14;
+  letter-spacing: 0;
+}
+.home .final-hl {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.04em;
+}
+.home .final-hli {
+  display: inline-block;
 }
 .home .final-cta {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-}
-/* Where the sheet is the wider of the two (zh), the buttons share the
-   difference, so the row and the sheet end on one edge. */
-.home .final-cta .btn {
-  flex: 1 0 auto;
+  align-items: center;
+  gap: 16px 32px;
+  margin-top: 44px;
 }
 
-/* ---- The eyes ---- */
-.home .final-eyes {
-  display: block;
-  width: 100%;
-  height: auto;
+/* ---- The last sheet: the fix, the command ---- */
+.home .final-desk {
+  grid-column: 7 / span 6;
+  position: relative;
+  height: 540px;
+  margin-top: 230px;
 }
-/* The glint is a reflection: it travels about two thirds as far as the
-   iris, so each eye reads as round. */
-.home .final-eyes .glint {
-  transform: translate(calc(var(--px, 0) * -0.35px), calc(var(--py, 0) * -0.35px));
+.home .final-sheet {
+  transform: rotate(var(--r)) perspective(1400px) rotateX(calc(var(--ty, 0) * -3deg * var(--hover)))
+    rotateY(calc(var(--tx, 0) * 3deg * var(--hover))) scale(calc(1 + var(--hover) * 0.006));
 }
-/* The pupils widen when a hand (or the keyboard) reaches for one of the
-   band's actions. Hover only where it is real: on a touch screen it would
-   stick after the tap. */
-.home .final-eyes .iris {
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: scale 420ms var(--e-enter);
-}
-.home .final:has(.final-cta a:focus-visible, .prompt-copy:focus-visible) .final-eyes .iris {
-  scale: 1.16;
-}
-@media (hover: hover) {
-  .home .final:has(.final-cta a:hover, .prompt-copy:hover) .final-eyes .iris {
-    scale: 1.16;
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  /* They open as they scroll into view (the reader's scroll drives it, both
-     ways), where scroll timelines exist; anywhere else they are open. No
-     fill: the range starts while the eyes are still wholly below the fold,
-     so outside it they are open, never shut (a full-page capture taken from
-     the top shows them open). */
-  @supports (animation-timeline: view()) {
-    html.mo .home .final-eyes {
-      transform-origin: 50% 56%;
-      animation: final-wake linear;
-      animation-timeline: view();
-      animation-range: entry 0% entry 100%;
-    }
-  }
-  /* Copying the command earns one blink (copy-command.tsx). */
-  .home .final[data-blink] .final-eyes .lids {
-    animation: final-blink 460ms var(--e-std) both;
-    animation-play-state: running;
-  }
-}
-/* A touch screen has no pointer to follow, so while the band is in view the
-   eyes look round on their own now and then: down at the heading and the
-   command, aside, back at the reader. The small eyes travel less, as they
-   do under the pointer; the reach never exceeds the pointer's. */
-@media (hover: none) and (prefers-reduced-motion: no-preference) {
-  .home .awake .final-eyes .pupil {
-    animation: final-glance 9s var(--e-std) infinite;
-  }
-  .home .awake .final-eyes .lids > :is(:first-child, :last-child) .pupil {
-    animation-name: final-glance-small;
-  }
-}
-@keyframes final-glance {
-  0%,
-  30%,
-  86%,
-  100% {
-    --px: 0;
-    --py: 0;
-  }
-  38%,
-  52% {
-    --px: 0.55;
-    --py: 1.2;
-  }
-  62%,
-  76% {
-    --px: 1.5;
-    --py: -0.2;
-  }
-}
-@keyframes final-glance-small {
-  0%,
-  30%,
-  86%,
-  100% {
-    --px: 0;
-    --py: 0;
-  }
-  38%,
-  52% {
-    --px: 0.22;
-    --py: 0.48;
-  }
-  62%,
-  76% {
-    --px: 0.6;
-    --py: -0.08;
-  }
-}
-@keyframes final-wake {
-  from {
-    transform: scaleY(0.06);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes final-blink {
-  0%,
-  100% {
-    transform: none;
-  }
-  45% {
-    transform: scaleY(0.08);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .home .final-eyes .iris {
-    transition: none;
-  }
-}
-
-/* ---- The install sheet ----
-   A night sheet under the CTAs, as wide as their row (.final-act is sized
-   by its widest child): a bar with what the command is, what it needs and
-   the Copy button, then the command itself. The command never scrolls or
-   clips: below about 350 px it breaks once, before the package name. */
-.home .final-act {
-  display: grid;
-  width: max-content;
-  max-width: 100%;
-  margin-top: 32px;
-}
-.home .final .prompt {
-  display: block;
-  height: auto;
-  margin-top: 20px;
+.home .final-code {
+  position: absolute;
+  left: 44px;
+  top: 78px;
+  margin: 0;
   padding: 0;
-  border-radius: var(--r-sheet);
-  box-shadow:
-    inset 0 0 0 1px var(--line-night),
-    var(--float);
+  list-style: none;
+  font: 400 16px / 26px var(--font-mono);
+  font-variant-ligatures: none;
+  color: var(--print-ink);
+  white-space: pre;
 }
-.home .prompt-bar {
+.home .final-code li {
+  display: flex;
+  height: 26px;
+}
+.home .final-code code {
+  font: inherit;
+}
+.home .final-ln {
+  flex: none;
+  width: 5ch;
+  padding-right: 2.4ch;
+  text-align: right;
+  color: var(--print-ink-3);
+}
+.home .final-fix {
+  font-weight: 600;
+}
+.home .final-install {
+  position: absolute;
+  left: 44px;
+  right: 40px;
+  top: 186px;
+}
+.home .final-install-label {
+  margin: 0;
+  font: 500 16px / 1.2 var(--font-sans);
+  color: var(--print-ink-2);
+}
+.home .final-cmd {
+  margin: 14px 0 0;
+  font: 400 19px / 30px var(--font-mono);
+  color: var(--print-ink);
+}
+.home .final-cmd code {
+  font: inherit;
+}
+.home .final-word {
+  white-space: nowrap;
+}
+.home .final-prompt {
+  margin-right: 0.6ch;
+  color: var(--print-ink-3);
+}
+.home .final-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 0 4px 0 16px;
-  border-bottom: 1px solid var(--line-night);
-  border-radius: var(--r-sheet) var(--r-sheet) 0 0;
-  background: color-mix(in srgb, var(--on-night) 3%, transparent);
-  font-family: var(--font-sans);
-  font-size: 13px;
-  line-height: 1;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 18px 0 0;
+  font: 400 16px / 1 var(--font-mono);
+  color: var(--print-ink-2);
 }
-.home .prompt-label {
-  font-weight: 500;
-  color: var(--on-night-2);
-  white-space: nowrap;
-}
-.home .prompt-meta {
-  white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--on-night-3);
-}
-.home .prompt-meta::before {
-  content: "·";
-  margin-inline-end: 10px;
-  font-family: var(--font-sans);
-}
-.home .final .prompt-line {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: 0;
-  padding: 13px 24px 14px 16px;
-  line-height: 1.5;
-}
-.home .prompt-line code {
-  font-size: inherit;
-}
-.home .prompt-word {
-  white-space: nowrap;
-}
-.home .prompt-copy {
+.home .final-copy-btn {
   position: relative;
-  display: grid;
-  flex: none;
-  height: 36px;
-  margin-left: auto;
-  padding: 0 14px;
+  display: inline-grid;
+  min-width: 96px;
+  min-height: 44px;
+  padding: 0 16px;
   border: 0;
-  border-radius: calc(var(--r-sheet) - 4px);
-  background: color-mix(in srgb, var(--on-night) 9%, transparent);
-  color: var(--on-night);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 1;
+  border-radius: 4px;
+  background: var(--print-ink);
+  color: var(--print-paper);
+  font: 500 15px / 1 var(--font-sans);
   cursor: pointer;
-  transition: background-color 150ms var(--e-std);
 }
-/* The button's hit area is the bar's full 44 px height. */
-.home .prompt-copy::before {
-  content: "";
-  position: absolute;
-  inset: calc((36px - 44px) / 2) -4px;
-}
-.home .prompt-copy-label {
+.home .final-copy-label {
   grid-area: 1 / 1;
   display: inline-flex;
   align-items: center;
@@ -273,118 +187,156 @@
   gap: 6px;
   visibility: hidden;
 }
-.home .prompt-copy-label[data-shown] {
+.home .final-copy-label[data-shown] {
   visibility: visible;
 }
-.home .prompt-copy svg {
+.home .final-copy-label svg {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke-width: 2;
 }
-.home .prompt-copy:active {
-  transform: scale(0.98);
+.home .final-foot {
+  position: absolute;
+  left: 44px;
+  right: 40px;
+  bottom: 26px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  font: 400 16px / 1 var(--font-mono);
+  color: var(--print-ink-3);
 }
-@media (hover: hover) {
-  .home .prompt-copy:hover {
-    background: color-mix(in srgb, var(--on-night) 15%, transparent);
+.home .final-shade {
+  position: absolute;
+  inset: 0;
+  background: var(--desk-eve-lo);
+  opacity: 0;
+  pointer-events: none;
+}
+/* The pen writes on the sheet: it keeps the sheet's scroll, no parallax. */
+html.mo .home .final-pen {
+  animation: none;
+}
+.home .final-ink {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+/* Copying earns the pen's eye row one glint (copy-command.tsx). */
+.home .final[data-blink] .final-pen .p-eyes,
+.home .final.lit .final-pen .p-eyes {
+  animation: final-glint 1.1s var(--e-std) 0.5s;
+}
+.home .final[data-blink] .final-pen .p-eyes {
+  animation-delay: 0s;
+}
+@keyframes final-glint {
+  30% {
+    fill: var(--lamp);
   }
 }
 
-/* 1024: the eyes beside the text, a little smaller (about 400 px, the
-   heading then about 95 px). */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    html.mo .home .final-dusk::after {
+      animation: final-dusk linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 50%;
+    }
+  }
+  html.mo .home .final:not(.lamp) .final-lamp {
+    opacity: 0;
+  }
+  html.mo .home .final.lamp .final-lamp {
+    animation: final-lamp 900ms linear;
+  }
+  html.mo .home .final:not(.lit) .final-shade {
+    opacity: 0.5;
+  }
+  html.mo .home .final.lamp .final-shade {
+    transition: opacity 900ms var(--e-std);
+  }
+  html.mo .home .final:not(.played) .final-ink .ink-run {
+    stroke-dashoffset: 1;
+  }
+  html.mo .home .final:not(.played) :is(.final-fix, .final-word):not(.typing, .typed) {
+    visibility: hidden;
+  }
+  html.mo .home .final-hli {
+    translate: 0 105%;
+    transition: translate 1s var(--e-settle);
+  }
+  html.mo .home .final-hl:nth-child(2) .final-hli {
+    transition-delay: 0.1s;
+  }
+  html.mo .home .final-hl:nth-child(3) .final-hli {
+    transition-delay: 0.2s;
+  }
+  html.mo .home .final-cta {
+    opacity: 0;
+    translate: 0 14px;
+    transition:
+      opacity 700ms var(--e-std) 0.45s,
+      translate 900ms var(--e-settle) 0.45s;
+  }
+  html.mo .home .final.head-in :is(.final-hli, .final-cta) {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes final-dusk {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
+}
+/* The lamp clicks on: a stepped flicker, then it warms to full. */
+@keyframes final-lamp {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.6;
+  }
+  14% {
+    opacity: 0.08;
+  }
+  24% {
+    opacity: 0.78;
+  }
+  30% {
+    opacity: 0.3;
+  }
+  44% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @media (max-width: 1199px) {
-  .home .final-grid {
-    --eyes: 42%;
+  .home .final-in {
+    display: block;
+    min-height: 0;
+  }
+  .home .final-desk {
+    height: 520px;
+    margin-top: 72px;
+    margin-left: max(0px, calc(100% - 660px));
   }
 }
-/* 768: still the eyes beside the text (one column would leave the band's
-   right half empty), smaller; the command at 12.5 px. */
-@media (max-width: 1023px) {
-  .home .final {
-    padding-block: var(--pad-band) 64px;
+@media (max-width: 699px) {
+  .home .final-desk {
+    height: 400px;
+    margin-top: 56px;
+    margin-left: 0;
   }
-  .home .final-act {
-    margin-top: 24px;
-  }
-  .home .prompt-bar {
-    min-height: 40px;
-  }
-  .home .prompt-copy {
-    height: 32px;
-    padding-inline: 12px;
-    font-size: 13.5px;
-  }
-  .home .prompt-copy::before {
-    inset: calc((32px - 44px) / 2) -4px;
-  }
-  .home .final .prompt-line {
-    padding-block: 12px 13px;
-  }
-  .home .final-grid {
-    --eyes: 38%;
-  }
-  .home .final .prompt {
-    font-size: 12.5px;
-  }
-}
-/* 390: the eyes at 280 px, the CTAs and the install sheet full width; the
-   whole command on one line down to about 350 px, then on two. */
-@media (max-width: 599px) {
-  .home .final {
-    padding-block: 72px 48px;
-  }
-  .home .final.band {
-    padding-inline: 8px;
-  }
-  .home .final.band::before {
-    inset: 0 8px;
-    border-radius: 20px 20px 0 0;
-  }
-  /* The widest line ("you already know.") as wide as the 280 px eyes above
-     it, so heading and eyes share one right edge. */
-  .home .final .t-final {
-    font-size: min(3.25rem, 18.6cqi);
-  }
-  .home .final-grid {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 28px;
-  }
-  .home .final-eyes {
-    width: 280px;
-  }
-  .home .final-act {
-    width: 100%;
-    margin-top: 24px;
-  }
-  .home .final-cta {
-    flex-direction: column;
-  }
-  .home .final-cta .btn {
-    width: 100%;
-  }
-  .home .final .prompt {
-    --r-sheet: 12px;
-    margin-top: 16px;
-  }
-  /* On a phone the button itself is the bar's full 44 px; transparent
-     borders keep its fill at 32 px, with round corners inside them. */
-  .home .prompt-copy {
-    height: 44px;
-    margin-block: -3px;
-    border-block: 6px solid transparent;
-    border-radius: calc(var(--r-sheet) - 4px) / calc(var(--r-sheet) + 2px);
-    background-clip: padding-box;
-  }
-  .home .prompt-copy::before {
-    content: none;
-  }
-}
-/* Below 375 px the bar keeps the label and the button; the requirement
-   is on the manual's installation page. */
-@media (max-width: 374px) {
-  .home .prompt-meta {
-    display: none;
+  .home .final-sheet {
+    scale: 0.72;
+    transform-origin: 0 0;
   }
 }

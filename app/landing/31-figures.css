@@ -1,513 +1,184 @@
-/* The story figures, part one (sections.md §4, motion.md §6; package S):
-   the frame every figure shares, how the pinned figures swap, and figures
-   1 (select · triage) and 2 (bundle · matrix). Each figure is one sheet,
-   on a desk when the story flows and on the band when it is pinned (600
-   to 660 px tall, --sheet-h in 30-how.css): the example's pull request bar
-   with the Example run chip, then a body in three parts, its head, its
-   content and a foot (the tier, the plan line, the anchor methods, the
-   verdict). Pinned, the four bodies share one rhythm: the head in one
-   place, rows at one pitch (--fig-row), the foot right under the content,
-   and whatever height is left as the sheet's bottom margin. A figure's text
-   is whole from its first frame; its marks draw by the pen's "on" mode
-   (04-pen.css), all within 800 ms of `.on`. Figures 3 and 4:
-   32-figure-review.css. */
+/* How it works: the desk's world (components/landing/how/scene.ts). One
+   camera transform on the world; every object in a holder posed by the
+   individual transform properties, so a primitive's own transform (hover
+   tilt) composes. The scroll parallax is off inside the pinned world: the
+   camera is its motion. */
 
-.home .fig .sheet {
+.home .how-world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  /* Before the island fits it: the last chapter beside the copy. */
+  transform: translate(calc(100vw - 940px), calc(var(--vh, 100vh) / 2 - 1010px));
+  will-change: transform;
+}
+html.mo .home .how-world [data-depth] {
+  animation: none;
+}
+.home .how-origin,
+.home .how-unit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+.home .how-unit {
+  left: 1000px;
+}
+.home .how-obj {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 50% 40%;
+}
+.home .how-o-sheet {
+  width: 690px;
+  height: 940px;
+}
+.home .how-o-session {
+  height: 1500px;
+}
+.home .how-o-card {
+  width: 520px;
+  height: 178px;
+}
+.home .how-o-task {
+  width: 480px;
+  height: 178px;
+}
+.home .how-o-clip {
+  width: 0;
+  height: 0;
+}
+.home .how-o-note {
+  width: 240px;
+}
+.home .how .how-pen {
+  z-index: 90;
+}
+
+/* Typed things wait unseen in their final box; settled bill lines too. */
+.home .how .untyped {
+  visibility: hidden;
+}
+.home .how-world .off {
+  opacity: 0;
+}
+.home .how-bill,
+.home .how-total {
+  transition: opacity 360ms var(--e-std);
+}
+
+/* ---- The ruler reads, then is lifted away ---- */
+.home .how-ruler {
+  --nudge: 10px;
+  opacity: 0;
+  translate: -40px 0;
+  transition:
+    transform 120ms var(--e-glide),
+    opacity 360ms var(--e-std),
+    translate 520ms var(--e-settle);
+}
+.home .how-ruler.reading {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---- Ink on the lock file's head, on line 42, under the bill ---- */
+.home .how-ink-lock {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* ---- The note a set-aside file leaves on the desk ---- */
+.home .how-note {
   display: flex;
   flex-direction: column;
-}
-/* The example's bar, a step up from the shared 12.5 px so it reads beside
-   the 14 px body, on the body's columns: the pull request where the head
-   starts, the Example run chip ending where the counts end, centred in the
-   bar's height. */
-.home .fig .sheet-bar {
-  min-height: 50px;
-  padding-inline: var(--fig-pad);
-  font-size: 13.5px;
-}
-.home .fig .chip-example {
-  height: 28px;
-  font-size: 13px;
-}
-.home .fig {
-  --fig-pad: 28px;
-}
-.home .fig-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  min-height: 0;
-  padding: 26px var(--fig-pad) 28px;
-  font-size: 15px;
-  line-height: 1.45;
-  color: var(--ink-2);
-}
-.home .fig-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px 20px;
-  min-height: 22px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--line);
-  font-size: 14px;
-  line-height: 1.35;
-  color: var(--ink-3);
-}
-.home .fig-stages {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 4px 18px;
-  font-family: var(--font-mono);
-  font-size: 13.5px;
-  color: var(--ink);
-}
-.home .fig-stages > span {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-}
-.home .fig-meta {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 2px 14px;
-  font-variant-numeric: tabular-nums;
-}
-.home .fig-cap {
-  color: var(--ink-2);
-}
-.home .fig-gut {
-  display: inline-grid;
-  place-items: center;
-  width: 16px;
-  min-height: 14px;
-}
-
-/* ---- Pinned: one sheet, the bodies crossfade ----
-   The four figures lie on one place; their bars and chips are the same,
-   so the sheet, its bar and its Example run chip stay put while only the
-   body changes, a 220 ms crossfade. */
-@media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
-  /* The band is the desk: edge to edge, no inset (its colours and the run
-     it paints: 30-how.css). The sheet lies on it with no bezel of its own. */
-  html.mo .home :is(.how-run, .how-stage)::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    width: 100vw;
-    translate: -50% 0;
-    pointer-events: none;
-  }
-  html.mo .home .how-run::before {
-    z-index: -2;
-    inset-block: 0;
-    background: var(--how-band);
-    box-shadow:
-      inset 0 1px 0 color-mix(in srgb, var(--white) 30%, transparent),
-      inset 0 -1px 0 color-mix(in srgb, var(--black) 8%, transparent);
-  }
-  /* The light falls on the stage from the top left and the foot of the
-     view lies in the desk's shade, as on every desk; both hold still with
-     the stage, so the pinned desk is lit the same at every step. */
-  html.mo .home .how-stage::before {
-    z-index: -1;
-    top: calc(-1 * var(--pin-top));
-    height: var(--vh, 100vh);
-    background:
-      radial-gradient(85% 95% at 4% 0%, var(--how-light), transparent 70%),
-      radial-gradient(70% 80% at 100% 100%, var(--how-shade), transparent 75%);
-  }
-
-  html.mo .home .fig .desk {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 0;
-    border-radius: var(--r-sheet);
-    background: none;
-    box-shadow: none;
-  }
-  html.mo .home .fig .sheet {
-    flex: 1;
-  }
-  /* Transitions run only while the island swaps (data-swap): a viewport
-     change that flips this block (a full-page capture) must not leave
-     every body half faded over the next. */
-  html.mo .home .fig {
-    grid-row: 1 / 5;
-    position: relative;
-    z-index: 2;
-    height: var(--sheet-h);
-    visibility: hidden;
-  }
-  html.mo .home .how-run[data-swap] .fig {
-    transition: visibility 0s linear 240ms;
-  }
-  html.mo .home .fig.is-on {
-    z-index: 1;
-    visibility: visible;
-  }
-  html.mo .home .how-run[data-swap] .fig.is-on {
-    transition: none;
-  }
-  /* The leaving figure lies over the entering one with no ground of its
-     own: only its body fades out. */
-  html.mo .home .fig:not(.is-on) .sheet {
-    background: none;
-    box-shadow: none;
-  }
-  html.mo .home .fig:not(.is-on) .sheet-bar {
-    visibility: hidden;
-  }
-  html.mo .home .fig-body {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  /* Both run 220 ms at once; the leaving body drops fast and the entering
-     one rises evenly, so halfway through the leaving one is nearly gone. */
-  html.mo .home .how-run[data-swap] .fig-body {
-    transition:
-      opacity 220ms var(--e-enter),
-      transform 220ms var(--e-enter);
-  }
-  html.mo .home .fig.is-out .fig-body {
-    transform: translateY(-6px);
-  }
-  html.mo .home .fig.is-on .fig-body {
-    opacity: 1;
-    transform: none;
-  }
-  html.mo .home .how-run[data-swap] .fig.is-on .fig-body {
-    transition-timing-function: var(--e-std), var(--e-enter);
-  }
-  /* One rhythm for the four bodies: one row pitch for the files and the
-     matrix, the bundles over it a step shorter (figure 4's claim rows hold
-     two lines at twice its task row's 36 px). Everything grows with the
-     sheet, from its 600 px floor (--fig-s 0: 56 px rows, so figure 4, the
-     tallest body, fits) to its 660 px cap (--fig-s 60 px: 64 px rows). */
-  html.mo .home .how-run {
-    --fig-s: clamp(0px, calc(var(--sheet-h) - 600px), 60px);
-    --fig-row: calc(56px + var(--fig-s) * 2 / 15);
-  }
-  html.mo .home .fig .sheet-bar {
-    min-height: calc(46px + var(--fig-s) / 15);
-  }
-  html.mo .home .fig-body {
-    gap: calc(16px + var(--fig-s) * 2 / 15);
-    padding-block: calc(20px + var(--fig-s) / 10) calc(22px + var(--fig-s) / 10);
-  }
-  html.mo .home .fig-files {
-    grid-auto-rows: var(--fig-row);
-  }
-  html.mo .home .fig-matrix :is(tbody th, td) {
-    height: var(--fig-row);
-  }
-  html.mo .home .fig-bundles li {
-    align-items: center;
-    height: calc(var(--fig-row) - 8px);
-    padding-block: 0;
-  }
-  html.mo .home .fig-verdict {
-    gap: 6px;
-  }
-  html.mo .home .verdict-row {
-    height: calc(50px + var(--fig-s) / 6);
-  }
-}
-
-/* ---- 1 · select · triage ---- */
-.home .fig-files {
-  --fs: 15;
-  display: grid;
-  grid-auto-rows: minmax(56px, 1fr);
-  font-size: 15px;
-}
-.home .fig-files li {
-  display: grid;
-  grid-template-columns: 16px auto minmax(0, 1fr);
-  align-items: center;
-  column-gap: 14px;
-  border-bottom: 1px solid var(--line);
-}
-.home .fig-files li:last-child {
-  border-bottom: 0;
-}
-.home .fig-path {
-  color: var(--ink);
-}
-.home .fig-files li[data-out] .fig-path {
-  color: var(--ink-3);
-}
-.home .fig-why {
-  font-size: 14px;
-  text-align: right;
-  color: var(--ink-3);
-}
-/* The feet of figures 1-3 are one object: a mono line the pen marks over
-   a line of plain text, on the sheet's second ground. */
-.home :is(.fig-tier, .fig-plan, .fig-anchor) {
-  display: grid;
-  gap: 6px;
-  padding: 14px 18px 15px;
-  border-radius: var(--r-ctl);
-  background: var(--sheet-2);
-  font-size: 14.5px;
-  line-height: 1.45;
-}
-.home .fig-tier-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 18px;
-}
-.home .fig-tier-k {
-  color: var(--ink);
-}
-.home .fig-tiers {
-  --fs: 14;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 16px;
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--ink-3);
-}
-.home .fig-tiers code {
-  font-size: inherit;
-}
-.home .fig-tier-v {
-  margin-inline: 8px 0;
-  font-weight: 500;
-  color: var(--ink);
-}
-.home .fig-tier-why {
-  color: var(--ink-3);
-}
-
-/* ---- 2 · bundle · matrix ---- */
-.home .fig-bundles li {
-  display: grid;
-  grid-template-columns: 7.5rem 4.5rem minmax(0, 1fr);
-  align-items: baseline;
-  column-gap: 12px;
-  padding-block: 13px;
-  border-bottom: 1px solid var(--line);
-}
-.home .fig-bundle,
-.home .fig-paths,
-.home .fig-matrix :is(thead th, tbody th) {
-  font-family: var(--font-mono);
-  font-size: 14px;
-}
-.home .fig-bundle {
-  color: var(--ink);
-}
-.home .fig-count {
-  font-size: 14px;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-}
-.home .fig-paths {
-  font-size: 13px;
-  color: var(--ink-3);
-  white-space: pre-wrap;
-}
-.home .fig-matrix {
-  --fs: 14;
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14.5px;
-}
-.home .fig-matrix :is(th, td) {
-  height: 50px;
-  padding: 0 12px 0 0;
-  border-bottom: 1px solid var(--line);
-  font-weight: 400;
-  text-align: start;
-  vertical-align: middle;
-}
-.home .fig-matrix thead th {
-  height: 34px;
-  color: var(--ink);
-}
-.home .fig-matrix tbody th {
-  width: 26%;
-  color: var(--ink-2);
+  margin: 0;
+  font: 400 16px / 26px var(--font-mono);
+  color: var(--on-desk-2);
   white-space: nowrap;
 }
-.home .fig-matrix tbody tr:last-child > * {
-  border-bottom: 0;
-}
-.home .fig-task {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.home .fig-task-k {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--ink-2);
-}
-.home .fig-task code {
-  font-size: 14px;
-  color: var(--ink);
-}
-.home .fig-matrix td[data-skip] {
-  color: var(--ink-3);
-}
-.home .fig-matrix td[data-skip] .mk-host {
-  margin-inline-start: 23px;
-}
-.home .fig-cmd {
-  --fs: 15;
-  color: var(--ink);
-}
-.home .fig-plan-note {
-  color: var(--ink-3);
-}
-/* Its ticks pop in their cells as they draw. */
-@media (prefers-reduced-motion: no-preference) {
-  html.mo .home .fig:not(.on) .fig-matrix .mk-tick {
-    transform: scale(0.7);
-  }
-  html.mo .home .fig.on .fig-matrix .mk-tick {
-    transition: transform 240ms var(--e-pop) var(--t);
-  }
+.home .how-note .how-tl:first-child {
+  color: var(--on-desk);
 }
 
-/* ---- One column (below 1200): desk strips, tighter rows ---- */
-@media (max-width: 1199px) {
-  .home .fig {
-    --fig-pad: 22px;
-  }
-  .home .fig .desk {
-    padding: 8px;
-    border-radius: 20px;
-  }
-  .home .fig .sheet {
-    border-radius: 12px;
-  }
-  .home .fig-body {
-    gap: 16px;
-    padding: 20px var(--fig-pad) 22px;
-  }
-  .home .fig-files {
-    grid-auto-rows: minmax(46px, auto);
-  }
-  .home .fig-bundles li {
-    padding-block: 10px;
-  }
-  .home .fig-matrix :is(th, td) {
-    height: 44px;
-  }
-  .home .fig-matrix thead th {
-    height: 30px;
-  }
-  .home :is(.fig-tier, .fig-plan, .fig-anchor) {
-    padding-block: 11px 12px;
-  }
+/* ---- Index cards: the candidates and the review matrix ---- */
+.home .how .how-card {
+  width: 520px;
+}
+.home .how-card .card-title {
+  white-space: nowrap;
+}
+.home .how-title,
+.home .how-gloss {
+  display: block;
+}
+.home .how-gloss {
+  font: 400 16px / 28px var(--font-sans);
+  color: var(--print-ink-2);
+}
+.home .how-card .card-foot {
+  color: var(--print-ink);
+}
+.home:lang(zh) .how-o-card,
+.home:lang(zh) .how .how-card {
+  height: 206px;
+}
+.home .how .how-task {
+  width: 480px;
+}
+.home .how-task :is(.card-head, .card-title, .card-quote, .card-foot) {
+  display: grid;
+  grid-template-columns: 25ch minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  font: 400 16px / 28px var(--font-mono);
+  color: var(--print-ink);
+  white-space: nowrap;
+}
+.home .how-task .card-head {
+  color: var(--print-ink-2);
+}
+.home .how-task .card-title {
+  margin-top: 8px;
 }
 
-/* ---- Phones: compact figures ---- */
-@media (max-width: 599px) {
-  .home .fig {
-    --fig-pad: 12px;
-  }
-  .home .fig .desk {
-    padding: 6px;
-  }
-  .home .fig .sheet-bar {
-    min-height: 38px;
-  }
-  .home .fig-body {
-    gap: 10px;
-    padding: 12px var(--fig-pad) 12px;
-  }
-  .home .fig .url-branch,
-  .home .fig-cap {
-    display: none;
-  }
-  .home .fig-head {
-    min-height: 0;
-    padding-bottom: 0;
-    border-bottom: 0;
-    font-size: 12.5px;
-  }
-  .home .fig-stages {
-    gap: 4px 12px;
-    font-size: 12px;
-  }
-  .home .fig-files {
-    --fs: 12;
-    grid-auto-rows: auto;
-    font-size: 12px;
-  }
-  .home .fig-files li {
-    grid-template-columns: 16px minmax(0, 1fr);
-    column-gap: 12px;
-    padding-block: 3px 5px;
-    line-height: 1.3;
-  }
-  /* Clear of the rings round auth/ in the path above. */
-  .home .fig-why {
-    grid-column: 2;
-    margin-top: 2px;
-    font-size: 12.5px;
-    text-align: start;
-  }
-  .home :is(.fig-tier, .fig-plan, .fig-anchor) {
-    gap: 4px;
-    padding: 9px 12px 10px;
-    font-size: 12.5px;
-  }
-  .home .fig-tier-row {
-    gap: 2px 12px;
-  }
-  .home .fig-tiers {
-    --fs: 13;
-    gap: 10px;
-    font-size: 13px;
-  }
-  .home .fig-bundles {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 12px;
-  }
-  .home .fig-bundles li {
-    grid-template-columns: auto minmax(0, 1fr);
-    padding-block: 6px;
-  }
-  .home .fig-paths {
-    display: none;
-  }
-  .home .fig-matrix :is(th, td) {
-    height: 42px;
-    padding-inline-end: 8px;
-  }
-  .home .fig-matrix thead th {
-    height: 26px;
-    font-size: 12px;
-  }
-  .home .fig-matrix tbody th {
-    width: 30%;
-    font-size: 11.5px;
-  }
-  .home .fig-task {
-    display: grid;
-    gap: 0;
-    line-height: 1.3;
-  }
-  .home .fig-task-k {
-    font-size: 12.5px;
-  }
-  .home .fig-task code {
-    font-size: 11px;
-    white-space: nowrap;
-  }
-  .home .fig-matrix td[data-skip] {
-    font-size: 12.5px;
-  }
+/* ---- The bill, at the page's foot ---- */
+.home .how-bill {
+  position: absolute;
+  width: 548px;
+  height: 160px;
+}
+.home .how-bill-foot {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font: 400 16px / 26px var(--font-mono);
+  color: var(--print-ink-2);
+  white-space: nowrap;
+}
+.home .how-bill-label {
+  position: absolute;
+  left: 0;
+  top: 136px;
+  margin: 0;
+  font: 400 16px / 1 var(--font-mono);
+  color: var(--print-ink-3);
+}
+.home .how-total {
+  position: absolute;
+  margin: 0;
+  font: 500 48px / 1 var(--font-mono);
+  color: var(--print-ink);
+  white-space: nowrap;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }

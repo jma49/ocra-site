@@ -4,6 +4,8 @@ import type { Copy } from "@/lib/copy";
 import type { FooterLinkId } from "@/lib/copy/sections/footer";
 import { type Locale, otherLocale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
+import { DeskGround } from "./desk/ground";
+import { InkUnderline } from "./desk/hover-ink";
 
 function footerHref(id: FooterLinkId, locale: Locale): string {
   const docs = (page: string) => localePath(locale, `/docs/${page}`);
@@ -34,35 +36,41 @@ function linkLang(id: FooterLinkId, locale: Locale): Locale | undefined {
   return id === "other-language" ? otherLocale(locale) : undefined;
 }
 
-// The footer continues the final band: one night sheet, two landmarks
-// (sections.md §12). The logo and tagline beside four columns of links,
-// each link a 44 px target.
+// The desk's front edge: a lit bevel with a ruler's scale printed along it
+// that slides with the scroll (63-footer.css), then the brand and four
+// columns of links on the desk, each underlined by the pen on hover.
 export function Footer({ copy, locale }: { copy: Copy["footer"]; locale: Locale }) {
   return (
-    <footer className="foot band" data-ground="night">
+    <footer className="foot" data-ground="desk">
+      <DeskGround />
+      <div className="foot-edge" aria-hidden="true">
+        <div className="foot-scale" />
+      </div>
       <div className="wrap">
         <div className="foot-grid">
           <div className="foot-brand">
             <Link href={localePath(locale, "/")} prefetch={false} className="foot-logo">
               <Logo />
             </Link>
-            <p className="t-small">{copy.tagline}</p>
+            <p className="foot-tagline">{copy.tagline}</p>
           </div>
           <nav className="foot-cols" aria-label={copy.label}>
             {copy.columns.map((col, i) => (
               <div key={col.title} className="foot-col">
-                <h2 className="t-kicker" id={`foot-${i}`}>
+                <h2 className="foot-h" id={`foot-${i}`}>
                   {col.title}
                 </h2>
                 <ul aria-labelledby={`foot-${i}`}>
                   {col.links.map((l) => (
                     <li key={l.id}>
                       <a
+                        className="ink-link foot-link"
                         href={footerHref(l.id, locale)}
                         lang={linkLang(l.id, locale)}
                         hrefLang={linkLang(l.id, locale)}
                       >
                         {l.label}
+                        <InkUnderline />
                       </a>
                     </li>
                   ))}
@@ -71,6 +79,10 @@ export function Footer({ copy, locale }: { copy: Copy["footer"]; locale: Locale 
             ))}
           </nav>
         </div>
+        <p className="foot-base">
+          <span>{copy.base.license}</span>
+          <span>{copy.base.line}</span>
+        </p>
       </div>
     </footer>
   );
