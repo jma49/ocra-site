@@ -10,17 +10,19 @@ import { isAdded, recordedLine, recordedLines } from "@/lib/landing/recorded";
 import { Section } from "../section";
 import { LifecyclePlay } from "./lifecycle-play";
 
-// One finding, after you push (D3, concept C): two printouts of the file
-// the example run's finding is on, from endSession to the end of the file.
-// Push 1 carries the hero's marks on line 42; push 2 prints the fix. The
-// finding's card moves from the first to the second, the pen ticks the old
-// note, and the card's thread reads resolved. The pushes are an
-// illustration, captioned as one. Painted finished; LifecyclePlay scrubs
-// the arrival with scroll and plays the reading and the tick once.
+// One finding, after you push (D3, concept C): two printouts of the
+// function the example run's finding is on, isExpired, to the end of the
+// file. Push 1 carries the hero's marks on line 42; push 2 prints the fix
+// and lands on push 1's blank lower half, so both excerpts stay whole and
+// read top to bottom, before and after. The finding's card lies below the
+// code and does not move; the pen ticks the old note and the card's thread
+// reads resolved. The pushes are an illustration, captioned as one. Painted
+// finished; LifecyclePlay scrubs push 2's arrival with scroll and plays the
+// reading, the tick and the retyped thread once, one after the other.
 
 const { finding, diff, heroPage } = exampleRun;
 const COLS = 50;
-const FROM = 36;
+const FROM = 40;
 const TO = recordedLines(finding.path).length;
 
 const lines = (fixed: boolean): PrintedLine[] =>
@@ -55,11 +57,11 @@ const marks = [
 ];
 const fixRow = locate(push2, finding.line, finding.suggestion).row;
 
-// The pen at rest on push 1's frame (the pen lies in a frame laid exactly
-// over push 1, so it writes in that sheet's px): lying at the desk's lower
-// right; below 1024 px it is put away past the frame's right edge.
-const REST = { x: 300, y: 700, r: -12 };
-const REST_NARROW = { x: 690, y: 470, r: -24 };
+// The pen at rest, in push 1's px (the pen lies in a frame laid exactly
+// over push 1, so it writes in that sheet's px): on push 2's blank paper
+// below the card; below 1024 px, below the card on the cropped desk.
+const REST = { x: 40, y: 770, r: -5 };
+const REST_NARROW = { x: 64, y: 700, r: -1 };
 
 export function Lifecycle({ copy }: { copy: Copy["lifecycle"]; onLine?: string }) {
   const head = (n: number, stat: string) => `${fill(copy.push, { n })} · ${stat}`;
