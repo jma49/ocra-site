@@ -359,36 +359,48 @@ Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls
 - **Mark** (`components/brand/eyes-mark.tsx`): a jumping spider's front eye row, one even-odd path in `currentColor`. The logo (`components/logo.tsx`) sets it beside the wordmark (Archivo 540 at `--wordmark-stretch`, 78 %). `LookingEyes` is the living version: in the hero's code rail as the reader (ink eyes, the glint as pupil), and at 560 px in the final band, following the pointer.
 - **Icons**: white eyes with night pupils on the night tile (`app/icon.svg`, `apple-icon.tsx`, `opengraph-image.tsx`, `favicon.ico`).
 - **Primitives** (`components/landing/`): `Section`, `Lines`, `Kicker`, `ArrowGlyph`, `withCode` (`section.tsx`); `CodeRows` and `InkCode` (`code.tsx`: recorded lines read at build time, reader rail, ink overlay, folds, custom rows); `Comment` and `BotAvatar` (`comment.tsx`); `CodeMark` (`pen/code-mark.tsx`); `Marked`, `Band`, `Note`, `Tick`, `Bar`, `Ringed`, `Arrow`, `KeyGlyph` (`pen/marks.tsx`); `tabPattern` and `inactive` (`tabs.ts`).
-- **The pen** draws server-rendered SVG strokes from `lib/landing/pen.ts` (pure geometry, the hand ported from the "Marks" prototype): underline, double underline, strike, ring, caret, box, arrow, tick, margin bar, the verdict mark (a pen dot for 🔴, an octagon for 🛑). Underlines and strikes draw by a left-to-right wipe with a non-scaling stroke; rings, carets, boxes, arrows and ticks by dash in uniformly scaled units. Every mark is `aria-hidden` and has a text equivalent.
+- **The pen** draws server-rendered SVG strokes from `lib/landing/pen.ts` (pure geometry, one hand): underline, double underline, strike, ring, caret, box, arrow, tick, margin bar, the verdict mark (a pen dot for 🔴, an octagon for 🛑). Underlines and strikes draw by a left-to-right wipe with a non-scaling stroke; rings, carets, boxes, arrows and ticks by dash in uniformly scaled units. Every mark is `aria-hidden` and has a text equivalent.
 - **Buttons** (`app/global.css`): `.btn` 48 px (`.btn-sm` 38, 44 on phones), `.btn-primary` (ink; on night, on-night), `.btn-quiet` (a `line-2` ring). No lift, no shadow, no sheen.
-- **Stacked variants**: tab panels, lifecycle states and story figures share one grid cell; an inactive one is `inert` and hidden, never transparent alone.
+- **Sheets and desks**: a sheet (`.sheet`, radius 14, a 42 px `sheet-2` bar) lies on a stone desk (`.desk`, radius 28, 14 px padding) with `--float`, or flat on paper with an inset `line` ring. Chips: stage chips (mono, a kind shape: filled square = code, ring = model), the **Example run** chip (Archivo, a hollow ring, pointing at the nearest example caption) and the **Illustration** chip (on the lifecycle thread and the bill's fallback line).
+- **Stacked variants**: tab panels, lifecycle states, story figures, the terminal's text and the Copy label share one grid cell sized by the tallest; an inactive one is `inert` and hidden, never transparent alone, so switching never moves the page.
+- **Islands** (the only client code): `header-controls.tsx` (menu, theme, the nav following the ground, the CTA's promotion), `hero/window-tabs.tsx`, `hero/review-clock.tsx`, `how/story.tsx`, `lifecycle/lifecycle-states.tsx`, `marquee-pause.tsx`, `copy-command.tsx`, `faq-phones.tsx` and `motion.tsx`. Sections render on the server and pass their islands server-rendered children and small copy slices.
 - **Copy** lives in `lib/copy/sections/`, one module per section with English and Chinese side by side; `lib/copy/index.ts` resolves the example run into it. Numbers, paths, lines and titles come from `lib/landing/example-run.ts`, which `lib/landing/recorded.ts` checks against the recording at build time.
 
 ## Motion
 
 - No animation library. CSS transitions and keyframes, scroll-driven animations behind `@supports`, IntersectionObserver, the Web Animations API, and small islands. No window scroll listener (the phone menu's close-on-scroll exists only while it is open).
 - **Gating**: the root layout's inline script adds `html.mo` before the first paint when motion is allowed; every pre-play state is written under `@media (prefers-reduced-motion: no-preference) { html.mo … }`. `components/landing/motion.tsx` adds `html.hy`; without it the script drops `mo` after 4 s. Without JavaScript, under Reduce motion or after that fail-safe, the page shows every finished state.
-- **The pen's two modes** (`04-pen.css`): `data-pen="clock"` plays CSS animations a clock island owns through the Web Animations API (the hero); `data-pen="on"` plays transitions when the root gains `.on` (story figures, the lifecycle's Fixed state, `data-pen-once` roots). Static marks (the gate, the fallback line, legends) carry neither.
+- **Load**: the H1, lede, CTAs and note rise 10–12 px (560 ms) and the desk settles (640 ms); text is painted from the first frame and nothing blurs or fades in.
+- **The hero theatre** (`hero/review-clock.tsx`, `13-hero-run.css`): CSS animations the clock owns through the Web Animations API. It plays once the code is 60 % in view, the entrance has settled, the code face is in and the Pull request tab is selected: the reader's eyes read lines 16, 21 and 40–43 and park on 42, the margin bar grows from them, the pen underlines the two units and carets the fix, then the comment and the summary row land. It pauses when the code is partly out of view, behind the Terminal tab or in a hidden tab, and finishes at once when the reader has scrolled past the code; Replay rewinds it.
+- **The story** (`how/story.tsx`): pinned from 1200 × 760 px with motion; an observer on a line at the viewport's middle picks the step, the figure's body swaps (only during a swap: a viewport change never leaves bodies half faded) and its marks draw. Unpinned, each figure plays once when 40 % visible.
+- **Draw on entry**, once: the bill's double underline. The quiet band's struck words follow the scroll both ways through a view timeline (drawn at 50 % visibility where scroll timelines are missing). The lifecycle's states autoplay every 5.2 s only while the thread is 40 % visible and not held; a tab click stops it; Fixed strikes line 42.
+- **The pen's two modes** (`04-pen.css`): `data-pen="clock"` plays CSS animations a clock island owns (the hero); `data-pen="on"` plays transitions when the root gains `.on` (story figures, the lifecycle's Fixed state, `data-pen-once` roots). Static marks (the gate, the fallback line, legends) carry neither.
+- **The final eyes** follow the pointer only while the band is within a viewport of the screen and blink only in view; on touch screens they glance round now and then; the manual's logo keeps its own blink.
 - Curves: `--e-enter`, `--e-std`, `--e-pop`, linear for scrubbed animations and the marquee, `steps(n)` for typing only. Nothing reveals on scroll; only recorded events draw on entry.
 - **Reduce motion**: every finished state at first paint; pointer-driven motion (the final eyes) still runs; the marquee runs at half speed with its pause button.
 
 ## Do's and Don'ts
 
-- Do keep every page and string in English and Chinese, and check the Chinese layout separately.
-- Do check light and dark, 390 px and desktop, Reduce motion on and off, before calling a change done.
-- Do label the example run wherever it appears and keep it the recording's.
+- Do keep every page and string in English and Chinese, and check the Chinese layout separately: explicit lines, phrase-level breaks, no orphaned characters.
+- Do check light and dark, 390, 768 and 1440 px, Reduce motion on and off, before calling a change done.
+- Do label the example run wherever it appears (the hero desk and caption, every story figure, the bill's note) and keep it the recording's; label what is not recorded as an illustration (the lifecycle thread, the fallback line).
+- Do reserve the final box of anything that plays (comment, notes, stacked variants, the verdict row, the Copy button): nothing changes size after the first paint.
 - **Don't resemble a competitor's visual signature** (CodeRabbit's taupe mat and orange, Factory's grey and uppercase mono, Greptile's mint and rails): borrow finish, not devices.
-- Don't use the pen on UI chrome or on our own claims, add a second accent, gradient text, glows, glass on paper, textures, pills or uppercase labels.
+- Don't use the pen on UI chrome or on our own claims, add a second accent, gradient text, glows, glass on paper, textures, pills or uppercase labels, or let the pen write on stone.
 - Don't write a colour literal outside `app/tokens.css`; name a token and derive translucent variants with `color-mix(in srgb, var(--token) N%, transparent)`. The standalone icons and the share card are the exception: they are images.
 
 ## Known issues
 
 - Display lines fall back to "Ocra Narrow" from local system faces; where none is installed they fall to next/font's Arial-based fallback and are clipped at their container until Archivo arrives.
+- The hero caption follows the note through CSS anchor positioning (`@position-try`) from 1200 px; browsers without it get the caption at the desk's foot. Lightning CSS does not know the at-rule yet and warns during the build ("Unknown at rule: @position-try"); the rule is kept as written.
+- In a full-page screenshot the pinned story shows only the current figure beside the four steps: the figures share one sticky area by design.
+- The phone page is close to its 13,000 px limit (about 12,900 in English): a section that grows on phones must give the height back.
 
 ## Verification
 
+- `npm run verify`: Biome, the colour check, the AGENTS check, knip, the build (which runs `recorded.ts`'s assertions against the recording), the type check, the schemas and the code face's glyphs.
 - Lint this file: `npx @google/design.md lint DESIGN.md`.
-- **Screenshots** (`tests/visual/`, Playwright): `/` and `/zh`, the manual's index, quickstart and installation, and the 404 page in each language, at 390, 768 and 1280 px, light and dark. Every page also fails on console errors.
+- **Screenshots and behaviour** (`tests/visual/`, Playwright): `/` and `/zh`, the manual's index, quickstart and installation, and the 404 page in each language, at 390, 768 and 1280 px, light and dark, failing on console errors (`pages.spec.ts`); axe on both landing languages with the product window's second tab and the lifecycle's states open, and on both 404s (`a11y.spec.ts`); the first-frame hero paint, the one font preload and the sprite (`load.spec.ts`); the theme toggle, the logo's prefetch and the manual's sidebar (`components.spec.ts`); headers, routing and caching.
 - Locally: `npm run build && npm run visual:baseline` before the change, then `npm run build && npm run visual` after it. Screenshots stay in the git-ignored `.visual/`.
 - In CI, the Visual workflow builds the base branch and the pull request in one job and compares them. A pull request that changes the look on purpose gets the `visual-change` label and lists the expected differences.
 - The harness takes screenshots with Reduce motion on, which settles every animated object on its finished state. `tests/visual/stable.css` pins the docs table of contents and the providers marquee.
