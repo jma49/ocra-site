@@ -130,8 +130,12 @@
 /* Dark: a designed layer order, lighter is higher (page < band < desk <
    sheet < inset); night bands are raised slabs above the page. */
 .dark {
-  --paper: #121212;
-  /* The same trace of the night's hue: OKLCH 20.9 % 0.006, 23.5 % 0.006. */
+  /* Every dark ground carries the same trace of the night's hue, so the
+     page steps in lightness only, never from a neutral to a warm dark:
+     paper OKLCH 18.3 % 0.007 at the neutral #121212's lightness (ink and
+     every hairline keep their contrast on it), paper-2 20.9 % 0.006, stone
+     23.5 % 0.006. The sheets stay neutral. */
+  --paper: #151111;
   --paper-2: #1b1717;
   --stone: #211d1d;
   --sheet: #232323;
