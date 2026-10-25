@@ -8,12 +8,16 @@ import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { test } from "node:test";
 import {
+  ALSO_REFUSED,
   accessDenied,
   BUILTINS_OFF,
+  CLAUSE_SOURCES,
   MAX_AGENT_STEPS,
   OPENCODE_BUILTINS,
+  PROVIDER_IDS,
   PROVIDERS,
   REFUSED,
+  REFUSED_RULES,
 } from "../lib/landing/engine-facts.ts";
 import { measured } from "../lib/landing/measured.ts";
 
@@ -43,8 +47,10 @@ test("the step cap the copy states is the engine's", { skip }, () => {
   assert.equal(MAX_AGENT_STEPS, Number(cap[1]));
 });
 
-test("the provider count the copy states is the gateway's", { skip }, () => {
-  assert.equal(PROVIDERS, entries("cloud-contract/src/providers.ts", "PROVIDER_IDS").length);
+test("the providers the copy prints and counts are the gateway's, in its order", { skip }, () => {
+  const ids = entries("cloud-contract/src/providers.ts", "PROVIDER_IDS");
+  assert.deepEqual([...PROVIDER_IDS], ids);
+  assert.equal(PROVIDERS, ids.length);
 });
 
 test("the built-ins the copy counts and names are the pinned OpenCode's, all off", { skip }, () => {
@@ -78,6 +84,42 @@ test("the paths the copy says the gate refuses, and its answer, are the engine's
   const thrown = gate.match(/new AccessDeniedError\(`([^`]*)`\)/);
   assert.ok(thrown, "reviewContext's AccessDeniedError message is not a template literal");
   assert.equal(accessDenied("X"), thrown[1].replace(/\$\{\w+\}/, "X"));
+});
+
+test("the rules the band prints beside each refused path, and the names it adds, are the gate's", {
+  skip,
+}, () => {
+  const secrets = entries("core/src/select/patterns.ts", "SECRET_PATTERNS");
+  const gate = source("core/src/pipeline/context.ts");
+  for (const { path, rule, kind } of REFUSED_RULES) {
+    if (kind === "git") {
+      assert.equal(`${rule}/`, path);
+      assert.ok(
+        gate.includes(`segments.includes(${JSON.stringify(rule)})`),
+        `${rule} is not refused`,
+      );
+    } else {
+      assert.ok(secrets.includes(rule), `${rule} is not in SECRET_PATTERNS`);
+      assert.ok(rule === `**/${path}` || rule === `**/${path}*`, `${rule} does not refuse ${path}`);
+    }
+  }
+  for (const name of ALSO_REFUSED)
+    assert.ok(
+      secrets.includes(`**/${name}`) || secrets.includes(`**/${name}*`),
+      `${name} is not in SECRET_PATTERNS`,
+    );
+});
+
+test("the sources the band cites for its properties exist and enforce them", { skip }, () => {
+  for (const path of CLAUSE_SOURCES) assert.ok(existsSync(join(engine, path)), `${path} is gone`);
+  const [prompt, , patterns, git] = CLAUSE_SOURCES.map((p) =>
+    readFileSync(join(engine, p), "utf8"),
+  );
+  for (const fn of ["data", "section", "attribute", "oneLine"])
+    assert.match(prompt, new RegExp(`export function ${fn}\\b`), `prompt-text.ts lost ${fn}()`);
+  assert.match(patterns, /export const SECRET_PATTERNS/);
+  assert.match(git, /execFile\(/);
+  assert.match(git, /gitEnvironment\(process\.env\)/);
 });
 
 test("the measured result the copy states is the manual's", { skip }, () => {

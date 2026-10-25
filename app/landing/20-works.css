@@ -1,427 +1,234 @@
-/* Works: the H2 on the page's headline step (.t-h2, as how, features,
-   lifecycle, plans and FAQ) across the grid; under it the platform tiles,
-   each showing in miniature what the review leaves there, across the grid;
-   then the body beside the provider count, the "45", and the marquee and
-   its pause button across the grid under both (sections.md §3,
-   motion.md §15). Below 1200 px one column: the H2, the body, the tiles,
-   the index. Package P. */
+/* Works where you work (works.tsx): the first full-bleed paper band. A
+   poster headline, the spread (21-works-outputs.css), the provider index,
+   the pen resting above it. Printed ink on laser paper; red is the pen's. */
+
 .home .works {
-  padding-block: 112px var(--pad);
+  overflow-x: clip;
+  /* Under the sliding sheet: the paper it lands on (Quiet ends on paper). */
+  background: var(--print-paper-2);
 }
-.home .works-grid {
+.home .works-in {
+  position: relative;
+  padding-block: clamp(104px, 13vh, 150px) clamp(96px, 12vh, 140px);
+}
+
+/* ---- The poster: eyebrow, two lines across the page, the lede under ---- */
+.home .works-head {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 48px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+  column-gap: 64px;
+  align-items: end;
 }
-.home .works-h,
-.home .works-copy,
-.home .works-tiles,
-.home .works-index {
+.home .works-eyebrow,
+.home .works-h {
   grid-column: 1 / -1;
-  min-width: 0;
 }
-.home .works-copy {
-  max-width: 34rem;
+.home .works-eyebrow {
+  margin-bottom: 30px;
+  font: 400 16px / 1 var(--font-mono);
+  color: var(--print-ink-2);
 }
-/* From 1200 px the index's parts take the grid's rows themselves, so the
-   marquee can run under the body as well as the count; the gaps are the
-   rows' margins. The body's first line sits on the 45's cap height. */
-@media (min-width: 1200px) {
-  .home .works-grid {
-    row-gap: 0;
-  }
-  .home .works-tiles {
-    grid-row: 2;
-    margin-top: 56px;
-  }
-  .home .works-copy {
-    grid-row: 3;
-    grid-column: 1 / span 5;
-    margin-top: 72px;
-    padding-top: 6px;
-  }
-  .home .works-index {
-    display: contents;
-  }
-  .home .works-gauge {
-    grid-row: 3;
-    grid-column: 6 / -1;
-    margin-top: 72px;
-  }
-  .home .mq {
-    grid-row: 4;
-  }
-  .home .works-foot {
-    grid-row: 5;
-  }
-  .home .mq,
-  .home .works-foot {
-    grid-column: 1 / -1;
-  }
+.home .works-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(56px, 9.6vw, 140px);
+  font-weight: 500;
+  font-stretch: 70%;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--print-ink);
 }
-/* Set in its two lines where both fit; one balanced sentence below, the
-   body close under it as one block. */
-@media (max-width: 1199px) {
-  .home .works-h .l {
-    display: inline;
-    white-space: normal;
-  }
-  .home .works-h {
-    margin-bottom: -20px;
-  }
-}
-/* Chinese keeps its two clauses as lines at every width. Below 600 px each
-   splits once, at the U+200B after 已经, into matching pairs (在团队已经 /
-   在用的地方审查，用你已经 / 在付费的模型。); the 9em measure forces both
-   splits, so no width splits one clause and not the other. */
-@media (max-width: 1199px) {
-  .home .works:lang(zh) .works-h .l {
-    display: block;
-  }
-}
-@media (max-width: 599px) {
-  .home .works:lang(zh) .works-h .l {
-    max-inline-size: 9em;
-  }
-}
-
-/* ---- Platform tiles: mark, name and flag, what ocra leaves there, then
-   the same shown ----
-   Each tile is a sheet: the platform's mark, its name and the flag that
-   targets it; under them, in the flag's mono, the two things the review
-   leaves, on two lines with the second after "+"; then its foot, sunk into
-   the sheet, holds the miniature of those things (21-works-outputs.css).
-   Three equal columns, close as one set, edge to edge with the content
-   column from 900 px; 600-899 px sets each tile as a row, the words
-   beside the miniature. */
-.home .works-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-}
-.home .works-tile {
-  --tp: 16px;
-  /* The foot's inset from the sheet's edge; the radii stay concentric. */
-  --ti: 5px;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
+.home .works-hl {
+  display: block;
   overflow: clip;
-  border: 1px solid var(--line);
-  border-radius: var(--r-card);
-  background: var(--sheet);
-  transition:
-    border-color 200ms var(--e-std),
-    box-shadow 200ms var(--e-std),
-    translate 200ms var(--e-std);
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.04em;
 }
-.home .works-tile-h {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 15px calc(var(--tp) - 1px) 0 var(--tp);
+.home .works-hl > span {
+  display: block;
 }
-.home .works-tile-h > svg {
-  flex: none;
-  width: 22px;
-  height: 22px;
-}
-.home .works-tile code {
-  margin-inline-start: auto;
-  font-size: 12px;
-  line-height: 1.2;
-  color: var(--ink-3);
-  transition: color 200ms var(--e-std);
-}
-.home .works-tile .t-h4 {
-  font-size: 17px;
+.home .works-h:lang(zh) {
+  font-family: var(--font-sans);
+  font-size: clamp(40px, 7.2vw, 104px);
+  font-weight: 600;
+  font-stretch: 100%;
   line-height: 1.1;
-  white-space: nowrap;
+  letter-spacing: 0.01em;
 }
-/* Two lines in every tile, so the three feet start level. */
-.home .works-tile-o {
-  display: grid;
-  align-content: start;
-  min-height: calc(2 * 17px + 24px);
-  padding: 10px var(--tp) 14px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 17px;
-  color: var(--ink-2);
-}
-.home .works-tile .wo-plane {
-  flex: 1 0 auto;
-  margin: 0 var(--ti) var(--ti);
-  border-radius: calc(var(--r-card) - var(--ti) - 1px);
-}
-/* 600-899 px: a row each, the words beside their miniature. */
-@media (min-width: 600px) and (max-width: 899px) {
-  .home .works-tiles {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-  }
-  .home .works-tile {
-    display: grid;
-    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-  }
-  .home .works-tile-h {
-    grid-area: 1 / 1;
-  }
-  .home .works-tile-o {
-    grid-area: 2 / 1;
-  }
-  .home .works-tile .wo-plane {
-    grid-area: 1 / 2 / 3 / 3;
-    margin: var(--ti) var(--ti) var(--ti) 0;
-  }
-}
-/* Under a pointer a tile lifts off the page, a sheet picked up. */
-@media (hover: hover) {
-  .home .works-tile:hover {
-    translate: 0 -2px;
-    border-color: var(--line-2);
-    box-shadow: var(--float);
-  }
-  .home .works-tile:hover code {
-    color: var(--ink-2);
-  }
+.home .works-lede {
+  grid-column: 2;
+  margin-top: 36px;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--print-ink-2);
+  text-wrap: pretty;
 }
 
-/* ---- The provider index ---- */
+/* ---- The providers: the count heads an index of their ids ---- */
+.home .works-prov {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 64px;
+  align-items: start;
+  margin-top: clamp(80px, 11vh, 128px);
+  padding-top: 36px;
+  border-top: 1px solid color-mix(in srgb, var(--print-ink) 16%, transparent);
+}
+.home .works-count {
+  display: flex;
+  align-items: flex-start;
+  gap: 22px;
+  margin: 0;
+}
+.home .works-num {
+  display: inline-block;
+  min-width: 1.02em;
+  margin-left: -0.04em;
+  font-family: var(--font-display);
+  font-size: clamp(132px, 15vw, 220px);
+  font-weight: 400;
+  font-stretch: 70%;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
 .home .works-gauge {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  min-width: 0;
-  font: inherit;
+  max-width: 11ch;
+  padding-top: 6px;
+  font: 500 22px / 1.25 var(--font-sans);
+  letter-spacing: -0.01em;
 }
-.home .works-gauge .t-gauge {
-  flex: none;
+.home .works-gauge:lang(zh) {
+  max-width: 9em;
 }
-.home .works-gauge .t-h4 {
-  color: var(--ink-2);
+.home .works-ids {
+  font: 400 17px / 1.75 var(--font-mono);
+  color: var(--print-ink);
+  text-wrap: pretty;
 }
-/* The pause button: a 44 px target, its ring drawn 4 px inside it. */
-.home .mq-pause {
-  position: relative;
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  width: 44px;
-  height: 44px;
-  margin: -4px -4px -4px 0;
-  border: 0;
-  background: transparent;
-  color: var(--ink-2);
-  cursor: pointer;
-  transition: color 150ms var(--e-std);
-}
-.home .mq-pause::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border-radius: var(--r-ctl);
-  box-shadow: inset 0 0 0 1px var(--line-2);
-  transition:
-    background-color 150ms var(--e-std),
-    box-shadow 150ms var(--e-std);
-}
-.home .mq-pause svg {
-  position: relative;
-  fill: currentColor;
-}
-.home .mq-pause[aria-pressed="true"] {
-  color: var(--ink);
-}
-.home .mq-pause[aria-pressed="true"]::before {
-  background: var(--tint);
-}
-.home .mq-pause:focus-visible {
-  outline-offset: -1px;
-  border-radius: var(--r-ctl);
-}
-@media (hover: hover) {
-  .home .mq-pause:hover {
-    color: var(--ink);
-  }
-  .home .mq-pause:hover::before {
-    background: var(--tint);
-    box-shadow: inset 0 0 0 1px var(--ink-3);
-  }
-}
-/* The button does nothing until the island has hydrated. */
-html:not(.hy) .home .mq-pause {
-  visibility: hidden;
-}
-
-/* ---- The marquee: two rows inside the column, edge-faded ---- */
-.home .mq {
-  display: grid;
-  gap: 8px;
-  margin-top: 24px;
-  mask-image: linear-gradient(90deg, transparent, var(--ink) 8%, var(--ink) 92%, transparent);
-}
-.home .mq-row {
-  overflow: hidden;
-}
-.home .mq-track {
-  display: flex;
-  width: max-content;
-  animation: mq-slide 64s linear infinite;
-}
-.home .mq-rev .mq-track {
-  animation-duration: 72s;
-  animation-direction: reverse;
-}
-.home .mq-set {
-  display: flex;
-  gap: 8px;
-  padding-inline-end: 8px;
-}
-.home .mq-chip {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: 9px;
-  height: 40px;
-  padding: 0 14px 0 12px;
-  border-radius: var(--r-ctl);
-  background: var(--sheet);
-  box-shadow: inset 0 0 0 1px var(--line);
-  font-size: 14px;
-  line-height: 1;
+.home .works-it {
   white-space: nowrap;
-  color: var(--ink);
-  transition: background-color 150ms var(--e-std);
 }
-.home .mq-chip svg {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  color: var(--ink-2);
+.home .works-id {
+  transition: color 0.35s var(--e-std);
 }
-/* Paused by hover, by focus in the index, or by its button. */
-@media (hover: hover) {
-  .home .mq:hover .mq-track {
-    animation-play-state: paused;
-  }
-  .home .mq-chip:hover {
-    background: var(--sheet-2);
-  }
-}
-.home .works-index:focus-within .mq-track,
-.home .works-index:has(.mq-pause[aria-pressed="true"]) .mq-track {
-  animation-play-state: paused;
-}
-/* Reduce motion: nothing moves. Each row's set stands still and wraps,
-   unfaded; the copy made for the loop and the pause button go. */
-@media (prefers-reduced-motion: reduce) {
-  .home .mq {
-    mask-image: none;
-  }
-  .home .mq-track {
-    width: auto;
-    animation: none;
-  }
-  .home .mq-set {
-    flex-wrap: wrap;
-    padding-inline-end: 0;
-  }
-  .home .mq-set[aria-hidden] {
-    display: none;
-  }
-  .home .works-foot .mq-pause {
-    display: none;
-  }
-}
-/* On a phone the wrapped sets would run a dozen lines: each row stays one
-   line that the reader swipes, faded at its far edge. */
-@media (prefers-reduced-motion: reduce) and (max-width: 599px) {
-  .home .mq {
-    mask-image: linear-gradient(90deg, var(--ink) 88%, transparent);
-  }
-  .home .mq-row {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-  }
-  .home .mq-set {
-    flex-wrap: nowrap;
-    padding-inline-end: 24px;
-  }
-}
-@keyframes mq-slide {
-  to {
-    transform: translateX(-50%);
-  }
-}
-.home .works-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 16px;
+.home .works-sep {
+  color: var(--print-ink-3);
 }
 .home .works-more {
-  color: var(--ink-3);
+  max-width: 52ch;
+  margin-top: 22px;
+  font-size: 18px;
+  line-height: 1.45;
+  color: var(--print-ink-2);
 }
 
-/* Chinese headings and labels break at punctuation and spaces, never
-   inside a word; paragraphs follow the page's prose rule (01-base.css). */
-.home .works:lang(zh) :is(h2, h3, dt, dd, .t-h4) {
-  word-break: keep-all;
+/* The pen lies above the index, on the paper, after ringing 42 three times. */
+.home .works-pen-at {
+  position: absolute;
+  right: 460px;
+  top: -30px;
+  width: 0;
+  height: 0;
 }
-/* One column: the hero above ends on the same paper, so less air. */
+.home .works-pen {
+  --pen-s: 0.9;
+}
+html.mo .home .works .pen-rig,
+html.mo .home .features .pen-rig {
+  animation: none;
+}
+
 @media (max-width: 1023px) {
-  .home .works {
-    padding-top: 72px;
+  .home .works-head {
+    display: block;
+  }
+  .home .works-lede {
+    max-width: 44ch;
+    margin-top: 28px;
+  }
+  .home .works-prov {
+    display: block;
+  }
+  .home .works-count {
+    margin-bottom: 28px;
+  }
+  .home .works-pen-at {
+    right: 280px;
   }
 }
-@media (max-width: 599px) {
-  .home .works {
-    padding-block: 72px;
+@media (max-width: 759px) {
+  .home .works-in {
+    padding-block: 88px 92px;
   }
-  .home .works-grid {
-    row-gap: 40px;
+  .home .works-eyebrow {
+    margin-bottom: 22px;
+    font-size: 14px;
   }
-  /* A phone stacks the tiles: mark, name and flag on one line, the two
-     things on one line, then the miniature. */
-  .home .works-tiles {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
+  .home .works-lede {
+    font-size: 17px;
   }
-  .home .works-tile {
-    --tp: 14px;
-  }
-  .home .works-tile-h {
-    padding-top: 13px;
-  }
-  .home .works-tile-h > svg {
-    width: 20px;
-    height: 20px;
-  }
-  .home .works-tile .t-h4 {
+  .home .works-ids {
     font-size: 15px;
   }
-  .home .works-tile-o {
-    display: block;
-    min-height: 0;
-    padding: 8px var(--tp) 12px;
+  .home .works-more {
+    font-size: 16.5px;
   }
-  .home .works-tile-o > span {
-    display: inline;
+  .home .works-pen-at {
+    right: 150px;
+    top: -26px;
   }
-  .home .works-gauge {
-    gap: 12px;
+  .home .works-pen {
+    --pen-s: 0.62;
   }
-  .home .works-gauge .t-h4 {
-    font-size: 15px;
-    line-height: 1.25;
+}
+
+/* ---- Motion: held before play (works-play.tsx); the server paints it done ---- */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .works-h:not(.in) .works-hl > span {
+    translate: 0 108%;
   }
-  .home .mq {
-    margin-top: 20px;
+  html.mo .home .works-h.in .works-hl > span {
+    transition: translate 1.05s var(--e-enter);
+  }
+  html.mo .home .works-h.in .works-hl + .works-hl > span {
+    transition-delay: 90ms;
+  }
+  html.mo .home .works:not(.pen-in) .works-pen {
+    visibility: hidden;
+  }
+  html.mo .home .works-ring .ink-s:not(.dry) .ink-run {
+    stroke-dashoffset: 1;
+  }
+  html.mo .home .works-id:not(.on) {
+    color: color-mix(in srgb, var(--print-ink) 20%, transparent);
+  }
+  /* Wet to dry: the bleed creeps in over the stroke, the shine fades. */
+  html.mo .home :is(.works, .features) .ink-s.dry .ink-bleed {
+    transition: opacity 420ms var(--e-std);
+  }
+}
+
+/* The camera: the works paper slides up over the desk and squares as it
+   lands (scrubbed), a longer travel than the shared band's. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .works .paper-band {
+      transform-origin: 30% 0;
+      animation: works-band linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 85%;
+    }
+  }
+}
+@keyframes works-band {
+  from {
+    translate: 0 120px;
+    rotate: -0.6deg;
+  }
+  to {
+    translate: 0 0;
+    rotate: 0deg;
   }
 }
