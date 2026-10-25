@@ -1,24 +1,50 @@
-/* Final: the night band joined to the footer, the eyes at their largest,
-   the three-line H2, the CTAs and the prompt line with Copy (package C).
-   F's stub. */
+/* Final: the second night band, its top corners rounded, the footer
+   continuing it below. The eye row at its largest beside a three-line H2,
+   the CTAs and the install line with its Copy button (package C). */
 .home .final {
   padding-block: var(--pad-band) 104px;
+}
+/* The band lies on the FAQ's ground, which carries on round it to the page's
+   end: the section is full-bleed in paper-2 and draws the night slab inside
+   itself (isolated, so the slab sits under the content), so no other grey
+   shows at the slab's corners or beside it. The footer does the same. */
+.home .final.band {
+  position: relative;
+  isolation: isolate;
+  margin-inline: 0;
+  padding-inline: 12px;
+  border-radius: 0;
+  background: var(--paper-2);
+}
+.home .final.band::before {
+  content: "";
+  position: absolute;
+  inset: 0 12px;
+  z-index: -1;
   border-radius: var(--r-band) var(--r-band) 0 0;
+  background: var(--night);
 }
 .home .final-grid {
+  --eyes: clamp(440px, 50vw - 160px, 560px);
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: minmax(0, var(--eyes)) minmax(0, 1fr);
   column-gap: var(--gap);
-  row-gap: 40px;
   align-items: center;
 }
-.home .final-eyes {
-  grid-column: 1 / span 5;
-  width: min(100%, 560px);
-  height: auto;
-}
+
+/* The H2 fills its column: "you already know." is 5.31 em wide (measured),
+   so the size is capped at the column's width over 5.38 em (a container
+   query) and the line never clips between the breakpoints. The zh line
+   is seven full-width glyphs, 7 em. */
 .home .final-text {
-  grid-column: 6 / -1;
+  container-type: inline-size;
+  min-width: 0;
+}
+.home .final .t-final {
+  font-size: min(clamp(3rem, 1.18rem + 7.5vw, 7.375rem), 18.6cqi);
+}
+.home .final .t-final:lang(zh) {
+  font-size: min(clamp(3rem, 2.07rem + 3.81vw, 5.5rem), 14.2cqi);
 }
 .home .final-cta {
   display: flex;
@@ -26,24 +52,276 @@
   gap: 12px;
   margin-top: 32px;
 }
+
+/* ---- The eyes ---- */
+.home .final-eyes {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* The glint is a reflection: it travels about two thirds as far as the
+   iris, so each eye reads as round. */
+.home .final-eyes .glint {
+  transform: translate(calc(var(--px, 0) * -0.35px), calc(var(--py, 0) * -0.35px));
+}
+/* The pupils widen when a hand (or the keyboard) reaches for one of the
+   band's actions. Hover only where it is real: on a touch screen it would
+   stick after the tap. */
+.home .final-eyes .iris {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: scale 420ms var(--e-enter);
+}
+.home .final:has(.final-cta a:focus-visible, .prompt-copy:focus-visible) .final-eyes .iris {
+  scale: 1.16;
+}
+@media (hover: hover) {
+  .home .final:has(.final-cta a:hover, .prompt-copy:hover) .final-eyes .iris {
+    scale: 1.16;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* They open as they scroll into view (the reader's scroll drives it, both
+     ways), where scroll timelines exist; anywhere else they are open. No
+     fill: the range starts while the eyes are still wholly below the fold,
+     so outside it they are open, never shut (a full-page capture taken from
+     the top shows them open). */
+  @supports (animation-timeline: view()) {
+    html.mo .home .final-eyes {
+      transform-origin: 50% 56%;
+      animation: final-wake linear;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+  /* Copying the command earns one blink (copy-command.tsx). */
+  .home .final[data-blink] .final-eyes .lids {
+    animation: final-blink 460ms var(--e-std) both;
+    animation-play-state: running;
+  }
+}
+/* A touch screen has no pointer to follow, so while the band is in view the
+   eyes look round on their own now and then: down at the heading and the
+   command, aside, back at the reader. The small eyes travel less, as they
+   do under the pointer; the reach never exceeds the pointer's. */
+@media (hover: none) and (prefers-reduced-motion: no-preference) {
+  .home .awake .final-eyes .pupil {
+    animation: final-glance 9s var(--e-std) infinite;
+  }
+  .home .awake .final-eyes .lids > :is(:first-child, :last-child) .pupil {
+    animation-name: final-glance-small;
+  }
+}
+@keyframes final-glance {
+  0%,
+  30%,
+  86%,
+  100% {
+    --px: 0;
+    --py: 0;
+  }
+  38%,
+  52% {
+    --px: 0.55;
+    --py: 1.2;
+  }
+  62%,
+  76% {
+    --px: 1.5;
+    --py: -0.2;
+  }
+}
+@keyframes final-glance-small {
+  0%,
+  30%,
+  86%,
+  100% {
+    --px: 0;
+    --py: 0;
+  }
+  38%,
+  52% {
+    --px: 0.22;
+    --py: 0.48;
+  }
+  62%,
+  76% {
+    --px: 0.6;
+    --py: -0.08;
+  }
+}
+@keyframes final-wake {
+  from {
+    transform: scaleY(0.06);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes final-blink {
+  0%,
+  100% {
+    transform: none;
+  }
+  45% {
+    transform: scaleY(0.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home .final-eyes .iris {
+    transition: none;
+  }
+}
+
+/* ---- The install line ---- */
 .home .final .prompt {
   margin-top: 24px;
-  padding-inline-end: 16px;
+  padding: 0 4px 0 0;
 }
+.home .prompt-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  height: 100%;
+  padding-inline: 16px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+  border-radius: inherit;
+}
+.home .prompt-line::-webkit-scrollbar {
+  display: none;
+}
+/* Where the line scrolls (phones), its end fades out until it is scrolled
+   to: a scroll timeline on the line itself, inactive while it fits. */
+@property --prompt-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@supports (animation-timeline: scroll()) {
+  .home .prompt-line {
+    mask-image: linear-gradient(90deg, var(--ink) calc(100% - var(--prompt-fade)), transparent);
+    animation: prompt-fade linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
+@keyframes prompt-fade {
+  from {
+    --prompt-fade: 36px;
+  }
+  to {
+    --prompt-fade: 0px;
+  }
+}
+.home .prompt-line code {
+  font-size: inherit;
+}
+.home .prompt-line:focus-visible {
+  outline-offset: -2px;
+}
+.home .prompt-copy {
+  display: grid;
+  flex: none;
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: calc(var(--r-ctl) - 4px);
+  background: color-mix(in srgb, var(--on-night) 9%, transparent);
+  color: var(--on-night);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 150ms var(--e-std);
+}
+.home .prompt-copy-label {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  visibility: hidden;
+}
+.home .prompt-copy-label[data-shown] {
+  visibility: visible;
+}
+.home .prompt-copy svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.home .prompt-copy:active {
+  transform: scale(0.98);
+}
+@media (hover: hover) {
+  .home .prompt-copy:hover {
+    background: color-mix(in srgb, var(--on-night) 15%, transparent);
+  }
+}
+
+/* 1024: the eyes beside the text, a little smaller (about 400 px, the
+   heading then about 95 px). */
+@media (max-width: 1199px) {
+  .home .final-grid {
+    --eyes: 42%;
+  }
+}
+/* 768: one column, left-aligned: the eyes, then the text. */
 @media (max-width: 1023px) {
-  .home .final-eyes,
-  .home .final-text {
-    grid-column: 1 / -1;
+  .home .final-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
   }
   .home .final-eyes {
     width: 360px;
   }
 }
+/* 390: the eyes at 280 px, the CTAs stacked full width, the install line
+   scrolling inside its box (never an ellipsis over the package name). */
 @media (max-width: 599px) {
   .home .final {
     padding-block: 72px 64px;
   }
+  .home .final.band {
+    padding-inline: 8px;
+  }
+  .home .final.band::before {
+    inset: 0 8px;
+    border-radius: 20px 20px 0 0;
+  }
+  /* The widest line ("you already know.") as wide as the 280 px eyes above
+     it, so heading and eyes share one right edge. */
+  .home .final .t-final {
+    font-size: min(3.25rem, 18.6cqi);
+  }
+  .home .final-grid {
+    row-gap: 36px;
+  }
   .home .final-eyes {
     width: 280px;
+  }
+  .home .final-cta {
+    flex-direction: column;
+    margin-top: 28px;
+  }
+  .home .final-cta .btn {
+    width: 100%;
+  }
+  .home .final .prompt {
+    display: flex;
+    width: 100%;
+    height: 52px;
+  }
+  .home .prompt-line {
+    flex: 1 1 auto;
+    padding-inline: 14px 10px;
+  }
+  .home .prompt-copy {
+    height: 44px;
   }
 }

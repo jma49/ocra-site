@@ -28,31 +28,48 @@ function footerHref(id: FooterLinkId, locale: Locale): string {
   return hrefs[id];
 }
 
+// The other language's link is set in that language, for screen readers
+// and for the browser's choice of face.
+function linkLang(id: FooterLinkId, locale: Locale): Locale | undefined {
+  return id === "other-language" ? otherLocale(locale) : undefined;
+}
+
 // The footer continues the final band: one night sheet, two landmarks
-// (sections.md §12). Stub from package F; C builds it out.
+// (sections.md §12). The logo and tagline beside four columns of links,
+// each link a 44 px target.
 export function Footer({ copy, locale }: { copy: Copy["footer"]; locale: Locale }) {
   return (
     <footer className="foot band" data-ground="night">
-      <div className="wrap foot-grid">
-        <div className="foot-brand">
-          <Link href={localePath(locale, "/")} prefetch={false} className="foot-logo">
-            <Logo />
-          </Link>
-          <p className="t-small">{copy.tagline}</p>
-        </div>
-        <div className="foot-cols">
-          {copy.columns.map((col) => (
-            <div key={col.title}>
-              <h2 className="t-kicker">{col.title}</h2>
-              <ul>
-                {col.links.map((l) => (
-                  <li key={l.id}>
-                    <a href={footerHref(l.id, locale)}>{l.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <div className="wrap">
+        <div className="foot-grid">
+          <div className="foot-brand">
+            <Link href={localePath(locale, "/")} prefetch={false} className="foot-logo">
+              <Logo />
+            </Link>
+            <p className="t-small">{copy.tagline}</p>
+          </div>
+          <nav className="foot-cols" aria-label={copy.label}>
+            {copy.columns.map((col, i) => (
+              <div key={col.title} className="foot-col">
+                <h2 className="t-kicker" id={`foot-${i}`}>
+                  {col.title}
+                </h2>
+                <ul aria-labelledby={`foot-${i}`}>
+                  {col.links.map((l) => (
+                    <li key={l.id}>
+                      <a
+                        href={footerHref(l.id, locale)}
+                        lang={linkLang(l.id, locale)}
+                        hrefLang={linkLang(l.id, locale)}
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>

@@ -22,12 +22,15 @@ export type FooterLinkId =
 
 interface FooterCopy {
   tagline: string;
+  // The footer's link list, a navigation landmark of its own.
+  label: string;
   columns: { title: string; links: { id: FooterLinkId; label: string }[] }[];
 }
 
 export const footer: Bilingual<FooterCopy> = {
   en: {
     tagline: "Open-source code review with agents that read first.",
+    label: "Footer",
     columns: [
       {
         title: "Product",
@@ -69,6 +72,7 @@ export const footer: Bilingual<FooterCopy> = {
   },
   zh: {
     tagline: "开源的代码审查，agent 先读再评。",
+    label: "页脚",
     columns: [
       {
         title: "产品",

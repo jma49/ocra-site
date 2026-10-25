@@ -1,5 +1,7 @@
-/* Plans: the three-line head beside the plan ledger, its states, the Cloud
-   row on a sheet, the fine print (package C). F's stub. */
+/* Plans: a three-line head beside the plan ledger (rows, not cards). Each
+   row is two lines: the state, name, price and action, then what the plan
+   includes; ocra Cloud is the one row laid on a sheet. Columns are fixed so
+   the prices stack in one column down the ledger (package C). */
 .home .plans {
   padding-block: var(--pad);
 }
@@ -12,84 +14,271 @@
 }
 .home .plans-head {
   grid-column: 1 / span 4;
+  grid-row: 1;
 }
 .home .plans-head .t-body {
+  max-width: 34rem;
   margin-top: 24px;
 }
 .home .plans-ledger {
+  container: plans / inline-size;
   grid-column: 5 / -1;
-}
-.home .plan {
-  display: grid;
-  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px 24px;
-  padding: 24px 0;
+  grid-row: 1 / span 2;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
+
+/* ---- A plan row ---- */
+.home .plan {
+  --plan-x: 24px;
+  --plan-id: 14.5rem;
+  display: grid;
+  grid-template-columns: var(--plan-id) minmax(0, 1fr) auto;
+  grid-template-areas:
+    "id price cta"
+    "points points points";
+  column-gap: 24px;
+  align-items: last baseline;
+  padding: 22px var(--plan-x) 24px;
+}
 .home .plan.sheet {
-  padding: 20px 24px;
-  border-bottom: 0;
+  border-radius: var(--r-sheet);
+  transition: box-shadow 200ms var(--e-std);
+}
+@media (hover: hover) {
+  .home .plan.sheet:hover {
+    box-shadow: inset 0 0 0 1px var(--line-2);
+  }
+}
+.home .plan-id {
+  grid-area: id;
+  min-width: 0;
 }
 .home .plan-state {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 8px;
   font-weight: 500;
+  font-size: 13.5px;
+  line-height: 1.3;
+  color: var(--ink-2);
+}
+.home .plan-id .t-h3 {
+  white-space: nowrap;
 }
 .home .plan-shape {
+  position: relative;
+  flex: none;
   width: 9px;
   height: 9px;
   border-radius: 50%;
+  box-shadow: inset 0 0 0 1.3px var(--ink);
+  overflow: hidden;
+}
+.home .plan[data-state="now"] .plan-shape {
   background: var(--ink);
 }
-.home .plan[data-plan="cloud"] .plan-shape {
-  background: linear-gradient(90deg, var(--ink) 50%, transparent 50%);
-  box-shadow: inset 0 0 0 1.3px var(--ink);
-}
-.home .plan[data-plan="team"] .plan-shape {
-  background: transparent;
-  box-shadow: inset 0 0 0 1.3px var(--ink);
+.home .plan[data-state="early"] .plan-shape::before {
+  content: "";
+  position: absolute;
+  inset: 0 50% 0 0;
+  background: var(--ink);
 }
 .home .plan-price {
+  grid-area: price;
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  flex-wrap: wrap;
+  column-gap: 12px;
+  min-width: 0;
 }
-.home .plan[data-plan="team"] .price {
+.home .plan-unit {
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--ink-2);
+}
+.home .plan[data-state="planned"] .price {
   color: var(--ink-3);
 }
 .home .plan > .btn {
-  grid-column: 1 / span 2;
-  justify-self: start;
+  grid-area: cta;
+  justify-self: end;
 }
+
+/* ---- What a plan includes ---- */
 .home .plan-points {
-  grid-column: 1 / -1;
+  grid-area: points;
+  align-self: start;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 6px 24px;
+  gap: 6px 40px;
+  margin-top: 18px;
+}
+.home .plan-points li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
   font-size: 15px;
+  line-height: 22px;
   color: var(--ink-2);
 }
+.home .plan-points code {
+  color: var(--ink);
+}
+.home .plan-tick {
+  margin-top: 4px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.home .plan-dash {
+  justify-self: center;
+  width: 9px;
+  height: 1.5px;
+  margin-top: 10px;
+  border-radius: 1px;
+  background: var(--ink-3);
+}
+
+/* ---- The fine print: under the head, level with the ledger's last rule
+   from 1200 px; under the ledger below that ---- */
 .home .plans-fine {
+  grid-column: 1 / span 4;
+  grid-row: 2;
+  align-self: end;
   max-width: 60ch;
-  margin-top: 28px;
   color: var(--ink-2);
 }
+
+/* ---- Chinese: the system face for the prices; points break at
+   punctuation and spaces, never inside a word ---- */
+.home .plan-points li:lang(zh) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+/* Short zh paragraphs balance their lines rather than leave a glyph or two
+   alone on the last one (a break between two characters is ordinary in
+   Chinese prose; an orphan is not). */
+.home :is(.plans-head .t-body, .plans-fine):lang(zh) {
+  text-wrap: balance;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.home .plan .price:lang(zh) {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-stretch: 100%;
+  font-size: clamp(2.25rem, 1.9rem + 1.2vw, 3rem);
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+/* 1024 and 768: the ledger under the head, which sets its H2 and body side
+   by side so the head costs one block, not two. */
 @media (max-width: 1199px) {
   .home .plans-head,
-  .home .plans-ledger {
+  .home .plans-ledger,
+  .home .plans-fine {
     grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .home .plans-fine {
+    margin-top: -24px;
+  }
+  .home .plans-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--gap);
+    align-items: end;
+  }
+  .home .plans-head .t-body {
+    margin-top: 0;
   }
 }
-@media (max-width: 599px) {
+/* The row follows the ledger's own width, not the window's: three columns
+   (who, what it costs, the action) while the price and its unit fit on one
+   line beside a narrower name column, compact rows below that. */
+@container plans (max-width: 819px) {
   .home .plan {
-    grid-template-columns: minmax(0, 1fr);
+    --plan-id: 12rem;
+  }
+}
+@container plans (max-width: 699px) {
+  .home .plan {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "id price"
+      "points points"
+      "cta cta";
+    column-gap: 16px;
+  }
+  .home .plan-price {
+    justify-content: flex-end;
+    column-gap: 8px;
   }
   .home .plan-points {
     grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+    margin-top: 14px;
   }
-  .home .plan .btn {
-    width: 100%;
+  .home .plan > .btn {
+    justify-self: start;
+    margin-top: 16px;
+  }
+}
+
+/* 390: compact stacked rows: the state, name and price on the first line,
+   the points in one column, the action full width. */
+@media (max-width: 599px) {
+  .home .plans-grid {
+    row-gap: 20px;
+  }
+  .home .plans-head {
+    display: block;
+  }
+  .home .plans-head .t-body {
+    margin-top: 12px;
+  }
+  .home .plan {
+    --plan-x: 16px;
+    column-gap: 12px;
+    padding-block: 16px;
+  }
+  .home .plan.sheet {
+    border-radius: 12px;
+  }
+  .home .plan-state {
+    margin-bottom: 2px;
+    font-size: 13px;
+  }
+  .home .plan-unit {
+    font-size: 12.5px;
+  }
+  .home .plan-points {
+    gap: 2px;
+    margin-top: 10px;
+  }
+  .home .plan-points li {
+    column-gap: 10px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .home .plan-tick {
+    margin-top: 3px;
+  }
+  .home .plan-dash {
+    margin-top: 9px;
+  }
+  .home .plan > .btn {
+    justify-self: stretch;
+    margin-top: 12px;
+  }
+  .home .plans-fine {
+    margin-top: -4px;
+    font-size: 13px;
   }
 }
