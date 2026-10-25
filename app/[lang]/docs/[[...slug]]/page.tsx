@@ -4,10 +4,12 @@ import {
   DocsPage,
   DocsTitle,
   EditOnGitHub,
-} from "@fumadocs/base-ui/layouts/docs/page";
+} from "@fumadocs/base-ui/layouts/notebook/page";
 import { createRelativeLink } from "@fumadocs/base-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { SheetHead } from "@/components/docs/sheet-head";
+import { TocRuler } from "@/components/docs/toc-ruler";
 import { getMDXComponents } from "@/components/mdx";
 import { i18n } from "@/lib/i18n";
 import { localeParam } from "@/lib/locale-param";
@@ -18,17 +20,19 @@ import { source } from "@/lib/source";
 type Props = { params: Promise<{ lang: string; slug?: string[] }> };
 
 export default async function Page({ params }: Props) {
-  const { lang, slug } = await params;
+  const { slug } = await params;
+  const lang = await localeParam(params);
   const page = source.getPage(slug, lang);
   if (!page) notFound();
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage toc={page.data.toc} full={page.data.full} tableOfContent={{ header: <TocRuler /> }}>
+      <SheetHead locale={lang} path={page.path} url={page.url} />
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        <MDX components={getMDXComponents({ a: createRelativeLink(source, page) })} />
+        <MDX components={getMDXComponents(lang, { a: createRelativeLink(source, page) })} />
       </DocsBody>
       <EditOnGitHub href={`${repoUrl}/blob/${gitConfig.branch}/docs/manual/${page.path}`} />
     </DocsPage>

@@ -1,28 +1,28 @@
-import { Callout as FdCallout } from "@fumadocs/base-ui/components/callout";
 import { Cards, Card as FdCard } from "@fumadocs/base-ui/components/card";
 import { Step, Steps } from "@fumadocs/base-ui/components/steps";
 import { Tabs as FdTabs, Tab } from "@fumadocs/base-ui/components/tabs";
 import defaultMdxComponents from "@fumadocs/base-ui/mdx";
 import type { MDXComponents } from "mdx/types";
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
+import { IndexCard } from "@/components/docs/index-card";
+import type { Locale } from "@/lib/i18n";
 
-// Panels in the manual are frosted glass (app/docs.css, `.glass`); cards also
-// take the block hover.
-function Callout({ className, ...props }: ComponentProps<typeof FdCallout>) {
-  return <FdCallout className={`glass ${className ?? ""}`} {...props} />;
-}
-
+// The manual is a printed sheet on the desk (app/docs.css): callouts and link
+// cards are index cards lying on it, tabs a cooler printed panel.
 function Card({ className, ...props }: ComponentProps<typeof FdCard>) {
-  return <FdCard className={`glass block-hover ${className ?? ""}`} {...props} />;
+  return <FdCard className={`docs-card docs-card-link ${className ?? ""}`} {...props} />;
 }
 
 function Tabs({ className, ...props }: ComponentProps<typeof FdTabs>) {
-  return <FdTabs className={`glass ${className ?? ""}`} {...props} />;
+  return <FdTabs className={`docs-panel ${className ?? ""}`} {...props} />;
 }
 
 // The manual (written in the main repository) may use these components:
 // Callout, Cards/Card, Steps/Step and Tabs/Tab.
-export function getMDXComponents(components?: MDXComponents) {
+export function getMDXComponents(locale: Locale, components?: MDXComponents) {
+  function Callout(props: { type?: string; title?: ReactNode; children?: ReactNode }) {
+    return <IndexCard locale={locale} {...props} />;
+  }
   return {
     ...defaultMdxComponents,
     Callout,

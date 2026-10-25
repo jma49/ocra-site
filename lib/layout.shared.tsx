@@ -1,8 +1,9 @@
 import { uiTranslations } from "@fumadocs/base-ui/i18n";
 import type { BaseLayoutProps } from "@fumadocs/base-ui/layouts/shared";
 import { Logo } from "@/components/logo";
+import type { Copy } from "./copy";
 import { i18n, type Locale } from "./i18n";
-import { localePath, repoUrl } from "./shared";
+import { cloudUrl, localePath, repoUrl } from "./shared";
 import { zhUi } from "./ui-zh";
 
 export const translations = i18n
@@ -10,24 +11,32 @@ export const translations = i18n
   .extend(uiTranslations())
   .add({ en: { displayName: "English" }, zh: zhUi });
 
-// The manual's sidebar is dark glass, so its logo takes the light-on-dark
-// spider. `docs` is the nav label from the copy.
-export function baseOptions(
-  locale: Locale,
-  { docs, dark = false }: { docs: string; dark?: boolean },
-): BaseLayoutProps {
+// The manual's chrome lies on the desk, like the landing page's nav over the
+// hero, so it carries the same links (the landing page's sections, then the
+// manual) and the light-on-dark spider.
+export function baseOptions(locale: Locale, nav: Copy["nav"]): BaseLayoutProps {
+  const home = localePath(locale, "/");
+  const section = (id: string) => `${home}#${id}`;
   return {
     nav: {
-      title: <Logo dark={dark} />,
-      url: localePath(locale, "/"),
-      transparentMode: "top",
+      title: <Logo dark />,
+      url: home,
     },
-    githubUrl: repoUrl,
     links: [
+      { text: nav.links.how, url: section("how") },
+      { text: nav.links.product, url: section("product") },
+      { text: nav.links.security, url: section("security") },
+      { text: nav.links.pricing, url: section("plans") },
+      { text: nav.links.docs, url: localePath(locale, "/docs"), active: "nested-url", on: "nav" },
+      { text: nav.github, url: repoUrl, external: true },
       {
-        text: docs,
-        url: localePath(locale, "/docs"),
-        active: "nested-url",
+        type: "custom",
+        on: "nav",
+        children: (
+          <a className="docs-cta" href={cloudUrl}>
+            {nav.start}
+          </a>
+        ),
       },
     ],
   };
