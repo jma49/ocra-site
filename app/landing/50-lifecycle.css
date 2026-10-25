@@ -350,8 +350,9 @@ html.mo .home .life .life-world [data-depth] {
 
 /* ---- Before the heading rises (motion allowed, hydrated) ---- */
 @media (prefers-reduced-motion: no-preference) {
+  /* Translated clear of each line's clip margin: no glyph tops peek out. */
   html.mo.hy .home .life-h:not(.risen) .life-hli {
-    translate: 0 108%;
+    translate: 0 125%;
   }
   html.mo.hy .home .life-h .life-hli {
     transition: translate 1050ms var(--e-settle);
