@@ -27,6 +27,7 @@ interface HowCopy {
     // Why ocra read or set aside each changed file.
     why: Record<FileId, string>;
     tier: string;
+    // Under the three tiers: why this change got its tier.
     tierWhy: string;
     tasks: FromRun;
     // fill(bundleFiles[n === 1 ? "one" : "other"], { n })
@@ -39,6 +40,8 @@ interface HowCopy {
     readOnly: string;
     quotes: string;
     found: string;
+    // Under figure 3's anchor methods: what each one tries.
+    anchorNote: string;
     planNote: string;
     agentRun: FromRun;
     candidates: FromRun;
@@ -111,7 +114,7 @@ export const how: Bilingual<HowCopy> = {
         lock: "set aside · generated",
       },
       tier: "Risk tier",
-      tierWhy: "touches auth/",
+      tierWhy: "The change touches auth/, so it is full; otherwise its size decides.",
       tasks: (run) => `${run.tasks.length} tasks`,
       bundleFiles: { one: "{n} file", other: "{n} files" },
       task: "task",
@@ -121,6 +124,8 @@ export const how: Bilingual<HowCopy> = {
       readOnly: `read-only · capped at ${MAX_AGENT_STEPS} steps`,
       quotes: "The agent quotes",
       found: "ocra finds it in the diff",
+      anchorNote:
+        "The changed lines first, then the whole file, the other changed files and a light model's second quote. Failing all, the finding stays on its file.",
       planNote:
         "lists the tasks before any model is paid for. It skips grouping, so it shows one bundle per file.",
       agentRun: (run) => {
@@ -194,7 +199,7 @@ export const how: Bilingual<HowCopy> = {
         lock: "已搁置 · 生成文件",
       },
       tier: "风险档位",
-      tierWhy: "涉及 auth/",
+      tierWhy: "改动涉及 auth/，所以是 full；否则按改动大小决定。",
       tasks: (run) => `${run.tasks.length} 个任务`,
       bundleFiles: { one: "{n} 个文件", other: "{n} 个文件" },
       task: "任务",
@@ -204,6 +209,8 @@ export const how: Bilingual<HowCopy> = {
       readOnly: `只读 · 最多 ${MAX_AGENT_STEPS} 步`,
       quotes: "agent 的引用",
       found: "ocra 在 diff 中找到它",
+      anchorNote:
+        "先找变更的行，再找整个文件、其他变更文件，最后请轻量模型重新引用；都找不到，意见就挂在文件上。",
       planNote: "在付费调用任何模型之前列出任务。它跳过分组，所以每个文件一个 bundle。",
       agentRun: (run) => {
         const t = run.tasks[0];

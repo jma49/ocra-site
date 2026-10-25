@@ -8,19 +8,28 @@
    paint: 31-figures.css. */
 
 .home .how {
-  /* The pinned stage's band: the hero desk's plane (the stone warmed
-     toward the night), so the product lies on the same desk in both. */
-  --how-band: color-mix(in oklab, var(--night) 14%, var(--stone));
-  --how-light: color-mix(in srgb, var(--white) 30%, transparent);
-  /* Text printed on the band; the active step lies on a sheet instead. */
-  --how-ink: color-mix(in oklab, var(--ink) 88%, var(--how-band));
-  --how-ink-2: color-mix(in oklab, var(--ink) 72%, var(--how-band));
+  /* The pinned stage's band: a stone desk, a step lighter than the stone
+     and warmed toward the night, lit from the top left and shaded at the
+     foot as every desk is (31-figures.css paints the light), so the sheet
+     lies on a lit plane rather than a grey field. */
+  --how-band: color-mix(
+    in oklab,
+    var(--night) 4%,
+    color-mix(in oklab, var(--stone) 70%, var(--paper-2))
+  );
+  --how-light: color-mix(in srgb, var(--white) 62%, transparent);
+  --how-shade: color-mix(in srgb, var(--night) 9%, transparent);
+  /* Text printed on the band (at least 6.5 : 1 where it is darkest); the
+     active step lies on a sheet instead. */
+  --how-ink: color-mix(in oklab, var(--ink) 86%, var(--how-band));
+  --how-ink-2: color-mix(in oklab, var(--ink) 76%, var(--how-band));
   --how-rule: color-mix(in srgb, var(--ink) 14%, transparent);
   padding-block: var(--pad);
 }
 .dark .home .how {
   --how-band: color-mix(in oklab, var(--night) 60%, var(--stone));
   --how-light: color-mix(in srgb, var(--white) 5%, transparent);
+  --how-shade: transparent;
   --how-ink: var(--ink-2);
   --how-ink-2: var(--ink-3);
 }
@@ -273,14 +282,24 @@
    step stays in view, so the rail never cuts one, and the list fills the
    column beside the sheet: the active step lies on a sheet of its own. */
 @media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  /* The band is the section's own ground here: the head and the foot pad
+     stand on the page's paper, so the band meets the Quiet slab across the
+     same paper margin every slab has. */
+  html.mo .home .how {
+    background: var(--paper);
+  }
   html.mo .home .how-run {
     --band-pad: 36px;
-    /* The scroll each step holds the stage for; the fourth holds it for
-       0.6 of one, so the runway is 3.6 beats. */
-    --beat: 300px;
-    --runway: calc(3.6 * var(--beat));
-    /* 600 px at the shortest pinned viewport (760), up to 680. */
-    --sheet-h: clamp(600px, calc(var(--vh, 100vh) - 220px), 680px);
+    /* The scroll each step holds the stage for: one Page Down or Space,
+       which Chromium and WebKit page by the viewport less 40 px. Four full
+       beats, so four presses from wherever the first lands show steps 1
+       to 4, each with the stage pinned. */
+    --beat: calc(var(--vh, 100vh) - 40px);
+    --runway: calc(4 * var(--beat));
+    /* 600 px at the shortest pinned viewport (760), up to 660: the step
+       list and figure 4, the tallest bodies, fit; no taller, so the other
+       figures keep a modest bottom margin rather than an empty field. */
+    --sheet-h: clamp(600px, calc(var(--vh, 100vh) - 220px), 660px);
     --stage-h: calc(var(--rail-h) + 20px + var(--sheet-h));
     /* Under the nav, or centred in a viewport taller than stage and nav. */
     --pin-top: max(var(--rail-top), calc((var(--vh, 100vh) - var(--stage-h)) / 2));
