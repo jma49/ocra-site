@@ -2,18 +2,18 @@
    The copy on the left, the bill leading; the example run's bill printed
    on one sheet on the right, which the pen totals in ink. The sheet is
    laid out in its own px, so the ink drawn on the server lands on its
-   column; phones scale the whole sheet. */
+   column; phones print a narrower sheet (features-bill.tsx). */
 
 .home .features {
   overflow-x: clip;
-  padding-block: clamp(112px, 15vh, 168px) clamp(96px, 12vh, 136px);
+  padding-block: clamp(96px, 12vh, 136px) clamp(48px, 6vh, 72px);
 }
 .home .feat-grid {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   column-gap: 56px;
   align-items: center;
-  min-height: 780px;
+  min-height: 728px;
 }
 
 /* ---- The copy ---- */
@@ -92,7 +92,7 @@
 /* ---- The bill: one printed sheet, the total in ink ---- */
 .home .feat-scene {
   position: relative;
-  height: 780px;
+  height: 728px;
 }
 .home .feat-sheet {
   --w: 560px;
@@ -207,18 +207,34 @@
   mix-blend-mode: soft-light;
   opacity: calc(var(--hover) * 0.7);
 }
-.home .feat-ink {
+/* The ink and the pen lie in the wide sheet's px (phones shift them). */
+.home .feat-over {
   position: absolute;
   left: 0;
   top: 0;
   z-index: 2;
-  overflow: visible;
+  width: 560px;
+  height: 700px;
   pointer-events: none;
+}
+.home .feat-ink {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+.home .feat-narrow {
+  display: none;
 }
 .home .feat-pen {
   --pen-s: 0.82;
 }
 
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .home .feat-sheet {
+    margin-left: -292px;
+  }
+}
 @media (max-width: 1023px) {
   .home .feat-grid {
     display: block;
@@ -228,31 +244,71 @@
     max-width: 560px;
   }
   .home .feat-scene {
-    height: 760px;
-    margin-top: 48px;
-  }
-  .home .feat-sheet {
-    margin-left: -280px;
+    height: 740px;
+    margin-top: 40px;
   }
 }
+/* Phones: a narrower sheet, upright and nearly at its own size, bleeding
+   a little past the screen's edges. It keeps the wide sheet's right-hand
+   px [120, 550] (the costs and the total), so the ink still lands;
+   the repository, the bundles and the helpers' names stay off. */
 @media (max-width: 759px) {
+  .home .features {
+    padding-block: 72px 40px;
+  }
   .home .feat-eyebrow {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
     font-size: 14px;
   }
   .home .feat-list {
-    margin-top: 36px;
+    margin-top: 28px;
+  }
+  .home .feat-item {
+    padding: 16px 0 18px;
+  }
+  .home .feat-item h3 {
+    font-size: 19px;
+  }
+  .home .feat-item p {
+    margin-top: 6px;
+    font-size: 15.5px;
   }
   .home .feat-scene {
-    --s: 0.66;
-    height: calc(700px * var(--s) + 72px);
-    margin-top: 32px;
+    --s: 0.93;
+    height: calc(724px * var(--s) + 36px);
+    margin-top: 28px;
   }
   .home .feat-sheet {
-    top: 20px;
-    margin: 0 0 0 -280px;
+    --w: 430px;
+    --h: 724px;
+    --r: 0deg;
+    top: 14px;
+    margin: 0 0 0 -215px;
     transform-origin: 50% 0;
     scale: var(--s);
+  }
+  .home .feat-wide {
+    display: none;
+  }
+  .home .feat-narrow {
+    display: inline;
+  }
+  .home .feat-over {
+    left: -120px;
+  }
+  /* No room to lie down: the pen writes, then leaves the frame. */
+  .home .features:not(.pen-in) .feat-pen {
+    visibility: hidden;
+  }
+  .home :is(.feat-top, .feat-cmd, .feat-cap, .feat-table, .feat-foot) {
+    left: 34px;
+    right: 34px;
+  }
+  .home .feat-cap {
+    font-size: 21px;
+  }
+  .home .feat-note {
+    white-space: normal;
   }
 }
 
@@ -293,15 +349,19 @@
   }
   html.mo .home .feat-row.on {
     clip-path: inset(0 0 0 0);
-    transition: clip-path 0.5s steps(18, end);
+    transition: clip-path 0.32s steps(12, end);
+  }
+  html.mo .home .feat-foot:not(.on) {
+    clip-path: inset(0 0 100% 0);
+  }
+  html.mo .home .feat-foot.on {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 0.42s steps(8, end);
   }
   html.mo .home .feat-ink .ink-s:not(.dry) .ink-run {
     stroke-dashoffset: 1;
   }
   html.mo .home .features:not(.pen-in) .feat-pen {
-    visibility: hidden;
-  }
-  html.mo .home .feat-ty:not(.typing, .typed) {
     visibility: hidden;
   }
 }
@@ -315,6 +375,24 @@
       animation-timeline: view();
       animation-range: entry 0% cover 42%;
     }
+  }
+}
+/* Phones land it upright: no rotated print at that size. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (max-width: 759px) {
+    html.mo .home .feat-sheet {
+      animation-name: feat-land-upright;
+    }
+  }
+}
+@keyframes feat-land-upright {
+  from {
+    --lift: 0.9;
+    translate: 0 70px;
+  }
+  to {
+    --lift: 0;
+    translate: 0 0;
   }
 }
 @keyframes feat-land {

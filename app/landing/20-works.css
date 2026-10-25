@@ -1,6 +1,7 @@
 /* Works where you work (works.tsx): the first full-bleed paper band. A
    poster headline, the spread (21-works-outputs.css), the provider index,
-   the pen resting above it. Printed ink on laser paper; red is the pen's. */
+   the pen lying at the paper's foot. Printed ink on laser paper; red is the
+   pen's. */
 
 .home .works {
   overflow-x: clip;
@@ -9,7 +10,7 @@
 }
 .home .works-in {
   position: relative;
-  padding-block: clamp(104px, 13vh, 150px) clamp(96px, 12vh, 140px);
+  padding-block: clamp(96px, 11vh, 132px) clamp(64px, 8vh, 96px);
 }
 
 /* ---- The poster: eyebrow, two lines across the page, the lede under ---- */
@@ -71,8 +72,8 @@
   grid-template-columns: auto minmax(0, 1fr);
   column-gap: 64px;
   align-items: start;
-  margin-top: clamp(80px, 11vh, 128px);
-  padding-top: 36px;
+  margin-top: clamp(48px, 6vh, 72px);
+  padding-top: 30px;
   border-top: 1px solid color-mix(in srgb, var(--print-ink) 16%, transparent);
 }
 .home .works-count {
@@ -86,7 +87,7 @@
   min-width: 1.02em;
   margin-left: -0.04em;
   font-family: var(--font-display);
-  font-size: clamp(132px, 15vw, 220px);
+  font-size: clamp(112px, 13vw, 188px);
   font-weight: 400;
   font-stretch: 70%;
   line-height: 0.8;
@@ -103,7 +104,7 @@
   max-width: 9em;
 }
 .home .works-ids {
-  font: 400 17px / 1.75 var(--font-mono);
+  font: 400 16px / 1.7 var(--font-mono);
   color: var(--print-ink);
   text-wrap: pretty;
 }
@@ -117,18 +118,19 @@
   color: var(--print-ink-3);
 }
 .home .works-more {
-  max-width: 52ch;
-  margin-top: 22px;
-  font-size: 18px;
+  max-width: 46ch;
+  margin-top: 18px;
+  font-size: 17px;
   line-height: 1.45;
   color: var(--print-ink-2);
 }
 
-/* The pen lies above the index, on the paper, after ringing 42 three times. */
+/* After ringing 42 three times the pen lies down at the paper's foot, on
+   the blank paper right of the closing line, off the text. */
 .home .works-pen-at {
   position: absolute;
-  right: 460px;
-  top: -30px;
+  right: 372px;
+  bottom: 6px;
   width: 0;
   height: 0;
 }
@@ -140,6 +142,17 @@ html.mo .home .features .pen-rig {
   animation: none;
 }
 
+/* Narrower, the closing line runs under where the pen lies: give it its
+   own strip of blank paper below. */
+@media (max-width: 1199px) {
+  .home .works-prov {
+    padding-bottom: 58px;
+  }
+  .home .works-pen-at {
+    right: 380px;
+    bottom: 12px;
+  }
+}
 @media (max-width: 1023px) {
   .home .works-head {
     display: block;
@@ -152,15 +165,12 @@ html.mo .home .features .pen-rig {
     display: block;
   }
   .home .works-count {
-    margin-bottom: 28px;
-  }
-  .home .works-pen-at {
-    right: 280px;
+    margin-bottom: 24px;
   }
 }
 @media (max-width: 759px) {
   .home .works-in {
-    padding-block: 88px 92px;
+    padding-block: 80px 64px;
   }
   .home .works-eyebrow {
     margin-bottom: 22px;
@@ -169,18 +179,27 @@ html.mo .home .features .pen-rig {
   .home .works-lede {
     font-size: 17px;
   }
+  .home .works-prov {
+    margin-top: 44px;
+    padding-top: 26px;
+    padding-bottom: 0;
+  }
+  .home .works-num {
+    font-size: 112px;
+  }
+  .home .works-gauge {
+    font-size: 19px;
+  }
   .home .works-ids {
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.65;
   }
   .home .works-more {
-    font-size: 16.5px;
+    font-size: 16px;
   }
+  /* Phones swipe the columns and ink the rings without the pen. */
   .home .works-pen-at {
-    right: 150px;
-    top: -26px;
-  }
-  .home .works-pen {
-    --pen-s: 0.62;
+    display: none;
   }
 }
 

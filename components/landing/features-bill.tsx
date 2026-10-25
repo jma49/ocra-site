@@ -11,8 +11,11 @@ import { handwrite, stroke, wobble } from "@/lib/landing/ink/stroke";
 // cost, then the pen draws the sum rule, writes the total by hand and
 // double-underlines it (A's ink totals the bill; no receipt). The printout
 // is laid out in the sheet's px (41-features.css) so the ink, drawn here
-// on the server, lands on its column at every width; phones scale the
-// whole sheet.
+// on the server, lands on its column at every width. Phones print a
+// narrower sheet, upright: the same right-hand side (the costs and the
+// total), the blank left margin trimmed off and the labels shortened, so
+// it reads near its own size instead of shrinking (.feat-over keeps the
+// ink and the pen on the wide sheet's px).
 
 const { calls, tasks, usage } = exampleRun;
 const round4 = (n: number) => Math.round(n * 1e4) / 1e4;
@@ -85,7 +88,10 @@ export function BillSheet({ s }: { s: Copy["features"]["sheet"] }) {
       <div className="sh sh-c" />
       <div className="sheet-face feat-face">
         <p className="feat-top">
-          <span>{s.head}</span>
+          <span>
+            <span className="feat-wide">{s.repo} · </span>
+            {s.pr}
+          </span>
           <span className="feat-tag">{s.tag}</span>
         </p>
         <p className="feat-cmd">$ {exampleRun.command}</p>
@@ -106,10 +112,15 @@ export function BillSheet({ s }: { s: Copy["features"]["sheet"] }) {
                 <th scope="row">
                   {l.bundle ? (
                     <>
-                      {l.id} <i>· {l.bundle}</i>
+                      {l.id} <i className="feat-wide">· {l.bundle}</i>
                     </>
                   ) : (
-                    s.helpers
+                    <>
+                      <span className="feat-wide">{s.helpers}</span>
+                      <span className="feat-narrow">
+                        {s.helpersShort} ×{helpers.length}
+                      </span>
+                    </>
                   )}
                 </th>
                 <td>
@@ -135,8 +146,10 @@ export function BillSheet({ s }: { s: Copy["features"]["sheet"] }) {
         </div>
         <div className="feat-sheen" />
       </div>
-      <InkLayer id="bill" className="feat-ink" width={BILL.w} height={BILL.h} marks={MARKS} />
-      <Pen className="feat-pen" rest={{ x: BILL.w - 34, y: BILL.h - 128, r: 34 }} />
+      <div className="feat-over">
+        <InkLayer id="bill" className="feat-ink" width={BILL.w} height={BILL.h} marks={MARKS} />
+        <Pen className="feat-pen" rest={{ x: BILL.w - 30, y: BILL.h - 130, r: 32 }} />
+      </div>
     </figure>
   );
 }
