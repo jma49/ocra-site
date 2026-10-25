@@ -1,183 +1,448 @@
-/* FAQ: a sticky head beside six native disclosures, one open at a time; a
-   plus that turns to a cross, and answers that ease open where the browser
-   can animate to `auto` (package C). */
+/* FAQ, on the desk (components/landing/faq.tsx, faq-file.tsx): a file of
+   index cards beside a sticky head. The open card is pulled out of the
+   file, straightened and lifted; its answer sits on the card's pale ruled
+   lines. The card's printed head rule is blue: red is the pen's. */
+
 .home .faq {
-  padding-block: var(--pad);
+  padding-block: 176px 190px;
+  overflow-x: clip;
 }
-.home .faq-grid {
+/* The desk runs on under the paper band's slanted foot (60-plans.css). */
+.home .faq .desk-ground {
+  top: -24px;
+}
+/* Where the paper band's foot lies on the desk: its shadow, which tightens
+   as the band settles (scrubbed). */
+.home .fq-drop {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: -30px;
+  height: 72px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--umbra) 72%, transparent),
+    transparent
+  );
+  filter: blur(6px);
+  rotate: -0.55deg;
+  translate: 0 8px;
+  opacity: 0.85;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.mo .home .fq-drop {
+      animation: fq-drop linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+@keyframes fq-drop {
+  from {
+    translate: 0 28px;
+    opacity: 0.45;
+  }
+  to {
+    translate: 0 8px;
+    opacity: 0.85;
+  }
+}
+
+.home .fq-in {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-  row-gap: 32px;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: clamp(40px, 5vw, 80px);
   align-items: start;
 }
-.home .faq-head {
-  grid-column: 1 / span 5;
+.home .fq-head {
   position: sticky;
-  top: 120px;
+  top: 150px;
 }
-.home .faq-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  margin-top: 20px;
+.home .fq-h {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(56px, 7.2vw, 104px);
   font-weight: 500;
-  font-size: 15px;
+  font-stretch: 72%;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--on-desk);
 }
-.home .faq-more .arrow-glyph {
-  margin-inline-start: 0;
-  transition: transform 250ms var(--e-enter);
+.home .fq-hl {
+  display: block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.04em;
 }
-@media (hover: hover) {
-  .home .faq-more:hover .arrow-glyph {
-    transform: translateX(3px);
-  }
+.home .fq-hli {
+  display: block;
 }
-.home .faq-list {
-  grid-column: 6 / -1;
-  border-top: 1px solid var(--line-2);
+.home .fq-more {
+  gap: 10px;
+  margin-top: 34px;
+  font-size: 17px;
+  color: var(--on-desk);
 }
-.home .faq-list details {
-  border-bottom: 1px solid var(--line);
-}
-.home .faq-list summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+
+/* ---- The file ---- */
+.home .fq-file {
   position: relative;
-  isolation: isolate;
-  min-height: 64px;
-  margin-inline: -12px;
-  padding: 14px 12px;
-  list-style: none;
+  padding: 8px 18px 0 0;
+}
+.home .fq-card {
+  --jx: 0px;
+  --jr: 0deg;
+  position: relative;
+  z-index: calc(10 - var(--i));
+  transform: translateX(var(--jx)) rotate(var(--jr));
+  transition:
+    transform 0.7s var(--e-settle),
+    --lift 0.5s var(--e-settle);
+}
+.home .fq-card + .fq-card {
+  margin-top: -12px;
+}
+.home .fq-card:nth-child(1) {
+  --jx: 1px;
+  --jr: -0.25deg;
+}
+.home .fq-card:nth-child(2) {
+  --jx: -2px;
+  --jr: 0.2deg;
+}
+.home .fq-card:nth-child(3) {
+  --jx: 3px;
+  --jr: -0.1deg;
+}
+.home .fq-card:nth-child(4) {
+  --jx: -1px;
+  --jr: 0.28deg;
+}
+.home .fq-card:nth-child(5) {
+  --jx: 2px;
+  --jr: -0.22deg;
+}
+.home .fq-card:nth-child(6) {
+  --jx: -1px;
+  --jr: 0.15deg;
+}
+.home .fq-card.open {
+  --jx: -16px;
+  --jr: 0deg;
+  --lift: 0.3;
+  z-index: 20;
+}
+.home .fq-lift {
+  position: relative;
+  transform: perspective(1400px) rotateX(calc(var(--ty, 0) * -0.35deg * var(--hover)))
+    rotateY(calc(var(--tx, 0) * 0.5deg * var(--hover)));
+}
+.home .fq-card .sh-a {
+  opacity: calc(0.5 - var(--L) * 0.16);
+}
+.home .fq-face {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  color: var(--print-ink);
+  background:
+    linear-gradient(
+      128deg,
+      color-mix(in srgb, var(--white) 70%, transparent),
+      transparent 40%,
+      color-mix(in srgb, var(--umbra) 4%, transparent)
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--white) 38%, transparent),
+      color-mix(in srgb, var(--white) 38%, transparent)
+    ),
+    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
+    var(--card-stock);
+  background-blend-mode: normal, normal, multiply, normal;
+  box-shadow:
+    inset 1px 1px 0 color-mix(in srgb, var(--white) 90%, transparent),
+    inset -1px -1px 0 color-mix(in srgb, var(--umbra) 7%, transparent);
+}
+.home .fq-q {
+  position: relative;
+  margin: 0;
+  font: inherit;
+}
+/* The card's printed head rule, shown on the open card. */
+.home .fq-q::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  border-block: 1px solid color-mix(in srgb, var(--card-line) 80%, transparent);
+  opacity: 0;
+  transition: opacity 0.4s var(--e-std);
+}
+.home .fq-card.open .fq-q::after {
+  opacity: 1;
+}
+.home .fq-q button {
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 28px;
+  align-items: center;
+  width: 100%;
+  min-height: 84px;
+  padding: 22px 26px 20px 24px;
+  font: 500 23px / 1.25 var(--font-sans);
+  letter-spacing: -0.012em;
+  color: var(--print-ink);
   cursor: pointer;
 }
-/* The row's hover tint, clear of the rules above and below it. */
-.home .faq-list summary::before {
-  content: "";
-  position: absolute;
-  inset: 4px 0;
-  z-index: var(--z-under);
-  border-radius: var(--r-ctl);
-  transition: background-color 200ms var(--e-std);
+.home .fq-q button:focus-visible {
+  outline: 2px solid var(--print-ink);
+  outline-offset: -6px;
+  border-radius: 4px;
 }
-.home .faq-list summary::-webkit-details-marker {
-  display: none;
-}
-.home .faq-list summary:focus-visible {
-  outline-offset: 2px;
-}
-
-/* The plus, drawn: two bars in a 32 px well that turns 45° into a cross
-   when its answer is open. Under a pointer the row takes the tint, the
-   well a second one, and the mark turns a quarter: still a plus, or still
-   a cross, so the hover never shows the other state. */
-.home .faq-icon {
+.home .fq-n {
   position: relative;
-  flex: none;
-  width: 32px;
-  height: 32px;
-  margin-inline-end: -6px;
-  border-radius: 50%;
-  transition:
-    background-color 150ms var(--e-std),
-    rotate 200ms var(--e-std);
+  font: 400 16px / 1 var(--font-mono);
+  color: var(--print-ink-3);
 }
-.home .faq-icon::before,
-.home .faq-icon::after {
+.home .fq-num {
+  transition: opacity 0.4s var(--e-std);
+}
+.home .fq-card.read .fq-num {
+  opacity: 0.3;
+}
+.home .fq-tick {
+  position: absolute;
+  left: -8px;
+  top: -16px;
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+  pointer-events: none;
+}
+.home .fq-tick .ink-run {
+  transition: stroke-dashoffset 420ms var(--e-stroke) var(--tick-at, 360ms);
+}
+.home .fq-card:not(.read) .fq-tick .ink-run {
+  stroke-dashoffset: 1;
+  transition: none;
+}
+.home .fq-card:not(.read) .fq-tick .ink-bleed {
+  opacity: 0;
+}
+/* Plus, and minus once open. */
+.home .fq-i {
+  position: relative;
+  justify-self: end;
+  width: 16px;
+  height: 16px;
+}
+.home .fq-i::before,
+.home .fq-i::after {
   content: "";
   position: absolute;
-  inset-inline: 8px;
-  top: 15.25px;
+  left: 0;
+  right: 0;
+  top: 7.25px;
   height: 1.5px;
-  border-radius: 1px;
-  background: var(--ink);
+  background: var(--print-ink-2);
+  transition: rotate 0.45s var(--e-settle);
 }
-.home .faq-icon::after {
+.home .fq-i::after {
   rotate: 90deg;
 }
-.home .faq-list details[open] .faq-icon {
-  rotate: 45deg;
-}
-@media (hover: hover) {
-  .home .faq-list summary:hover::before,
-  .home .faq-list summary:hover .faq-icon {
-    background: var(--tint);
-  }
-  .home .faq-list summary:hover .faq-icon {
-    rotate: 90deg;
-  }
-  .home .faq-list details[open] summary:hover .faq-icon {
-    rotate: 135deg;
-  }
-}
-.home .faq-list p {
-  max-width: 60ch;
-  padding: 0 56px 22px 0;
+.home .fq-card.open .fq-i::after {
+  rotate: 0deg;
 }
 
-/* Answers ease open and shut (a user's action, so no pre-play state); the
-   browsers that cannot animate to `auto` simply switch. */
-@media (prefers-reduced-motion: no-preference) {
-  .home .faq-list {
-    interpolate-size: allow-keywords;
-  }
-  .home .faq-list details::details-content {
-    block-size: 0;
-    overflow-y: clip;
-    transition:
-      block-size 320ms var(--e-enter),
-      content-visibility 320ms var(--e-enter) allow-discrete;
-  }
-  .home .faq-list details[open]::details-content {
-    block-size: auto;
-  }
+/* The answer: the rows grow from nothing; the text settles in. */
+.home .fq-a {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--e-settle);
 }
-@media (prefers-reduced-motion: reduce) {
-  .home .faq-icon {
-    transition: none;
-  }
+.home .fq-card.open .fq-a {
+  grid-template-rows: 1fr;
+}
+.home .fq-a-in {
+  min-height: 0;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 31px,
+      color-mix(in srgb, var(--card-line) 40%, transparent) 31px 32px
+    )
+    0 10px / 100% calc(100% - 10px) no-repeat;
+}
+.home .fq-a p {
+  max-width: 62ch;
+  margin: 0;
+  padding: 10px 40px 30px 80px;
+  font: 400 18px / 32px var(--font-sans);
+  color: var(--print-ink);
+  text-wrap: pretty;
+  opacity: 0;
+  translate: 0 -6px;
+  transition:
+    opacity 0.35s var(--e-std),
+    translate 0.6s var(--e-settle);
+}
+.home .fq-card.open .fq-a p {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: 0.12s;
+}
+/* A sheen follows the pointer across the card (the shared hover physics). */
+.home .fq-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(
+    40% 120% at calc(50% + var(--tx, 0) * 50%) calc(30% + var(--ty, 0) * 40%),
+    color-mix(in srgb, var(--white) 60%, transparent),
+    transparent 70%
+  );
+  mix-blend-mode: soft-light;
+  opacity: calc(var(--hover) * 0.7);
 }
 
-/* 1024 and 768: one column; the head is not sticky. */
-@media (max-width: 1199px) {
-  .home .faq-head,
-  .home .faq-list {
-    grid-column: 1 / -1;
-  }
-  .home .faq-head {
-    position: static;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: space-between;
-    column-gap: var(--gap);
-  }
-  .home .faq-more {
-    margin-top: 0;
-  }
+/* ---- Chinese: its own sizes ---- */
+.home .fq-h:lang(zh) {
+  font-family: var(--font-sans);
+  font-size: clamp(44px, 5.8vw, 84px);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+}
+.home .fq-q button:lang(zh) {
+  font-size: 21px;
+  letter-spacing: 0.02em;
+}
+.home .fq-a p:lang(zh) {
+  font-size: 17px;
+  letter-spacing: 0.02em;
 }
 
-/* 390: every answer starts closed (faq.tsx), summaries 56 px. */
-@media (max-width: 599px) {
-  .home .faq-grid {
-    row-gap: 20px;
+/* ---- Widths ---- */
+@media (max-width: 1023px) {
+  .home .faq {
+    padding-block: 132px 140px;
   }
-  .home .faq-head {
+  .home .fq-in {
     display: block;
   }
-  .home .faq-more {
-    margin-top: 4px;
+  .home .fq-head {
+    position: relative;
+    top: 0;
   }
-  .home .faq-list summary {
-    min-height: 56px;
-    margin-inline: -8px;
-    padding: 8px;
+  .home .fq-more {
+    margin-top: 18px;
   }
-  .home .faq-list p {
-    padding-inline-end: 0;
-    padding-bottom: 22px;
+  .home .fq-file {
+    margin-top: 48px;
+    padding: 0;
+  }
+}
+@media (max-width: 639px) {
+  .home .faq {
+    padding-block: 112px 120px;
+  }
+  .home .fq-h {
+    font-size: clamp(50px, 14vw, 72px);
+  }
+  .home .fq-h:lang(zh) {
+    font-size: 11.4vw;
+  }
+  .home .fq-q button {
+    grid-template-columns: 40px minmax(0, 1fr) 22px;
+    min-height: 74px;
+    padding: 18px 16px 16px;
+    font-size: 19px;
+  }
+  .home .fq-q button:lang(zh) {
+    font-size: 18px;
+  }
+  .home .fq-n {
+    font-size: 14px;
+  }
+  .home .fq-tick {
+    left: -10px;
+    top: -17px;
+  }
+  .home .fq-a p {
+    padding: 8px 20px 26px 56px;
+    font-size: 16.5px;
+    line-height: 30px;
+  }
+  .home .fq-a p:lang(zh) {
+    font-size: 16px;
+  }
+  .home .fq-a-in {
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0 29px,
+        color-mix(in srgb, var(--card-line) 40%, transparent) 29px 30px
+      )
+      0 8px / 100% calc(100% - 8px) no-repeat;
+  }
+  .home .fq-card:nth-child(n) {
+    --jx: 0px;
+    --jr: 0deg;
+  }
+  .home .fq-card:nth-child(even) {
+    --jx: 2px;
+    --jr: 0.25deg;
+  }
+  .home .fq-card:nth-child(3n) {
+    --jx: -2px;
+    --jr: -0.2deg;
+  }
+  .home .fq-card.open:nth-child(n) {
+    --jx: -6px;
+    --jr: 0deg;
+  }
+}
+
+/* ---- Before play (faq-file.tsx); the server paints the final state ---- */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .faq:not(.dealt) .fq-card {
+    opacity: 0;
+  }
+  html.mo .home .faq:not(.dealt) .fq-tick .ink-run {
+    stroke-dashoffset: 1;
+  }
+  html.mo .home .faq .fq-card.read .fq-tick .ink-bleed {
+    opacity: 1;
+    transition: opacity 180ms var(--e-std) calc(var(--tick-at, 360ms) + 420ms);
+  }
+  html.mo .home .fq-head:not(.in) .fq-hli {
+    translate: 0 106%;
+  }
+  html.mo .home .fq-head:not(.in) .fq-more {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  html.mo .home .fq-head .fq-hli {
+    transition: translate 1s var(--e-settle);
+  }
+  html.mo .home .fq-head .fq-hl:nth-child(2) .fq-hli {
+    transition-delay: 90ms;
+  }
+  html.mo .home .fq-head .fq-more {
+    transition:
+      opacity 0.7s var(--e-std) 0.3s,
+      translate 0.9s var(--e-settle) 0.3s;
   }
 }
