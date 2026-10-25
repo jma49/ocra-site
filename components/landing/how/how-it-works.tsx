@@ -45,10 +45,11 @@ function StageNames({ stages }: { stages: readonly Stage[] }) {
   );
 }
 
-// One story figure: a complete desk with the sheet bar of the example's pull
-// request and the Example run chip (described by the caption under the
-// heading), then the figure's own body under a head naming its stages.
-// `data-pen="on"`: its marks draw when the story island gives it `.on`.
+// One story figure: a sheet with the bar of the example's pull request and
+// the Example run chip (described by the caption under the heading), then
+// the figure's own body under a head naming its stages. On a desk when the
+// story flows; pinned, the band is its desk. `data-pen="on"`: its marks
+// draw when the story island gives it `.on`.
 function Figure({
   n,
   id,
@@ -104,8 +105,9 @@ function Figure({
 
 // How it works (sections.md §4): one pull request walked through the
 // pipeline. In reading order, step n then figure n. Pinned (≥ 1200 × 760,
-// with motion) the figures share one sticky place beside the steps and the
-// meter row sticks above them; otherwise step and figure flow together
+// with motion) the stage, the meter row over the step list and the figures
+// stacked in one place, holds still on a full-bleed band while the reader
+// scrolls past one cue per step; otherwise step and figure flow together
 // (30-how.css). The island plays it; the server renders it finished.
 export function HowItWorks({ copy }: { copy: Copy["how"] }) {
   const f = copy.figures;
@@ -142,45 +144,52 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
           </div>
         </div>
         <Story pass={f.pass}>
-          <Meter
-            groups={STEPS.map((id) => copy.steps[id].stages)}
-            label={f.meter}
-            pass={fill(f.pass, { n: 1 })}
-          />
-          <div className="story" data-step="1">
-            {STEPS.map((id, i) => {
-              const step = copy.steps[id];
-              const n = i + 1;
-              return (
-                <Fragment key={id}>
-                  <div
-                    className={n === 1 ? "step is-on" : "step"}
-                    id={`step-${n}`}
-                    data-i={n}
-                    style={{ "--i": n } as CSSProperties}
-                  >
-                    <h3 className="step-h" id={`step-${n}-h`}>
-                      <button type="button" className="step-go" data-go={n}>
-                        <span className="step-n">{n}</span>
-                        <span className="step-t t-h3">{step.title}</span>
-                      </button>
-                    </h3>
-                    <p className="step-stages">
-                      <Chips stages={step.stages} />
-                    </p>
-                    <p className="t-body step-text">{withCode(step.text)}</p>
-                  </div>
-                  <Figure
-                    n={n}
-                    id={id}
-                    stages={step.stages}
-                    count={counts[id]}
-                    chip={copy.exampleChip}
-                    f={f}
-                  />
-                </Fragment>
-              );
-            })}
+          <div className="how-stage">
+            <Meter
+              groups={STEPS.map((id) => copy.steps[id].stages)}
+              label={f.meter}
+              pass={fill(f.pass, { n: 1 })}
+            />
+            <div className="story" data-step="1">
+              {STEPS.map((id, i) => {
+                const step = copy.steps[id];
+                const n = i + 1;
+                return (
+                  <Fragment key={id}>
+                    <div
+                      className={n === 1 ? "step is-on" : "step"}
+                      id={`step-${n}`}
+                      data-i={n}
+                      style={{ "--i": n } as CSSProperties}
+                    >
+                      <h3 className="step-h" id={`step-${n}-h`}>
+                        <button type="button" className="step-go" data-go={n}>
+                          <span className="step-n">{n}</span>
+                          <span className="step-t t-h3">{step.title}</span>
+                        </button>
+                      </h3>
+                      <p className="step-stages">
+                        <Chips stages={step.stages} />
+                      </p>
+                      <p className="t-body step-text">{withCode(step.text)}</p>
+                    </div>
+                    <Figure
+                      n={n}
+                      id={id}
+                      stages={step.stages}
+                      count={counts[id]}
+                      chip={copy.exampleChip}
+                      f={f}
+                    />
+                  </Fragment>
+                );
+              })}
+            </div>
+          </div>
+          <div className="how-cues" aria-hidden="true">
+            {STEPS.map((id, i) => (
+              <span key={id} className="how-cue" data-i={i + 1} />
+            ))}
           </div>
         </Story>
       </div>

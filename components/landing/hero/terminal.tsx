@@ -38,15 +38,23 @@ const COMPRESS = 80;
 const [setupAt = 0, ...laterAt] = printedAt();
 const blockAt = laterAt.map((t) => Math.round(BEAT + (t - setupAt) / COMPRESS));
 
+// Lying under the pull request, the terminal shows the end of its run, as a
+// terminal left open after a run does: its bar, then the verdict line, the
+// blocks before it scrolled away (12-terminal.css).
+const verdictAt = terminalLines.findIndex(([text]) => text.startsWith("Verdict:"));
+if (verdictAt < 0) throw new Error("terminal: no verdict line in terminalLines");
+const placeOf = (i: number) => (i < verdictAt ? "before" : i === verdictAt ? "verdict" : "after");
+
 // The terminal pane: the same run as the CLI printed it, verbatim
 // (terminalLines; recorded.ts checks every line), one row per printed line
 // so a wrapped line hangs at its own indent, as a terminal would show it.
 // The whole text is rendered and only clipped while it plays, so the pane
-// never changes size.
+// never changes size. The leaf is the sheet's printed face, clipped to the
+// paper.
 export function Terminal({ copy }: { copy: Copy["window"] }) {
   const [, setup, ...later] = terminalLines;
   return (
-    <div className="term-pane">
+    <div className="term-pane leaf">
       <div className="sheet-bar">
         <span className="url" id="term-url">
           {copy.urls.terminal}
@@ -61,13 +69,13 @@ export function Terminal({ copy }: { copy: Copy["window"] }) {
         // biome-ignore lint/a11y/noNoninteractiveTabindex: output that scrolls must take focus to scroll by keyboard
         tabIndex={0}
       >
-        <span className="term-line term-c">
+        <span className="term-line term-c" data-at="before">
           <span className="term-sign">$ </span>
           {exampleRun.command}
         </span>
-        {setup && <Block block={setup} />}
+        {setup && <Block block={setup} place={placeOf(1)} />}
         {later.map((block, i) => (
-          <Block key={block[0]} block={block} at={blockAt[i]} />
+          <Block key={block[0]} block={block} at={blockAt[i]} place={placeOf(i + 2)} />
         ))}
       </pre>
     </div>
@@ -75,16 +83,20 @@ export function Terminal({ copy }: { copy: Copy["window"] }) {
 }
 
 // One printed block; with `at`, it wipes in at that time once the pane opens.
+// `place` is where it was printed relative to the verdict.
 function Block({
   block: [text, tone],
   at,
+  place,
 }: {
   block: (typeof terminalLines)[number];
   at?: number;
+  place: ReturnType<typeof placeOf>;
 }) {
   return (
     <span
       className={`term-line${tone ? ` term-${tone}` : ""}${at === undefined ? "" : " term-later"}`}
+      data-at={place}
       style={at === undefined ? undefined : ({ "--t": `${at}ms` } as CSSProperties)}
     >
       {text.split("\n").map((line, n) => (

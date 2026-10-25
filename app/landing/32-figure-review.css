@@ -21,13 +21,13 @@
 }
 .home .fig-found-note {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.2;
   color: var(--pen);
 }
 .home .fig-found-path {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 14px;
   color: var(--ink-3);
 }
 .home .fig-code {
@@ -42,7 +42,7 @@
 .home .fig-quotes {
   padding-inline-start: 56px;
   font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--ink-3);
 }
 /* The agent's quote, set over line 42's own text (2 ch in). */
@@ -58,8 +58,8 @@
 }
 
 /* ---- 4 · filter · verify · judge · verdict ---- */
-/* Fixed rows (28 and 60 px, the em of the 16 px list): figure-verify.tsx
-   draws the judge's arrow to scale from them. Every cell lines up with the
+/* Fixed rows (36 and 72 px, 2.25 and 4.5 em of the 16 px list):
+   figure-verify.tsx draws the judge's arrow to scale from them. Every cell lines up with the
    title's first line (--tl, its line box), however many lines follow it. */
 .home .fig-claims {
   --tl: 20.8px;
@@ -69,10 +69,10 @@
 .home .fig-group-k {
   display: flex;
   align-items: center;
-  height: 28px;
+  height: 36px;
   padding-inline-start: 2.5em;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-3);
 }
 .home .fig-claim {
@@ -81,13 +81,13 @@
   align-items: start;
   align-content: center;
   column-gap: 10px;
-  height: 60px;
+  height: 72px;
   border-top: 1px solid var(--line);
 }
 .home .fig-group:last-child .fig-claim:last-child {
   height: auto;
-  min-height: 60px;
-  padding-block: 10px;
+  min-height: 72px;
+  padding-block: 14px;
 }
 .home .fig-claim .fig-gut {
   justify-self: end;
@@ -95,7 +95,7 @@
 }
 .home .fig-n {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   line-height: var(--tl);
   color: var(--ink-3);
 }
@@ -114,20 +114,20 @@
   color: var(--ink-2);
 }
 .home .fig-gloss {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.35;
   color: var(--ink-3);
 }
 .home .fig-reason {
   margin-top: 2px;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
   color: var(--ink-3);
 }
 .home .fig-outcome {
   max-width: 15.5em;
-  padding-top: calc((var(--tl) - 13.5px * 1.35) / 2);
-  font-size: 13.5px;
+  padding-top: calc((var(--tl) - 14.5px * 1.35) / 2);
+  font-size: 14.5px;
   line-height: 1.35;
   text-align: end;
   color: var(--ink-3);
@@ -166,7 +166,7 @@
 }
 .home .fig-critical {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--pen);
 }
 

@@ -34,6 +34,20 @@
     margin-bottom: -20px;
   }
 }
+/* Chinese keeps its two clauses as lines at every width. Below 600 px each
+   splits once, at the U+200B after 已经, into matching pairs (在团队已经 /
+   在用的地方审查，用你已经 / 在付费的模型。); the 9em measure forces both
+   splits, so no width splits one clause and not the other. */
+@media (max-width: 1199px) {
+  .home .works:lang(zh) .works-h .l {
+    display: block;
+  }
+}
+@media (max-width: 599px) {
+  .home .works:lang(zh) .works-h .l {
+    max-inline-size: 9em;
+  }
+}
 /* The body's first line sits on the 45's cap height, so the two columns
    start together under the H2. */
 @media (min-width: 1200px) {
@@ -64,7 +78,9 @@
   border-radius: var(--r-ctl);
   background: var(--sheet);
   box-shadow: inset 0 0 0 1px var(--line);
-  transition: box-shadow 200ms var(--e-std);
+  transition:
+    box-shadow 200ms var(--e-std),
+    translate 200ms var(--e-std);
 }
 .home .works-tile > svg {
   flex: none;
@@ -87,9 +103,13 @@
   color: var(--ink-3);
   transition: color 200ms var(--e-std);
 }
+/* Under a pointer a tile lifts off the page, a sheet picked up. */
 @media (hover: hover) {
   .home .works-tile:hover {
-    box-shadow: inset 0 0 0 1px var(--line-2);
+    translate: 0 -2px;
+    box-shadow:
+      inset 0 0 0 1px var(--line-2),
+      var(--float);
   }
   .home .works-tile:hover code {
     color: var(--ink-2);

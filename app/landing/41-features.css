@@ -127,10 +127,18 @@
   transition: background-color 150ms var(--e-std);
 }
 /* The bars grow in the order the run made the calls when the ledger comes
-   into view (data-pen-once); finished without motion or JavaScript. */
+   into view or has been passed (FeaturesBook); finished without motion or
+   JavaScript. Each track arrives with its bar: an empty track would read
+   as a 0 % share. */
 @media (prefers-reduced-motion: no-preference) {
+  html.mo .home .feat-book:not(.on) .feat-bar {
+    background-color: transparent;
+  }
   html.mo .home .feat-book:not(.on) .feat-bar i {
     transform: scaleX(0);
+  }
+  html.mo .home .feat-book.on .feat-bar {
+    transition: background-color 240ms var(--e-std) calc(var(--r) * 60ms);
   }
   html.mo .home .feat-book.on .feat-bar i {
     transition:

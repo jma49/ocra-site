@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { type CSSProperties, Fragment, type ReactNode } from "react";
 import { EyesMark, LookingEyes } from "@/components/brand/eyes-mark";
 import { fill } from "@/lib/copy/define";
 import { span } from "@/lib/landing/pen";
@@ -47,26 +47,50 @@ type Row =
   | { custom: ReactNode; key: string };
 
 const KEYWORDS = /\b(export|interface|function|return|const|async|await|import|type)\b/;
+// Where a formatter would break a long line: after an opening parenthesis
+// that has something inside it.
+const OPENS = /(?<=\()(?!\))/;
+
+function Keywords({ code }: { code: string }) {
+  return code.split(KEYWORDS).map((part, i) =>
+    i % 2 ? (
+      // biome-ignore lint/suspicious/noArrayIndexKey: a fixed recorded line
+      <b key={i}>{part}</b>
+    ) : (
+      part
+    ),
+  );
+}
 
 // Keywords in weight 500, `//` comments in ink-3; the text is untouched, so
-// the row's <code> holds exactly the recorded line.
+// the row's <code> holds exactly the recorded line. The code is in runs
+// (`.cs`) split where a formatter would break it, with a <wbr> between, so
+// a row that must wrap can break there and nowhere else (13-hero-run.css).
 function Highlighted({ text }: { text: string }) {
   const comment = text.indexOf("//");
   const code = comment < 0 ? text : text.slice(0, comment);
-  const parts = code.split(KEYWORDS);
+  const runs = code ? code.split(OPENS) : [];
   return (
     <>
-      {parts.map((part, i) =>
-        i % 2 ? (
-          // biome-ignore lint/suspicious/noArrayIndexKey: a fixed recorded line
-          <b key={i}>{part}</b>
-        ) : (
-          part
-        ),
-      )}
+      {runs.map((run, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: a fixed recorded line
+        <Fragment key={i}>
+          {i > 0 && <wbr />}
+          <span className="cs">
+            <Keywords code={run} />
+          </span>
+        </Fragment>
+      ))}
       {comment >= 0 && <i>{text.slice(comment)}</i>}
     </>
   );
+}
+
+// Where a wrapped row continues: one indent (4) past its own, or, for a
+// comment, under the comment's text.
+function hangOf(text: string): number {
+  const indent = text.length - text.trimStart().length;
+  return indent + (text.trimStart().startsWith("//") ? 3 : 4);
 }
 
 function noteCol(text: string, note: NoteSpec): number {
@@ -142,7 +166,7 @@ export function CodeRows({
             data-hot={row.hot || undefined}
             data-anchor={anchored || undefined}
             data-hide={row.hide}
-            style={{ "--r": r } as CSSProperties}
+            style={{ "--r": r, "--hang": hangOf(text) } as CSSProperties}
           >
             {reader && (
               <span className="ln-rail" aria-hidden="true">

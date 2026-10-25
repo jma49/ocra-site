@@ -46,22 +46,34 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  position: relative;
+  isolation: isolate;
   min-height: 64px;
   margin-inline: -12px;
   padding: 14px 12px;
   list-style: none;
   cursor: pointer;
 }
+/* The row's hover tint, clear of the rules above and below it. */
+.home .faq-list summary::before {
+  content: "";
+  position: absolute;
+  inset: 4px 0;
+  z-index: var(--z-under);
+  border-radius: var(--r-ctl);
+  transition: background-color 200ms var(--e-std);
+}
 .home .faq-list summary::-webkit-details-marker {
   display: none;
 }
 .home .faq-list summary:focus-visible {
   outline-offset: 2px;
-  border-radius: var(--r-tab);
 }
 
-/* The plus, drawn: two bars in a 32 px well that takes the hover tint and
-   turns 45° into a cross when its answer is open. */
+/* The plus, drawn: two bars in a 32 px well that turns 45° into a cross
+   when its answer is open. Under a pointer the row takes the tint, the
+   well a second one, and the mark turns a quarter: still a plus, or still
+   a cross, so the hover never shows the other state. */
 .home .faq-icon {
   position: relative;
   flex: none;
@@ -90,8 +102,15 @@
   rotate: 45deg;
 }
 @media (hover: hover) {
+  .home .faq-list summary:hover::before,
   .home .faq-list summary:hover .faq-icon {
     background: var(--tint);
+  }
+  .home .faq-list summary:hover .faq-icon {
+    rotate: 90deg;
+  }
+  .home .faq-list details[open] summary:hover .faq-icon {
+    rotate: 135deg;
   }
 }
 .home .faq-list p {

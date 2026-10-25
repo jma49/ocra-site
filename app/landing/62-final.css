@@ -368,6 +368,18 @@
     --r-sheet: 12px;
     margin-top: 16px;
   }
+  /* On a phone the button itself is the bar's full 44 px; transparent
+     borders keep its fill at 32 px, with round corners inside them. */
+  .home .prompt-copy {
+    height: 44px;
+    margin-block: -3px;
+    border-block: 6px solid transparent;
+    border-radius: calc(var(--r-sheet) - 4px) / calc(var(--r-sheet) + 2px);
+    background-clip: padding-box;
+  }
+  .home .prompt-copy::before {
+    content: none;
+  }
 }
 /* Below 375 px the bar keeps the label and the button; the requirement
    is on the manual's installation page. */

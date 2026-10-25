@@ -1,3 +1,4 @@
+import { MAX_AGENT_STEPS } from "@/lib/landing/engine-facts";
 import type { FileId } from "@/lib/landing/example-run";
 import type { Bilingual, FromRun, Lines } from "../define";
 
@@ -85,7 +86,7 @@ export const how: Bilingual<HowCopy> = {
           { name: "review", kind: "model" },
           { name: "anchor", kind: "code" },
         ],
-        text: "An isolated agent reads the exact revision with read-only tools and stops after 30 steps. It quotes the code; ocra finds the quote in the diff and pins the comment there. The model never picks the line.",
+        text: `An isolated agent reads the exact revision with read-only tools and stops after ${MAX_AGENT_STEPS} steps. It quotes the code; ocra finds the quote in the diff and pins the comment there. The model never picks the line.`,
       },
       verify: {
         title: "Only what holds up on a second read",
@@ -117,7 +118,7 @@ export const how: Bilingual<HowCopy> = {
       matrix: "Review tasks per bundle and reviewer",
       reviewer: "Reviewer",
       skipDocs: "skip: docs",
-      readOnly: "read-only · capped at 30 steps",
+      readOnly: `read-only · capped at ${MAX_AGENT_STEPS} steps`,
       quotes: "The agent quotes",
       found: "ocra finds it in the diff",
       planNote:
@@ -168,7 +169,7 @@ export const how: Bilingual<HowCopy> = {
           { name: "review", kind: "model" },
           { name: "anchor", kind: "code" },
         ],
-        text: "每个隔离的 agent 用只读工具读取被审查的那个版本，最多执行 30 步。它引用代码，ocra 在 diff 里找到这段引用，把评论钉在那里。行号从来不由模型决定。",
+        text: `每个隔离的 agent 用只读工具读取被审查的那个版本，最多执行 ${MAX_AGENT_STEPS} 步。它引用代码，ocra 在 diff 里找到这段引用，把评论钉在那里。行号从来不由模型决定。`,
       },
       verify: {
         title: "只留下\u200b经得起重读的意见",
@@ -200,7 +201,7 @@ export const how: Bilingual<HowCopy> = {
       matrix: "每个 bundle 与审查员的审查任务",
       reviewer: "审查员",
       skipDocs: "跳过：文档",
-      readOnly: "只读 · 最多 30 步",
+      readOnly: `只读 · 最多 ${MAX_AGENT_STEPS} 步`,
       quotes: "agent 的引用",
       found: "ocra 在 diff 中找到它",
       planNote: "在付费调用任何模型之前列出任务。它跳过分组，所以每个文件一个 bundle。",

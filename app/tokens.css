@@ -4,10 +4,14 @@
    and one pen: the pen marks only where ocra acts on the reviewed change. */
 
 :root {
-  /* Grounds, lowest first: page, band, desk, sheet, inset. */
+  /* Grounds, lowest first: page, band, desk, sheet, inset. The page and
+     the sheets are neutral; the two mid-tones carry the night's hue (OKLCH
+     h 17) at a trace of chroma and at their neutral lightness, so contrast
+     on them is unchanged: paper-2 OKLCH 94.7 % 0.005, stone 79.9 % 0.009
+     (ink-2 7.6 : 1 and 4.7 : 1 on them). */
   --paper: #f7f7f7;
-  --paper-2: #ededed;
-  --stone: #bdbdbd;
+  --paper-2: #f1ecec;
+  --stone: #c3bbbb;
   --sheet: #ffffff;
   --sheet-2: #f2f2f2;
   /* Night is the pen's own dark, red ink rather than a neutral black
@@ -127,8 +131,9 @@
    sheet < inset); night bands are raised slabs above the page. */
 .dark {
   --paper: #121212;
-  --paper-2: #181818;
-  --stone: #1e1e1e;
+  /* The same trace of the night's hue: OKLCH 20.9 % 0.006, 23.5 % 0.006. */
+  --paper-2: #1b1717;
+  --stone: #211d1d;
   --sheet: #232323;
   --sheet-2: #2a2a2a;
   /* Raised 1.24 : 1 above the page; on-night-3 6.0 : 1 (night-2 5.3). */

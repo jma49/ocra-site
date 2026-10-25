@@ -58,7 +58,7 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
     background-color 150ms var(--e-std),
     box-shadow 150ms var(--e-std),
     color 150ms var(--e-std),
-    transform 120ms var(--e-std);
+    transform 200ms var(--e-std);
 }
 .btn .arrow-glyph {
   transition: transform 250ms var(--e-enter);
@@ -85,10 +85,18 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
   color: var(--on-night);
   box-shadow: inset 0 0 0 1px var(--line-night-2);
 }
+/* Under a pointer the button gives a little as it is reached, and a
+   little more as it is pressed; its arrow leans towards where it goes. */
 .btn:active {
   transform: scale(0.98);
 }
 @media (hover: hover) {
+  .btn:hover {
+    transform: scale(0.98);
+  }
+  .btn:hover:active {
+    transform: scale(0.96);
+  }
   .btn:hover .arrow-glyph {
     transform: translateX(3px);
   }

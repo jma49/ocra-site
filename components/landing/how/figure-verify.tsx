@@ -27,13 +27,13 @@ const GROUPS = [...new Set(claims.map((c) => c.task))].map((task) => ({
   claims: claims.filter((c) => c.task === task),
 }));
 
-// Rows in em of the 16 px list (31-figures.css fixes these heights), so the
+// Rows in em of the 16 px list (32-figure-review.css fixes these heights), so the
 // judge's arrow from #3 to #1 is drawn to scale. A row centres its title, or
 // its title and the gloss under it (zh), so a glossed title's line sits
 // `GLOSS_LIFT` above the row's middle.
-const TASK_ROW = 1.75;
-const CLAIM_ROW = 3.75;
-const GLOSS_LIFT = 0.58;
+const TASK_ROW = 2.25;
+const CLAIM_ROW = 4.5;
+const GLOSS_LIFT = 0.62;
 function titleMiddle(index: number, glossed: boolean): number {
   const claim = claims[index];
   const group = GROUPS.findIndex((g) => g.task === claim?.task);

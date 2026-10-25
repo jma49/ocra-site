@@ -1,6 +1,7 @@
 import type { Copy } from "@/lib/copy";
 import { fill } from "@/lib/copy/define";
 import { brandIcons } from "@/lib/landing/brand-icons";
+import { PROVIDERS } from "@/lib/landing/engine-facts";
 import { MarqueePause } from "./marquee-pause";
 import { Lines, Section } from "./section";
 
@@ -41,10 +42,6 @@ const ROW_B = [
   "novita",
   "vercel",
 ];
-// ocra Cloud's gateway forwards to 45 providers: PROVIDER_IDS in ocra's
-// packages/cloud-contract/src/providers.ts.
-const PROVIDERS_TOTAL = 45;
-
 // Each mark is drawn from the sprite (app/icons.svg/route.ts).
 function Icon({ name }: { name: string }) {
   return (
@@ -82,7 +79,7 @@ function Row({ row, reverse }: { row: readonly string[]; reverse?: boolean }) {
 
 // It runs where you already work, on the model you already pay for
 // (sections.md §3): the H2 on the page's headline step across the grid,
-// then the platforms beside the provider index, headed by 45.
+// then the platforms beside the provider index, headed by its count.
 export function Works({ copy }: { copy: Copy["works"] }) {
   return (
     <Section ground="paper" className="works" labelledBy="works-title">
@@ -108,8 +105,7 @@ export function Works({ copy }: { copy: Copy["works"] }) {
         </div>
         <div className="works-index">
           <h3 className="works-gauge">
-            <span className="t-gauge">{PROVIDERS_TOTAL}</span>{" "}
-            <span className="t-h4">{copy.gauge}</span>
+            <span className="t-gauge">{PROVIDERS}</span> <span className="t-h4">{copy.gauge}</span>
           </h3>
           <div className="mq">
             <Row row={ROW_A} />
@@ -117,7 +113,7 @@ export function Works({ copy }: { copy: Copy["works"] }) {
           </div>
           <div className="works-foot">
             <p className="t-small works-more">
-              {fill(copy.more, { count: PROVIDERS_TOTAL - ROW_A.length - ROW_B.length })}
+              {fill(copy.more, { count: PROVIDERS - ROW_A.length - ROW_B.length })}
             </p>
             <MarqueePause pause={copy.marquee.pause} play={copy.marquee.play} />
           </div>

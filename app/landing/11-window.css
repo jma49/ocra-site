@@ -1,22 +1,80 @@
 /* The product window: the desk in the hero, its tab row and Example run
-   chip, the two stacked panes (the pull request sizes the cell; the
-   terminal fills it and scrolls inside), the review's bar, file header and
-   foot, the summary row, and the caption with its key. */
+   chip, the two papers on it (the pull request in front sizes the scene;
+   the terminal lies behind it, up and to the right, until it is brought to
+   the top), the review's bar, file header and foot, the summary card over
+   the front paper's lower-left corner, and the caption with its key. */
 .home .product {
   margin: 0;
 }
-/* The desk's light and the papers under the shown sheet: 03-objects.css. */
+
+/* ---- The scene ----
+   Wider than a rim (the plane: 10-hero.css): the papers lie on it, the one
+   behind showing above and to the right of the one on top, the summary
+   card over its lower-left corner. */
+.home .hero .desk {
+  /* How far the paper behind rises above the one on top and lies to its
+     right, where it starts (from the front paper's left edge, clear of the
+     tabs and the chip), and how tall it is. */
+  --peek: 66px;
+  --shift: 36px;
+  --behind-x: 336px;
+  --behind-h: 300px;
+  padding: 12px 16px 14px 40px;
+  /* The paper behind is moved, not laid out, where it shows: its box runs
+     past the desk's edge and must not widen the page. */
+  overflow: clip;
+}
+/* The tab row and the chip on the plane, the paper behind beside them. */
 .home .hero .desk-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  height: 40px;
+  margin-bottom: calc(var(--peek) - 40px);
 }
 .home .hero .stack {
   position: relative;
+  margin-inline-end: var(--shift);
 }
-/* The pull request sizes the cell; the terminal takes the same box. */
+
+/* ---- The papers ----
+   Each pane is one paper: its ground and shadow drawn under it (::before),
+   its printed face (.leaf) clipped to the same rounded rectangle, so a
+   paper can lie half under another and still read as one sheet. The pull
+   request sizes the scene; the terminal takes the same box and scrolls
+   inside it. */
+.home .hero .pane {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+}
+.home .hero .pane::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--r-sheet);
+  background: var(--sheet);
+  box-shadow: var(--float);
+}
+.home .hero .pane .leaf {
+  clip-path: inset(0 round var(--r-sheet));
+}
+/* The shade on the paper behind, deepest where the one on top meets it. */
+.home .hero .pane::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--r-sheet);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--black) 2%, transparent),
+    color-mix(in srgb, var(--black) 7%, transparent) var(--peek)
+  );
+  opacity: 0;
+  pointer-events: none;
+}
 .home .hero .pane-terminal {
   position: absolute;
   inset: 0;
@@ -30,52 +88,90 @@
   flex: 1 1 auto;
 }
 
+/* The paper not on top lies behind, up and to the right: its bar and its
+   first line show (the terminal's is its verdict, 12-terminal.css), the
+   rest is under the paper on top. Inert, still drawn. */
+.home .hero .pane[data-inactive] {
+  z-index: -1;
+  visibility: visible;
+  translate: var(--behind-x) calc(-1 * var(--peek));
+}
+.home .hero .pane[data-inactive]::after {
+  inset: 0 calc(var(--behind-x) - var(--shift)) calc(100% - var(--behind-h)) 0;
+  opacity: 1;
+}
+.home .hero .pane[data-inactive]::before {
+  inset: 0 calc(var(--behind-x) - var(--shift)) calc(100% - var(--behind-h)) 0;
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--black) 8%, transparent),
+    0 1px 2px color-mix(in srgb, var(--black) 12%, transparent),
+    4px 18px 30px -16px color-mix(in srgb, var(--black) 26%, transparent);
+}
+.dark .home .hero .pane[data-inactive]::before {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--white) 7%, transparent),
+    0 1px 3px color-mix(in srgb, var(--black) 50%, transparent),
+    4px 18px 30px -16px color-mix(in srgb, var(--black) 60%, transparent);
+}
+.home .hero .pane[data-inactive] .leaf {
+  clip-path: inset(
+    0 calc(var(--behind-x) - var(--shift)) calc(100% - var(--behind-h)) 0 round var(--r-sheet)
+  );
+}
+/* Behind, the pull request shows its bar and its file's name, set up into
+   the strip; what follows lies under the terminal and is not drawn. */
+.home .hero .pane-pr[data-inactive] .file-h {
+  align-items: flex-start;
+  padding-top: 6px;
+}
+.home .hero .pane-pr[data-inactive] .leaf > :not(.sheet-bar, .file-h) {
+  visibility: hidden;
+}
+/* Where the paper behind shows, it can be picked up: a press brings it to
+   the top (window-tabs.tsx); under a pointer it lifts a little. The front
+   paper covers the rest of this target. */
+.home .hero .pane-lift {
+  position: absolute;
+  inset: 0 calc(var(--behind-x) - var(--shift)) calc(100% - var(--behind-h)) 0;
+  z-index: -1;
+  translate: var(--behind-x) calc(-1 * var(--peek));
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-sheet);
+  background: transparent;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .home .hero .stack:has(.pane-lift:hover) .pane[data-inactive] {
+    translate: var(--behind-x) calc(-1 * var(--peek) - 4px);
+  }
+}
+/* Choosing a tab swaps the two: the one chosen comes on top at once and
+   slides down into place as the other slides back under it. */
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .hero .pane {
+    transition: translate 240ms var(--e-enter);
+  }
+  html.mo .home .hero .pane::before {
+    transition:
+      inset 240ms var(--e-enter),
+      box-shadow 240ms var(--e-enter);
+  }
+  html.mo .home .hero .pane::after {
+    transition:
+      inset 240ms var(--e-enter),
+      opacity 240ms var(--e-enter);
+  }
+  html.mo .home .hero .pane .leaf {
+    transition: clip-path 240ms var(--e-enter);
+  }
+}
+
 /* The chip sits on the desk's tab row; below 600 px, in each sheet bar
    (whose mono face it must not take). */
 .home .hero .bar-chip {
   display: none;
   font-family: var(--font-sans);
-}
-
-/* ---- The review's bar ---- */
-.home .replay {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: none;
-  height: 30px;
-  margin-inline-start: auto;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--ink-2);
-  font: inherit;
-  font-family: var(--font-sans);
-  font-weight: 500;
-  font-size: 13px;
-  cursor: pointer;
-  /* Replay plays the theatre: it exists only once the clock does. */
-  visibility: hidden;
-  transition:
-    background-color 150ms var(--e-std),
-    color 150ms var(--e-std);
-}
-html.mo.hy .home .replay {
-  visibility: visible;
-}
-.home .replay svg {
-  display: block;
-  transition: transform 450ms var(--e-enter);
-}
-.home .replay:active svg {
-  transform: rotate(-200deg);
-}
-@media (hover: hover) {
-  .home .replay:hover {
-    background: var(--tint);
-    color: var(--ink);
-  }
 }
 
 /* ---- File header ---- */
@@ -103,30 +199,72 @@ html.mo.hy .home .replay {
   color: var(--ink-2);
 }
 /* As on GitHub, the hunk header follows the file header directly: one
-   hairline between them, no strip of empty sheet. */
+   hairline between them, no strip of empty sheet; the comment follows the
+   last row closely. */
 .home #review .code {
-  padding-top: 0;
+  padding-block: 0 0.3em;
 }
 .home #review .code > .ln-fold:first-child {
   margin-top: 0;
   border-top: 0;
 }
 
-/* ---- The foot: the comment, then the summary row ---- */
+/* ---- The foot: the comment ---- */
 /* The comment starts on the reader rail's inner edge, the line the margin
-   bar draws: the anchor and the comment it carries share one edge. */
+   bar draws: the anchor and the comment it carries share one edge. Under
+   it, room for the summary card's upper half. */
 .home .review-foot {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 8px;
-  padding: 4px 16px 16px 40px;
+  padding: 2px 16px 28px 40px;
   background: var(--sheet);
 }
 .home .review .comment {
   transition: box-shadow 200ms var(--e-std);
 }
-.home .summary-row {
-  min-width: 0;
+/* The suggestion never breaks inside what it inserts (" * 1000"). */
+.home #review .cm-sug ins {
+  white-space: nowrap;
+}
+
+/* ---- The summary card ----
+   The summary comment, posted with the inline one, as a card of its own
+   laid over the front paper's lower-left corner: half on the paper, half
+   on the desk. It goes under with its paper. */
+.home .review {
+  position: relative;
+}
+.home .hero .pane-pr .summary-row {
+  position: absolute;
+  left: -24px;
+  bottom: -20px;
+  z-index: 1;
+  width: max-content;
+  max-width: calc(100% + 24px);
+  height: 40px;
+  padding: 0 16px 0 10px;
+  gap: 9px;
+  border-radius: var(--r-ctl);
+  background: var(--sheet);
+  box-shadow: var(--float);
+  font-size: 13.5px;
+}
+.home .hero .pane-pr[data-inactive] .summary-row {
+  opacity: 0;
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html.mo .home .hero .pane-pr .summary-row {
+    transition:
+      opacity 200ms var(--e-std),
+      visibility 0s linear 0s;
+  }
+  html.mo .home .hero .pane-pr[data-inactive] .summary-row {
+    transition:
+      opacity 120ms var(--e-std),
+      visibility 0s linear 120ms;
+  }
 }
 .home .summary-row .summary-head {
   display: inline-flex;
@@ -134,25 +272,43 @@ html.mo.hy .home .replay {
   gap: 7px;
   min-width: 0;
 }
+/* The author gives way to the engine's heading (the avatar is the Actions
+   mark); it stays for screen readers. */
+.home .hero .summary-row .summary-who {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.home .hero .summary-row .sev-octagon {
+  width: 12px;
+  height: 12px;
+}
 .home .summary-row .summary-label {
+  margin-inline-start: 10px;
   font-size: 12.5px;
 }
 
 /* ---- Caption and key: the desk's foot ---- */
-/* Under the sheets, on the stone: what the example is, and the key to the
+/* Under the papers, on the plane: what the example is, and the key to the
    pen's three marks beside it, set off by a hairline (one column below
-   1024 px, the key a row under the caption). In ink, for the stone's
-   darker foot. */
+   1024 px, the key a row under the caption), in the night's tones. */
 .home .product-cap {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 10px;
-  margin-top: 10px;
-  padding: 4px 8px 2px;
-  color: var(--ink);
+  /* Clear of the summary card, which hangs 20 px below the front paper. */
+  margin-top: 40px;
+  padding: 0 0 4px;
+  color: var(--on-night-2);
 }
-.dark .home .product-cap {
-  color: var(--ink-2);
+.home .product-cap .product-key {
+  color: var(--on-night);
+}
+.home .product-cap .key-glyph {
+  stroke: var(--pen-night);
 }
 .home .product-what {
   display: grid;
@@ -180,20 +336,45 @@ html.mo.hy .home .replay {
     flex-direction: column;
     gap: 4px;
     padding-inline-start: 20px;
-    border-inline-start: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+    border-inline-start: 1px solid var(--line-night-2);
   }
 }
 
 /* Below 600: tabs fill the row; the chip moves into each sheet bar, where
    the pull request's URL gives way to it; the comment and the summary row
    take the sheet's full width. */
-@media (max-width: 599px) {
-  .home .hero .desk-top {
-    margin-bottom: 8px;
+/* Below 768 px a row too long for the paper breaks only where a formatter
+   would, after an opening parenthesis (code.tsx), and goes on one indent
+   past its own; a comment rewraps at its spaces under its own text.
+   Nothing breaks inside an expression, and line 42 never wraps. */
+@media (max-width: 767px) {
+  .home #review .code .ln:not([data-hot]) {
+    width: auto;
   }
-  .home .hero .desk-top .seg {
-    flex: 1 1 auto;
+  .home #review .code .ln:not([data-hot]) > code {
+    white-space: pre-wrap;
+    overflow-wrap: normal;
+    padding-inline-start: calc(var(--hang) * 1ch);
+    text-indent: calc(var(--hang) * -1ch);
   }
+  .home #review .code .cs {
+    white-space: pre;
+  }
+}
+/* 600–767: a narrower scene; the chip moves into each sheet bar, as below
+   600 px, so the paper behind can start right after the tabs. */
+@media (min-width: 600px) and (max-width: 767px) {
+  .home .hero .desk {
+    --shift: 24px;
+    --behind-x: 220px;
+    padding: 12px 12px 14px 28px;
+  }
+  .home .hero .pane-pr .summary-row {
+    left: -16px;
+    max-width: calc(100% + 16px);
+  }
+}
+@media (max-width: 767px) {
   .home .hero .desk-chip {
     display: none;
   }
@@ -206,26 +387,71 @@ html.mo.hy .home .replay {
   .home .hero .pane-pr .sheet-bar .bar-chip {
     margin-inline-start: -4px;
   }
-  .home .replay {
-    height: 44px;
-    margin-inline-end: -6px;
+}
+@media (max-width: 599px) {
+  /* One paper at a time on the narrow desk: the other shows only a lip of
+     paper above it, and the summary row closes the sheet. */
+  .home .hero .desk {
+    --peek: 0px;
+    --shift: 0px;
+    padding: 8px;
+  }
+  .home .hero .desk-top {
+    height: auto;
+    margin-bottom: 8px;
+  }
+  .home .hero .desk-top .seg {
+    flex: 1 1 auto;
+  }
+  .home .hero .pane::before {
+    border-radius: 12px;
+  }
+  .home .hero .pane .leaf,
+  .home .hero .pane[data-inactive] .leaf {
+    clip-path: inset(0 round 12px);
+  }
+  .home .hero .pane[data-inactive] {
+    translate: 0 -5px;
+    scale: 0.94 1;
+    transform-origin: 50% 0;
+  }
+  .home .hero .pane[data-inactive]::before {
+    inset: 0;
+    background: color-mix(in srgb, var(--black) 3%, var(--sheet));
+  }
+  .home .hero .pane[data-inactive]::after {
+    opacity: 0;
+  }
+  .dark .home .hero .pane[data-inactive]::before {
+    background: var(--sheet);
+  }
+  .home .hero .pane[data-inactive] .leaf {
+    visibility: hidden;
+  }
+  .home .hero .pane-lift {
+    display: none;
   }
   .home .file-h {
     padding: 0 12px;
   }
   .home .review-foot {
-    padding: 4px 8px 10px;
+    padding: 4px 8px 8px;
   }
-  .home .summary-row {
-    gap: 7px;
+  .home .hero .pane-pr .summary-row {
+    position: static;
+    width: auto;
+    max-width: none;
+    height: 36px;
+    margin: 0 8px 10px;
     padding: 0 10px;
+    gap: 7px;
+    border-radius: 8px;
+    background: var(--sheet-2);
+    box-shadow: none;
     font-size: 12.5px;
   }
-  /* The author and the label give way to the engine's heading; the label
-     stays for screen readers. */
-  .home .summary-row .summary-who {
-    display: none;
-  }
+  /* The label gives way to the engine's heading; it stays for screen
+     readers. */
   .home .summary-row .summary-label {
     position: absolute;
     width: 1px;

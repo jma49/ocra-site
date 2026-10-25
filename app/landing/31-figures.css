@@ -1,17 +1,27 @@
 /* The story figures, part one (sections.md §4, motion.md §6; package S):
    the frame every figure shares, how the pinned figures swap, and figures
-   1 (select · triage) and 2 (bundle · matrix). Each figure is a desk
-   holding one sheet: the example's pull request bar with the Example run
-   chip, then a body in three parts, its head, its content and a foot (the
-   tier, the plan line, the verdict) kept at the bottom, so the four line up
-   as they swap. Pinned, the desk is --desk-h (600 px, 30-how.css) and a
-   body at most 480. A figure's text is whole from its first frame; its
-   marks draw by the pen's "on" mode (04-pen.css), all within 800 ms of
-   `.on`. Figures 3 and 4: 32-figure-review.css. */
+   1 (select · triage) and 2 (bundle · matrix). Each figure is one sheet,
+   on a desk when the story flows and on the band when it is pinned (600
+   to 680 px tall, --sheet-h in 30-how.css): the example's pull request bar
+   with the Example run chip, then a body in three parts, its head, its
+   content and a foot (the tier, the plan line, the verdict) kept at the
+   bottom, so the four line up as they swap. A figure's text is whole from
+   its first frame; its marks draw by the pen's "on" mode (04-pen.css), all
+   within 800 ms of `.on`. Figures 3 and 4: 32-figure-review.css. */
 
 .home .fig .sheet {
   display: flex;
   flex-direction: column;
+}
+/* The example's bar, a step up from the shared 12.5 px so it reads beside
+   the 14 px body. */
+.home .fig .sheet-bar {
+  min-height: 46px;
+  font-size: 13.5px;
+}
+.home .fig .chip-example {
+  height: 28px;
+  font-size: 13px;
 }
 .home .fig-body {
   flex: 1;
@@ -19,8 +29,8 @@
   flex-direction: column;
   gap: 18px;
   min-height: 0;
-  padding: 24px 24px 26px;
-  font-size: 14px;
+  padding: 26px 28px 28px;
+  font-size: 15px;
   line-height: 1.45;
   color: var(--ink-2);
 }
@@ -36,16 +46,16 @@
   min-height: 22px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--line);
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.35;
   color: var(--ink-3);
 }
 .home .fig-stages {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 4px 16px;
+  gap: 4px 18px;
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--ink);
 }
 .home .fig-stages > span {
@@ -69,12 +79,46 @@
   min-height: 14px;
 }
 
-/* ---- Pinned: one desk, the bodies swap ---- */
+/* ---- Pinned: one sheet, the bodies crossfade ----
+   The four figures lie on one place; their bars and chips are the same,
+   so the sheet, its bar and its Example run chip stay put while only the
+   body changes, a 220 ms crossfade. */
 @media (min-width: 1200px) and (min-height: 760px) and (prefers-reduced-motion: no-preference) {
+  /* The band is the desk: edge to edge, no inset (its colours and the run
+     it paints: 30-how.css). The sheet lies on it with no bezel of its own. */
+  html.mo .home :is(.how-run, .how-stage)::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 100vw;
+    translate: -50% 0;
+    pointer-events: none;
+  }
+  html.mo .home .how-run::before {
+    z-index: -2;
+    inset-block: 0;
+    background: var(--how-band);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--white) 30%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--black) 8%, transparent);
+  }
+  /* The light falls on the stage from the top left and holds still with
+     it, so the pinned desk is lit the same at every step. */
+  html.mo .home .how-stage::before {
+    z-index: -1;
+    top: calc(-1 * var(--pin-top));
+    height: var(--vh, 100vh);
+    background: radial-gradient(70% 80% at 6% 0%, var(--how-light), transparent 72%);
+  }
+
   html.mo .home .fig .desk {
     display: flex;
     flex-direction: column;
-    height: var(--desk-h);
+    height: 100%;
+    padding: 0;
+    border-radius: var(--r-sheet);
+    background: none;
+    box-shadow: none;
   }
   html.mo .home .fig .sheet {
     flex: 1;
@@ -83,10 +127,14 @@
      change that flips this block (a full-page capture) must not leave
      every body half faded over the next. */
   html.mo .home .fig {
+    grid-row: 1 / 5;
+    position: relative;
+    z-index: 2;
+    height: var(--sheet-h);
     visibility: hidden;
   }
   html.mo .home .how-run[data-swap] .fig {
-    transition: visibility 0s linear 350ms;
+    transition: visibility 0s linear 240ms;
   }
   html.mo .home .fig.is-on {
     z-index: 1;
@@ -97,7 +145,7 @@
   }
   /* The leaving figure lies over the entering one with no ground of its
      own: only its body fades out. */
-  html.mo .home .fig:not(.is-on) :is(.desk, .sheet) {
+  html.mo .home .fig:not(.is-on) .sheet {
     background: none;
     box-shadow: none;
   }
@@ -106,39 +154,38 @@
   }
   html.mo .home .fig-body {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
-  /* The fade is shorter than the move, and the leaving body is gone as the
-     entering one rises, so neither a fast scroll nor a still 150 ms in
-     shows two bodies half faded over each other. */
+  /* Both run 220 ms at once; the leaving body drops fast and the entering
+     one rises evenly, so halfway through the leaving one is nearly gone. */
   html.mo .home .how-run[data-swap] .fig-body {
     transition:
-      opacity 120ms var(--e-enter),
-      transform 320ms var(--e-enter);
+      opacity 220ms var(--e-enter),
+      transform 220ms var(--e-enter);
   }
   html.mo .home .fig.is-out .fig-body {
-    transform: translateY(-12px);
+    transform: translateY(-6px);
   }
   html.mo .home .fig.is-on .fig-body {
     opacity: 1;
     transform: none;
   }
   html.mo .home .how-run[data-swap] .fig.is-on .fig-body {
-    transition-duration: 180ms, 320ms;
-    transition-delay: 60ms;
+    transition-timing-function: var(--e-std), var(--e-enter);
   }
-  /* The five files share the room the desk leaves, evenly. */
-  html.mo .home .fig-files {
+  /* The five files, and the matrix's rows, share the room the sheet
+     leaves, evenly. */
+  html.mo .home :is(.fig-files, .fig-matrix) {
     flex: 1;
   }
 }
 
 /* ---- 1 · select · triage ---- */
 .home .fig-files {
-  --fs: 14;
+  --fs: 15;
   display: grid;
   grid-auto-rows: minmax(56px, 1fr);
-  font-size: 14px;
+  font-size: 15px;
 }
 .home .fig-files li {
   display: grid;
@@ -157,11 +204,12 @@
   color: var(--ink-3);
 }
 .home .fig-why {
+  font-size: 14px;
   text-align: right;
   color: var(--ink-3);
 }
 .home .fig-tier {
-  --fs: 14;
+  --fs: 15;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -184,7 +232,7 @@
 /* ---- 2 · bundle · matrix ---- */
 .home .fig-bundles li {
   display: grid;
-  grid-template-columns: 6.5rem 4rem minmax(0, 1fr);
+  grid-template-columns: 7.5rem 4.5rem minmax(0, 1fr);
   align-items: baseline;
   column-gap: 12px;
   padding-block: 13px;
@@ -194,26 +242,26 @@
 .home .fig-paths,
 .home .fig-matrix :is(thead th, tbody th) {
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 14px;
 }
 .home .fig-bundle {
   color: var(--ink);
 }
 .home .fig-count {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
 .home .fig-paths {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-3);
   white-space: pre-wrap;
 }
 .home .fig-matrix {
-  --fs: 12.5;
+  --fs: 14;
   width: 100%;
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: 14.5px;
 }
 .home .fig-matrix :is(th, td) {
   height: 50px;
@@ -247,7 +295,7 @@
   color: var(--ink-2);
 }
 .home .fig-task code {
-  font-size: 12.5px;
+  font-size: 14px;
   color: var(--ink);
 }
 .home .fig-matrix td[data-skip] {
@@ -262,10 +310,10 @@
   padding: 14px 18px 15px;
   border-radius: var(--r-ctl);
   background: var(--sheet-2);
-  font-size: 13.5px;
+  font-size: 14.5px;
 }
 .home .fig-cmd {
-  --fs: 13.5;
+  --fs: 15;
   color: var(--ink);
 }
 .home .fig-plan-note {
