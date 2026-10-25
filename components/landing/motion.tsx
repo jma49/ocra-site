@@ -18,6 +18,8 @@ import { useEffect } from "react";
 // - The final band's eyes follow the pointer while the band is within a
 //   viewport of the screen, and blink only while it is in view (`.awake`).
 //   Pointer-driven, so it runs under Reduce motion too; the blink does not.
+// - Code rows (CodeRows) are a tab stop only while they overflow sideways,
+//   so the keyboard can scroll them; code that fits is never a dead stop.
 export function LandingMotion() {
   useEffect(() => {
     const root = document.documentElement;
@@ -35,6 +37,7 @@ export function LandingMotion() {
 
     cleanups.push(penOnce());
     cleanups.push(finalEyes());
+    cleanups.push(scrollFocus());
     return () => {
       for (const c of cleanups) c();
     };
@@ -70,6 +73,23 @@ function penOnce(): () => void {
   return () => {
     for (const io of observers.values()) io.disconnect();
   };
+}
+
+function scrollFocus(): () => void {
+  const blocks = [...document.querySelectorAll<HTMLElement>(".home .code[role='group']")];
+  const fit = (el: HTMLElement) => {
+    if (el.scrollWidth > el.clientWidth + 1) el.tabIndex = 0;
+    else el.removeAttribute("tabindex");
+  };
+  const ro = new ResizeObserver((entries) => {
+    for (const e of entries) fit(e.target as HTMLElement);
+  });
+  for (const el of blocks) ro.observe(el);
+  // The code face can arrive after the first measure and widen the rows.
+  document.fonts.ready.then(() => {
+    for (const el of blocks) fit(el);
+  });
+  return () => ro.disconnect();
 }
 
 // Travel of each pupil, in viewBox units: the big eyes and the small ones.
