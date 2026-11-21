@@ -37,7 +37,7 @@ export const hero: Bilingual<HeroCopy> = {
       label: (run) =>
         `Example run, pull request #${run.pr.number}: a printed page of ${run.finding.path}. A reading ruler stops under line ${run.finding.line}, ${run.finding.quote} A red pen underlines session.expiresAt, rings Date.now() and writes the fix, * 1000, in the margin. The verified finding, “${run.finding.title}”, is clipped to the page below the line.`,
       caption: (run) =>
-        `Example run · pull request #${run.pr.number} · recorded with the real ocra CLI and a scripted model`,
+        `Example run: pull request #${run.pr.number}, recorded with the real ocra CLI and a scripted model.`,
       meta: (run) => `+${run.diff.additions} −${run.diff.deletions} · page 2 of 2`,
       card: {
         where: (run) => `${run.finding.path.split("/").pop()}:${run.finding.line}`,
@@ -58,7 +58,7 @@ export const hero: Bilingual<HeroCopy> = {
       label: (run) =>
         `示例运行，拉取请求 #${run.pr.number}：打印出来的 ${run.finding.path} 一页。阅读尺停在第 ${run.finding.line} 行 ${run.finding.quote} 下方。红笔划出 session.expiresAt、圈出 Date.now()，在页边写下修复 * 1000。核实过的意见“${run.finding.title}”（每个会话都被当成已过期）夹在这一行下面。`,
       caption: (run) =>
-        `示例运行 · 拉取请求 #${run.pr.number} · 用真实的 ocra CLI 和脚本化模型录制 · 意见：每个会话都被当成已过期`,
+        `示例运行：拉取请求 #${run.pr.number}，用真实的 ocra CLI 和脚本化模型录制。意见：每个会话都被当成已过期。`,
       meta: (run) => `+${run.diff.additions} −${run.diff.deletions} · page 2 of 2`,
       card: {
         where: (run) => `${run.finding.path.split("/").pop()}:${run.finding.line}`,

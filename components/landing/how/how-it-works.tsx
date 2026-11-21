@@ -210,7 +210,6 @@ export function HowItWorks({ copy }: { copy: Copy["how"] }) {
       <DeskGround />
       <div className="how-pin">
         <header className="wrap how-head">
-          <p className="t-kicker how-kicker">{copy.label}</p>
           <h2 className="t-h2 how-h" id="how-title">
             {copy.lines.map((line, i) => (
               <span key={line} className="how-hl">

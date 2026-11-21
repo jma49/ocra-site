@@ -27,6 +27,16 @@
   isolation: isolate;
   background: var(--desk);
   color: var(--on-desk);
+  --focus: var(--on-desk);
+}
+/* A focus ring takes the ink of what it is drawn over: desk text on the
+   desk (the skip link and the announce line lie on the hero's), print on
+   paper, in both themes. */
+.home :is(.skip, .announce) {
+  --focus: var(--on-desk);
+}
+.home :is(.sheet-face, .card-face) {
+  --focus: var(--print-ink);
 }
 .home [data-ground="desk-evening"] {
   background: var(--desk-eve);
@@ -136,6 +146,7 @@
   position: relative;
   z-index: 1;
   color: var(--print-ink);
+  --focus: var(--print-ink);
 }
 .home .paper-band {
   position: relative;

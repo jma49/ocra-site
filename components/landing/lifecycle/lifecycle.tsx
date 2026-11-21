@@ -71,7 +71,6 @@ export function Lifecycle({ copy }: { copy: Copy["lifecycle"]; onLine?: string }
         <DeskGround />
         <div className="wrap life-in">
           <div className="life-copy">
-            <p className="t-kicker life-kicker">{copy.label}</p>
             <h2 className="t-h2 life-h" id="life-h">
               {copy.lines.map((line, i) => (
                 <span key={line} className="life-hl">
@@ -82,7 +81,10 @@ export function Lifecycle({ copy }: { copy: Copy["lifecycle"]; onLine?: string }
                 </span>
               ))}
             </h2>
-            <ol className="life-states" aria-label={copy.statesLabel}>
+            <p className="t-lede life-lede" id="life-lede">
+              {copy.lede}
+            </p>
+            <ol className="life-states" aria-labelledby="life-lede">
               {(["open", "fixed", "dismissed"] as const).map((st) => (
                 <li key={st} data-st={st}>
                   <span className="life-st-name">{copy.states[st].name}</span>

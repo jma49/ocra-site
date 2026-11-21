@@ -1,7 +1,6 @@
 import type { Bilingual, Lines } from "../define";
 
 interface WorksCopy {
-  eyebrow: string;
   // The poster's two lines; Chinese may break each once at its \u200b.
   lines: Lines;
   body: string;
@@ -31,7 +30,6 @@ interface WorksCopy {
 
 export const works: Bilingual<WorksCopy> = {
   en: {
-    eyebrow: "Works where you work",
     lines: ["Reviews where you work,", "on the model you pay for."],
     body: "Pull requests on GitHub, merge requests on GitLab, or any local branch. The same finding lands in each, on the line it quotes.",
     local: "Local branches",
@@ -52,7 +50,6 @@ export const works: Bilingual<WorksCopy> = {
     more: "Store a key for any of them in ocra Cloud, or point ocra at any OpenAI-compatible endpoint you run.",
   },
   zh: {
-    eyebrow: "在你工作的地方",
     lines: ["在你工作的\u200b地方审查，", "用你付费的\u200b模型。"],
     body: "GitHub 上的 pull request、GitLab 上的 merge request，或任何本地分支。同一条发现出现在每一处，落在它引用的那一行。",
     local: "本地分支",

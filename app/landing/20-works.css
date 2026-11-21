@@ -17,14 +17,13 @@
   padding-block: var(--head-top) clamp(64px, 8vh, 96px);
 }
 
-/* ---- The poster: eyebrow, two lines across the page, the lede under ---- */
+/* ---- The poster: two lines across the page, the lede under ---- */
 .home .works-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
   column-gap: 64px;
   align-items: end;
 }
-.home .works-eyebrow,
 .home .works-h {
   grid-column: 1 / -1;
 }

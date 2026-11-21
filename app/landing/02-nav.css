@@ -155,6 +155,7 @@
   --nav-t: var(--print-ink);
   --nav-a: var(--print-ink-2);
   --nav-l: color-mix(in srgb, var(--print-ink) 9%, transparent);
+  --focus: var(--print-ink);
   box-shadow:
     inset 0 0 0 1px var(--nav-l),
     0 10px 24px -14px color-mix(in srgb, var(--umbra) 30%, transparent);
@@ -299,6 +300,7 @@ html:not(.dark) .home .theme-sun,
   background: var(--sheet);
   box-shadow: var(--float);
   color: var(--ink);
+  --focus: var(--ink);
 }
 .home .nav-shell[data-open] .drawer {
   display: block;

@@ -6,7 +6,6 @@ interface Item {
 }
 
 interface FeaturesCopy {
-  eyebrow: string;
   lines: Lines;
   // The bill leads; the sheet beside the list is its printout.
   bill: Item;
@@ -35,7 +34,6 @@ const n = (v: number) => v.toLocaleString("en-US");
 
 export const features: Bilingual<FeaturesCopy> = {
   en: {
-    eyebrow: "Features",
     lines: ["You set", "the limits."],
     bill: {
       title: "Every attempt shows its bill",
@@ -66,7 +64,6 @@ export const features: Bilingual<FeaturesCopy> = {
     },
   },
   zh: {
-    eyebrow: "功能",
     lines: ["限度", "由你来定。"],
     bill: {
       title: "每次尝试都有账单",
