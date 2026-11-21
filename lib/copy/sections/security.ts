@@ -1,7 +1,6 @@
 import type { Bilingual, Lines } from "../define";
 
 interface SecurityCopy {
-  label: string;
   lines: Lines;
   body: string;
   // The poster: the refused paths, each with the rule that refuses it.
@@ -30,7 +29,6 @@ interface SecurityCopy {
 
 export const security: Bilingual<SecurityCopy> = {
   en: {
-    label: "Security",
     lines: ["Built for code", "you do not trust."],
     body: "A diff, a pull request title, an AGENTS.md: anything in the change can be written by an attacker. ocra assumes it is, and publishes its threat model with the code.",
     poster: {
@@ -73,7 +71,6 @@ export const security: Bilingual<SecurityCopy> = {
       "Agents are isolated, {steps} steps each. Every OpenCode built-in is off: {tools} and {n} more.",
   },
   zh: {
-    label: "安全",
     lines: ["为你不信任的", "代码而设计。"],
     body: "diff、PR 标题、AGENTS.md：改动里的任何内容都可能出自攻击者之手。ocra 默认就是这样，并把威胁模型和代码一起公开。",
     poster: {

@@ -3,10 +3,10 @@ import type { Bilingual, Lines } from "../define";
 type LifeState = "open" | "fixed" | "dismissed";
 
 interface LifecycleCopy {
-  label: string;
   lines: Lines;
+  // Under the H2, and the name of the states list: what the section is about.
+  lede: string;
   // The states of a finding after a push; Dismissed is the other ending.
-  statesLabel: string;
   states: Record<LifeState, { name: string; body: string }>;
   // Visible beside the desk: its pushes are not in the recording.
   illustration: string;
@@ -21,9 +21,8 @@ interface LifecycleCopy {
 
 export const lifecycle: Bilingual<LifecycleCopy> = {
   en: {
-    label: "One finding, after you push",
     lines: ["It follows", "the code."],
-    statesLabel: "What happens to a finding on the next push",
+    lede: "What happens to a finding on the next push.",
     states: {
       open: {
         name: "Open",
@@ -46,9 +45,8 @@ export const lifecycle: Bilingual<LifecycleCopy> = {
     thread: { key: "thread", open: "open", resolved: "resolved by ocra" },
   },
   zh: {
-    label: "推送之后的一条意见",
     lines: ["它跟着", "代码走。"],
-    statesLabel: "下次推送时，一条意见会怎样",
+    lede: "下次推送时，一条意见会怎样。",
     states: {
       open: {
         name: "未解决",

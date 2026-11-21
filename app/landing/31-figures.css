@@ -12,8 +12,12 @@
   height: 0;
   transform-origin: 0 0;
   /* Before the island fits it, and for good when the stage is still: the
-     last chapter (line 42, the finding, the bill) beside the copy. */
-  transform: translate(calc(100vw - 950px), calc(var(--vh, 100vh) / 2 - 770px));
+     last chapter (line 42, the finding, the bill) beside the copy, never
+     over it (the sheet starts 32 px past the copy's column, 30-how.css). */
+  transform: translate(
+    max(100vw - 950px, var(--gutter) + min(380px, 30vw) + 32px),
+    calc(var(--vh, 100vh) / 2 - 770px)
+  );
   will-change: transform;
 }
 html.mo .home .how-world [data-depth] {

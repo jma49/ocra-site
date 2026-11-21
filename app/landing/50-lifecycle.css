@@ -46,9 +46,15 @@
 
 /* The states: Open, then Fixed once the tick lands; Dismissed is the other
    ending, text only. */
+/* One line beside the desk, so the states keep their room on a short screen. */
+.home .life-lede {
+  margin-top: 20px;
+  color: var(--on-desk-2);
+  white-space: nowrap;
+}
 .home .life-states {
   display: grid;
-  margin-top: 40px;
+  margin-top: 32px;
 }
 .home .life-states li {
   position: relative;
@@ -236,7 +242,7 @@ html.mo .home .life .life-world [data-depth] {
   }
   /* The states close up so the last clears the caption under the H2. */
   .home .life-states {
-    margin-top: 28px;
+    margin-top: 22px;
   }
   .home .life-states li {
     padding-block: 13px 15px;
@@ -274,6 +280,10 @@ html.mo .home .life .life-world [data-depth] {
   }
   .home .life-copy {
     max-width: 560px;
+  }
+  .home .life-lede {
+    margin-top: 14px;
+    white-space: normal;
   }
   .home .life-states {
     margin-top: 18px;

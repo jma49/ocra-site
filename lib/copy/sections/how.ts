@@ -14,7 +14,6 @@ interface Stop {
 }
 
 interface HowCopy {
-  label: string;
   lines: Lines;
   body: string;
   legend: Record<StageKind, string>;
@@ -50,7 +49,6 @@ const n = formatCount;
 
 export const how: Bilingual<HowCopy> = {
   en: {
-    label: "How it works",
     lines: ["A model answers.", "Code checks the answer."],
     body: "Selection, bundling, anchoring and the verdict are tested code. A model is asked to group files, review, verify and judge, and every answer is checked against a schema before it moves on.",
     legend: { code: "code, deterministic", model: "model, judgment" },
@@ -139,7 +137,6 @@ export const how: Bilingual<HowCopy> = {
     claimGloss: { expired: "", user: "", twin: "", token: "" },
   },
   zh: {
-    label: "工作原理",
     lines: ["模型作答，", "代码核对。"],
     body: "选文件、分组、定位行号和给出结论，都是有测试的代码。模型只负责分组、审查、核实和裁决，它的每个回答都先通过 schema 校验，才进入下一步。",
     legend: { code: "代码，确定性", model: "模型，需判断" },

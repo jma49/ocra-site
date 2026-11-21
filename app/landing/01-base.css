@@ -26,7 +26,7 @@
   --gap: 56px;
   --pad: 120px;
   --pad-band: 128px;
-  /* A section's start to its first line (kicker or H2): 72 px on a phone,
+  /* A section's start to its H2: 72 px on a phone,
      108 px at 1440 x 900, less on a short screen. */
   --head-top: clamp(72px, min(3.66rem + 3.43vw, 12vh), 108px);
   background: var(--paper);
@@ -254,18 +254,6 @@
   font-size: 14px;
   line-height: 1.5;
 }
-/* Every section's kicker: a typed label over the H2, on desk and paper. */
-.home .t-kicker {
-  margin: 0 0 clamp(16px, 0.8rem + 0.8vw, 24px);
-  font: 400 15px / 1.2 var(--font-mono);
-  color: var(--ink-2);
-}
-.home :is([data-ground="desk"], [data-ground="desk-evening"]) .t-kicker {
-  color: var(--on-desk-2);
-}
-.home [data-ground="paper-band"] .t-kicker {
-  color: var(--print-ink-2);
-}
 .home .t-note {
   font-weight: 500;
   font-size: 12px;
@@ -280,9 +268,6 @@
 /* Secondary text takes the night's own tones. */
 .home [data-ground="night"] :is(.t-lede, .t-body, .t-small) {
   color: var(--on-night-2);
-}
-.home [data-ground="night"] .t-kicker {
-  color: var(--on-night-3);
 }
 @media (max-width: 599px) {
   .home .t-h4 {
@@ -299,9 +284,6 @@
   }
   .home .t-mono {
     font-size: 12px;
-  }
-  .home .t-kicker {
-    font-size: 14px;
   }
 }
 
