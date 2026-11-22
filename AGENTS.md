@@ -7,6 +7,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 - Next.js (App Router) + [Fumadocs](https://fumadocs.dev) + Tailwind CSS, deployed on Vercel.
 - Two languages: English at `/`, Chinese at `/zh`. Every page and every string exists in both.
 - `npm run verify`: `check` (Biome with warnings as errors, the colour check, knip, `npm test`), the build, `typecheck`, the schema check and the code face's glyph check. CI runs it; run it before every push.
+- CI follows the engine's `docs/ci.md` (targets, budgets, the rules that outrank speed): a job that sets up or runs longer than its ceiling in `.github/ci-budgets.json` fails the run.
 - **Nothing deploys automatically** (`vercel.json`: `git.deploymentEnabled: false`), neither pull requests nor `main`, because the Hobby plan rate-limits builds. Deploy hooks do not run while Git deployments are off. Check changes on a local `next build && next start`. Deploy as Working with agents says, with `VERCEL_SCOPE=<team> npm run deploy` (`scripts/deploy.sh`: the committed HEAD, which must be on `origin/main`, through a logged-in, pinned Vercel CLI), then open the changed pages live. Each deploy costs one build.
 
 | Path | Contents |
