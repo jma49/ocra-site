@@ -10,6 +10,7 @@ interface FeaturesCopy {
   // The bill leads; the sheet beside the list is its printout.
   bill: Item;
   rules: Item;
+  context: Item;
   fallback: Item;
   // The example run's bill, printed (features-bill.tsx): its head (the
   // repository, which phones leave off, and the pull request), what it
@@ -43,6 +44,10 @@ export const features: Bilingual<FeaturesCopy> = {
       title: "Your team's rules, without writing a plugin",
       body: "Put review rules in `.ocra/rules.json` and what the team learned in `.ocra/learnings/`, on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
     },
+    context: {
+      title: "Checked against what the change was for",
+      body: "Reviewers read the issues a pull request closes, the Jira or TAPD tasks it names and the design-document sections about its files. Pre-merge checks written as sentences each get a pass or fail with a reason.",
+    },
     fallback: {
       title: "When a model falls over, the next takes the task",
       body: "Each tier can list several models. Overloads move on; a model out of quota is dropped for the rest of the run.",
@@ -72,6 +77,10 @@ export const features: Bilingual<FeaturesCopy> = {
     rules: {
       title: "团队规则，不用写插件",
       body: "把审查规则写进基础分支上的 `.ocra/rules.json`，团队积累的经验写进 `.ocra/learnings/`。本地审查时，插件还能通过一套很小的接口添加规则、审查员、工具和监听器。",
+    },
+    context: {
+      title: "对照改动的初衷来审查",
+      body: "审查员会读 PR 关闭的 issue、它提到的 Jira 或 TAPD 任务，以及设计文档里涉及这些文件的章节。用一句话写的合并前检查，每条都会给出通过或不通过和理由。",
     },
     fallback: {
       title: "一个模型倒下，下一个接手",

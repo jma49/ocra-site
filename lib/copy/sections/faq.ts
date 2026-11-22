@@ -41,6 +41,10 @@ export const faq: Bilingual<FaqCopy> = {
         a: "Yes. Mention @ocra in a comment and it answers in that thread; /ocra review reviews the whole pull request again. Its summary opens with a walkthrough: the files in reading order and, when the change crosses three or more components, a sequence diagram.",
       },
       {
+        q: "What else can it do on a pull request?",
+        a: "ocra generate writes tests or doc comments for the changed code as one commit on the branch. ocra stack keeps a stack of dependent pull requests rebased, submitted and merged in order. ocra mcp lets your coding agent ask for a review before you commit.",
+      },
+      {
         q: "How good is it?",
         a: "Results on a golden set and AACR-Bench are published in the manual with their limits: a small sample on two model families, with recall the weak point we are working on.",
       },
@@ -73,6 +77,10 @@ export const faq: Bilingual<FaqCopy> = {
       {
         q: "可以就这次改动向它提问吗？",
         a: "可以。在评论里提到 @ocra，它会在同一个讨论里回答；/ocra review 会把整个 PR 重新审查一遍。它的总结以改动导读开头：按阅读顺序排列的文件，以及改动跨越三个或更多组件时的一张时序图。",
+      },
+      {
+        q: "在 PR 上它还能做什么？",
+        a: "ocra generate 为改动的代码写测试或文档注释，作为一个提交放到分支上。ocra stack 管理一串相互依赖的 PR，按顺序 rebase、提交和合并。ocra mcp 让你的编程 agent 在提交前请它审查。",
       },
       {
         q: "效果怎么样？",
