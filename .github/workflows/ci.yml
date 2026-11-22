@@ -31,3 +31,13 @@ jobs:
   commits:
     if: github.event_name == 'pull_request'
     uses: jma49/Open-CR-Agent/.github/workflows/commits.yml@38bf9e5453cf0d452fe39fd027cef34d2c0e4ea7 # main after v0.6.0 (job.workflow_sha)
+
+  # CI's time budgets (the engine's docs/ci.md): fails the run when a job
+  # set up or ran longer than its ceiling in .github/ci-budgets.json.
+  budget:
+    needs: [verify, commits]
+    if: ${{ !cancelled() }}
+    permissions:
+      actions: read
+      contents: read
+    uses: jma49/Open-CR-Agent/.github/workflows/budget.yml@c07fd436960f9dfa1f2ccc2713525245ec70c4d1 # main after v0.9.0 (job.workflow_sha)
