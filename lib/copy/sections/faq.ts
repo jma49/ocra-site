@@ -37,6 +37,10 @@ export const faq: Bilingual<FaqCopy> = {
         a: "It is built not to. Findings are verified against the code and merged by root cause, and the verdict only blocks on a critical the verifier confirmed. A run with nothing worth saying posts no inline comment, only its one summary, updated in place.",
       },
       {
+        q: "Can I ask it about the change?",
+        a: "Yes. Mention @ocra in a comment and it answers in that thread; /ocra review reviews the whole pull request again. Its summary opens with a walkthrough: the files in reading order and, when the change crosses three or more components, a sequence diagram.",
+      },
+      {
         q: "How good is it?",
         a: "Results on a golden set and AACR-Bench are published in the manual with their limits: a small sample on two model families, with recall the weak point we are working on.",
       },
@@ -65,6 +69,10 @@ export const faq: Bilingual<FaqCopy> = {
       {
         q: "会不会把我的 PR 淹没在评论里？",
         a: "它就是为避免这一点而设计的。每条意见都会对照代码核实、按根因合并，只有经核查确认的 critical 才会拦下改动。没有值得说的问题时，它不发行内评论，只更新那一条总结评论。",
+      },
+      {
+        q: "可以就这次改动向它提问吗？",
+        a: "可以。在评论里提到 @ocra，它会在同一个讨论里回答；/ocra review 会把整个 PR 重新审查一遍。它的总结以改动导读开头：按阅读顺序排列的文件，以及改动跨越三个或更多组件时的一张时序图。",
       },
       {
         q: "效果怎么样？",

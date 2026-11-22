@@ -41,7 +41,7 @@ export const features: Bilingual<FeaturesCopy> = {
     },
     rules: {
       title: "Your team's rules, without writing a plugin",
-      body: "Put review rules in `.ocra/rules.json` on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
+      body: "Put review rules in `.ocra/rules.json` and what the team learned in `.ocra/learnings/`, on the base branch. For local reviews, plugins can add rules, reviewers, tools and listeners through one small contract.",
     },
     fallback: {
       title: "When a model falls over, the next takes the task",
@@ -71,7 +71,7 @@ export const features: Bilingual<FeaturesCopy> = {
     },
     rules: {
       title: "团队规则，不用写插件",
-      body: "把审查规则写进基础分支上的 `.ocra/rules.json`。本地审查时，插件还能通过一套很小的接口添加规则、审查员、工具和监听器。",
+      body: "把审查规则写进基础分支上的 `.ocra/rules.json`，团队积累的经验写进 `.ocra/learnings/`。本地审查时，插件还能通过一套很小的接口添加规则、审查员、工具和监听器。",
     },
     fallback: {
       title: "一个模型倒下，下一个接手",
