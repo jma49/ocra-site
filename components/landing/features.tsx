@@ -10,7 +10,7 @@ import { Section, withCode } from "./section";
 // bill printed on one sheet, which the pen totals in ink. Painted finished;
 // FeaturesPlay prints the rows and the footnote, then brings the pen in.
 export function Features({ copy, locale }: { copy: Copy["features"]; locale: Locale }) {
-  const items = [copy.bill, copy.rules, copy.fallback];
+  const items = [copy.bill, copy.rules, copy.context, copy.fallback];
   return (
     <Section id="features" ground="desk" className="features" labelledBy="features-title">
       <DeskGround />
