@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
 const MAX_LINES = 150;
-const SHARED_SECTION_SHA256 = "ee6d49ce0c2492effb1328fbea319f8ed19cc2a12c7fa798f20201c491535485";
+const SHARED_SECTION_SHA256 = "a0cb9987ca1c3ccfd149af2cd93d64ba43a3a8801461ad23c30551eb1978d01c";
 
 const agents = readFileSync(new URL("../AGENTS.md", import.meta.url), "utf8");
 /** @type {string[]} */

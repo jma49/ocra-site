@@ -3,7 +3,7 @@ import { i18n, type Locale } from "./i18n";
 export const docsRoute = "/docs";
 
 export const gitConfig = {
-  user: "jma49",
+  user: "ocrahq",
   repo: "Open-CR-Agent",
   branch: "main",
 };
