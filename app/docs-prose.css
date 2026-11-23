@@ -133,6 +133,10 @@
   font-size: var(--fs-sm);
   line-height: 20px;
 }
+/* Fumadocs sets each line as a block, so an empty one would fold away. */
+.docs-frame #nd-page figure.shiki .line {
+  min-height: 20px;
+}
 .docs-frame #nd-page figure.shiki [class*="max-h-"] {
   padding: 12px 0;
 }
@@ -220,8 +224,7 @@
 }
 
 /* ---- Link cards: raised cards that take a fill under the pointer ---- */
-.docs-frame #nd-page .docs-link-card,
-.docs-frame #nd-page > [class*="@container"] > a {
+.docs-frame #nd-page .docs-link-card {
   border: 0;
   border-radius: var(--r-ctl);
   background: var(--raised);
@@ -229,18 +232,55 @@
   color: var(--t1);
   transition: background-color 120ms var(--e-std);
 }
+.docs-frame #nd-page .docs-link-card {
+  padding: 16px;
+}
 .docs-frame #nd-page .docs-link-card h3 {
-  margin: 0;
-  font-size: var(--fs-base);
-  font-weight: 600;
+  margin: 0 0 2px;
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 20px;
+}
+/* A card's icon: a small tile of the fill, the icon in the label tone. */
+.docs-frame #nd-page .docs-link-card > div:first-child:has(> svg) {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-chip);
+  background: var(--fill2);
+  box-shadow: none;
+  color: var(--t2);
+}
+.docs-frame #nd-page .docs-link-card > div:first-child > svg {
+  width: 16px;
+  height: 16px;
+}
+.docs-frame #nd-page .prose .grid:has(> .docs-link-card) {
+  margin-block: 24px;
+}
+/* On a phone a card is one row: the icon beside its title and line. */
+@media (max-width: 767px) {
+  .docs-frame #nd-page .docs-link-card:has(> div:first-child > svg) {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    column-gap: 12px;
+    padding: 12px 16px;
+  }
+  .docs-frame #nd-page .docs-link-card > div:first-child:has(> svg) {
+    grid-row: span 2;
+    margin: 0;
+  }
 }
 .docs-frame #nd-page .docs-link-card :where(p, div) {
   color: var(--t3);
   font-size: var(--fs-base);
 }
 @media (hover: hover) {
-  .docs-frame #nd-page .docs-link-card:hover,
-  .docs-frame #nd-page > [class*="@container"] > a:hover {
+  .docs-frame #nd-page .docs-link-card:hover {
     background: color-mix(in srgb, var(--raised) 94%, var(--t1));
   }
 }
@@ -351,20 +391,48 @@
     color: var(--t1);
   }
 }
-.docs-frame #nd-page > [class*="@container"] {
+.docs-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-top: 16px;
 }
-.docs-frame #nd-page > [class*="@container"] > a {
-  gap: 4px;
+.docs-pager-link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   padding: 12px 16px;
+  border-radius: var(--r-ctl);
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  transition: background-color 120ms var(--e-std);
 }
-.docs-frame #nd-page > [class*="@container"] > a > :first-child {
-  color: var(--t1);
-  font-size: var(--fs-base);
-  font-weight: 600;
+.docs-pager-link[data-dir="next"] {
+  grid-column: 2;
+  text-align: end;
 }
-.docs-frame #nd-page > [class*="@container"] > a > :last-child {
+.docs-pager-dir {
   color: var(--t3);
   font-size: var(--fs-sm);
+  line-height: 18px;
+}
+.docs-pager-title {
+  color: var(--t1);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 20px;
+}
+@media (hover: hover) {
+  .docs-pager-link:hover {
+    background: color-mix(in srgb, var(--raised) 94%, var(--t1));
+  }
+}
+@media (max-width: 767px) {
+  .docs-pager {
+    grid-template-columns: 1fr;
+  }
+  .docs-pager-link[data-dir="next"] {
+    grid-column: 1;
+  }
 }
