@@ -1,6 +1,6 @@
 # Open-CR-Agent site
 
-The landing page and user manual for [Open-CR-Agent](https://github.com/jma49/Open-CR-Agent) (`ocra`), in English and Chinese.
+The landing page and user manual for [Open-CR-Agent](https://github.com/ocrahq/Open-CR-Agent) (`ocra`), in English and Chinese.
 
 ## Development
 

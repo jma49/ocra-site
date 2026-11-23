@@ -6,8 +6,8 @@ How the engineering skills should consume domain documentation when exploring oc
 
 ocra-site has no glossary or ADR set of its own: it shares the engine's domain.
 
-- **The engine's `GLOSSARY.md`**: `../ocra/GLOSSARY.md` in the sibling checkout (workspace layout: ocra-internal README), else https://github.com/jma49/Open-CR-Agent/blob/main/GLOSSARY.md.
-- **The engine's ADRs**: `../ocra/docs/adr/`, else https://github.com/jma49/Open-CR-Agent/tree/main/docs/adr. Read the ones that touch the area you're about to work in.
+- **The engine's `GLOSSARY.md`**: `../ocra/GLOSSARY.md` in the sibling checkout (workspace layout: ocra-internal README), else https://github.com/ocrahq/Open-CR-Agent/blob/main/GLOSSARY.md.
+- **The engine's ADRs**: `../ocra/docs/adr/`, else https://github.com/ocrahq/Open-CR-Agent/tree/main/docs/adr. Read the ones that touch the area you're about to work in.
 - **`DESIGN.md`** in this repository is the vocabulary for visual and motion work.
 
 If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill creates them lazily, in the engine, when terms or decisions actually get resolved.

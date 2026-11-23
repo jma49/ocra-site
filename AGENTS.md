@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Rules for humans and AI agents working on the Open-CR-Agent site: the landing page and the rendered user manual for [Open-CR-Agent](https://github.com/jma49/Open-CR-Agent).
+Rules for humans and AI agents working on the Open-CR-Agent site: the landing page and the rendered user manual for [Open-CR-Agent](https://github.com/ocrahq/Open-CR-Agent).
 
 ## Project
 
@@ -86,7 +86,7 @@ Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: chang
 - **A fix's test fails on the old code on an assertion,** not on a module the fix adds (in ocra, `scripts/fails-without.sh` refuses that).
 - **Shapes the CLI and ocra Cloud share live in `@open-cr-agent/cloud-contract`;** never retype them.
 - **Show only what exists:** mocks, demos and the landing use shipped behaviour and recorded or synthetic data, never the maintainer's accounts, numbers, keys or budget.
-- **Private notes are for maintainers** with access to `jma49/ocra-internal` (`../ocra-internal`): `git pull --rebase` before editing it, commit and push right after, rebase on a conflict. A session without write access puts its handoff in its final report instead.
+- **Private notes are for maintainers** with access to `ocrahq/ocra-internal` (`../ocra-internal`): `git pull --rebase` before editing it, commit and push right after, rebase on a conflict. A session without write access puts its handoff in its final report instead.
 - **Keep AGENTS.md under 150 lines:** a rule a check enforces names that check; stories go to `../ocra-internal/pitfalls.md`.
 
 ## Git workflow
