@@ -4,7 +4,7 @@
 // installed never shows. This fails on any character the site may set in
 // the code face that Maple Mono has but the cut does not: every string in the
 // landing page's copy, data, components and the recorded file the hero shows.
-// The manual sets its code in Geist Mono (app/docs.css), not this face.
+// The manual sets its code in JetBrains Mono (app/docs.css), not this face.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { brotliDecompressSync } from "node:zlib";
