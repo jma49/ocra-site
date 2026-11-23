@@ -50,6 +50,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "bring your own key",
         points: [
           "Sign in with GitHub; `ocra login` from any machine",
+          "Auto review on GitHub through the Ocra Cloud app: no workflow, no secrets",
           "Your pull requests in one inbox: walkthrough, fixes to commit, merge or merge queue",
           "Learnings, pre-merge checks, and Slack or WeCom alerts with a daily digest",
           `Keys for ${PROVIDERS} providers, encrypted; usage, spend and cycle time`,
@@ -62,10 +63,9 @@ export const plans: Bilingual<PlansCopy> = {
         price: "Later",
         unit: "pricing not set",
         points: [
-          "A hosted GitHub App: no workflow, no secrets",
           "Organizations with shared rules and policy",
           "Models provided by ocra, no key needed",
-          "Hosted auto review, automations and code graphs",
+          "Hosted code graphs",
         ],
         cta: "Follow the roadmap",
         planned: true,
@@ -97,6 +97,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "自带 key",
         points: [
           "用 GitHub 登录；任何机器上 `ocra login`",
+          "GitHub 上的自动审查，由 Ocra Cloud App 完成：不用 workflow，不用 secret",
           "一个收件箱管你的 PR：改动导读、可直接提交的修复、合并或合并队列",
           "Learnings、合并前检查，以及带每日摘要的 Slack 或企业微信提醒",
           `${PROVIDERS} 家服务商的 key，加密保存；用量、花费和周期时间`,
@@ -108,12 +109,7 @@ export const plans: Bilingual<PlansCopy> = {
         name: "团队版",
         price: "稍后",
         unit: "价格未定",
-        points: [
-          "托管的 GitHub App：不用 workflow，不用 secret",
-          "组织级共享规则和策略",
-          "由 ocra 提供模型，不需要 key",
-          "托管的自动审查、自动化和代码图",
-        ],
+        points: ["组织级共享规则和策略", "由 ocra 提供模型，不需要 key", "托管的代码图"],
         cta: "关注路线图",
         planned: true,
       },
