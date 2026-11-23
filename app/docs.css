@@ -16,7 +16,7 @@ html:has(.docs-frame) {
   --fs-3xl: 24px;
   --fs-4xl: 30px;
   --font: "Geist Variable", "Noto Sans SC Variable", ui-sans-serif, system-ui, sans-serif;
-  --mono: "Geist Mono Variable", "Noto Sans SC Variable", ui-monospace, monospace;
+  --mono: "JetBrains Mono Variable", "Noto Sans SC Variable", ui-monospace, monospace;
   --r-tag: 4px;
   --r-chip: 6px;
   --r-tab: 6px;
