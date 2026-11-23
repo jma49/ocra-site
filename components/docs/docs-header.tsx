@@ -2,26 +2,14 @@
 
 import { useNotebookLayout } from "@fumadocs/base-ui/layouts/notebook";
 import { LinkItem, type MainItemType } from "@fumadocs/base-ui/layouts/shared";
-import { Languages } from "lucide-react";
-import { type ComponentProps, useEffect, useState } from "react";
+import { Languages, Menu } from "lucide-react";
+import type { ComponentProps } from "react";
 
-// The manual's bar, laid out as the landing page's (components/landing/
-// site-header.tsx): logo and sections on the left; search, GitHub, sign in,
-// language, theme and the call to action on the right; on a phone the logo,
-// search and the drawer's button. Bare on the desk at the top of a page, a
-// smoked glass bar once the page has moved (app/docs-nav.css). It takes
-// Fumadocs' header slot, so the search, the language menu and the drawer are
-// Fumadocs' own.
-function useScrolled() {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const update = () => setScrolled(scrollY > 8);
-    update();
-    addEventListener("scroll", update, { passive: true });
-    return () => removeEventListener("scroll", update);
-  }, []);
-  return scrolled;
-}
+// The manual's bar on the ground (app/docs-nav.css): the logo and the
+// manual's name on the left; search, GitHub, sign in, language, theme and
+// the call to action on the right; on a phone the logo, search and the
+// drawer's button. It takes Fumadocs' header slot, so the search, the
+// language menu and the drawer are Fumadocs' own.
 
 export function DocsHeader(props: ComponentProps<"header">) {
   const {
@@ -29,13 +17,12 @@ export function DocsHeader(props: ComponentProps<"header">) {
     navItems,
     props: { nav },
   } = useNotebookLayout();
-  const scrolled = useScrolled();
   const links = navItems.filter(
     (item): item is MainItemType => item.type === undefined || item.type === "main",
   );
   const custom = navItems.filter((item) => item.type === "custom");
   return (
-    <header {...props} id="nd-subnav" className="docs-bar" data-scrolled={scrolled || undefined}>
+    <header {...props} id="nd-subnav" className="docs-bar">
       <div className="docs-bar-body">
         {slots.navTitle ? <slots.navTitle className="docs-logo" /> : null}
         {/* A server element passed in a list warns without a key: one child. */}
@@ -51,7 +38,7 @@ export function DocsHeader(props: ComponentProps<"header">) {
           ))}
           {slots.languageSelect ? (
             <slots.languageSelect.root className="docs-ib docs-wide">
-              <Languages size={17} strokeWidth={1.8} />
+              <Languages size={16} strokeWidth={1.75} />
             </slots.languageSelect.root>
           ) : null}
           {slots.themeSwitch ? (
@@ -72,9 +59,7 @@ export function DocsHeader(props: ComponentProps<"header">) {
           ) : null}
           {slots.sidebar ? (
             <slots.sidebar.trigger className="docs-ib docs-narrow docs-menu">
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 8h16M4 16h16" />
-              </svg>
+              <Menu size={20} strokeWidth={1.75} />
             </slots.sidebar.trigger>
           ) : null}
         </div>
@@ -84,8 +69,7 @@ export function DocsHeader(props: ComponentProps<"header">) {
 }
 
 // The foot of the page tree: in the drawer on a phone, the language, the
-// theme and the call to action (the bar's, drawn as paper here); on a wider
-// screen Fumadocs hides it.
+// theme and the call to action; on a wider screen Fumadocs hides it.
 export function DrawerFoot({ children, ...props }: ComponentProps<"div">) {
   const { navItems } = useNotebookLayout();
   const cta = navItems.find((item) => item.type === "custom");

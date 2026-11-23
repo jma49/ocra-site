@@ -26,6 +26,9 @@
     "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
+    "@fontsource-variable/geist": "5.3.0",
+    "@fontsource-variable/geist-mono": "5.3.0",
+    "@fontsource-variable/noto-sans-sc": "5.3.1",
     "@fontsource/maple-mono": "5.3.0",
     "@fumadocs/base-ui": "16.15.17",
     "fumadocs-core": "16.15.17",

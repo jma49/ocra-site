@@ -308,7 +308,7 @@ components:
 
 # Open-CR-Agent site
 
-The landing page, the manual and the 404 page share one look: ink on neutral paper, a stone desk under every product view, a condensed Archivo display over normal-width text, Maple Mono wherever a string is real data, a jumping spider's eye row for a mark, and one cinnabar pen. The idea is a careful reader marking up a change: the eye row reads first, the pen marks only where ocra acts on the reviewed change, the comment lands last. Values live in CSS: `app/tokens.css` (every colour, the shadow, the curves, the radii and the Fumadocs mapping, light and dark: the only file with colour literals, checked by `scripts/check-colors.mjs`), `app/global.css` (buttons, the logo, the living eyes; loaded by `app/site.css` for the landing and 404 pages and by `app/manual.css` for the manual), `app/landing/` (the landing page: shared files 01–05, then one or two files per section) and `app/docs.css` (the manual). This file mirrors them and says how to use them; change both in the same commit. Content rules (what the site may claim) stay in `AGENTS.md`.
+The landing page and the 404 page share one look: ink on neutral paper, a stone desk under every product view, a condensed Archivo display over normal-width text, Maple Mono wherever a string is real data, a jumping spider's eye row for a mark, and one cinnabar pen. The idea is a careful reader marking up a change: the eye row reads first, the pen marks only where ocra acts on the reviewed change, the comment lands last. Values live in CSS: `app/tokens.css` (every colour, the shadow, the curves, the radii and the Fumadocs mapping, light and dark: the only file with colour literals, checked by `scripts/check-colors.mjs`), `app/global.css` (buttons, the logo, the living eyes; loaded by `app/site.css` for the landing and 404 pages and by `app/manual.css` for the manual), `app/landing/` (the landing page: shared files 01–05, then one or two files per section) and `app/docs.css` (the manual). This file mirrors them and says how to use them; change both in the same commit. Content rules (what the site may claim) stay in `AGENTS.md`.
 
 ## Colors
 
@@ -319,7 +319,7 @@ The landing page, the manual and the 404 page share one look: ink on neutral pap
 - **The pen** (`pen`, cinnabar, OKLCH h 30 light / h 21 dark) is the one signal. It marks only where ocra acts on the reviewed change: a finding, a quote, an anchor, a strike through what was set aside, skipped, disproved, refused or out of scope, a tick for what was read or verified, the bottom line of a bill or verdict, ocra's verdict mark. **Never UI chrome** (navigation, tabs, progress, step numbers, the meter, plan states, selection, focus, links), never our own marketing claims. On night it is `pen-night` and draws marks only, never text. It never writes on stone: there it writes on a sheet laid on the stone. `pen-wash` sits only behind inserted code (`* 1000`): a red row would read as a deleted line.
 - **Amber** is warning severity only. There is no second accent, no decorative gradient, no glow.
 - **Dark** is designed, not inverted: lighter is higher (page `#121212` < band < desk < sheet < inset), each object carries its edge (the desk an inset 6 % white ring, sheets the `--float` ring), and the night bands are raised slabs (`#262626`) with no ring. Every text pair is at least 4.5 : 1 in both themes (the components above).
-- **The manual** maps Fumadocs to the same tokens: primary, ring and links are ink; the sidebar is night glass with its active link `on-night`, a tint and a 2 px bar; `--color-fd-error` is the pen (critical callouts only) and `--color-fd-warning` amber.
+- **The manual** follows the ocra Cloud console's design instead (see Manual below).
 
 ## Typography
 
@@ -379,6 +379,18 @@ Concentric radii: chips 6 px, tabs 7 px (inside a 3 px padded tablist), controls
 - Curves: `--e-enter`, `--e-std`, `--e-pop`, linear for scrubbed animations and the marquee, `steps(n)` for typing only. Nothing reveals on scroll; only recorded events draw on entry.
 - **Pointer feedback** (`@media (hover: hover)`, never moving layout): buttons give to `.98` and their arrow leans 3 px; FAQ rows take the `tint` (4 px inside their rules) and their plus or cross turns a quarter, so a hover never shows the other state; platform tiles lift 2 px onto `--float`; flat sheets darken their ring to `line-2`.
 - **Reduce motion**: every finished state at first paint; pointer-driven motion (the final eyes) still runs; the marquee runs at half speed with its pause button.
+
+## Manual
+
+The manual (`/docs`) is the product's reference, read next to the ocra Cloud console, so it follows the console's design spec (`web/DESIGN.md` in ocra-cloud) rather than the landing page's desk. Its values are the console's, under the console's names, scoped to the manual (`html:has(.docs-frame)` in `app/tokens.css`); `app/docs.css` maps Fumadocs to them.
+
+- **Frame:** the bar and the page tree on `--ground`, the page on one `--panel` (radius `--r-sheet` 10, `--shadow`), the table of contents on the ground beside it. No textures, gradients, glass or paper; the bar has no line, the panel separates it. On a phone (below 768 px, where Fumadocs moves the tree into its drawer) the panel runs edge to edge.
+- **Type:** Geist, Geist Mono for code, Noto Sans SC for Chinese (Fontsource, loaded per range of characters used). Sizes only from the console's scale (`--fs-2xs` 10 … `--fs-4xl` 30): body prose 14/24, page title 30/600, section 20/600 under a hairline, side lists and notes 13, group labels 10 uppercase with 0.5 px tracking in `--t3` (Chinese 11, no uppercase or tracking).
+- **Text tones:** `--t1` headings and links, `--t2` prose, `--t3` labels and the table of contents, `--t4` only for markers and the link underline at rest.
+- **One ink:** links are `--t1` with a `--t4` underline that darkens under the pointer; the selected page in the tree and the selected tab are `--fill2`. No accent colour; focus is the console's `--focus` ring.
+- **Status:** callouts (`components/docs/note.tsx`) name their kind in words beside a Lucide icon; warnings take `--warning`, critical ones `--critical`, both as soft fills, never large backgrounds.
+- **Code:** a raised block (`--raised`, `--shadow`, radius 8), 12/20 Geist Mono; syntax in ink, `--teal` for strings and values, `--violet` for names, `--t3` for comments.
+- **Motion:** colour and fill fade in 120 ms on `--e-std`; nothing lands, slides or loops; under Reduce motion nothing moves.
 
 ## Do's and Don'ts
 

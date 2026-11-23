@@ -1,10 +1,12 @@
-/* The manual: Fumadocs' preset under the site's tokens and the desk. */
+/* The manual: Fumadocs' preset under the console's tokens and type. */
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/geist-mono/wght.css";
+@import "@fontsource-variable/noto-sans-sc/wght.css";
 @import "tailwindcss";
 @import "@fumadocs/base-ui/css/neutral.css";
 @import "@fumadocs/base-ui/css/preset.css";
 @import "./tokens.css";
 @import "./docs.css";
 @import "./docs-nav.css";
-@import "./docs-print.css";
-@import "./docs-ruler.css";
+@import "./docs-prose.css";
 @import "./global.css";

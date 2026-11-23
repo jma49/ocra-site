@@ -15,7 +15,7 @@ is renamed. Run after bumping @fontsource/maple-mono:
     uv run scripts/subset-mono.py
 
 `npm run check:glyphs` (scripts/check-mono-glyphs.mjs, part of verify) fails
-when the manual's code or the landing page uses a character Maple Mono has
+when the landing page uses a character Maple Mono has
 but this cut dropped; add it to UNICODES and run this again.
 """
 

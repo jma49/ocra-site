@@ -9,9 +9,8 @@ import { localeParam } from "@/lib/locale-param";
 import { source } from "@/lib/source";
 import "../../manual.css";
 
-// The manual lies on the landing page's desk: the landing page's bar runs
-// across the top and the page tree down the left on the ink-teal, and each
-// page is a printed sheet between them (app/docs.css).
+// The manual on the ocra Cloud console's design: the bar and the page tree
+// on the ground, each page on one panel beside them (app/docs.css).
 export default async function Layout({
   params,
   children,
@@ -29,7 +28,7 @@ export default async function Layout({
         nav={{ ...options.nav, mode: "top" }}
         sidebar={{ collapsible: false, banner: DrawerHead, footer: DrawerFoot }}
         slots={{ header: DocsHeader }}
-        containerProps={{ className: "docs-desk" }}
+        containerProps={{ className: "docs-frame" }}
       >
         {children}
       </DocsLayout>

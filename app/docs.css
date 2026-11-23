@@ -1,256 +1,218 @@
-/* The manual on the desk (DESIGN.md, "Manual"). The landing page's desk
-   runs under the whole manual: the nav across the top and the page tree
-   down the left sit on the ink-teal; each page is a printed sheet lying
-   between them; the table of contents is a reading ruler beside it, with the
-   eye row riding to the heading being read (components/docs/toc-ruler.tsx).
-   Dark is the evening desk with the sheet under the lamp. Fumadocs draws the
-   layout (the notebook layout, nav on top); these rules restyle it through
-   its ids, its colour variables and the prose. The pen's ink appears only
-   as the hover stroke under a link; it never colours chrome or code. */
+/* The manual's frame, on the console's design (DESIGN.md, "Manual"): the
+   bar and the page tree on the ground, the page on one panel beside them,
+   the table of contents on the ground to its right. Fumadocs draws the
+   layout (notebook, nav on top); these rules restyle it through its ids,
+   its colour variables and the prose (app/docs-prose.css). */
 
-/* ---- The two palettes: the desk (chrome, dialogs) and the sheet ---- */
-html:has(.docs-desk) {
-  --dd-ground: var(--desk);
-  --dd-ground-hi: var(--desk-hi);
-  --dd-ground-lo: var(--desk-lo);
-  --dd-lamp: color-mix(in srgb, var(--lamp) 9%, transparent);
-  --sheet-bg: var(--print-paper);
-  --sheet-bg-2: var(--print-paper-2);
-  --sheet-ink: var(--print-ink);
-  --sheet-ink-2: var(--print-ink-2);
-  --sheet-ink-3: var(--print-ink-3);
-  --sheet-line: color-mix(in srgb, var(--print-ink) 14%, transparent);
-  --sheet-panel: color-mix(in oklab, var(--print-paper) 90%, var(--card-line));
-  --sheet-teal: var(--print-teal);
-  --sheet-deep: var(--desk-hi);
-  --sheet-lit: color-mix(in srgb, var(--white) 45%, transparent);
-  --stock: var(--card-stock);
-  --stock-ink: var(--print-ink);
-  --stock-line: color-mix(in srgb, var(--card-line) 34%, transparent);
+html:has(.docs-frame) {
+  --fs-2xs: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-base: 13px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 18px;
+  --fs-2xl: 20px;
+  --fs-3xl: 24px;
+  --fs-4xl: 30px;
+  --font: "Geist Variable", "Noto Sans SC Variable", ui-sans-serif, system-ui, sans-serif;
+  --mono: "Geist Mono Variable", "Noto Sans SC Variable", ui-monospace, monospace;
+  --r-tag: 4px;
+  --r-chip: 6px;
+  --r-tab: 6px;
+  --r-ctl: 8px;
+  --r-sheet: 10px;
+  --critical: var(--red);
+  --warning: var(--amber);
+  --focus: color-mix(in srgb, var(--blue) 55%, transparent);
+  --select: color-mix(in srgb, var(--blue) 22%, transparent);
 
-  --color-fd-background: var(--dd-ground);
-  --color-fd-foreground: var(--on-desk);
-  --color-fd-muted: color-mix(in srgb, var(--on-desk) 6%, transparent);
-  --color-fd-muted-foreground: var(--on-desk-2);
-  --color-fd-card: color-mix(in srgb, var(--on-desk) 5%, transparent);
-  --color-fd-card-foreground: var(--on-desk);
-  --color-fd-popover: var(--dd-ground-hi);
-  --color-fd-popover-foreground: var(--on-desk);
-  --color-fd-border: var(--line-desk);
-  --color-fd-primary: var(--on-desk);
-  --color-fd-primary-foreground: var(--dd-ground);
-  --color-fd-secondary: color-mix(in srgb, var(--on-desk) 7%, transparent);
-  --color-fd-secondary-foreground: var(--on-desk);
-  --color-fd-accent: color-mix(in srgb, var(--on-desk) 9%, transparent);
-  --color-fd-accent-foreground: var(--on-desk);
-  --color-fd-ring: var(--on-desk);
-  --focus: var(--on-desk);
-  --select: color-mix(in srgb, var(--print-teal) 26%, transparent);
-  background: var(--dd-ground);
+  --color-fd-background: var(--ground);
+  --color-fd-foreground: var(--t1);
+  --color-fd-muted: var(--fill);
+  --color-fd-muted-foreground: var(--t3);
+  --color-fd-card: var(--raised);
+  --color-fd-card-foreground: var(--t1);
+  --color-fd-popover: var(--raised);
+  --color-fd-popover-foreground: var(--t1);
+  --color-fd-border: var(--hair2);
+  --color-fd-primary: var(--ink);
+  --color-fd-primary-foreground: var(--on-ink);
+  --color-fd-secondary: var(--fill);
+  --color-fd-secondary-foreground: var(--t1);
+  --color-fd-accent: var(--fill2);
+  --color-fd-accent-foreground: var(--t1);
+  --color-fd-ring: var(--focus);
+  --color-fd-overlay: var(--scrim);
+  --color-fd-error: var(--critical);
+  --color-fd-warning: var(--warning);
+  --font-sans: var(--font);
+  --font-mono: var(--mono);
+  background: var(--ground);
+  color-scheme: light;
 }
-
-/* Evening: the room light is down and the sheet is charcoal stock, a
-   neutral grey barely warmed by the lamp (OKLCH 27 % 0.005 at hue 70, so
-   it never reads as brown), lighter than the ink-teal desk around it.
-   Print on it: sheet-ink 11.2 : 1, sheet-ink-2 6.9 : 1, sheet-ink-3 (line
-   numbers, the head's rule) 4.8 : 1. The index cards are a lighter stock
-   of the same grey (sheet-ink 9.9 : 1 on it). */
-html.dark:has(.docs-desk) {
-  --dd-ground: var(--desk-eve);
-  --dd-ground-hi: color-mix(in srgb, var(--desk-hi) 72%, var(--desk-eve));
-  --dd-ground-lo: var(--desk-eve-lo);
-  --dd-lamp: color-mix(in srgb, var(--lamp) 13%, transparent);
-  --charcoal: color-mix(in oklab, var(--white) 23%, var(--black));
-  --sheet-bg: color-mix(in oklab, var(--lamp) 7%, var(--charcoal));
-  --sheet-bg-2: color-mix(in oklab, var(--sheet-bg) 86%, var(--desk-eve-lo));
-  --sheet-ink: color-mix(in oklab, var(--print-paper) 90%, var(--sheet-bg));
-  --sheet-ink-2: color-mix(in oklab, var(--print-paper) 69%, var(--sheet-bg));
-  --sheet-ink-3: color-mix(in oklab, var(--print-paper) 55%, var(--sheet-bg));
-  --sheet-line: color-mix(in srgb, var(--print-paper) 12%, transparent);
-  --sheet-panel: color-mix(in oklab, var(--sheet-bg) 70%, var(--desk-eve-lo));
-  --sheet-teal: var(--print-teal-lamp);
-  --sheet-deep: var(--steel);
-  --sheet-lit: color-mix(in srgb, var(--print-paper) 3%, transparent);
-  --stock: color-mix(in oklab, var(--lamp) 7%, color-mix(in oklab, var(--white) 27%, var(--black)));
-  --stock-ink: var(--sheet-ink);
-  --stock-line: color-mix(in srgb, var(--card-line) 22%, transparent);
+html.dark:has(.docs-frame) {
+  color-scheme: dark;
+}
+html:has(.docs-frame) body {
+  background: var(--ground);
+  color: var(--t1);
+  font-family: var(--font);
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+}
+html:has(.docs-frame) :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+:lang(zh) .docs-frame {
+  letter-spacing: 0;
 }
 
-/* The desk under everything: grain, the lit middle, the lamp's warmth and
-   the falloff, fixed to the viewport so scrolling moves only the paper. */
-.docs-desk {
-  isolation: isolate;
-  color: var(--on-desk);
+/* ---- The page tree: a grouped side list, as in the console's settings ---- */
+.docs-frame #nd-sidebar {
+  font-size: var(--fs-base);
 }
-.docs-desk::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      120% 100% at 50% 20%,
-      transparent 46%,
-      color-mix(in srgb, var(--dd-ground-lo) 72%, transparent) 100%
-    ),
-    url(/landing/tex/desk-grain.webp) 0 0 / 128px 128px,
-    radial-gradient(44% 40% at 54% 6%, var(--dd-lamp), transparent 74%),
-    radial-gradient(72% 64% at 50% 18%, var(--dd-ground-hi), transparent 74%),
-    var(--dd-ground);
-  background-blend-mode: normal, overlay, normal, normal, normal;
+.docs-frame #nd-sidebar [data-id$="-viewport"] {
+  padding: 8px 12px 24px 16px;
 }
-
-/* ---- The page tree on the desk; the open page is a paper slip ---- */
-.docs-desk #nd-sidebar {
-  font-size: 15px;
-}
-.docs-desk #nd-sidebar a,
-#nd-sidebar-mobile a {
-  color: var(--on-desk-2);
-  border-radius: 3px;
-  transition:
-    color 150ms var(--e-std),
-    background-color 150ms var(--e-std),
-    translate 260ms var(--e-settle);
-}
-.docs-desk #nd-sidebar p,
-#nd-sidebar-mobile p {
-  margin-top: 26px;
-  color: var(--on-desk);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-.docs-desk #nd-sidebar a[data-active="true"],
-#nd-sidebar-mobile a[data-active="true"] {
-  background: var(--sheet-bg);
-  color: var(--sheet-ink);
+:is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) p {
+  margin: 20px 0 4px;
+  padding-inline: 8px;
+  color: var(--t3);
+  font-size: var(--fs-2xs);
   font-weight: 500;
-  translate: 6px 0;
-  box-shadow:
-    0 0.5px 1px color-mix(in srgb, var(--umbra) 55%, transparent),
-    2px 4px 10px -4px color-mix(in srgb, var(--umbra) 80%, transparent);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
-
-/* On a new page its slip slides out from under the desk's edge. */
-@media (prefers-reduced-motion: no-preference) {
-  html.mo .docs-desk #nd-sidebar a[data-active="true"] {
-    animation: docs-slip 420ms var(--e-settle);
+:lang(zh) :is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) p {
+  font-size: var(--fs-xs);
+  letter-spacing: 0;
+  text-transform: none;
+}
+:is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) [data-id$="-viewport"] > div > p:first-child {
+  margin-top: 4px;
+}
+:is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) a:not(.docs-cta) {
+  min-height: 30px;
+  padding: 5px 8px;
+  border-radius: var(--r-chip);
+  color: var(--t2);
+  font-size: var(--fs-base);
+  line-height: 20px;
+  transition:
+    background-color 120ms var(--e-std),
+    color 120ms var(--e-std);
+}
+@media (hover: hover) {
+  :is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) a:not(.docs-cta):hover {
+    background: var(--fill);
+    color: var(--t1);
   }
 }
-@keyframes docs-slip {
-  from {
-    translate: -10px 0;
-    background-color: transparent;
-    box-shadow: none;
-  }
+:is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) a[data-active="true"] {
+  background: var(--fill2);
+  color: var(--t1);
+  font-weight: 500;
 }
 
-/* ---- The sheet ---- */
-.docs-desk [data-layout-main] {
-  --pad: 0px;
-  position: relative;
-  padding: 20px var(--pad) 88px;
+/* ---- The page: one panel on the ground ---- */
+.docs-frame [data-layout-main] {
+  padding: 0 0 8px;
 }
-/* Its wide shadow on the desk, a layer of its own so the landing can
-   move it apart from the paper. */
-.docs-desk [data-layout-main]::before {
-  content: "";
-  position: absolute;
-  inset: 20px max(var(--pad), calc((100% - 880px) / 2)) 88px;
-  z-index: -1;
-  border-radius: 2px;
-  box-shadow: 10px 34px 60px -18px color-mix(in srgb, var(--umbra) 70%, transparent);
-}
-.docs-desk #nd-page {
-  --color-fd-background: var(--sheet-bg);
-  --color-fd-foreground: var(--sheet-ink);
-  --color-fd-muted: var(--sheet-bg-2);
-  --color-fd-muted-foreground: var(--sheet-ink-2);
-  --color-fd-card: var(--sheet-panel);
-  --color-fd-card-foreground: var(--sheet-ink);
-  --color-fd-popover: var(--sheet-bg);
-  --color-fd-popover-foreground: var(--sheet-ink);
-  --color-fd-border: var(--sheet-line);
-  --color-fd-primary: var(--sheet-ink);
-  --color-fd-primary-foreground: var(--sheet-bg);
-  --color-fd-secondary: var(--sheet-bg-2);
-  --color-fd-secondary-foreground: var(--sheet-ink);
-  --color-fd-accent: color-mix(in srgb, var(--sheet-ink) 6%, transparent);
-  --color-fd-accent-foreground: var(--sheet-ink);
-  --color-fd-ring: var(--sheet-ink);
-  --tw-prose-body: var(--sheet-ink);
-  --focus: var(--sheet-ink);
-  --measure: 100%;
-  --text-measure: 35.5rem;
-  justify-self: center;
-  width: min(100%, 880px);
+.docs-frame #nd-page {
+  --text-measure: 42rem;
+  width: 100%;
+  max-width: none;
+  min-height: calc(100dvh - var(--fd-docs-row-1, 0px) - 56px);
   gap: 0;
-  padding: 76px 72px 44px;
-  border-radius: 2px;
-  color: var(--sheet-ink);
-  background:
-    linear-gradient(170deg, var(--sheet-lit), transparent 28%),
-    url(/landing/tex/paper-tooth.webp) 0 0 / 256px 256px,
-    var(--sheet-bg);
-  background-blend-mode: normal, multiply, normal;
-  box-shadow:
-    inset 1px 1px 0 var(--sheet-lit),
-    0 0.5px 1px color-mix(in srgb, var(--umbra) 55%, transparent),
-    1px 3px 8px color-mix(in srgb, var(--umbra) 30%, transparent);
+  padding: 40px max(32px, calc((100% - var(--text-measure)) / 2)) 32px;
+  border-radius: var(--r-sheet);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  color: var(--t1);
 }
-.docs-desk #nd-page > * {
-  max-width: var(--measure);
-}
-:lang(zh) .docs-desk #nd-page {
-  --text-measure: 36rem;
-}
-.docs-desk #nd-page > :is(h1, p),
-.docs-desk #nd-page .prose > :is(p, ul, ol, h2, h3, h4, blockquote, .docs-card) {
+.docs-frame #nd-page > * {
   max-width: var(--text-measure);
 }
 
-/* Pages land like a sheet put down: from a little above, a little nearer
-   the camera, its wide shadow loose in the air, tight on contact. */
-@media (prefers-reduced-motion: no-preference) {
-  html.mo .docs-desk #nd-page {
-    animation: docs-land 620ms var(--e-settle) backwards;
-  }
-  html.mo .docs-desk [data-layout-main]::before {
-    animation: docs-land-shadow 620ms var(--e-settle) backwards;
-  }
+/* ---- The table of contents, on the ground beside the panel ---- */
+.docs-frame #nd-toc {
+  padding: 40px 16px 24px 24px;
 }
-@keyframes docs-land {
-  from {
-    opacity: 0.55;
-    transform: translate3d(-2px, -12px, 0) rotate(-0.3deg) scale(1.01);
-  }
-  30% {
-    opacity: 1;
-  }
+.docs-frame #toc-title {
+  margin-bottom: 8px;
+  color: var(--t3);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
-@keyframes docs-land-shadow {
-  from {
-    opacity: 0.3;
-    transform: translate3d(14px, 26px, 0) scale(1.04);
+:lang(zh) .docs-frame #toc-title {
+  font-size: var(--fs-xs);
+  letter-spacing: 0;
+  text-transform: none;
+}
+:is(.docs-frame #nd-toc, [data-toc-popover-content]) a {
+  color: var(--t3);
+  font-size: var(--fs-sm);
+  line-height: 18px;
+  transition: color 120ms var(--e-std);
+}
+:is(.docs-frame #nd-toc, [data-toc-popover-content]) a[data-active="true"] {
+  color: var(--t1);
+}
+@media (hover: hover) {
+  :is(.docs-frame #nd-toc, [data-toc-popover-content]) a:hover {
+    color: var(--t1);
   }
 }
 
+/* Below 1280 px the table folds into a strip under the bar. */
+.docs-frame [data-toc-popover] > header {
+  border-color: var(--hair);
+  background: var(--ground);
+  backdrop-filter: none;
+}
+.docs-frame [data-toc-popover-trigger] {
+  color: var(--t2);
+  font-size: var(--fs-base);
+}
+.docs-frame [data-toc-popover-trigger] [role="progressbar"] {
+  color: var(--t1);
+}
+
+/* Breakpoints: the console's 760 px is the frame's; Fumadocs moves the page
+   tree into a drawer at 768 px, so the panel goes edge to edge from there. */
 @media (max-width: 767px) {
-  .docs-desk [data-layout-main] {
-    --pad: 10px;
-    padding-block: 8px 40px;
+  .docs-frame [data-layout-main] {
+    padding: 0;
   }
-  .docs-desk [data-layout-main]::before {
-    inset-block: 8px 40px;
-  }
-  .docs-desk #nd-page {
-    padding: 34px 22px 28px;
+  .docs-frame #nd-page {
+    min-height: 0;
+    padding: 28px 16px 24px;
+    border-radius: 0;
+    box-shadow: 0 -0.5px 0 var(--hair2);
   }
 }
-@media (min-width: 768px) and (max-width: 1279px) {
-  .docs-desk [data-layout-main] {
-    --pad: 24px;
+@media (min-width: 768px) {
+  .docs-frame [data-layout-main] {
+    padding-inline-end: 8px;
+  }
+}
+@media (min-width: 1280px) {
+  .docs-frame [data-layout-main] {
+    padding-inline-end: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-frame *,
+  .docs-frame *::before,
+  .docs-frame *::after {
+    /* biome-ignore lint/complexity/noImportantStyles: Fumadocs sets its own transitions in utilities */
+    transition: none !important;
+    /* biome-ignore lint/complexity/noImportantStyles: as above */
+    animation: none !important;
   }
 }
