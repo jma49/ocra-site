@@ -8,6 +8,7 @@ import {
 import { createRelativeLink } from "@fumadocs/base-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PageFoot } from "@/components/docs/page-foot";
 import { getMDXComponents } from "@/components/mdx";
 import { i18n } from "@/lib/i18n";
 import { localeParam } from "@/lib/locale-param";
@@ -25,7 +26,11 @@ export default async function Page({ params }: Props) {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      toc={page.data.toc}
+      full={page.data.full}
+      footer={{ component: <PageFoot locale={lang} url={page.url} /> }}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       {/* A subhead, so no closing full stop (the metadata keeps it). */}
       <DocsDescription>{page.data.description?.replace(/[.。]$/, "")}</DocsDescription>

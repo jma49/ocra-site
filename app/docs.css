@@ -108,6 +108,18 @@ html:has(.docs-frame) :focus-visible {
   color: var(--t1);
   font-weight: 500;
 }
+/* Each page's icon (its front matter), in the label tone; ink when read. */
+:is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) a:not(.docs-cta) > svg:first-child {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--t3);
+  stroke-width: 1.75;
+  transition: color 120ms var(--e-std);
+}
+:is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) a[data-active="true"] > svg:first-child {
+  color: var(--t1);
+}
 
 /* ---- The page: one panel on the ground ---- */
 .docs-frame [data-layout-main] {

@@ -389,6 +389,9 @@ The manual (`/docs`) is the product's reference, read next to the ocra Cloud con
 - **Text tones:** `--t1` headings and links, `--t2` prose, `--t3` labels and the table of contents, `--t4` only for markers and the link underline at rest.
 - **One ink:** links are `--t1` with a `--t4` underline that darkens under the pointer; the selected page in the tree and the selected tab are `--fill2`. No accent colour; focus is the console's `--focus` ring.
 - **Status:** callouts (`components/docs/note.tsx`) name their kind in words beside a Lucide icon; warnings take `--warning`, critical ones `--critical`, both as soft fills, never large backgrounds.
+- **Page tree:** groups follow the reader's path (get started, review pull requests, configure, CLI and integrations, concepts, help); each page carries a Lucide icon from its front matter (`icon:`), 16 px at stroke 1.75 in `--t3`, `--t1` on the page being read.
+- **Cards:** the manual names a card's icon by its Lucide name (`<Card icon="Play">`); the icon sits on a 28 px `--fill2` tile above the title (14/500), beside it on a phone. The overview opens on four cards for the ways in, and the quickstart ends on next steps.
+- **Page foot:** edit on GitHub, then the previous and next pages as two raised links, each named by its direction (12 px `--t3`) and its title (14/500).
 - **Code:** a raised block (`--raised`, `--shadow`, radius 8), 12/20 Geist Mono; syntax in ink, `--teal` for strings and values, `--violet` for names, `--t3` for comments.
 - **Motion:** colour and fill fade in 120 ms on `--e-std`; nothing lands, slides or loops; under Reduce motion nothing moves.
 
