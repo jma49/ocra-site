@@ -26,7 +26,7 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "Which models does it work with?",
-        a: `Any of ${PROVIDERS} providers through ${CLOUD}, any model OpenCode supports, or your own OpenAI-compatible endpoint with a price per model. Each tier can list several models; when one falls over, the next takes the task.`,
+        a: `Any of ${PROVIDERS} providers through ${CLOUD}, any model OpenCode supports, or your own endpoint in OpenAI's or Anthropic's protocol, with a price per model. Each tier can list several models; when one falls over, the next takes the task.`,
       },
       {
         q: "Does it work with GitLab?",
@@ -64,7 +64,7 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "支持哪些模型？",
-        a: `通过 ${CLOUD} 可用 ${PROVIDERS} 家服务商中的任意一家，也可以用 OpenCode 支持的任何模型，或你自己按模型定价的 OpenAI 兼容端点。每一档可以列出多个模型，一个倒下，下一个接手。`,
+        a: `通过 ${CLOUD} 可用 ${PROVIDERS} 家服务商中的任意一家，也可以用 OpenCode 支持的任何模型，或你自己按模型定价的端点（OpenAI 或 Anthropic 协议）。每一档可以列出多个模型，一个倒下，下一个接手。`,
       },
       {
         q: "支持 GitLab 吗？",
