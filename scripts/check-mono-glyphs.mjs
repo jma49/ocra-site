@@ -2,9 +2,9 @@
 // (scripts/subset-mono.py). A character the cut dropped falls through to
 // another monospace face, which a screenshot on a machine with Maple Mono
 // installed never shows. This fails on any character the site may set in
-// the code face that Maple Mono has but the cut does not: the manual's code
-// in both languages (run after sync-manual), and every string in the landing
-// page's copy, data, components and the recorded file the hero shows.
+// the code face that Maple Mono has but the cut does not: every string in the
+// landing page's copy, data, components and the recorded file the hero shows.
+// The manual sets its code in Geist Mono (app/docs.css), not this face.
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { brotliDecompressSync } from "node:zlib";
@@ -13,7 +13,6 @@ const ORIGINAL = "node_modules/@fontsource/maple-mono/files/maple-mono-latin-{w}
 const CUT = "assets/fonts/ocra-mono-{w}.woff2";
 const WEIGHTS = ["400", "500"];
 const SOURCES = [
-  { dir: "content/docs", match: /\.mdx$/, code: true },
   { dir: "lib", match: /\.tsx?$/ },
   { dir: "components", match: /\.tsx?$/ },
   { dir: "scripts/demo-video/repo/head", match: /./ },
@@ -94,22 +93,18 @@ function* files(dir, match) {
   }
 }
 
-// In the manual only code is set in the code face: fenced blocks and inline
-// code spans.
-const codeIn = (mdx) => (mdx.match(/```[\s\S]*?```|`[^`\n]+`/g) ?? []).join("\n");
-
 const used = new Map();
-for (const { dir, match, code } of SOURCES) {
+for (const { dir, match } of SOURCES) {
   let seen = 0;
   for (const path of files(dir, match)) {
     seen++;
     const text = readFileSync(path, "utf8");
-    for (const char of code ? codeIn(text) : text) {
+    for (const char of text) {
       const c = char.codePointAt(0);
       if (c > 0x7e && !used.has(c)) used.set(c, path);
     }
   }
-  if (!seen) throw new Error(`no files under ${dir}: run sync-manual first`);
+  if (!seen) throw new Error(`no files under ${dir}`);
 }
 
 const missing = [];

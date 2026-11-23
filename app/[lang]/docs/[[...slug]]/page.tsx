@@ -8,8 +8,6 @@ import {
 import { createRelativeLink } from "@fumadocs/base-ui/mdx";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SheetHead } from "@/components/docs/sheet-head";
-import { TocRuler } from "@/components/docs/toc-ruler";
 import { getMDXComponents } from "@/components/mdx";
 import { i18n } from "@/lib/i18n";
 import { localeParam } from "@/lib/locale-param";
@@ -27,8 +25,7 @@ export default async function Page({ params }: Props) {
   const MDX = page.data.body;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full} tableOfContent={{ header: <TocRuler /> }}>
-      <SheetHead locale={lang} path={page.path} url={page.url} />
+    <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>

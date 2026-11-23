@@ -12,11 +12,11 @@ export const translations = i18n
   .extend(uiTranslations())
   .add({ en: { displayName: "English" }, zh: zhUi });
 
-// The manual's bar is the landing page's bar on the desk (components/docs/
-// docs-header.tsx): the logo and the page's sections on the left, GitHub,
-// sign in, the theme and the call to action on the right. On a phone the
-// sections, GitHub and sign in move into the page tree's drawer, with the
-// call to action at its foot.
+// The manual's bar (components/docs/docs-header.tsx): the logo and the
+// manual's name on the left; GitHub, sign in, the theme and the call to
+// action on the right. The landing page's sections, and on a phone GitHub
+// and sign in, sit in the page tree's drawer, with the call to action at
+// its foot.
 export function baseOptions(locale: Locale, nav: Copy["nav"]): BaseLayoutProps {
   const home = localePath(locale, "/");
   const section = (id: string) => `${home}#${id}`;
@@ -31,20 +31,9 @@ export function baseOptions(locale: Locale, nav: Copy["nav"]): BaseLayoutProps {
       title: <Logo />,
       url: home,
       children: (
-        <nav className="docs-nav-links" aria-label={nav.primary}>
-          <ul>
-            {sections.map((l) => (
-              <li key={l.url}>
-                <a href={l.url}>{l.text}</a>
-              </li>
-            ))}
-            <li>
-              <a href={localePath(locale, "/docs")} aria-current="page">
-                {nav.links.docs}
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <a className="docs-crumb" href={localePath(locale, "/docs")} aria-current="page">
+          {nav.links.docs}
+        </a>
       ),
     },
     links: [

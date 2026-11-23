@@ -158,8 +158,8 @@
   --e-stroke: cubic-bezier(0.6, 0, 0.4, 1);
   --e-snap: cubic-bezier(0.3, 1.45, 0.5, 1);
 
-  /* Fumadocs draws the manual's chrome from these. The pen is never the
-     manual's link, primary or active colour: only critical callouts. */
+  /* Fumadocs' defaults; the manual maps them to the console's tokens
+     (app/docs.css). */
   --color-fd-background: var(--paper);
   --color-fd-foreground: var(--ink);
   --color-fd-muted: var(--paper-2);
@@ -230,10 +230,56 @@
     4px 30px 60px -28px color-mix(in srgb, var(--black) 80%, transparent);
 }
 
-/* Teal print for the manual's code (app/docs.css): strings and values on
-   the printed sheet (5.8 : 1 on print-paper), and on the lamp-lit evening
-   sheet. Never a link, a state or a mark. */
-:root {
-  --print-teal: #2d6870;
-  --print-teal-lamp: #8cc4c2;
+/* The manual follows the ocra Cloud console's design (its web/DESIGN.md):
+   the same values under the same names, scoped to the manual. A quiet
+   neutral frame, alpha-black text in four tones, hairlines, one ink. */
+html:has(.docs-frame) {
+  --ground: #f3f3f4;
+  --panel: #fcfcfc;
+  --raised: #ffffff;
+  --t1: rgb(0 0 0 / 0.875);
+  --t2: rgb(0 0 0 / 0.68);
+  --t3: rgb(0 0 0 / 0.56);
+  --t4: rgb(0 0 0 / 0.267);
+  --hair: rgb(0 0 0 / 0.063);
+  --hair2: rgb(0 0 0 / 0.09);
+  --fill: rgb(0 0 0 / 0.04);
+  --fill2: rgb(0 0 0 / 0.063);
+  --ink: #1d1d1f;
+  --on-ink: #ffffff;
+  --red: #d93a26;
+  --amber: #b26a00;
+  --green: #1f8a4c;
+  --blue: #3f6fe8;
+  --teal: #2f9e8f;
+  --violet: #8a6cf0;
+  --shadow:
+    0 0 0 0.5px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 12px -4px rgb(0 0 0 / 0.06);
+  --float:
+    0 0 0 0.5px rgb(0 0 0 / 0.08), 0 8px 24px -6px rgb(0 0 0 / 0.16), 0 2px 6px rgb(0 0 0 / 0.05);
+  --scrim: rgb(0 0 0 / 0.28);
+}
+html.dark:has(.docs-frame) {
+  --ground: #0d0d0e;
+  --panel: #141415;
+  --raised: #1b1b1d;
+  --t1: rgb(255 255 255 / 0.92);
+  --t2: rgb(255 255 255 / 0.64);
+  --t3: rgb(255 255 255 / 0.5);
+  --t4: rgb(255 255 255 / 0.32);
+  --hair: rgb(255 255 255 / 0.08);
+  --hair2: rgb(255 255 255 / 0.12);
+  --fill: rgb(255 255 255 / 0.05);
+  --fill2: rgb(255 255 255 / 0.08);
+  --ink: #ededee;
+  --on-ink: #111112;
+  --red: #ff6b57;
+  --amber: #f0b24a;
+  --green: #5cc98a;
+  --blue: #7c9cf5;
+  --teal: #5cc2b3;
+  --violet: #b79bff;
+  --shadow: 0 0 0 0.5px rgb(255 255 255 / 0.08), 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  --float: 0 0 0 0.5px rgb(255 255 255 / 0.1), 0 12px 32px -8px rgb(0 0 0 / 0.7);
+  --scrim: rgb(0 0 0 / 0.5);
 }

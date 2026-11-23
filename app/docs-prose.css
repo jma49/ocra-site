@@ -1,0 +1,378 @@
+/* The manual's page on its panel (app/docs.css): type, links, code,
+   callouts, cards, tabs, steps, tables and the page's foot, on the
+   console's tokens. */
+
+/* ---- Type ---- */
+.docs-frame #nd-page h1 {
+  margin-bottom: 8px;
+  color: var(--t1);
+  font-size: var(--fs-4xl);
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.docs-frame #nd-page h1 + p {
+  margin-bottom: 32px;
+  color: var(--t2);
+  font-size: var(--fs-lg);
+  line-height: 26px;
+}
+.docs-frame #nd-page .prose {
+  color: var(--t1);
+  font-size: var(--fs-md);
+  line-height: 24px;
+}
+.docs-frame #nd-page .prose > :first-child {
+  margin-top: 0;
+}
+.docs-frame #nd-page .prose :where(p, li) {
+  color: var(--t2);
+}
+.docs-frame #nd-page .prose :where(h2, h3, h4) {
+  color: var(--t1);
+  font-weight: 600;
+  text-wrap: balance;
+}
+.docs-frame #nd-page .prose :where(h2) {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 0.5px solid var(--hair2);
+  font-size: var(--fs-2xl);
+  line-height: 28px;
+  letter-spacing: -0.01em;
+}
+.docs-frame #nd-page .prose > h2:first-child,
+.docs-frame #nd-page .prose .fd-step > h2 {
+  padding-top: 0;
+  border-top: 0;
+}
+.docs-frame #nd-page .prose :where(h3) {
+  margin-top: 28px;
+  font-size: var(--fs-lg);
+  line-height: 24px;
+}
+.docs-frame #nd-page .prose :where(h4) {
+  margin-top: 24px;
+  font-size: var(--fs-md);
+}
+.docs-frame #nd-page .prose :where(strong) {
+  color: var(--t1);
+  font-weight: 600;
+}
+.docs-frame #nd-page .prose :where(hr) {
+  border-color: var(--hair2);
+}
+.docs-frame #nd-page .prose :where(ul > li)::marker {
+  color: var(--t4);
+}
+.docs-frame #nd-page .prose :where(ol > li)::marker {
+  color: var(--t3);
+  font-variant-numeric: tabular-nums;
+}
+.docs-frame #nd-page .prose :where(blockquote) {
+  border-inline-start: 2px solid var(--hair2);
+  color: var(--t2);
+  font-style: normal;
+}
+:lang(zh) .docs-frame #nd-page h1 {
+  font-size: var(--fs-3xl);
+  line-height: 34px;
+  letter-spacing: 0;
+}
+:lang(zh) .docs-frame #nd-page .prose {
+  line-height: 26px;
+}
+:lang(zh) .docs-frame #nd-page .prose :where(h2, h3) {
+  letter-spacing: 0;
+}
+:lang(zh) .docs-frame #nd-page .prose :where(h2) {
+  font-size: var(--fs-xl);
+}
+
+/* Links: ink, underlined by a hairline that darkens under the pointer. */
+.docs-frame #nd-page .prose a:not([data-card]):not(.peer) {
+  color: var(--t1);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--t4);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 120ms var(--e-std);
+}
+@media (hover: hover) {
+  .docs-frame #nd-page .prose a:not([data-card]):not(.peer):hover {
+    text-decoration-color: var(--t1);
+  }
+}
+.docs-frame #nd-page .prose :where(h2, h3, h4) a[data-card] {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---- Code ---- */
+.docs-frame #nd-page .prose :not(pre) > code {
+  padding: 1px 5px;
+  border: 0;
+  border-radius: var(--r-tag);
+  background: var(--fill2);
+  color: var(--t1);
+  font-family: var(--mono);
+  font-size: 0.875em;
+  overflow-wrap: break-word;
+}
+.docs-frame #nd-page figure.shiki {
+  margin-block: 20px;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: var(--raised);
+  box-shadow: var(--shadow);
+}
+.docs-frame #nd-page figure.shiki pre {
+  color: var(--t1);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  line-height: 20px;
+}
+.docs-frame #nd-page figure.shiki [class*="max-h-"] {
+  padding: 12px 0;
+}
+.docs-frame #nd-page figure.shiki > div:has(> button) {
+  top: 6px;
+  right: 6px;
+  backdrop-filter: none;
+}
+.docs-frame #nd-page figure.shiki button {
+  color: var(--t3);
+}
+/* Syntax in the console's quiet palette: ink for code, teal for strings
+   and values, violet for names, the label tone for comments. Shiki's
+   GitHub themes mark each token with its own colour; these match those
+   marks, so every value here is a token. */
+.docs-frame #nd-page figure.shiki span[style] {
+  color: var(--t1);
+}
+.docs-frame #nd-page figure.shiki :is(span[style*="032F62" i], span[style*="9ECBFF" i]),
+.docs-frame #nd-page figure.shiki :is(span[style*="005CC5" i], span[style*="79B8FF" i]) {
+  color: var(--teal);
+}
+.docs-frame #nd-page figure.shiki :is(span[style*="6F42C1" i], span[style*="B392F0" i]) {
+  color: var(--violet);
+}
+.docs-frame #nd-page figure.shiki :is(span[style*="D73A49" i], span[style*="F97583" i]) {
+  color: var(--t2);
+}
+.docs-frame #nd-page figure.shiki :is(span[style*="6A737D" i], span[style*="E36209" i]) {
+  color: var(--t3);
+}
+
+/* ---- Callouts: a note on a soft fill, its kind named in words ---- */
+.docs-frame #nd-page .docs-note {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  column-gap: 10px;
+  margin-block: 20px;
+  padding: 12px 16px;
+  border-radius: var(--r-ctl);
+  background: var(--fill);
+  color: var(--t2);
+  font-size: var(--fs-base);
+  line-height: 20px;
+}
+.docs-frame #nd-page .docs-note > svg {
+  margin-top: 2px;
+  color: var(--t3);
+}
+.docs-note-head {
+  margin: 0 0 2px;
+  color: var(--t1);
+  font-weight: 600;
+}
+.docs-note-kind {
+  margin-inline-end: 6px;
+  color: var(--t3);
+  font-weight: 500;
+}
+.docs-frame #nd-page .docs-note[data-kind="warning"] {
+  background: color-mix(in srgb, var(--warning) 9%, var(--panel));
+}
+.docs-frame #nd-page .docs-note[data-kind="warning"] > svg,
+.docs-frame #nd-page .docs-note[data-kind="warning"] .docs-note-kind {
+  color: var(--warning);
+}
+.docs-frame #nd-page .docs-note[data-kind="error"] {
+  background: color-mix(in srgb, var(--critical) 9%, var(--panel));
+}
+.docs-frame #nd-page .docs-note[data-kind="error"] > svg,
+.docs-frame #nd-page .docs-note[data-kind="error"] .docs-note-kind {
+  color: var(--critical);
+}
+.docs-frame #nd-page .docs-note[data-kind="success"] > svg {
+  color: var(--green);
+}
+.docs-frame #nd-page .docs-note-body :where(p, ul, ol, li) {
+  margin-block: 0;
+  color: var(--t2);
+  font-size: inherit;
+  line-height: inherit;
+}
+.docs-frame #nd-page .docs-note-body > * + * {
+  margin-top: 8px;
+}
+
+/* ---- Link cards: raised cards that take a fill under the pointer ---- */
+.docs-frame #nd-page .docs-link-card,
+.docs-frame #nd-page > [class*="@container"] > a {
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: var(--raised);
+  box-shadow: var(--shadow);
+  color: var(--t1);
+  transition: background-color 120ms var(--e-std);
+}
+.docs-frame #nd-page .docs-link-card h3 {
+  margin: 0;
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+.docs-frame #nd-page .docs-link-card :where(p, div) {
+  color: var(--t3);
+  font-size: var(--fs-base);
+}
+@media (hover: hover) {
+  .docs-frame #nd-page .docs-link-card:hover,
+  .docs-frame #nd-page > [class*="@container"] > a:hover {
+    background: color-mix(in srgb, var(--raised) 94%, var(--t1));
+  }
+}
+
+/* ---- Tabs: a segmented control over a raised panel ---- */
+.docs-frame #nd-page .docs-tabs {
+  margin-block: 20px;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: var(--raised);
+  box-shadow: var(--shadow);
+}
+.docs-frame #nd-page .docs-tabs [role="tablist"] {
+  gap: 2px;
+  padding: 4px;
+  border-bottom: 0.5px solid var(--hair);
+  background: transparent;
+}
+.docs-frame #nd-page .docs-tabs [role="tab"] {
+  height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--r-tab);
+  color: var(--t3);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  transition:
+    background-color 120ms var(--e-std),
+    color 120ms var(--e-std);
+}
+.docs-frame #nd-page .docs-tabs [role="tab"][aria-selected="true"] {
+  background: var(--fill2);
+  color: var(--t1);
+}
+.docs-frame #nd-page .docs-tabs [role="tabpanel"] {
+  background: transparent;
+}
+.docs-frame #nd-page .docs-tabs [role="tabpanel"] figure.shiki {
+  margin-block: 0;
+  box-shadow: none;
+}
+
+/* ---- Steps: a numbered rail of hairlines ---- */
+.docs-frame #nd-page .fd-steps {
+  border-inline-start: 0.5px solid var(--hair2);
+}
+.docs-frame #nd-page .fd-step::before {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  background: var(--fill2);
+  color: var(--t2);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Tables: records compared, hairlines between rows ---- */
+.docs-frame #nd-page .prose table {
+  font-size: var(--fs-base);
+  line-height: 20px;
+}
+.docs-frame #nd-page .prose :where(th) {
+  padding: 8px 12px;
+  border-bottom: 0.5px solid var(--hair2);
+  color: var(--t3);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: start;
+  text-transform: uppercase;
+}
+:lang(zh) .docs-frame #nd-page .prose :where(th) {
+  font-size: var(--fs-xs);
+  letter-spacing: 0;
+  text-transform: none;
+}
+.docs-frame #nd-page .prose :where(td) {
+  padding: 9px 12px;
+  border-bottom: 0.5px solid var(--hair);
+  color: var(--t2);
+}
+.docs-frame #nd-page .prose :where(th, td) {
+  border-inline: 0;
+}
+.docs-frame #nd-page .prose :where(th, td):first-child {
+  padding-inline-start: 16px;
+}
+.docs-frame #nd-page .prose td:first-child code {
+  white-space: nowrap;
+}
+.docs-frame #nd-page .prose :where(tbody tr:last-child td) {
+  border-bottom: 0;
+}
+
+/* ---- The page's foot: edit on GitHub, then the pages either side ---- */
+.docs-frame #nd-page > a[href*="/blob/"] {
+  align-self: flex-start;
+  height: 28px;
+  margin-top: 48px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--r-ctl);
+  background: transparent;
+  color: var(--t3);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  transition:
+    background-color 120ms var(--e-std),
+    color 120ms var(--e-std);
+}
+@media (hover: hover) {
+  .docs-frame #nd-page > a[href*="/blob/"]:hover {
+    background: var(--fill);
+    color: var(--t1);
+  }
+}
+.docs-frame #nd-page > [class*="@container"] {
+  gap: 12px;
+  margin-top: 16px;
+}
+.docs-frame #nd-page > [class*="@container"] > a {
+  gap: 4px;
+  padding: 12px 16px;
+}
+.docs-frame #nd-page > [class*="@container"] > a > :first-child {
+  color: var(--t1);
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+.docs-frame #nd-page > [class*="@container"] > a > :last-child {
+  color: var(--t3);
+  font-size: var(--fs-sm);
+}
