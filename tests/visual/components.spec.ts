@@ -42,3 +42,19 @@ test("the theme toggle says whether the dark theme is on", async ({ page }) => {
   await expect(toggle).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("html")).toHaveClass(/\bdark\b/);
 });
+
+for (const [path, prefix, previous, next] of [
+  ["/docs/installation", "/docs/", "Previous", "Next"],
+  ["/zh/docs/installation", "/zh/docs/", "上一页", "下一页"],
+] as const) {
+  test(`the page foot of ${path} names the pages either side in its language`, async ({ page }) => {
+    await page.goto(path, { waitUntil: "networkidle" });
+    const links = page.locator(".docs-pager a");
+    await expect(links).toHaveCount(2);
+    await expect(links.nth(0).locator(".docs-pager-dir")).toHaveText(previous);
+    await expect(links.nth(1).locator(".docs-pager-dir")).toHaveText(next);
+    for (const link of await links.all()) {
+      expect(await link.getAttribute("href")).toMatch(new RegExp(`^${prefix}[a-z-]+$`));
+    }
+  });
+}
