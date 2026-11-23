@@ -47,7 +47,7 @@ export const works: Bilingual<WorksCopy> = {
     illustration: "Illustration",
     recorded: "Example run · recorded",
     gauge: "model providers through ocra Cloud",
-    more: "Store a key for any of them in ocra Cloud, or point ocra at any OpenAI-compatible endpoint you run.",
+    more: "Store a key for any of them in ocra Cloud, or point ocra at an endpoint you run, in OpenAI's or Anthropic's protocol.",
   },
   zh: {
     lines: ["在你工作的\u200b地方审查，", "用你付费的\u200b模型。"],
@@ -67,6 +67,6 @@ export const works: Bilingual<WorksCopy> = {
     illustration: "示意",
     recorded: "示例运行 · 录制",
     gauge: "家模型服务商，经 ocra Cloud 接入",
-    more: "在 ocra Cloud 中保存其中任意一家的 key，或把 ocra 指向你自己运行的任何 OpenAI 兼容端点。",
+    more: "在 ocra Cloud 中保存其中任意一家的 key，或把 ocra 指向你自己运行的端点（OpenAI 或 Anthropic 协议）。",
   },
 };
