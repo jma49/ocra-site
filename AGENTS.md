@@ -17,7 +17,7 @@ Rules for humans and AI agents working on the Open-CR-Agent site: the landing pa
 | `components/landing/` | Landing page sections |
 | `components/brand/` | The eye-row mark |
 | `app/landing/` | The landing page's styles, split by section (`index.css` imports them in order) |
-| `app/docs.css` | The manual's restyling of Fumadocs |
+| `app/docs.css`, `app/docs-nav.css`, `app/docs-prose.css` | The manual on the ocra Cloud console's design (DESIGN.md, Manual): the frame, the bar and drawer, the page |
 | `lib/copy/` | All landing page copy: one module per section in `lib/copy/sections/`, English and Chinese side by side under one typed shape; `index.ts` resolves the run |
 | `scripts/sync-manual.mjs` | Copies the manual into `content/docs`, and the JSON Schemas into `public/schema`, before `dev` and `build` |
 | `scripts/demo-video/` | Records the example run (real ocra CLI, scripted model) that the landing page quotes; see its README |
