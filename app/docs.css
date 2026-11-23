@@ -77,25 +77,18 @@ html:has(.docs-frame) :focus-visible {
   padding: 8px 12px 24px 16px;
 }
 :is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) p {
-  margin: 20px 0 4px;
+  margin: 24px 0 8px;
   padding-inline: 8px;
   color: var(--t3);
-  font-size: var(--fs-2xs);
+  font-size: var(--fs-sm);
   font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-:lang(zh) :is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) p {
-  font-size: var(--fs-xs);
-  letter-spacing: 0;
-  text-transform: none;
 }
 :is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) [data-id$="-viewport"] > div > p:first-child {
   margin-top: 4px;
 }
 :is(.docs-frame #nd-sidebar, #nd-sidebar-mobile) a:not(.docs-cta) {
-  min-height: 30px;
-  padding: 5px 8px;
+  min-height: 32px;
+  padding: 6px 8px;
   border-radius: var(--r-chip);
   color: var(--t2);
   font-size: var(--fs-base);
@@ -143,15 +136,8 @@ html:has(.docs-frame) :focus-visible {
 .docs-frame #toc-title {
   margin-bottom: 8px;
   color: var(--t3);
-  font-size: var(--fs-2xs);
+  font-size: var(--fs-sm);
   font-weight: 500;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-:lang(zh) .docs-frame #toc-title {
-  font-size: var(--fs-xs);
-  letter-spacing: 0;
-  text-transform: none;
 }
 :is(.docs-frame #nd-toc, [data-toc-popover-content]) a {
   color: var(--t3);
