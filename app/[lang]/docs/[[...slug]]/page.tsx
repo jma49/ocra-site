@@ -27,7 +27,8 @@ export default async function Page({ params }: Props) {
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
+      {/* A subhead, so no closing full stop (the metadata keeps it). */}
+      <DocsDescription>{page.data.description?.replace(/[.。]$/, "")}</DocsDescription>
       <DocsBody>
         <MDX components={getMDXComponents(lang, { a: createRelativeLink(source, page) })} />
       </DocsBody>
