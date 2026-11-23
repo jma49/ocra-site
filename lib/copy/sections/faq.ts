@@ -22,7 +22,7 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "Who sees my code?",
-        a: `Self-hosted, only your model provider: the change with its title and description, your AGENTS.md and review rules, and what the agents open or search in the repository. Never files that look like secrets, or anything outside the repository. With ${CLOUD} the request also passes through its gateway.`,
+        a: `Self-hosted, only your model provider: the change with its title and description, your AGENTS.md and review rules, and what the agents open or search in the repository. Never files that look like secrets, or anything outside the repository. With ${CLOUD} the request also passes through its gateway, and a review it runs for you clones the repository you enrolled.`,
       },
       {
         q: "Which models does it work with?",
@@ -60,7 +60,7 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "谁能看到我的代码？",
-        a: `自托管时，只有你的模型服务商：改动及其标题和描述、你的 AGENTS.md 和审查规则，以及 agent 在仓库里打开或搜索的内容。看起来像密钥的文件、仓库之外的任何东西都不会发送。使用 ${CLOUD} 时，请求还会经过它的网关。`,
+        a: `自托管时，只有你的模型服务商：改动及其标题和描述、你的 AGENTS.md 和审查规则，以及 agent 在仓库里打开或搜索的内容。看起来像密钥的文件、仓库之外的任何东西都不会发送。使用 ${CLOUD} 时，请求还会经过它的网关；由它替你运行的审查会克隆你登记的仓库。`,
       },
       {
         q: "支持哪些模型？",

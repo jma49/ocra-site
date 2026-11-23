@@ -71,7 +71,7 @@ export const plans: Bilingual<PlansCopy> = {
         planned: true,
       },
     },
-    fine: `With ${CLOUD} your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing. If nothing but your provider may see the code, self-host: it is the same engine.`,
+    fine: `With ${CLOUD} your change passes through its gateway on the way to your model provider, and the console keeps counts by default; findings and the code they quote only if you turn on findings sharing, or for the reviews it runs for you. If nothing but your provider may see the code, self-host: it is the same engine.`,
   },
   zh: {
     lines: ["开源核心，", "需要时再托管。"],
@@ -118,6 +118,6 @@ export const plans: Bilingual<PlansCopy> = {
         planned: true,
       },
     },
-    fine: `使用 ${CLOUD} 时，你的改动会经过它的网关再到达你的模型服务商。控制台默认只保存计数，只有开启发现共享后，才会保存发现及其引用的代码。如果只能让模型服务商看到代码，请自托管：引擎是同一个。`,
+    fine: `使用 ${CLOUD} 时，你的改动会经过它的网关再到达你的模型服务商。控制台默认只保存计数，只有开启发现共享后，或者审查由它替你运行时，才会保存发现及其引用的代码。如果只能让模型服务商看到代码，请自托管：引擎是同一个。`,
   },
 };
