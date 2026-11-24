@@ -26,15 +26,19 @@ function Tabs({ className, ...props }: ComponentProps<typeof FdTabs>) {
   return <FdTabs className={`docs-tabs ${className ?? ""}`} {...props} />;
 }
 
+type CalloutProps = { type?: string; title?: ReactNode; children?: ReactNode };
+
+const CALLOUTS: Record<Locale, (props: CalloutProps) => ReactNode> = {
+  en: (props) => <Note locale="en" {...props} />,
+  zh: (props) => <Note locale="zh" {...props} />,
+};
+
 // The manual (written in the main repository) may use these components:
 // Callout, Cards/Card, Steps/Step and Tabs/Tab.
 export function getMDXComponents(locale: Locale, components?: MDXComponents) {
-  function Callout(props: { type?: string; title?: ReactNode; children?: ReactNode }) {
-    return <Note locale={locale} {...props} />;
-  }
   return {
     ...defaultMdxComponents,
-    Callout,
+    Callout: CALLOUTS[locale],
     Card,
     Cards,
     Step,
