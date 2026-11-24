@@ -1,496 +1,541 @@
-/* The hero (hero/hero.tsx): the brand line beside the desk. The desk is
-   painted composed and finished; with motion allowed, the states below
-   hold the objects before HeroPlay plays them (.live), and .done is the
-   finished desk. */
-
-.home:has(.hero[data-ground="desk"]) .announce {
+/* The hero: a dotted field behind the claim, two rows of stippled shapes
+   that lean with the pointer (hero-stage.tsx sets --px and --py), and the
+   console's finding on a 12 s loop: the review scans, the finding lands,
+   the cursor commits the fix, the toast confirms. Under Reduce motion the
+   loop shows its last state. The copy is painted from the first frame. */
+.hero {
   position: relative;
-  z-index: 2;
+  padding: 88px 0 40px;
 }
-.home:has(.hero[data-ground="desk"]) .announce p {
-  color: var(--on-desk-2);
-}
-.home:has(.hero[data-ground="desk"]) .announce a {
-  color: var(--on-desk);
-  text-decoration-color: var(--line-desk);
-}
-
-.home .hero {
-  min-height: clamp(720px, calc(100svh - 96px), 920px);
-  overflow-x: clip;
-}
-.home .hero-top {
+.hero::before {
+  content: "";
   position: absolute;
-  top: 24px;
-  height: 1px;
-  width: 1px;
-}
-.home .hero-in {
-  position: relative;
-  z-index: 2;
-  padding-top: clamp(48px, 8vh, 92px);
+  inset: 0 0 auto;
+  height: 760px;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
+  background-size: 18px 18px;
+  mask-image: radial-gradient(ellipse 60% 70% at 50% 30%, var(--black), transparent 75%);
   pointer-events: none;
 }
-.home .hero-copy {
-  max-width: 620px;
-  pointer-events: auto;
+.hero [data-top-sentinel] {
+  position: absolute;
+  top: 24px;
 }
-.home .hero-h {
+.hero-text {
+  position: relative;
+  text-align: center;
+}
+.hero-h {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(60px, 8.2vw, 120px);
+  font-size: clamp(40px, 6.2vw, 76px);
   font-weight: 500;
-  font-stretch: 70%;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  color: var(--on-desk);
-  white-space: nowrap;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
-.home .hero-h .hl {
-  display: block;
-  overflow: clip;
-  overflow-clip-margin: 0.12em;
-  padding-bottom: 0.04em;
-}
-.home .hero-h .hli {
+.hero-h .hli {
   display: block;
 }
-.home:lang(zh) .hero-h,
-.home .hero-h:lang(zh) {
-  font-family: var(--font-sans);
-  font-size: clamp(52px, 7vw, 104px);
-  font-weight: 600;
-  font-stretch: 100%;
-  line-height: 1.08;
-  letter-spacing: 0.01em;
+:lang(zh) .hero-h {
+  line-height: 1.15;
+  letter-spacing: 0;
 }
-.home .hero-lede {
-  max-width: 34ch;
-  margin-top: 30px;
-  font-size: 19px;
-  line-height: 1.55;
-  color: var(--on-desk-2);
-  text-wrap: pretty;
+.hero-lede {
+  max-width: 640px;
+  margin: 26px auto 0;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--t2);
 }
-.home .hero-cta {
+:lang(zh) .hero-lede {
+  line-height: 1.8;
+}
+.hero-cta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 14px 30px;
-  margin-top: 36px;
+  gap: 12px;
+  margin-top: 34px;
 }
-.home .hero-note {
-  margin-top: 16px;
-  font-size: 14px;
-  color: var(--on-desk-3);
+@media (prefers-reduced-motion: no-preference) {
+  .hero-h .hli,
+  .hero-lede,
+  .hero-cta {
+    animation: rise 900ms var(--e-enter) both;
+  }
+  .hero-h .hli + .hli {
+    animation-delay: 80ms;
+  }
+  .hero-lede {
+    animation-delay: 160ms;
+  }
+  .hero-cta {
+    animation-delay: 240ms;
+  }
 }
-.home .hero-caption {
+@keyframes rise {
+  from {
+    translate: 0 14px;
+  }
+}
+
+/* The stage. */
+.hero-stage {
+  position: relative;
+  height: 640px;
+  margin-top: 56px;
+  overflow: hidden;
+  perspective: 1600px;
+}
+.hero-stage::after {
+  content: "";
   position: absolute;
-  left: max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
-  bottom: 26px;
+  inset: auto 0 0;
+  z-index: 4;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--ground));
+  pointer-events: none;
+}
+.hero-art {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  width: 1600px;
+  transition: transform 600ms var(--e-enter);
+}
+.hero-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.hero-back.hero-art {
+  transform: translate(calc(-50% + var(--px, 0) * -10px), calc(var(--py, 0) * -4px));
+}
+.hero-front.hero-art {
+  transform: translate(calc(-50% + var(--px, 0) * -26px), calc(var(--py, 0) * -8px));
+}
+.deck,
+.shot-hero {
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  width: 760px;
+}
+.deck {
+  height: 300px;
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: var(--sh);
+}
+.deck-3 {
+  transform: translateX(-50%) translateY(-34px) scale(0.88);
+  opacity: 0.55;
+}
+.deck-2 {
+  transform: translateX(-50%) translateY(-17px) scale(0.94);
+  opacity: 0.85;
+}
+.shot-hero {
   z-index: 2;
+  transform: translateX(-50%) rotateX(calc(var(--py, 0) * -2deg)) rotateY(calc(var(--px, 0) * 3deg));
+  transition: transform 600ms var(--e-enter);
+}
+.shot-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 40px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--hair);
+  background: color-mix(in srgb, var(--raised) 35%, var(--panel));
+  font-size: 12px;
+  color: var(--t3);
+}
+.sb-dots {
+  display: flex;
+  gap: 6px;
+}
+.sb-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--tile-edge);
+}
+.sb-path {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.sb-state {
+  display: grid;
+  margin-inline-start: auto;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.sb-state > span {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: end;
+  gap: 6px;
+}
+.sb-state > span::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.sb-run {
+  color: var(--blue);
+  opacity: 0;
+}
+.sb-done {
+  color: var(--green);
+}
+.demo-body {
+  position: relative;
+}
+.scan,
+.cursor,
+.click {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.scan {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 24px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    color-mix(in srgb, var(--blue) 14%, transparent),
+    transparent
+  );
+  border-bottom: 1.5px solid color-mix(in srgb, var(--blue) 50%, transparent);
+}
+.cursor {
+  left: 90%;
+  top: 70%;
+  filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--black) 20%, transparent));
+}
+.cursor path {
+  fill: var(--t1);
+  stroke: var(--panel);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.click {
+  left: 90.8%;
+  top: 71%;
+  width: 120px;
+  height: 46px;
+  margin: -23px 0 0 -60px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 2px var(--t1);
+}
+.toast {
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 660px;
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--on-desk-3);
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--t1);
+  color: var(--on-ink);
+  font-size: 14px;
+  font-weight: 500;
 }
-.home .hero-caption-ring {
-  flex: none;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 1.5px var(--on-desk-2);
+.toast svg {
+  fill: none;
+  stroke: var(--green-hi);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
-.home .hero-replay {
+.hero-toast {
   position: absolute;
-  right: max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
-  bottom: 18px;
+  z-index: 5;
+  left: 50%;
+  top: 478px;
+  width: max-content;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.chip-float {
+  position: absolute;
   z-index: 3;
-  height: 36px;
-  padding: 0 14px;
-  border: 0;
-  border-radius: var(--r-ctl);
-  background: color-mix(in srgb, var(--desk-lo) 70%, transparent);
-  color: var(--on-desk-2);
-  font: 500 13px / 1 var(--font-sans);
-  cursor: pointer;
-  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 14px;
+  background: var(--panel);
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow:
+    var(--sh-lg),
+    0 0 0 1px var(--hair);
 }
-@media (hover: hover) {
-  .home .hero-replay:hover {
-    color: var(--on-desk);
-  }
+.cf-1 {
+  left: calc(50% - 640px);
+  top: 150px;
 }
-
-/* ---- The desk scene: cropped, never scaled down past the type's floor ---- */
-.home .hero-scene {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
+.cf-2 {
+  left: calc(50% + 330px);
+  top: 70px;
 }
-/* The lamp falls on the objects too: warm on the paper towards the light,
-   the room darkening at the edges of the frame. */
-.home .hero-scene::before,
-.home .hero-scene::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  /* Faded in from the top and out to the bottom on an eased ramp (no Mach
-     band), so the light meets the desk above and the next section's desk
-     below without a seam. */
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    color-mix(in srgb, var(--black) 16%, transparent) 40px,
-    color-mix(in srgb, var(--black) 50%, transparent) 80px,
-    color-mix(in srgb, var(--black) 84%, transparent) 120px,
-    var(--black) 160px,
-    var(--black) calc(100% - 180px),
-    color-mix(in srgb, var(--black) 84%, transparent) calc(100% - 135px),
-    color-mix(in srgb, var(--black) 50%, transparent) calc(100% - 90px),
-    color-mix(in srgb, var(--black) 16%, transparent) calc(100% - 45px),
-    transparent
-  );
+.cf-3 {
+  left: calc(50% + 360px);
+  top: 300px;
+  font-size: 12.5px;
 }
-.home .hero-scene::before {
-  background: radial-gradient(
-    46% 58% at calc(62% + var(--lx) * 3%) calc(30% + var(--ly) * 3%),
-    color-mix(in srgb, var(--lamp) 30%, transparent),
-    transparent 72%
-  );
-  mix-blend-mode: soft-light;
-}
-.home .hero-scene::after {
-  background: radial-gradient(
-    120% 125% at 58% 0%,
-    transparent 56%,
-    color-mix(in srgb, var(--umbra) 36%, transparent) 100%
-  );
-  mix-blend-mode: multiply;
-}
-.home .hero-world {
-  position: absolute;
-  left: calc(50% + 46px);
-  top: 18px;
-  transform: scale(var(--ws, 1));
-  transform-origin: 0 0;
-}
-.home .hero-world :is(.desk-sheet, .card) {
-  pointer-events: auto;
-}
-/* The whole sheet lies inside the hero, on the desk that goes on into the
-   next section: nothing is cut by the seam between two desk sections. */
-.home .hero-sheet {
-  --w: 690px;
-  --h: min(752px, calc((clamp(720px, 100svh - 96px, 920px) - 48px) / var(--ws, 1)));
-  --r: -1.6deg;
-}
-.home .hero-card {
-  --x: -64px;
-  --y: 566px;
-  --r: 1.6deg;
-}
-.home .hero-clip {
-  --x: 150px;
-  --y: 569px;
-  --r: 1.6deg;
-}
-.home .hero-pen {
-  --pen-s: 0.82;
-}
-@media (min-width: 1600px) and (min-height: 960px) {
-  .home .hero-world {
-    --ws: 1.1;
-  }
-}
-@media (max-width: 1299px) {
-  .home .hero-world {
-    --ws: 0.92;
-    left: calc(50% + 20px);
-  }
-}
-/* A small laptop: the page a little smaller and further in, so line 42's
-   margin note is never cut by the window's edge. */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .home .hero-world {
-    --ws: 0.86;
-    left: calc(50% + 4px);
-  }
+.hero-note {
+  position: relative;
+  z-index: 5;
+  margin-top: -36px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--t3);
 }
 
-/* ---- Phone and tablet: the copy, then the narrow printout below it ----
-   A page of the last lines printed 33 columns wide, so the code reads at
-   about 13.5 px and line 42 wraps where a printer would; the card lies at the
-   screen's own scale (16 px type) under the code, the pen along the right
-   edge. The ruler reads and is set aside before the card is dealt, so the
-   finished frame is the page, its marks, one card and the pen. */
-.home .hero-scene.is-narrow {
-  display: none;
-}
-@media (max-width: 1023px) {
-  .home .hero {
-    min-height: 0;
-  }
-  .home .hero-in {
-    padding-top: 24px;
-  }
-  .home .hero-copy {
-    max-width: 560px;
-  }
-  .home .hero-h {
-    font-size: clamp(50px, 13.4vw, 96px);
-  }
-  .home .hero-lede {
-    font-size: 16px;
-    margin-top: 16px;
-  }
-  .home .hero-cta {
-    gap: 4px 22px;
-    margin-top: 22px;
-  }
-  .home .hero-note {
-    display: none;
-  }
-  .home .hero-scene.is-wide {
-    display: none;
-  }
-  .home .hero-scene.is-narrow {
-    --cx: 16px;
-    --cy: 172px;
-    --cw: 300px;
-    display: block;
-    position: relative;
-    inset: auto;
-    height: 396px;
-    margin-top: 12px;
-  }
-  .home .is-narrow .hero-world {
-    --ws: 0.84;
-    left: 40px;
-    top: calc(-66px * var(--ws));
-  }
-  .home .is-narrow .hero-sheet {
-    --w: 560px;
-    --h: 520px;
-    --r: -0.8deg;
-  }
-  .home .is-narrow .ruler:not(.in),
-  .home .is-narrow .ruler.gone {
-    opacity: 0;
-  }
-  .home .is-narrow .ruler.gone {
-    translate: -40px 40px;
-    transition:
-      transform 110ms var(--e-glide),
-      translate 420ms var(--e-glide),
-      opacity 320ms var(--e-std);
-  }
-  .home .is-narrow .hero-card {
-    --x: 0px;
-    --y: 0px;
-    --r: -0.6deg;
-    left: var(--cx);
-    top: var(--cy);
-    width: var(--cw);
-    height: 198px;
-  }
-  .home .is-narrow .hero-card .card-face {
-    padding: 16px 18px 0;
-    background-position:
-      0 0,
-      0 76px,
-      0 0,
-      0 0;
-  }
-  .home .is-narrow .hero-card .card-face::before {
-    top: 49px;
-  }
-  .home .is-narrow .hero-card .card-title {
-    margin-top: 7px;
-    font-size: 18px;
-    line-height: 26px;
-    text-wrap: balance;
-  }
-  .home .is-narrow .hero-card .card-quote {
-    white-space: normal;
-  }
-  .home .is-narrow .hero-clip {
-    --x: 40px;
-    --y: -1px;
-    --r: -0.6deg;
-    left: calc(var(--cx) - 40px);
-    top: calc(var(--cy) - 40px);
-  }
-  .home .is-narrow .hero-pen {
-    --pen-s: 0.86;
-  }
-  .home .hero-caption {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    margin: 0 var(--gutter);
-    padding: 14px 0 22px;
-  }
-  .home .hero-replay {
-    bottom: 64px;
-  }
-}
-/* The phone's first screen holds the whole review: the line, the CTA, the
-   page with line 42 and its ink, and the card with its last line. */
-@media (max-width: 599px) {
-  .home .hero-in {
-    padding-top: 16px;
-  }
-  .home .hero-lede {
-    max-width: none;
-  }
-  .home .hero-cta {
-    gap: 0 22px;
-    margin-top: 20px;
-  }
-  .home .hero-cta .ink-link {
-    min-height: 44px;
-  }
-  .home .hero-scene.is-narrow {
-    margin-top: 6px;
-  }
-}
-/* A tablet: the page centred, the pen at the desk's size and wholly on the
-   frame (a larger pen ran off the scene's foot and was cut mid-barrel). */
-@media (min-width: 600px) and (max-width: 1023px) {
-  .home .hero-scene.is-narrow {
-    --cx: calc(50% - 250px);
-    --cy: 196px;
-    --cw: 340px;
-    height: 452px;
-  }
-  .home .is-narrow .hero-pen {
-    --pen-s: 0.72;
-  }
-  .home .is-narrow .hero-world {
-    --ws: 1;
-    left: calc(50% - 250px);
-  }
-  .home .is-narrow .hero-sheet {
-    --h: 470px;
-  }
-  .home .is-narrow .hero-clip {
-    --x: 142px;
-    --y: 4px;
-  }
-}
-
-/* ---- The camera on scroll: the desk drops away, objects by their height
-   (06-desk.css, data-depth), over the first screen of scroll ---- */
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    html.mo .home .hero [data-depth] {
-      animation: hero-depth linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
-    html.mo .home .hero-world {
-      animation: hero-dolly linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
-  }
-}
-@keyframes hero-depth {
-  to {
-    translate: 0 calc(var(--depth) * -60vh);
-  }
-}
-@keyframes hero-dolly {
-  to {
-    translate: 0 -4vh;
-    scale: 0.97;
-  }
-}
-
-/* ---- Before play (motion allowed) ---- */
+/* The loop, and the idle drift of the chips. */
 @media (prefers-reduced-motion: no-preference) {
-  html.mo .home .hero:not(.done) .desk-lamp {
-    animation: lamp-warm 1100ms var(--e-std) both;
+  .demo-img {
+    animation: reveal 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
-  html.mo .home .hero:not(.done) .hero-sheet {
-    animation: sheet-land 900ms var(--e-settle) both;
+  .scan {
+    animation: scan 12s linear infinite;
   }
-  html.mo .home .hero:not(.done) .hero-h .hli {
-    animation: line-rise 700ms var(--e-settle) both;
+  .cursor {
+    animation: cursor 12s cubic-bezier(0.5, 0, 0.2, 1) infinite;
   }
-  html.mo .home .hero:not(.done) .hero-h .hl + .hl .hli {
-    animation-delay: 90ms;
+  .click {
+    animation: click 12s ease-out infinite;
   }
-  html.mo .home .hero:not(.done) :is(.hero-lede, .hero-cta, .hero-note) {
-    animation: copy-rise 640ms var(--e-settle) 220ms both;
+  .hero-toast {
+    animation: toast 12s var(--e-enter) infinite;
   }
-  html.mo .home .hero:not(.done) .ruler:not(.in) {
-    opacity: 0;
+  .sb-run {
+    animation: run-label 12s step-end infinite;
   }
-  html.mo .home .hero:not(.done) .ruler {
-    --nudge: 0px;
+  .sb-run::before {
+    animation: pulse 1.2s ease-in-out infinite;
   }
-  html.mo .home .hero:not(.done) .ink-run {
-    stroke-dashoffset: 1;
+  .sb-done {
+    animation: done-label 12s step-end infinite;
   }
-  html.mo .home .hero:not(.done) .hero-card:not(.dealt),
-  html.mo .home .hero:not(.done) .hero-clip:not(.bit),
-  html.mo .home .hero:not(.done, .live) .hero-pen {
-    opacity: 0;
+  .chip-float {
+    animation: float 7s ease-in-out infinite alternate;
+  }
+  .cf-1 {
+    animation-duration: 8s;
+  }
+  .cf-2 {
+    animation-delay: -3s;
+  }
+  .cf-3 {
+    animation-duration: 9s;
+    animation-delay: -5s;
   }
 }
-@keyframes lamp-warm {
-  0% {
-    opacity: 0.2;
+@keyframes reveal {
+  0%,
+  20% {
+    clip-path: inset(0 0 76% 0);
   }
-  22% {
-    opacity: 0.75;
+  27%,
+  36% {
+    clip-path: inset(0 0 38% 0);
   }
-  30% {
-    opacity: 0.45;
-  }
-  38% {
-    opacity: 0.85;
-  }
+  42%,
   100% {
+    clip-path: inset(0);
+  }
+}
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  3%,
+  20% {
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(150px);
+  }
+  24%,
+  100% {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+}
+@keyframes cursor {
+  0%,
+  44% {
+    left: 100%;
+    top: 100%;
+    opacity: 0;
+  }
+  46% {
+    left: 100%;
+    top: 100%;
+    opacity: 1;
+  }
+  56% {
+    left: 90%;
+    top: 70%;
+    transform: none;
+  }
+  58% {
+    transform: scale(0.85);
+  }
+  60%,
+  88% {
+    left: 90%;
+    top: 70%;
+    transform: none;
+    opacity: 1;
+  }
+  92%,
+  100% {
+    left: 90%;
+    top: 70%;
+    opacity: 0;
+  }
+}
+@keyframes click {
+  0%,
+  57% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  58% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  66%,
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+@keyframes toast {
+  0%,
+  60% {
+    opacity: 0;
+    transform: translate(-50%, 14px);
+  }
+  64%,
+  92% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  97%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes run-label {
+  0% {
+    opacity: 1;
+  }
+  42% {
+    opacity: 0;
+  }
+}
+@keyframes done-label {
+  0% {
+    opacity: 0;
+  }
+  42% {
     opacity: 1;
   }
 }
-@keyframes sheet-land {
-  from {
-    translate: -16px -26px;
-    rotate: 1.2deg;
-    --lift: 0.7;
-  }
-  to {
-    translate: 0 0;
-    rotate: 0deg;
-    --lift: 0;
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
   }
 }
-@keyframes line-rise {
-  from {
-    translate: 0 105%;
-  }
+@keyframes float {
   to {
-    translate: 0 0;
+    translate: 0 -12px;
   }
 }
-@keyframes copy-rise {
-  from {
-    translate: 0 12px;
-    opacity: 0.001;
+
+/* Narrower screens: the window fills the width, the shapes scale with it,
+   and the chips step aside. */
+@media (max-width: 1279px) {
+  .cf-1 {
+    left: 24px;
+    top: 360px;
   }
-  to {
-    translate: 0 0;
-    opacity: 1;
+  .cf-2 {
+    left: auto;
+    right: 24px;
+    top: 40px;
+  }
+  .cf-3 {
+    left: auto;
+    right: 24px;
+    top: 380px;
+  }
+}
+@media (max-width: 899px) {
+  .hero {
+    padding-top: 56px;
+  }
+  .hero-stage {
+    height: auto;
+    padding: 24px 16px 96px;
+    margin-top: 40px;
+  }
+  .deck,
+  .chip-float {
+    display: none;
+  }
+  .shot-hero {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    transform: none;
+  }
+  .hero-art {
+    top: auto;
+    bottom: 0;
+    width: 1100px;
+  }
+  .hero-toast {
+    top: auto;
+    bottom: 72px;
+  }
+  .hero-note {
+    margin: -48px 16px 0;
+  }
+}
+@media (max-width: 599px) {
+  .hero-lede {
+    font-size: 16px;
+  }
+  .hero-art {
+    width: 820px;
+  }
+  .shot-bar {
+    gap: 10px;
+    padding: 0 12px;
+  }
+  .sb-dots {
+    display: none;
+  }
+  .hero-toast {
+    font-size: 13px;
+    padding: 11px 14px;
   }
 }

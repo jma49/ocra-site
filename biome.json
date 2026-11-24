@@ -15,7 +15,8 @@
       "!build",
       "!.source",
       "!scripts/demo-video/repo",
-      "!scripts/demo-video/transcript.js"
+      "!scripts/demo-video/transcript.js",
+      "!public/landing/**/*.svg"
     ]
   },
   "formatter": {

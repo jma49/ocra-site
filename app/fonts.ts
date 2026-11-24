@@ -1,34 +1,18 @@
-import { Archivo } from "next/font/google";
-import localFont from "next/font/local";
+import { Google_Sans_Flex } from "next/font/google";
 
-// Latin faces; Chinese falls through to the system fonts in global.css.
-// Archivo's width axis carries the whole type scale: a condensed display
-// (62–82 %) for headings and figures, normal width for text. The only
-// preloaded face. Until it arrives the display lines fall back to a narrow
-// local face ("Ocra Narrow", app/landing/01-base.css), not this Arial-based
-// fallback, which is about 1.45 times wider than the condensed set.
-const sans = Archivo({
+// The display face: every heading and figure on the landing page, set at
+// weight 500 (DESIGN.md, Type). The only preloaded face. Text is Geist and
+// code JetBrains Mono, the console's and the manual's faces, loaded from
+// @fontsource in the stylesheets (site.css, manual.css) and not preloaded.
+// Chinese falls through to the system faces in global.css.
+const display = Google_Sans_Flex({
   subsets: ["latin"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  weight: "variable",
+  variable: "--font-google-sans",
   display: "swap",
-});
-// Every terminal and code sample is set in Maple Mono (maintainer's rule),
-// cut down to the characters code on the site uses (scripts/subset-mono.py).
-// Not preloaded: no code is part of the first paint on a phone, and a
-// preload competes with the stylesheet and Archivo on a slow link. The face
-// loads once code is on screen. Until then the next monospace face in
-// --font-mono (global.css) shows, not next/font's size-adjusted Arial, so
-// the columns of code keep their width when the face swaps in.
-const mono = localFont({
-  src: [
-    { path: "../assets/fonts/ocra-mono-400.woff2", weight: "400" },
-    { path: "../assets/fonts/ocra-mono-500.woff2", weight: "500" },
-  ],
-  variable: "--font-maple",
-  preload: false,
+  // next/font has no metrics for this face to size a fallback with.
   adjustFontFallback: false,
 });
 
-// The class that defines both font variables, for an <html> element.
-export const fontVariables = `${sans.variable} ${mono.variable}`;
+// The class that defines the font variable, for an <html> element.
+export const fontVariables = display.variable;

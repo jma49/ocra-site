@@ -24,16 +24,16 @@ interface FooterCopy {
   tagline: string;
   // The footer's link list, a navigation landmark of its own.
   label: string;
-  // The base line under the columns: the licence and the brand line.
-  base: { license: string; line: string };
+  // The line under the tagline: the licence and the project.
+  base: { license: string };
   columns: { title: string; links: { id: FooterLinkId; label: string }[] }[];
 }
 
 export const footer: Bilingual<FooterCopy> = {
   en: {
-    tagline: "Open-source code review with agents that read first.",
+    tagline: "Open-source code review agents that check before they comment.",
     label: "Footer",
-    base: { license: "Apache-2.0 · Open-CR-Agent", line: "Reads first. Comments last." },
+    base: { license: "Apache-2.0 · Open-CR-Agent" },
     columns: [
       {
         title: "Product",
@@ -74,9 +74,9 @@ export const footer: Bilingual<FooterCopy> = {
     ],
   },
   zh: {
-    tagline: "开源的代码审查，agent 先读再评。",
+    tagline: "开源的代码审查 agent，先核实，再开口。",
     label: "页脚",
-    base: { license: "Apache-2.0 · Open-CR-Agent", line: "先读懂，再开口。" },
+    base: { license: "Apache-2.0 · Open-CR-Agent" },
     columns: [
       {
         title: "产品",

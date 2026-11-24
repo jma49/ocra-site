@@ -1,22 +1,11 @@
-/* The landing page's styles, shared files first so sections may build on
-   them; each section file styles only its own classes. Shared (01–08): the
-   desk foundation is 06–08 (foundation.md). Sections: their packages. */
+/* The landing page, section by section (DESIGN.md, Landing). */
 @import "./01-base.css";
 @import "./02-nav.css";
-@import "./06-desk.css";
-@import "./07-desk-objects.css";
-@import "./08-ink.css";
 @import "./10-hero.css";
-@import "./20-works.css";
-@import "./21-works-outputs.css";
+@import "./20-proof.css";
 @import "./30-how.css";
-@import "./31-figures.css";
-@import "./32-figure-review.css";
-@import "./40-quiet.css";
-@import "./41-features.css";
-@import "./50-lifecycle.css";
-@import "./51-security.css";
-@import "./60-plans.css";
-@import "./61-faq.css";
-@import "./62-final.css";
-@import "./63-footer.css";
+@import "./40-product.css";
+@import "./50-providers.css";
+@import "./60-security.css";
+@import "./70-plans.css";
+@import "./80-final.css";

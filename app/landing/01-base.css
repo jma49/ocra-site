@@ -1,469 +1,331 @@
-/* The landing page's base: the display fallback face, the page, the wrap,
-   grounds and bands, the type scale (DESIGN.md, Type) and the small shared
-   pieces (skip link, focus, links). Shared; sections style only their own
-   classes. Everything is scoped under .home: after a client navigation from
-   the manual its stylesheet stays loaded. */
-
-/* Until Archivo arrives, display lines fall to a local narrow face rather
-   than next/font's Arial-based "Archivo Fallback" (about 1.45 times wider
-   than the condensed set). "Archivo" is next/font's emitted family name.
-   size-adjust is tuned so the H1 line's fallback width is within 6 % of
-   Archivo's (checked with the font request blocked). */
-@font-face {
-  font-family: "Ocra Narrow";
-  src:
-    local("Arial Narrow"), local("ArialNarrow"), local("HelveticaNeue-CondensedBold"),
-    local("Roboto Condensed");
-  font-weight: 100 900;
-  size-adjust: 87%;
-}
+/* The landing page's ground, type, buttons and the pieces every section
+   shares (DESIGN.md, Landing). Colours are the .home tokens (tokens.css). */
 
 .home {
-  --font-display: "Archivo", "Ocra Narrow", "Archivo Fallback", var(--font-sans);
-  /* The content column: .wrap, and the nav pill's edges from 1024 up. */
-  --column: 1280px;
-  --gutter: 40px;
-  --gap: 56px;
-  --pad: 120px;
-  --pad-band: 128px;
-  /* A section's start to its H2: 72 px on a phone,
-     108 px at 1440 x 900, less on a short screen. */
-  --head-top: clamp(72px, min(3.66rem + 3.43vw, 12vh), 108px);
-  background: var(--paper);
-  color: var(--ink);
-  font-kerning: normal;
-  text-rendering: optimizeLegibility;
-}
-.home .landing {
-  overflow-x: clip;
-}
-.home [id] {
-  scroll-margin-top: 84px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  html:has(.home) {
-    scroll-behavior: smooth;
-  }
-}
-@media (max-width: 1199px) {
-  .home {
-    --gap: 40px;
-    --pad: 104px;
-    --pad-band: 104px;
-  }
-}
-/* One column from here down: the page is long, so a little less air
-   between sections (the tablet page stays within 12,500 px). */
-@media (max-width: 1023px) {
-  .home {
-    --gutter: 32px;
-    --gap: 32px;
-    --pad: 88px;
-    --pad-band: 88px;
-  }
-}
-@media (max-width: 599px) {
-  .home {
-    --gutter: 20px;
-    --gap: 20px;
-    --pad: 72px;
-    --pad-band: 72px;
-  }
-}
-
-.home .wrap {
-  width: 100%;
-  max-width: calc(var(--column) + 2 * var(--gutter));
-  margin-inline: auto;
-  padding-inline: var(--gutter);
-}
-/* The 12-column grid; tracks never grow past their share. */
-.home .cols {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gap);
-}
-
-/* ---- Grounds and bands ---- */
-.home [data-ground="paper"] {
-  background: var(--paper);
-  color: var(--ink);
-}
-.home [data-ground="paper-2"] {
-  background: var(--paper-2);
-  color: var(--ink);
-}
-.home [data-ground="stone"] {
-  background: var(--stone);
-  color: var(--ink);
-}
-.home [data-ground="night"] {
-  --focus: var(--on-night);
-  background: var(--night);
-  color: var(--on-night);
-}
-/* Inset bands: rounded, 12 px from the page's edges, no ring in either
-   theme. In dark they are raised slabs (night is lighter than the page). */
-.home .band {
-  margin-inline: 12px;
-  border-radius: var(--r-band);
-  overflow: clip;
-}
-@media (max-width: 599px) {
-  .home .band {
-    margin-inline: 8px;
-    border-radius: 20px;
-  }
-}
-
-/* ---- Type ---- */
-.home :where(h1, h2, h3, h4) {
-  text-wrap: balance;
-}
-.home :where(p, li, dd, figcaption) {
-  text-wrap: pretty;
-}
-.home
-  :where(
-    .t-display,
-    .t-statement,
-    .t-band,
-    .t-final,
-    .t-h2,
-    .t-h2s,
-    .t-h3,
-    .t-gauge,
-    .t-figure,
-    .t-verdict,
-    .t-struck
-  ) {
-  font-family: var(--font-display);
-  font-weight: 520;
-}
-.home :where(.t-gauge, .t-figure, .t-verdict) {
-  font-variant-numeric: tabular-nums;
-}
-.home .t-display {
-  font-stretch: 64%;
-  font-size: clamp(4rem, 1.4rem + 10vw, 6.5rem);
-  line-height: 0.86;
-  letter-spacing: -0.012em;
-}
-@media (min-width: 1024px) {
-  .home .t-display {
-    font-size: min(9.25rem, 11.6cqi);
-    line-height: 0.84;
-  }
-}
-.home .t-statement {
-  font-stretch: 62%;
-  font-size: clamp(4.75rem, 2.61rem + 8.76vw, 10.5rem);
-  line-height: 0.86;
-  letter-spacing: -0.01em;
-}
-.home .t-band {
-  font-stretch: 62%;
-  font-size: clamp(3.25rem, 1.29rem + 8.04vw, 8.5rem);
-  line-height: 0.88;
-  letter-spacing: -0.01em;
-}
-.home .t-final {
-  font-stretch: 62%;
-  font-size: clamp(3rem, 1.18rem + 7.5vw, 7.375rem);
-  line-height: 0.88;
-  letter-spacing: -0.012em;
-}
-/* Every section's H2: the hero's condensed Archivo, 104 px at 1440, 44 px
-   on a phone. Quiet's struck words and the hero's H1 keep their own. */
-.home .t-h2 {
-  margin: 0;
-  font-weight: 500;
-  font-stretch: 70%;
-  font-size: clamp(2.75rem, 0.4rem + 6.78vw, 6.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-}
-.home .t-h2s {
-  font-stretch: 82%;
-  font-size: clamp(1.75rem, 1.47rem + 1.14vw, 2.5rem);
-  line-height: 1.06;
-  letter-spacing: -0.012em;
-}
-.home .t-h3 {
-  font-stretch: 82%;
-  font-size: clamp(1.4375rem, 1.32rem + 0.476vw, 1.75rem);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
-}
-.home .t-h4 {
-  font-weight: 560;
-  font-size: 18px;
-  line-height: 1.3;
-  letter-spacing: -0.005em;
-}
-.home .t-gauge {
-  font-stretch: 62%;
-  font-size: clamp(4.5rem, 3.39rem + 4.57vw, 7.5rem);
-  line-height: 0.8;
-  letter-spacing: -0.02em;
-}
-.home .t-figure {
-  font-stretch: 62%;
-  line-height: 0.9;
-  letter-spacing: -0.01em;
-}
-.home .t-figure.l42 {
-  font-size: clamp(4.5rem, 3.76rem + 3.05vw, 6.5rem);
-}
-.home .t-figure.dollar {
-  font-size: clamp(3.75rem, 2.91rem + 3.43vw, 6rem);
-}
-.home .t-figure.price {
-  font-stretch: 66%;
-  font-size: clamp(3rem, 2.63rem + 1.52vw, 4rem);
-}
-/* The verdict's finished state; story figure 4 plays it from 100 %. */
-.home .t-verdict {
-  font-stretch: 66%;
-  font-size: clamp(1.375rem, 0.625rem + 2.34vw, 2.5rem);
-  line-height: 1;
-}
-.home .t-struck {
-  font-stretch: 66%;
-  font-size: clamp(2.625rem, 1.93rem + 2.86vw, 4.5rem);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-}
-.home .t-lede {
-  font-size: clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  min-height: 100vh;
+  background: var(--ground);
+  color: var(--t1);
+  font-family: var(--font-sans);
+  font-size: 15px;
   line-height: 1.55;
   letter-spacing: -0.005em;
-  color: var(--ink-2);
+  -webkit-font-smoothing: antialiased;
 }
-.home .t-body {
-  font-size: 16.5px;
-  line-height: 1.6;
-  color: var(--ink-2);
+.home ::selection {
+  background: var(--select);
 }
-.home .t-statement-body {
-  font-size: clamp(1.1875rem, 1.07rem + 0.476vw, 1.5rem);
-  line-height: 1.42;
-  letter-spacing: -0.01em;
-}
-.home .t-small {
-  font-size: 14px;
-  line-height: 1.5;
-}
-.home .t-note {
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 1;
-  letter-spacing: 0.01em;
-}
-.home .t-mono {
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  line-height: 1.4;
-}
-/* Secondary text takes the night's own tones. */
-.home [data-ground="night"] :is(.t-lede, .t-body, .t-small) {
-  color: var(--on-night-2);
-}
-@media (max-width: 599px) {
-  .home .t-h4 {
-    font-size: 17px;
-  }
-  .home .t-body {
-    font-size: 16px;
-  }
-  .home .t-small {
-    font-size: 13.5px;
-  }
-  .home .t-note {
-    font-size: 11px;
-  }
-  .home .t-mono {
-    font-size: 12px;
-  }
-}
-
-/* Headings in explicit lines (<Lines>): one block per line, never wrapped;
-   a display line is clipped at its container, never painted over a
-   neighbour, if a fallback face runs wide. `data-inline` sets the lines on
-   one line from 1024 or 1200 px. */
-.home .lines {
+.landing {
   display: block;
-}
-.home .lines .l {
-  display: block;
-  white-space: nowrap;
   overflow-x: clip;
-  max-inline-size: 100%;
 }
-@media (min-width: 1024px) {
-  .home .lines[data-inline="1024"] {
-    white-space: nowrap;
-    overflow-x: clip;
-  }
-  .home .lines[data-inline="1024"] .l {
-    display: inline;
-  }
+.landing:focus {
+  outline: none;
 }
-@media (min-width: 1200px) {
-  .home .lines[data-inline="1200"] {
-    white-space: nowrap;
-    overflow-x: clip;
-  }
-  .home .lines[data-inline="1200"] .l {
-    display: inline;
-  }
+:where(.landing) :where(ul, ol) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-
-/* Chinese: the system face, weight 600, no width axis and no tracking; its
-   levers are size and the explicit line breaks. */
-.home
-  :lang(zh)
-  :is(.t-display, .t-statement, .t-band, .t-final, .t-h2, .t-h2s, .t-h3, .t-struck, .t-verdict) {
-  font-family: var(--font-sans);
-  font-weight: 600;
-  font-stretch: 100%;
-  letter-spacing: 0;
+:where(.landing) figure {
+  margin: 0;
 }
-.home :lang(zh) .t-h2s {
-  word-break: keep-all;
+:where(.landing) :where(h2, h3, p) {
+  margin: 0;
 }
-/* Chinese prose breaks between any two characters, as Chinese is set, under
-   strict punctuation rules, and fills its measure (pretty, not balance).
-   Headings and labels keep their phrases whole (keep-all) and balance;
-   prose never does, or its lines end far short. The copy ties each word's
-   characters and its particles (lib/copy: tieWords), so prose breaks
-   between words, never inside one. */
-.home :lang(zh) :where(p, li, dd, figcaption) {
-  line-break: strict;
-  text-wrap: pretty;
-}
-.home :lang(zh) .t-display {
-  font-size: clamp(4.75rem, 2.4rem + 9.6vw, 7.5rem);
-  line-height: 1.06;
-}
-@media (min-width: 1024px) {
-  .home :lang(zh) .t-display {
-    font-size: min(9.25rem, 12cqi);
-    line-height: 1.04;
-  }
-}
-.home :lang(zh) .t-statement {
-  font-size: clamp(4rem, 2.51rem + 6.1vw, 8rem);
-  line-height: 1.08;
-}
-.home :lang(zh) .t-band {
-  font-size: clamp(3rem, 1.66rem + 5.48vw, 6.5rem);
-  line-height: 1.12;
-}
-.home :lang(zh) .t-final {
-  font-size: clamp(3rem, 2.07rem + 3.81vw, 5.5rem);
-  line-height: 1.14;
-}
-.home :lang(zh) .t-h2 {
-  font-size: clamp(2.5rem, 0.34rem + 5.74vw, 5.5rem);
-  line-height: 1.12;
-  letter-spacing: 0.01em;
-}
-.home :lang(zh) .t-h2s {
-  font-size: clamp(1.5rem, 1.27rem + 0.952vw, 2.125rem);
-  line-height: 1.3;
-}
-.home :lang(zh) .t-h3 {
-  font-size: clamp(1.25rem, 1.16rem + 0.381vw, 1.5rem);
-  line-height: 1.3;
-}
-.home :lang(zh) .t-struck {
-  font-size: clamp(2.25rem, 1.69rem + 2.29vw, 3.75rem);
-  line-height: 1.2;
-}
-.home :lang(zh) .t-verdict {
-  font-size: clamp(1.25rem, 0.6rem + 2vw, 2.125rem);
-}
-.home :lang(zh) .t-lede {
-  font-size: 18px;
-  line-height: 1.85;
-  letter-spacing: 0;
-}
-.home :lang(zh) .t-body {
-  font-size: 16px;
-  line-height: 1.8;
-}
-.home :lang(zh) .t-statement-body {
-  font-size: 21px;
-  line-height: 1.7;
-  letter-spacing: 0;
-}
-@media (max-width: 599px) {
-  .home :lang(zh) .t-lede {
-    font-size: 16.5px;
-  }
-  .home :lang(zh) .t-body {
-    font-size: 15.5px;
-  }
-  .home :lang(zh) .t-statement-body {
-    font-size: 17.5px;
-  }
-}
-
-/* ---- Skip link, focus, links ---- */
-.home .skip {
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  z-index: calc(var(--z-nav) + 1);
-  display: inline-flex;
-  align-items: center;
-  height: 48px;
-  padding: 0 20px;
-  border-radius: var(--r-ctl);
-  background: var(--ink);
-  color: var(--paper);
-  font-weight: 500;
-  font-size: 15px;
+:where(.home) a {
+  color: inherit;
   text-decoration: none;
-  translate: 0 -200%;
-}
-.home .skip:focus-visible {
-  translate: none;
 }
 .home :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
+  border-radius: 6px;
 }
-.home .code:focus-visible,
-.home pre:focus-visible {
-  outline-offset: -2px;
+
+.wrap {
+  max-width: 1248px;
+  margin: 0 auto;
+  padding: 0 32px;
 }
-/* A link in prose: ink, a 1 px underline at 30 %, full on hover. */
-.home .link {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in srgb, currentColor 30%, transparent);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 150ms var(--e-std);
-}
-@media (hover: hover) {
-  .home .link:hover {
-    text-decoration-color: currentColor;
+@media (max-width: 599px) {
+  .wrap {
+    padding: 0 16px;
   }
 }
-/* Tailwind's preflight sets every svg to display: block; the arrow sits in
-   a line of text. */
-.home .arrow-glyph {
+
+.mono,
+.code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  letter-spacing: 0;
+}
+.code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--raised);
+}
+.t2 {
+  color: var(--t2);
+}
+.t3 {
+  color: var(--t3);
+}
+.small {
+  font-size: 13px;
+}
+.red {
+  color: var(--red);
+}
+:where(.landing) i {
+  font-style: normal;
+  color: var(--t3);
+}
+
+/* One picture per theme (Themed in components/landing/parts.tsx). */
+html:not(.dark) .home .only-dark,
+html.dark .home .only-light {
+  display: none;
+}
+
+/* Type: Google Sans Flex 500 for display, tight, never bold. */
+.h2,
+.landing h3,
+.price,
+.word,
+.proof-in b,
+.tally b,
+.bill-total b {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+.h2 {
+  font-size: clamp(34px, 4.2vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.h2-xl {
+  font-size: clamp(38px, 5.4vw, 60px);
+}
+.lead {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--t2);
+  max-width: 520px;
+}
+:lang(zh) .h2 {
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+:lang(zh) .lead {
+  line-height: 1.8;
+}
+
+.sec {
+  padding: 96px 0;
+  scroll-margin-top: 48px;
+}
+@media (max-width: 767px) {
+  .sec {
+    padding: 64px 0;
+  }
+}
+.split-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 48px;
+}
+.split-head .lead {
+  justify-self: end;
+}
+.center-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.center-head .lead {
+  margin-top: 18px;
+}
+@media (max-width: 1023px) {
+  .split-head {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+  .split-head .lead {
+    justify-self: start;
+  }
+}
+
+.caption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--t3);
+}
+.float {
+  box-shadow:
+    var(--sh-lg),
+    0 0 0 1px var(--hair);
+}
+
+/* Buttons: a round ink pill, a quiet text link, an outlined pill. */
+.btn-ink {
+  border-radius: 999px;
+  height: 44px;
+  padding: 0 20px;
+  background: var(--t1);
+  color: var(--on-ink);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--on-ink) 12%, transparent),
+    0 6px 16px -8px color-mix(in srgb, var(--t1) 60%, transparent);
+}
+.btn-ink.btn-sm {
+  height: 36px;
+  padding: 0 16px;
+}
+.home .btn-quiet {
+  height: 44px;
+  padding: 0 8px;
+  box-shadow: none;
+  color: var(--t1);
+}
+.btn-line {
+  border-radius: 999px;
+  height: 44px;
+  background: var(--panel);
+  color: var(--t1);
+  box-shadow: inset 0 0 0 1px var(--hair2);
+}
+.arrow {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--t3);
+  transition: transform 250ms var(--e-enter);
+}
+@media (hover: hover) {
+  .btn-ink:hover {
+    background: color-mix(in srgb, var(--t1) 86%, var(--ground));
+  }
+  .home .btn-quiet:hover {
+    background: none;
+    box-shadow: none;
+  }
+  .btn-line:hover {
+    box-shadow: inset 0 0 0 1px var(--t3);
+  }
+  a:hover > .arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* Status dots and severity tags, as the console draws them. */
+.dot {
   display: inline-block;
   flex: none;
-  vertical-align: -0.06em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tile-edge);
 }
-.home .link .arrow-glyph {
-  margin-inline-start: 0.3em;
+.dot-ok {
+  background: var(--green);
 }
-.home :where(code) {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
+.tag {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.tag-crit {
+  background: var(--red-soft);
+  color: var(--red);
+}
+.tag-warn {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.strike {
+  text-decoration: line-through;
+  text-decoration-color: var(--red);
+}
+
+/* A window around a screenshot of the console. */
+.shot {
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow:
+    var(--sh-lg),
+    0 0 0 1px var(--hair);
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Native disclosures (the record's accordion, the questions). */
+.landing summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.landing summary::-webkit-details-marker {
+  display: none;
+}
+.acc-sign {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 6px;
+}
+.acc-sign::before,
+.acc-sign::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 14px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--t3);
+  transition: transform 200ms var(--e-std);
+}
+.acc-sign::after {
+  transform: rotate(90deg);
+}
+details[open] .acc-sign::after {
+  transform: rotate(0deg);
+}
+
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 60;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--t1);
+  color: var(--on-ink);
+}
+.skip:focus {
+  top: 12px;
 }

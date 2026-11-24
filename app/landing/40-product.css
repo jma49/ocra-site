@@ -1,0 +1,126 @@
+/* The console: the inbox on a tinted stage with four features under it,
+   then the record: an accordion beside the Reviews page. */
+.stage-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 56px 72px 0;
+  border-radius: 32px;
+  background: var(--tint-stone);
+  box-shadow: inset 0 0 0 1px var(--hair);
+}
+.shot-app {
+  border-radius: 16px 16px 0 0;
+}
+.stage-panel .caption {
+  position: absolute;
+  inset: auto 0 14px;
+  margin: 0;
+}
+.stage-panel .shot-app {
+  margin-bottom: 44px;
+}
+.four {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: 40px;
+}
+.four h3,
+.block-four h3 {
+  font-size: 17px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+.four p {
+  margin-top: 6px;
+  font-size: 14.5px;
+  color: var(--t2);
+}
+@media (max-width: 1023px) {
+  .stage-panel {
+    padding: 32px 32px 0;
+  }
+  .four {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 599px) {
+  .stage-panel {
+    padding: 20px 16px 0;
+    border-radius: 24px;
+  }
+  .stage-panel .shot-app {
+    margin-bottom: 52px;
+  }
+  .four {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.where {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 16px;
+}
+.acc {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.acc-item {
+  padding: 22px 26px;
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--hair);
+  transition: box-shadow 200ms var(--e-std);
+}
+.acc-item[open] {
+  box-shadow:
+    var(--sh),
+    0 0 0 1px var(--hair);
+}
+.acc-item p {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--t2);
+}
+.where-art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 460px;
+  overflow: hidden;
+  padding: 36px 0 36px 36px;
+  border-radius: 28px;
+  background: var(--tint-blue);
+}
+.shot-side {
+  flex: none;
+  width: 780px;
+  border-radius: 14px;
+}
+@media (max-width: 1023px) {
+  .where {
+    grid-template-columns: 1fr;
+  }
+  .where-art {
+    min-height: 0;
+    padding: 28px 0 28px 28px;
+  }
+  .shot-side {
+    width: 720px;
+  }
+}
+@media (max-width: 599px) {
+  .acc-item {
+    padding: 18px 20px;
+  }
+  .where-art {
+    padding: 20px 0 20px 20px;
+    border-radius: 24px;
+  }
+  .shot-side {
+    width: 520px;
+  }
+}

@@ -57,7 +57,7 @@ function lineDiff(base: readonly string[], head: readonly string[]) {
 const head = new Map<string, readonly string[]>();
 
 // The head revision's lines of a changed file, memoised.
-export function recordedLines(path: string): readonly string[] {
+function recordedLines(path: string): readonly string[] {
   let found = head.get(path);
   if (!found) {
     found = lines(read(`repo/head/${path}`));
@@ -275,8 +275,13 @@ check(
   `the agents called ${[...called].join(", ")}`,
 );
 
-// Whether line n of a changed file is one the change added.
-export function isAdded(path: string, n: number): boolean {
-  if (path !== diff.path) throw new Error(`recorded.ts: no diff recorded for ${path}`);
-  return (diff.added as readonly number[]).includes(n);
+// Lines a changed file adds and deletes, computed from the recording; a
+// file new on the head branch deletes nothing.
+export function fileStat(path: string): { additions: number; deletions: number } {
+  let base: readonly string[] = [];
+  try {
+    base = lines(read(`repo/base/${path}`));
+  } catch {}
+  const { added, deleted } = lineDiff(base, recordedLines(path));
+  return { additions: added.length, deletions: deleted.length };
 }

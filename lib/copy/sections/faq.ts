@@ -1,9 +1,6 @@
 import { PROVIDERS } from "@/lib/landing/engine-facts";
+import { CLOUD } from "../brand";
 import type { Bilingual, Lines } from "../define";
-
-// The product's name never breaks across lines in prose: a no-break space
-// (written as an escape, so the source stays ASCII).
-const CLOUD = "ocra\u00a0Cloud";
 
 interface FaqCopy {
   lines: Lines;
@@ -17,7 +14,7 @@ export const faq: Bilingual<FaqCopy> = {
     more: "More answers in the manual",
     items: [
       {
-        q: "Is ocra free?",
+        q: "Is Ocra free?",
         a: `The engine, the CLI and the GitHub Action are Apache-2.0 and need no account. You pay your model provider for the tokens a review uses, and every run prints its cost. ${CLOUD} is free during early access.`,
       },
       {
@@ -55,7 +52,7 @@ export const faq: Bilingual<FaqCopy> = {
     more: "手册里还有更多回答",
     items: [
       {
-        q: "ocra 免费吗？",
+        q: "Ocra 免费吗？",
         a: `引擎、CLI 和 GitHub Action 都是 Apache-2.0，不需要账号。你只需向模型服务商支付审查用掉的 token，每次运行都会打印花费。${CLOUD} 在早期体验期间免费。`,
       },
       {

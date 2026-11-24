@@ -39,8 +39,8 @@ test.describe("with motion", () => {
 });
 
 // Preloads compete with the stylesheet and the first text for a slow link.
-// Only Archivo, which sets every heading and paragraph, is worth that; the
-// code face loads when code is on screen.
+// Only the display face, which sets every heading, is worth that; the text
+// and code faces load from the stylesheet.
 for (const path of ["/", "/docs/quickstart"]) {
   test(`${path} preloads one font`, async ({ request }) => {
     const html = await (await request.get(path)).text();
