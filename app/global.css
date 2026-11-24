@@ -1,12 +1,16 @@
 /* Rules every page shares, after Tailwind and the tokens: imported by the
    landing page's stylesheet (site.css) and the manual's (manual.css). */
 
-/* CJK text uses the system faces after Archivo. */
+/* Geist for text, JetBrains Mono for code (the console's faces), Google
+   Sans Flex for display; CJK text uses the system faces after them. */
 @theme {
   --font-sans:
-    var(--font-archivo), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
+    "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
     ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-maple), "Maple Mono NF", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display:
+    var(--font-google-sans), "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -127,8 +131,8 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-weight: 540;
-  font-stretch: var(--wordmark-stretch);
+  font-family: var(--font-display);
+  font-weight: 560;
   font-size: 20px;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -137,46 +141,4 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
 .logo-eyes {
   color: currentColor;
   margin-top: 1px;
-}
-.logo-dark .logo-eyes {
-  color: var(--on-night);
-}
-
-/* The living eye row (LookingEyes): pupils turn towards the pointer through
-   --px and --py, and the lids close for a moment every few seconds. */
-.eyes-alive {
-  overflow: visible;
-}
-.eyes-alive .eye {
-  fill: var(--on-night);
-}
-.eyes-alive .iris {
-  fill: var(--night);
-}
-.eyes-alive .glint {
-  fill: var(--on-night);
-}
-.eyes-alive .pupil {
-  transform: translate(calc(var(--px, 0) * 1.5px), calc(var(--py, 0) * 1.3px));
-  transition: transform 0.18s ease-out;
-}
-.eyes-alive .lids {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: blink 6.5s infinite;
-}
-@keyframes blink {
-  0%,
-  94%,
-  100% {
-    transform: scaleY(1);
-  }
-  96.5% {
-    transform: scaleY(0.08);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .eyes-alive .lids {
-    animation: none;
-  }
 }

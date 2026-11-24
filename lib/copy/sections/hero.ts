@@ -1,72 +1,61 @@
+import { CLOUD } from "../brand";
 import type { Bilingual, FromRun, Lines } from "../define";
 
-// The hero: the brand line, the two ways in, and the desk, where the
-// example run's page is read, marked and given its one comment. What is
-// printed on the desk (code, the finding card) is the engine's own output,
-// English in every language; the zh gloss sits in the caption.
-
+// The hero: the claim, the two ways in, and the recorded example run as
+// Ocra Cloud shows it, a finding that becomes a commit.
 interface HeroCopy {
   lines: Lines;
   lede: string;
-  cloud: string;
+  start: string;
   selfHost: string;
-  note: string;
-  desk: {
-    // The scene for screen readers: what the desk shows once it has played.
-    label: FromRun;
-    // The caption on the desk: what the example is.
-    caption: FromRun;
-    // The printed page's head, right: the change's size and the page.
-    meta: FromRun;
-    card: { where: FromRun; foot: FromRun };
-    replay: string;
-    replayLabel: string;
-    // "line 42", for the lifecycle's thread.
-    onLine: FromRun;
-  };
+  // The window around the screenshot: the pull request and file, and the
+  // review's state as the loop plays.
+  bar: FromRun;
+  reviewing: string;
+  reviewed: string;
+  alt: string;
+  committed: FromRun;
+  chips: { candidates: FromRun; verified: string; calls: FromRun };
+  note: FromRun;
 }
+
+const calls = (run: Parameters<FromRun>[0]) => run.calls.length;
+const dollars = (run: Parameters<FromRun>[0]) => `$${run.usage.dollars}`;
 
 export const hero: Bilingual<HeroCopy> = {
   en: {
-    lines: ["Reads first.", "Comments last."],
-    lede: "Open-source AI code review for GitHub and GitLab. It stays quiet unless a finding quotes the code it means and holds up on a second read.",
-    cloud: "Start with ocra Cloud",
-    selfHost: "Self-host, Apache-2.0",
-    note: "Free during early access. Bring your own model key.",
-    desk: {
-      label: (run) =>
-        `Example run, pull request #${run.pr.number}: a printed page of ${run.finding.path}. A reading ruler stops under line ${run.finding.line}, ${run.finding.quote} A red pen underlines session.expiresAt, rings Date.now() and writes the fix, * 1000, in the margin. The verified finding, “${run.finding.title}”, is clipped to the page below the line.`,
-      caption: (run) =>
-        `Example run: pull request #${run.pr.number}, recorded with the real ocra CLI and a scripted model.`,
-      meta: (run) => `+${run.diff.additions} −${run.diff.deletions} · page 2 of 2`,
-      card: {
-        where: (run) => `${run.finding.path.split("/").pop()}:${run.finding.line}`,
-        foot: (run) => `verified · #${run.finding.fingerprint}`,
-      },
-      replay: "Replay",
-      replayLabel: "Replay the review",
-      onLine: (run) => `line ${run.finding.line}`,
+    lines: ["Code review agents that check", "before they comment"],
+    lede: "Ocra reviews your GitHub and GitLab pull requests on your own model key. A finding reaches you only when it quotes the code and holds up on a second read, often with a fix you commit in one click.",
+    start: `Start with ${CLOUD}`,
+    selfHost: "Self-host with the CLI",
+    bar: (run) => `acme/api #${run.pr.number} · ${run.finding.path}`,
+    reviewing: "Reviewing",
+    reviewed: "Reviewed",
+    alt: "Ocra Cloud's pull request page: a critical finding under line 42 of src/auth/session.ts, and Ocra's fix with a Commit fix button",
+    committed: (run) => `Fix committed to ${run.pr.head}`,
+    chips: {
+      candidates: (run) => `${run.claims.length} candidates → ${run.outcome.reported} reported`,
+      verified: "Verified on a second read",
+      calls: (run) => `${calls(run)} model calls · ${dollars(run)}`,
     },
+    note: (run) =>
+      `${CLOUD}, on the recorded example run #${run.pr.number}. Repository names are sample data`,
   },
   zh: {
-    lines: ["先读懂，", "再开口。"],
-    lede: "开源的 AI 代码审查，支持 GitHub 和 GitLab。一条意见要引用它所指的代码、经得起第二遍核查，否则它不开口。",
-    cloud: "开始使用 ocra Cloud",
-    selfHost: "自托管，Apache-2.0",
-    note: "早期体验期间免费，自带模型 key。",
-    desk: {
-      label: (run) =>
-        `示例运行，拉取请求 #${run.pr.number}：打印出来的 ${run.finding.path} 一页。阅读尺停在第 ${run.finding.line} 行 ${run.finding.quote} 下方。红笔划出 session.expiresAt、圈出 Date.now()，在页边写下修复 * 1000。核实过的意见“${run.finding.title}”（每个会话都被当成已过期）夹在这一行下面。`,
-      caption: (run) =>
-        `示例运行：拉取请求 #${run.pr.number}，用真实的 ocra CLI 和脚本化模型录制。意见：每个会话都被当成已过期。`,
-      meta: (run) => `+${run.diff.additions} −${run.diff.deletions} · page 2 of 2`,
-      card: {
-        where: (run) => `${run.finding.path.split("/").pop()}:${run.finding.line}`,
-        foot: (run) => `verified · #${run.finding.fingerprint}`,
-      },
-      replay: "重播",
-      replayLabel: "重播这次审查",
-      onLine: (run) => `第 ${run.finding.line} 行`,
+    lines: ["先核实，再开口的", "代码审查 agent"],
+    lede: "Ocra 用你自己的模型 key 审查 GitHub 和 GitLab 上的 PR。一条意见要引用到具体代码、经得住第二遍核查，才会出现在你面前，往往还附带一个一键提交的修复。",
+    start: `开始使用 ${CLOUD}`,
+    selfHost: "用 CLI 自托管",
+    bar: (run) => `acme/api #${run.pr.number} · ${run.finding.path}`,
+    reviewing: "审查中",
+    reviewed: "已审查",
+    alt: "Ocra Cloud 的 PR 页面：src/auth/session.ts 第 42 行下的一条严重问题，以及 Ocra 给出的修复和 Commit fix 按钮",
+    committed: (run) => `修复已提交到 ${run.pr.head}`,
+    chips: {
+      candidates: (run) => `${run.claims.length} 条候选 → 报告 ${run.outcome.reported} 条`,
+      verified: "经第二遍核查确认",
+      calls: (run) => `${calls(run)} 次模型调用 · ${dollars(run)}`,
     },
+    note: (run) => `${CLOUD} 中录制的示例运行 #${run.pr.number}。界面为英文，仓库名是示例数据`,
   },
 };

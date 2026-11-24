@@ -1,6 +1,7 @@
+import { CLOUD } from "../brand";
 import type { Bilingual } from "../define";
 
-// The page's metadata, the announce line, the nav and the 404 page. `meta`,
+// The page's metadata, the nav and the 404 page. `meta`,
 // `nav.links.docs` and `notFound` are read outside the landing page too
 // (app/[lang]/layout.tsx, app/[lang]/docs/layout.tsx, app/global-not-found.tsx).
 
@@ -11,33 +12,14 @@ interface MetaCopy {
 
 export const meta: Bilingual<MetaCopy> = {
   en: {
-    title: "ocra — open-source code review that reads first",
+    title: "Ocra — code review agents that check before they comment",
     description:
-      "ocra is open-source AI code review built for pull requests you do not trust. Its findings quote the code they mean and face a second read before they reach your pull request.",
+      "Ocra is open-source AI code review for GitHub and GitLab, on your own model key. Its findings quote the code they mean and face a second read before they reach your pull request.",
   },
   zh: {
-    title: "ocra — 先读懂，再开口的开源代码审查",
+    title: "Ocra — 先核实，再开口的代码审查 agent",
     description:
-      "ocra 是专为不可信 PR 设计的开源 AI 代码审查：每条意见都引用它所指的代码，并经过第二遍核查，才会出现在你的 PR 里。",
-  },
-};
-
-interface AnnounceCopy {
-  label: string;
-  text: string;
-  link: string;
-}
-
-export const announce: Bilingual<AnnounceCopy> = {
-  en: {
-    label: "Announcement",
-    text: "ocra Cloud is in early access. Sign in with GitHub and bring your own model key.",
-    link: "What it stores",
-  },
-  zh: {
-    label: "公告",
-    text: "ocra Cloud 早期体验中：用 GitHub 登录，自带模型 key。",
-    link: "它保存什么",
+      "Ocra 是开源的 AI 代码审查，支持 GitHub 和 GitLab，使用你自己的模型 key：每条意见都引用它所指的代码，并经过第二遍核查，才会出现在你的 PR 里。",
   },
 };
 
@@ -66,11 +48,11 @@ export const nav: Bilingual<NavCopy> = {
     },
     github: "GitHub",
     signIn: "Sign in",
-    start: "Start with ocra Cloud",
+    start: `Start with ${CLOUD}`,
     menu: "Open menu",
     close: "Close menu",
     theme: "Dark theme",
-    home: "ocra home",
+    home: "Ocra home",
     primary: "Primary",
   },
   zh: {
@@ -84,11 +66,11 @@ export const nav: Bilingual<NavCopy> = {
     },
     github: "GitHub",
     signIn: "登录",
-    start: "开始使用 ocra Cloud",
+    start: `开始使用 ${CLOUD}`,
     menu: "打开菜单",
     close: "关闭菜单",
     theme: "深色模式",
-    home: "ocra 首页",
+    home: "Ocra 首页",
     primary: "主导航",
   },
 };

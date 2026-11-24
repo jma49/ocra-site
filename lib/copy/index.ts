@@ -1,33 +1,36 @@
 import type { Locale } from "@/lib/i18n";
 import { exampleRun } from "@/lib/landing/example-run";
 import { type Bilingual, type Resolved, tieWords } from "./define";
-import { announce, meta, nav, notFound } from "./sections/chrome";
+import { meta, nav, notFound } from "./sections/chrome";
 import { faq } from "./sections/faq";
-import { features } from "./sections/features";
 import { final } from "./sections/final";
 import { footer } from "./sections/footer";
 import { hero } from "./sections/hero";
 import { how } from "./sections/how";
-import { lifecycle } from "./sections/lifecycle";
+import { limits } from "./sections/limits";
 import { plans } from "./sections/plans";
+import { product } from "./sections/product";
+import { proof } from "./sections/proof";
+import { providers } from "./sections/providers";
+import { quiet } from "./sections/quiet";
+import { record } from "./sections/record";
 import { security } from "./sections/security";
-import { statement } from "./sections/statement";
-import { works } from "./sections/works";
 
 // Every landing page string, one module per section with both languages side
 // by side (lib/copy/sections). Code, file names, reviewer names and tool
 // names are identifiers, not copy: they come from the recorded run.
 const sources = {
   meta,
-  announce,
   nav,
   notFound,
   hero,
-  works,
+  proof,
+  quiet,
   how,
-  statement,
-  features,
-  lifecycle,
+  product,
+  record,
+  providers,
+  limits,
   security,
   plans,
   faq,

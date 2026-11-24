@@ -4,54 +4,35 @@ import type { Copy } from "@/lib/copy";
 import type { Locale } from "@/lib/i18n";
 import { cloudUrl, localePath, repoUrl } from "@/lib/shared";
 import { MenuButton, NavShell, ThemeToggle } from "./header-controls";
-import { ArrowGlyph } from "./section";
 
-// The skip link, the announce line and the sticky nav. The bar follows the
-// ground under it and promotes its call to action once the hero has gone by
-// (header-controls.tsx); below 1024 px the links move into a drawer.
-export function SiteHeader({
-  copy,
-  locale,
-}: {
-  copy: { announce: Copy["announce"]; nav: Copy["nav"] };
-  locale: Locale;
-}) {
-  const n = copy.nav;
+// The skip link and the sticky nav; below 1024 px the links move into a
+// drawer (header-controls.tsx).
+export function SiteHeader({ copy, locale }: { copy: Copy["nav"]; locale: Locale }) {
   const links = [
-    { href: "#how", label: n.links.how },
-    { href: "#product", label: n.links.product },
-    { href: "#security", label: n.links.security },
-    { href: "#plans", label: n.links.pricing },
-    { href: localePath(locale, "/docs"), label: n.links.docs },
+    { href: "#how", label: copy.links.how },
+    { href: "#product", label: copy.links.product },
+    { href: "#security", label: copy.links.security },
+    { href: "#plans", label: copy.links.pricing },
+    { href: localePath(locale, "/docs"), label: copy.links.docs },
   ];
   return (
     <>
       <a className="skip" href="#main">
-        {n.skip}
+        {copy.skip}
       </a>
-      <aside className="announce" aria-label={copy.announce.label}>
-        <p>
-          {copy.announce.text}{" "}
-          <a href="#plans-fine">
-            {copy.announce.link}
-            <ArrowGlyph />
-          </a>
-        </p>
-      </aside>
       <NavShell
-        top="desk"
         bar={
           <>
             {/* The page itself: nothing to prefetch. */}
             <Link
               className="nav-logo"
               href={localePath(locale, "/")}
-              aria-label={n.home}
+              aria-label={copy.home}
               prefetch={false}
             >
               <Logo />
             </Link>
-            <nav className="nav-links" aria-label={n.primary}>
+            <nav className="nav-links" aria-label={copy.primary}>
               <ul>
                 {links.map((l) => (
                   <li key={l.href}>
@@ -62,16 +43,16 @@ export function SiteHeader({
             </nav>
             <div className="nav-r">
               <a className="nav-a" href={repoUrl}>
-                {n.github}
+                {copy.github}
               </a>
               <a className="nav-a" href={cloudUrl}>
-                {n.signIn}
+                {copy.signIn}
               </a>
-              <ThemeToggle label={n.theme} className="nav-theme" />
-              <a className="btn btn-sm nav-cta" href={cloudUrl}>
-                {n.start}
+              <ThemeToggle label={copy.theme} className="nav-theme" />
+              <a className="btn btn-ink btn-sm nav-cta" href={cloudUrl}>
+                {copy.start}
               </a>
-              <MenuButton labels={{ open: n.menu, close: n.close }} />
+              <MenuButton labels={{ open: copy.menu, close: copy.close }} />
             </div>
           </>
         }
@@ -80,8 +61,8 @@ export function SiteHeader({
             <ul>
               {[
                 ...links,
-                { href: repoUrl, label: n.github },
-                { href: cloudUrl, label: n.signIn },
+                { href: repoUrl, label: copy.github },
+                { href: cloudUrl, label: copy.signIn },
               ].map((l) => (
                 <li key={l.label}>
                   <a href={l.href}>{l.label}</a>
@@ -89,12 +70,11 @@ export function SiteHeader({
               ))}
             </ul>
             <div className="drawer-theme">
-              <span aria-hidden="true">{n.theme}</span>
-              <ThemeToggle label={n.theme} />
+              <span aria-hidden="true">{copy.theme}</span>
+              <ThemeToggle label={copy.theme} />
             </div>
-            <a className="btn btn-primary drawer-cta" href={cloudUrl}>
-              {n.start}
-              <ArrowGlyph />
+            <a className="btn btn-ink drawer-cta" href={cloudUrl}>
+              {copy.start}
             </a>
           </>
         }

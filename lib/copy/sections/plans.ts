@@ -1,9 +1,6 @@
 import { PROVIDERS } from "@/lib/landing/engine-facts";
+import { CLOUD } from "../brand";
 import type { Bilingual, Lines } from "../define";
-
-// The product's name never breaks across lines in prose: a no-break space
-// (written as an escape, so the source stays ASCII).
-const CLOUD = "ocra\u00a0Cloud";
 
 export type PlanId = "self" | "cloud" | "team";
 
@@ -45,7 +42,7 @@ export const plans: Bilingual<PlansCopy> = {
       },
       cloud: {
         state: "early access",
-        name: "ocra Cloud",
+        name: CLOUD,
         price: "Free",
         unit: "bring your own key",
         points: [
@@ -55,7 +52,7 @@ export const plans: Bilingual<PlansCopy> = {
           "Learnings, pre-merge checks, and Slack or WeCom alerts with a daily digest",
           `Keys for ${PROVIDERS} providers, encrypted; usage, spend and cycle time`,
         ],
-        cta: "Start with ocra Cloud",
+        cta: `Start with ${CLOUD}`,
       },
       team: {
         state: "planned",
@@ -64,7 +61,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "pricing not set",
         points: [
           "Organizations with shared rules and policy",
-          "Models provided by ocra, no key needed",
+          "Models provided by Ocra, no key needed",
           "Hosted code graphs",
         ],
         cta: "Follow the roadmap",
@@ -92,7 +89,7 @@ export const plans: Bilingual<PlansCopy> = {
       },
       cloud: {
         state: "早期体验",
-        name: "ocra Cloud",
+        name: CLOUD,
         price: "免费",
         unit: "自带 key",
         points: [
@@ -102,14 +99,14 @@ export const plans: Bilingual<PlansCopy> = {
           "Learnings、合并前检查，以及带每日摘要的 Slack 或企业微信提醒",
           `${PROVIDERS} 家服务商的 key，加密保存；用量、花费和周期时间`,
         ],
-        cta: "开始使用 ocra Cloud",
+        cta: `开始使用 ${CLOUD}`,
       },
       team: {
         state: "规划中",
         name: "团队版",
         price: "稍后",
         unit: "价格未定",
-        points: ["组织级共享规则和策略", "由 ocra 提供模型，不需要 key", "托管的代码图"],
+        points: ["组织级共享规则和策略", "由 Ocra 提供模型，不需要 key", "托管的代码图"],
         cta: "关注路线图",
         planned: true,
       },

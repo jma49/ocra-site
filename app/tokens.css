@@ -1,162 +1,57 @@
 /* The design tokens (DESIGN.md), the only place a colour literal may appear
    (scripts/check-colors.mjs). Everything else names a token, and derives
-   translucent variants with color-mix(). Ink, neutral paper, a stone desk
-   and one pen: the pen marks only where ocra acts on the reviewed change. */
+   translucent variants with color-mix(). */
 
+/* The neutral set the 404 page, the shared buttons and Fumadocs' defaults
+   read; the landing page and the manual each define their own on top
+   (.home below, the manual further down). */
 :root {
-  /* Grounds, lowest first: page, band, desk, sheet, inset. The page and
-     the sheets are neutral; the two mid-tones carry the night's hue (OKLCH
-     h 17) at a trace of chroma and at their neutral lightness, so contrast
-     on them is unchanged: paper-2 OKLCH 94.7 % 0.005, stone 79.9 % 0.009
-     (ink-2 7.6 : 1 and 4.7 : 1 on them). */
   --paper: #f7f7f7;
   --paper-2: #f1ecec;
   --stone: #c3bbbb;
   --sheet: #ffffff;
-  --sheet-2: #f2f2f2;
-  /* Night is the pen's own dark, red ink rather than a neutral black
-     (OKLCH 21.7 % 0.030 16; night-2 26.9 %): on-night 15.7 : 1, on-night-3
-     5.9 : 1, pen-night marks 5.5 : 1. */
   --night: #261415;
-  --night-2: #342021;
-
-  /* Ink: text, the primary button and every UI state. */
   --ink: #141414;
   --ink-2: #4a4a4a;
   --ink-3: #666666;
   --line: #e0e0e0;
   --line-2: #c4c4c4;
   --on-night: #f2f2f2;
-  --on-night-2: #bababa;
   --on-night-3: #969696;
-
-  /* The pen (cinnabar), the one signal. Never UI chrome. */
+  /* Critical severity, and the one signal. Never UI chrome. */
   --pen: #bd2718;
-  --pen-night: #fd545f;
-  /* Behind inserted code only: red on an insertion cannot read as a deletion. */
-  --pen-wash: #fbe6e2;
   /* Warning severity only. */
   --amber: #935508;
 
-  /* color-mix() helpers for shadows and rings only. */
+  /* color-mix() helpers for shadows and masks only. */
   --white: #ffffff;
   --black: #000000;
 
-  /* Derived. */
   --line-night: color-mix(in srgb, var(--on-night) 12%, transparent);
   --line-night-2: color-mix(in srgb, var(--on-night) 22%, transparent);
   --tint: color-mix(in srgb, var(--ink) 6%, transparent);
-  --read: color-mix(in srgb, var(--ink) 6%, transparent);
   --focus: var(--ink);
   --select: color-mix(in srgb, var(--ink) 16%, transparent);
-
-  /* The one shadow: sheets on a desk, the thread, the gate tile, the drawer.
-     Two layers under one light from the top left: a tight contact shadow
-     where the sheet touches, and a wide ambient one falling down and right. */
   --float:
     0 0 0 0.5px color-mix(in srgb, var(--black) 7%, transparent),
     0 1px 2px color-mix(in srgb, var(--black) 14%, transparent),
     6px 30px 46px -20px color-mix(in srgb, var(--black) 28%, transparent),
     2px 10px 18px -10px color-mix(in srgb, var(--black) 10%, transparent);
 
-  /* The desk: stone lit from the top left, about 6 % lighter where the light
-     falls, a lit top edge, a shaded foot, and the slab's own shadow on the
-     page. 03-objects.css paints it; sections never restyle it. */
-  --desk-face:
-    radial-gradient(
-      90% 80% at 12% 0%,
-      color-mix(in srgb, var(--white) 26%, transparent),
-      transparent 70%
-    ),
-    linear-gradient(
-      160deg,
-      color-mix(in srgb, var(--white) 10%, var(--stone)) 0%,
-      var(--stone) 48%,
-      color-mix(in srgb, var(--black) 5%, var(--stone)) 100%
-    );
-  --desk-edge:
-    inset 0 1px 0 color-mix(in srgb, var(--white) 60%, transparent),
-    inset 1px 0 0 color-mix(in srgb, var(--white) 22%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--black) 9%, transparent),
-    0 1px 2px color-mix(in srgb, var(--black) 8%, transparent),
-    4px 28px 56px -30px color-mix(in srgb, var(--black) 38%, transparent);
-
-  /* Curves (motion.md §1); no other timing function in landing code. */
+  /* Curves; no other timing function in landing code. */
   --e-enter: cubic-bezier(0.22, 1, 0.36, 1);
   --e-std: cubic-bezier(0.4, 0, 0.2, 1);
-  --e-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Radii, concentric: outer = inner + padding. */
+  /* Radii. */
   --r-chip: 6px;
   --r-tab: 7px;
   --r-ctl: 10px;
   --r-sheet: 14px;
-  --r-card: 16px;
-  /* The desk: the sheet's radius plus its 10 px rim. */
-  --r-desk: 24px;
-  --r-band: 28px;
-
-  /* The wordmark's width: one token, so it can return to 100 % in one line. */
-  --wordmark-stretch: 78%;
 
   /* Stacking, lowest first. */
   --z-under: -1;
   --z-over: 1;
-  --z-tip: 5;
   --z-nav: 60;
-
-  /* ---- The desk (concept C, foundation.md) ----
-     The landing page is one lit desk seen by a camera, the same in both
-     themes: a deep ink-teal surface, printed paper on it, one red pen.
-     The desk ground: lit centre, body, the dark it falls off to. */
-  --desk: #17272c;
-  --desk-hi: #24393f;
-  --desk-lo: #0c1618;
-  /* Evening: the room light is down, one warm lamp. */
-  --desk-eve: #0f1b1e;
-  --desk-eve-lo: #060c0e;
-  /* The lamp's warm light, and the dark every shadow on the desk is made of. */
-  --lamp: #ffdeb6;
-  --umbra: #020b0d;
-  /* Text set straight on the desk. */
-  --on-desk: #eef2f0;
-  --on-desk-2: color-mix(in srgb, var(--on-desk) 70%, transparent);
-  --on-desk-3: color-mix(in srgb, var(--on-desk) 50%, transparent);
-  --line-desk: color-mix(in srgb, var(--on-desk) 14%, transparent);
-  /* Printed paper (laser paper, never cream as a page ground), its print. */
-  --print-paper: #faf8f2;
-  --print-paper-2: #f0ece3;
-  --print-ink: #1c2226;
-  --print-ink-2: #545c5f;
-  /* The quietest print: 4.5 : 1 or better on both papers. */
-  --print-ink-3: #5f6768;
-  /* The index card: whiter stock, a printed red head rule, pale blue lines. */
-  --card-stock: #fdfcf8;
-  --card-rule: #d6463c;
-  --card-line: #8db0d6;
-  /* Cinnabar: the pen's barrel and its ink, nothing else (no button, no UI).
-     The ink is a little deeper than the barrel; its rim pools darker. */
-  --cinnabar: #d9432b;
-  --cinnabar-hi: #ee7a5e;
-  --cinnabar-lo: #a32a17;
-  --pen-ink: #c8351f;
-  --pen-rim: #7d1204;
-  /* Steel and black of the pen's tip, grip and clip, and the binder clip.
-     Flat tones: the pen is a crisp graphic, never a gradient render. */
-  --steel: #c9d1d4;
-  --steel-hi: #f1f5f6;
-  --steel-lo: #7d888c;
-  --grip: #24292b;
-  --grip-hi: #3d4548;
-  /* The smoked acrylic of the reading ruler's tab. */
-  --smoke: #1a2326;
-
-  /* Easing vocabulary (motion.md): settle (paper landing), glide (an object
-     carried), stroke (the pen's velocity), snap (a clip biting). */
-  --e-settle: cubic-bezier(0.2, 0.75, 0.15, 1);
-  --e-glide: cubic-bezier(0.45, 0, 0.2, 1);
-  --e-stroke: cubic-bezier(0.6, 0, 0.4, 1);
-  --e-snap: cubic-bezier(0.3, 1.45, 0.5, 1);
 
   /* Fumadocs' defaults; the manual maps them to the console's tokens
      (app/docs.css). */
@@ -180,22 +75,12 @@
   --color-fd-warning: var(--amber);
 }
 
-/* Dark: a designed layer order, lighter is higher (page < band < desk <
-   sheet < inset); night bands are raised slabs above the page. */
 .dark {
-  /* Every dark ground carries the same trace of the night's hue, so the
-     page steps in lightness only, never from a neutral to a warm dark:
-     paper OKLCH 18.3 % 0.007 at the neutral #121212's lightness (ink and
-     every hairline keep their contrast on it), paper-2 20.9 % 0.006, stone
-     23.5 % 0.006. The sheets stay neutral. */
   --paper: #151111;
   --paper-2: #1b1717;
   --stone: #211d1d;
   --sheet: #232323;
-  --sheet-2: #2a2a2a;
-  /* Raised 1.24 : 1 above the page; on-night-3 6.0 : 1 (night-2 5.3). */
   --night: #352122;
-  --night-2: #3e2a2b;
   --ink: #ededed;
   --ink-2: #b4b4b4;
   --ink-3: #969696;
@@ -203,31 +88,95 @@
   --line-2: #404040;
   --on-night-3: #a3a3a3;
   --pen: #fd545f;
-  --pen-wash: #331b1a;
   --amber: #efad48;
   --float:
     0 0 0 1px color-mix(in srgb, var(--white) 7%, transparent),
     0 1px 2px color-mix(in srgb, var(--black) 55%, transparent),
     6px 30px 50px -20px color-mix(in srgb, var(--black) 72%, transparent);
-  /* The dark desk sits on the page by its light and its rim, not by its
-     value alone: about 1.35 : 1 where the light falls, never below the
-     stone's own 1.12 : 1 at its foot, and a white rim all round. */
-  --desk-face:
-    radial-gradient(
-      90% 80% at 12% 0%,
-      color-mix(in srgb, var(--white) 6%, transparent),
-      transparent 70%
-    ),
-    linear-gradient(
-      160deg,
-      color-mix(in srgb, var(--white) 5%, var(--stone)) 0%,
-      color-mix(in srgb, var(--white) 1.5%, var(--stone)) 55%,
-      var(--stone) 100%
-    );
-  --desk-edge:
-    inset 0 0 0 1px color-mix(in srgb, var(--white) 8%, transparent),
-    inset 0 1px 0 color-mix(in srgb, var(--white) 12%, transparent),
-    4px 30px 60px -28px color-mix(in srgb, var(--black) 80%, transparent);
+}
+
+/* The landing page (DESIGN.md, Landing): the console's names on a warm
+   neutral ramp, so a screenshot of the console sits on it as on its own
+   ground. Tinted panels carry one hue each at a trace of chroma; the block
+   is the page's one dark band; the stipple colours paint the shapes. */
+.home {
+  --ground: #f6f5f3;
+  --panel: #ffffff;
+  --raised: #efedea;
+  --well: #f1efec;
+  --t1: #1f1d1b;
+  --t2: #5e5a55;
+  --t3: #6a655f;
+  --hair: color-mix(in srgb, var(--t1) 8%, transparent);
+  --hair2: color-mix(in srgb, var(--t1) 13%, transparent);
+  --on-ink: #ffffff;
+  --red: #b23720;
+  --red-soft: #f7e9e5;
+  --amber: #925600;
+  --amber-soft: #f6ecdc;
+  --green: #17723d;
+  --green-hi: #7fd19b;
+  --blue: #3a5fb0;
+  --tint-blue: #eef1f6;
+  --tint-stone: #f3f1ee;
+  --tint-sand: #f1efeb;
+  --tint-red: #f7eeeb;
+  --tile: #fbfaf9;
+  --tile-edge: #dedad5;
+  --block: #1f1d1b;
+  --block-2: #2a2725;
+  --on-block: #f3f1ee;
+  --on-block-2: color-mix(in srgb, var(--on-block) 64%, transparent);
+  --on-block-3: color-mix(in srgb, var(--on-block) 60%, transparent);
+  --on-block-line: color-mix(in srgb, var(--on-block) 10%, transparent);
+  --on-block-red: #f08b78;
+  --word: #ecebe8;
+  --dot: color-mix(in srgb, var(--t1) 13%, transparent);
+  --grid: color-mix(in srgb, var(--t1) 6%, transparent);
+  --sh:
+    0 1px 3px color-mix(in srgb, var(--t1) 5%, transparent),
+    0 18px 40px -26px color-mix(in srgb, var(--t1) 32%, transparent);
+  --sh-lg:
+    0 1px 3px color-mix(in srgb, var(--t1) 6%, transparent),
+    0 40px 80px -40px color-mix(in srgb, var(--t1) 40%, transparent);
+  --solid: -6px 6px 0 var(--tile-edge);
+  --focus: var(--t1);
+  --select: color-mix(in srgb, var(--t1) 16%, transparent);
+}
+
+/* Dark: the same ramp, lightness inverted, hues kept. */
+html.dark .home {
+  --ground: #161514;
+  --panel: #1f1d1b;
+  --raised: #2a2826;
+  --well: #1c1a19;
+  --t1: #efece8;
+  --t2: #b8b2ab;
+  --t3: #98918a;
+  --on-ink: #161514;
+  --red: #ee7a63;
+  --red-soft: #3a211c;
+  --amber: #e3a54e;
+  --amber-soft: #33281a;
+  --green: #5cc486;
+  --green-hi: #5cc486;
+  --blue: #8ea8e6;
+  --tint-blue: #1b1f27;
+  --tint-stone: #1e1c1a;
+  --tint-sand: #1f1d1a;
+  --tint-red: #241b19;
+  --tile: #262422;
+  --tile-edge: #0d0c0b;
+  --block: #0e0d0c;
+  --block-2: #1d1b1a;
+  --on-block: #efece8;
+  --word: #1f1d1b;
+  --sh:
+    0 0 0 1px color-mix(in srgb, var(--t1) 7%, transparent),
+    0 18px 40px -26px color-mix(in srgb, var(--black) 80%, transparent);
+  --sh-lg:
+    0 0 0 1px color-mix(in srgb, var(--t1) 8%, transparent),
+    0 40px 80px -40px color-mix(in srgb, var(--black) 90%, transparent);
 }
 
 /* The manual follows the ocra Cloud console's design (its web/DESIGN.md):

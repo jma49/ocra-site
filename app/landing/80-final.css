@@ -1,0 +1,141 @@
+/* The close as one picture: the call to action standing on a row of
+   shapes, the footer under it, and the wordmark edge to edge, cut by the
+   page's foot. */
+.final {
+  position: relative;
+  padding-top: 96px;
+}
+.final .hero-cta {
+  position: relative;
+  z-index: 2;
+  margin-top: 32px;
+}
+.cmd {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 6px 0 18px;
+  border-radius: 999px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--hair2);
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+}
+.cmd code {
+  font-family: inherit;
+  white-space: nowrap;
+}
+.cmd-copy {
+  min-width: 64px;
+  height: 32px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--raised);
+  color: var(--t2);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  cursor: pointer;
+}
+.cmd-copy[data-copied] {
+  color: var(--green);
+}
+.final-art {
+  margin-top: -8px;
+}
+.final-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 599px) {
+  .cmd {
+    max-width: 100%;
+    font-size: 12px;
+  }
+  .cmd code {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .final-art {
+    width: 180%;
+    margin-left: -40%;
+  }
+}
+
+.foot {
+  overflow: hidden;
+  padding-top: 56px;
+  border-top: 1px solid var(--hair);
+  background: var(--panel);
+}
+.foot-in {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+}
+.foot-brand .small {
+  max-width: 260px;
+  margin-top: 12px;
+}
+.foot-logo {
+  display: inline-flex;
+}
+.foot-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.foot-h {
+  margin: 0 0 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--t3);
+}
+.foot-cols ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--t2);
+}
+@media (hover: hover) {
+  .foot-cols a:hover {
+    color: var(--t1);
+  }
+}
+.word {
+  margin: -40px 0 0 -20px;
+  font-size: min(760px, 52vw);
+  line-height: 0.72;
+  letter-spacing: -0.06em;
+  color: var(--word);
+  white-space: nowrap;
+  transform: translateY(14%);
+  user-select: none;
+}
+.word::before {
+  content: attr(data-word);
+}
+@media (max-width: 1023px) {
+  .foot-in {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .word {
+    margin-top: 24px;
+  }
+}
+@media (max-width: 599px) {
+  .foot-cols {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 32px;
+  }
+  .word {
+    margin-left: -8px;
+  }
+}

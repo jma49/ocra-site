@@ -1,202 +1,51 @@
-/* The announce line, the sticky nav bar and its drawer (DESIGN.md, Nav).
-   The bar follows the ground under it (`data-on`, set by NavShell) and
-   promotes its call to action after the hero (`data-promoted`). Shared. */
-
-.home .announce p {
-  padding: 9.5px 20px;
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: center;
-  color: var(--ink-2);
-}
-.home .announce a {
-  padding-block: 12px;
-  color: var(--ink);
-  font-weight: 500;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
-  text-underline-offset: 3px;
-  white-space: nowrap;
-  transition: text-decoration-color 150ms var(--e-std);
-}
-.home .announce a .arrow-glyph {
-  margin-inline-start: 0.3em;
-}
-@media (hover: hover) {
-  .home .announce a:hover {
-    text-decoration-color: var(--ink);
-  }
-}
-/* On a phone or a touch screen, 12.5 px above and below: room for the
-   link's 44 px target whether the sentence takes one line or two, without
-   reaching under the bar. Inline padding: a taller target, the same line
-   height. */
-@media (max-width: 599px), (pointer: coarse) {
-  .home .announce p {
-    padding-block: 12.5px;
-  }
-  .home .announce a {
-    padding-block: 15px;
-  }
-}
-@media (max-width: 599px) {
-  .home .announce p {
-    font-size: 13px;
-  }
-}
-
-/* ---- The bar ---- */
-/* The ground's share of the bar: registered, so it alone eases (the bare
-   bar becoming a pill) while the bar's colours change in one step. */
-@property --nav-o {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 90%;
-}
+/* The sticky bar: the ground, frosted; a hairline once the page has left
+   its top (header-controls.tsx). Below 1024 px the links move into a
+   drawer under the bar. */
 .home .nav-shell {
   position: sticky;
-  top: 10px;
+  top: 0;
   z-index: var(--z-nav);
 }
 .home .nav {
-  --nav-g: var(--paper);
-  /* Frosted on every ground: 90 % of the ground under a 20 px blur, so the
-     page's largest type (a 148 px line, the $0.5134) never reads through
-     the bar, only a soft shift of tone. */
-  --nav-o: 90%;
-  --nav-t: var(--ink);
-  --nav-a: var(--ink-2);
-  --nav-l: color-mix(in srgb, var(--ink) 8%, transparent);
-  --cta-g: color-mix(in srgb, var(--nav-t) 8%, transparent);
-  --cta-t: var(--nav-t);
+  position: relative;
+  z-index: var(--z-over);
   display: flex;
   align-items: center;
-  gap: 4px;
-  width: calc(100% - 24px);
-  max-width: 1240px;
-  height: 56px;
-  margin-inline: auto;
-  padding: 0 8px 0 16px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--nav-g) var(--nav-o), transparent);
-  box-shadow: inset 0 0 0 1px var(--nav-l);
-  color: var(--nav-t);
-  /* Only the standard property: the CSS build adds the -webkit- one, and
-     given both it keeps only the prefixed one, which Chrome ignores. */
-  backdrop-filter: blur(20px) saturate(1.1);
-  transition:
-    --nav-o 300ms var(--e-std),
-    box-shadow 300ms var(--e-std);
+  gap: 40px;
+  max-width: 1248px;
+  height: 68px;
+  margin: 0 auto;
+  padding: 0 32px;
 }
-/* Changing ground (NavShell sets this for two frames): every colour in the
-   bar switches at once, never through a mix of the two grounds. */
-.home .nav[data-swap],
-.home .nav[data-swap] * {
-  transition: none;
+.home .nav-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ground) 86%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 transparent;
+  transition: box-shadow 200ms var(--e-std);
 }
-/* From 1024 up the pill's outer edges are the content column's, so the
-   logo sits 16 px inside the headline's edge and nothing in the column
-   shows beside the pill as the page scrolls under it. Below, it keeps the
-   bands' 12 px inset (the drawer lives there too). */
-@media (min-width: 1024px) {
-  .home .nav {
-    width: calc(100% - 2 * var(--gutter));
-    max-width: var(--column);
-  }
+.home .nav-shell:has(.nav[data-scrolled])::before {
+  box-shadow: 0 1px 0 var(--hair);
 }
-.home .nav[data-on="paper-2"] {
-  --nav-g: var(--paper-2);
-}
-.home .nav[data-on="stone"] {
-  --nav-g: var(--stone);
-  --nav-a: var(--ink);
-}
-.home .nav[data-on="night"] {
-  --nav-g: var(--night-2);
-  --nav-t: var(--on-night);
-  --nav-a: var(--on-night-2);
-  --nav-l: var(--line-night);
-  --focus: var(--on-night);
-}
-.home .nav[data-promoted] {
-  --cta-g: var(--ink);
-  --cta-t: var(--paper);
-}
-/* Over the desk: bare at the top of the page, so the desk reads from the
-   top edge; a smoked glass pill once scrolled, dark enough that a sheet
-   passing under it never greys it. The promoted call to action is paper on
-   the desk, never the pen's red. */
-.home .nav:is([data-on="desk"], [data-on="desk-evening"]) {
-  --nav-g: var(--desk);
-  --nav-t: var(--on-desk);
-  --nav-a: var(--on-desk-2);
-  --nav-l: var(--line-desk);
-  --focus: var(--on-desk);
-  box-shadow:
-    inset 0 0 0 1px var(--nav-l),
-    0 12px 28px -16px color-mix(in srgb, var(--umbra) 70%, transparent);
-}
-.home .nav:is([data-on="desk"], [data-on="desk-evening"]):not([data-scrolled]) {
-  --nav-o: 0%;
-  --nav-l: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-}
-.home .nav[data-promoted]:is([data-on="desk"], [data-on="desk-evening"]) {
-  --cta-g: var(--print-paper);
-  --cta-t: var(--print-ink);
-}
-/* Over a paper band: a slip of the same paper lying on it, its edge and a
-   soft contact shadow under the lamp; as dense as the glass, so the band's
-   poster type never reads through behind the links. */
-.home .nav[data-on="paper-band"] {
-  --nav-g: var(--card-stock);
-  --nav-t: var(--print-ink);
-  --nav-a: var(--print-ink-2);
-  --nav-l: color-mix(in srgb, var(--print-ink) 9%, transparent);
-  --focus: var(--print-ink);
-  box-shadow:
-    inset 0 0 0 1px var(--nav-l),
-    0 10px 24px -14px color-mix(in srgb, var(--umbra) 30%, transparent);
-}
-.home .nav[data-promoted][data-on="paper-band"] {
-  --cta-g: var(--print-ink);
-  --cta-t: var(--print-paper);
-}
-.home .nav[data-promoted][data-on="night"] {
-  --cta-g: var(--on-night);
-  --cta-t: var(--night);
-}
-
 .home .nav-logo {
   display: inline-flex;
-  align-items: center;
-  height: 44px;
-  padding-inline-end: 6px;
-  color: inherit;
-  text-decoration: none;
-  border-radius: 8px;
-}
-.home .nav-links {
-  margin-inline-start: 18px;
+  color: var(--t1);
 }
 .home .nav-links ul {
   display: flex;
-  gap: 2px;
+  gap: 4px;
 }
 .home .nav-links a,
 .home .nav-a {
   display: inline-flex;
   align-items: center;
-  height: 36px;
-  padding: 0 11px;
-  border-radius: var(--r-tab);
-  font-weight: 500;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
   font-size: 14px;
-  color: var(--nav-a);
-  text-decoration: none;
-  white-space: nowrap;
+  color: var(--t2);
   transition:
     background-color 150ms var(--e-std),
     color 150ms var(--e-std);
@@ -204,8 +53,11 @@
 .home .nav-r {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   margin-inline-start: auto;
+}
+.home .nav-cta {
+  margin-inline-start: 10px;
 }
 .home .ib {
   display: inline-grid;
@@ -216,7 +68,7 @@
   border: 0;
   border-radius: 9px;
   background: transparent;
-  color: var(--nav-a, var(--ink-2));
+  color: var(--t2);
   cursor: pointer;
   transition:
     background-color 150ms var(--e-std),
@@ -233,27 +85,12 @@ html:not(.dark) .home .theme-sun,
 .dark .home .theme-moon {
   display: none;
 }
-.home .nav-cta {
-  margin-inline-start: 6px;
-  background: var(--cta-g);
-  color: var(--cta-t);
-  transition:
-    background-color 300ms var(--e-std),
-    color 300ms var(--e-std),
-    transform 200ms var(--e-std);
-}
 @media (hover: hover) {
   .home .nav-links a:hover,
   .home .nav-a:hover,
   .home .ib:hover {
-    background: color-mix(in srgb, var(--nav-t, var(--ink)) 7%, transparent);
-    color: var(--nav-t, var(--ink));
-  }
-  .home .nav-cta:hover {
-    background: color-mix(in srgb, var(--nav-t) 13%, transparent);
-  }
-  .home .nav[data-promoted] .nav-cta:hover {
-    background: color-mix(in srgb, var(--cta-g) 86%, var(--cta-t));
+    background: color-mix(in srgb, var(--t1) 6%, transparent);
+    color: var(--t1);
   }
 }
 .home .nav-menu {
@@ -270,8 +107,8 @@ html:not(.dark) .home .theme-sun,
 }
 @media (max-width: 599px) {
   .home .nav {
-    height: 52px;
-    padding-inline-start: 12px;
+    height: 56px;
+    padding: 0 8px 0 16px;
   }
   .home .nav-theme {
     display: none;
@@ -281,41 +118,36 @@ html:not(.dark) .home .theme-sun,
     height: 44px;
   }
   .home .nav-cta {
-    padding-inline: 12px;
+    padding-inline: 14px;
   }
 }
 
-/* ---- The drawer ---- */
+/* The drawer. The page under it holds still and lies under a frosted scrim;
+   a tap on the scrim closes it (header-controls.tsx). */
 .home .drawer {
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
   right: 0;
+  z-index: var(--z-over);
   display: none;
   width: calc(100% - 24px);
   max-width: 1240px;
   margin-inline: auto;
   padding: 8px;
-  border-radius: 12px;
-  background: var(--sheet);
-  box-shadow: var(--float);
-  color: var(--ink);
-  --focus: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow:
+    var(--sh-lg),
+    0 0 0 1px var(--hair);
 }
 .home .nav-shell[data-open] .drawer {
   display: block;
 }
-/* The page under an open drawer holds still: a drag on the scrim scrolls
-   nothing, html keeps its stable gutter (global.css) so nothing moves,
-   and the page is where it was when the drawer closes. A drawer taller
-   than the room under the bar (a phone on its side) scrolls inside
-   itself, to the height NavShell gives it. */
 html:has(.home .nav-shell[data-open]) {
   overflow: hidden;
-}
-.home .drawer {
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 .home .drawer ul {
   display: grid;
@@ -327,8 +159,6 @@ html:has(.home .nav-shell[data-open]) {
   padding: 0 12px;
   border-radius: 8px;
   font-size: 17px;
-  color: var(--ink);
-  text-decoration: none;
 }
 .home .drawer-theme {
   display: flex;
@@ -337,13 +167,8 @@ html:has(.home .nav-shell[data-open]) {
   min-height: 48px;
   margin-top: 4px;
   padding: 0 4px 0 12px;
-  border-top: 1px solid var(--line);
-  font-size: 15px;
-  color: var(--ink-2);
-}
-.home .drawer-theme .ib {
-  --nav-a: var(--ink-2);
-  --nav-t: var(--ink);
+  border-top: 1px solid var(--hair);
+  color: var(--t2);
 }
 .home .drawer-cta {
   width: 100%;
@@ -351,20 +176,15 @@ html:has(.home .nav-shell[data-open]) {
 }
 @media (hover: hover) {
   .home .drawer li a:hover {
-    background: var(--tint);
+    background: var(--raised);
   }
 }
-/* While the drawer is open the page lies under a frosted scrim (and is
-   inert, header-controls.tsx); a tap on it closes the drawer. The bar
-   keeps only the logo and the close button: the drawer has the theme row
-   and the call to action. The scrim sits under the bar and the drawer
-   inside the header's stacking order. */
 .home .nav-scrim {
   position: fixed;
   inset: 0;
   z-index: var(--z-under);
   display: none;
-  background: color-mix(in srgb, var(--paper) 60%, transparent);
+  background: color-mix(in srgb, var(--ground) 60%, transparent);
   backdrop-filter: blur(6px);
 }
 .home .nav-shell[data-open] .nav-scrim {
@@ -377,42 +197,12 @@ html:has(.home .nav-shell[data-open]) {
   .home .nav-shell[data-open] .drawer {
     animation: drawer-in 260ms var(--e-enter);
   }
-  .home .nav-shell[data-open] .nav-scrim {
-    animation: scrim-in 260ms var(--e-std);
-  }
 }
 @keyframes drawer-in {
   from {
-    clip-path: inset(0 0 100% 0 round 12px);
+    clip-path: inset(0 0 100% 0 round 14px);
   }
   to {
-    clip-path: inset(0 round 12px);
-  }
-}
-@keyframes scrim-in {
-  from {
-    opacity: 0;
-  }
-}
-
-/* On a touch screen wider than a phone (a tablet), the bar's small
-   controls keep the size they are drawn at and take a finger through an
-   invisible hit area centred on them, 44 px on any side that is shorter. */
-@media (pointer: coarse) {
-  .home :is(.nav-links a, .nav-a, .ib, .nav-cta) {
-    position: relative;
-  }
-  .home :is(.nav-links a, .nav-a, .ib, .nav-cta)::before {
-    content: "";
-    position: absolute;
-    inset-block: min(0px, (100% - 44px) / 2);
-    inset-inline: min(0px, (100% - 44px) / 2);
-  }
-}
-/* Reduce motion: the bar follows the ground at once. */
-@media (prefers-reduced-motion: reduce) {
-  .home .nav,
-  .home .nav-cta {
-    transition: none;
+    clip-path: inset(0 round 14px);
   }
 }
