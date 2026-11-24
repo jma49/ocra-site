@@ -36,6 +36,9 @@ export default defineConfig({
   use: {
     baseURL,
     reducedMotion: "reduce",
+    // The hero art is SVG shown through <img>, which animates inside its own
+    // document; only the browser-wide switch reaches it there.
+    launchOptions: { args: ["--force-prefers-reduced-motion"] },
   },
   projects: Object.entries(widths).flatMap(([size, width]) =>
     schemes.map((colorScheme) => ({
