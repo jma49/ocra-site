@@ -1,8 +1,8 @@
 import { loader } from "fumadocs-core/source";
-import { lucideIconsPlugin } from "fumadocs-core/source/lucide-icons";
 import { metaSchema, pageSchema } from "fumadocs-core/source/schema";
 import { defineDocs } from "fumadocs-mdx/macro";
 import { i18n } from "./i18n";
+import { lucideIconsPlugin } from "./icons";
 import { docsRoute } from "./shared";
 
 const docs = defineDocs({

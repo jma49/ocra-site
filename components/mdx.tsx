@@ -2,17 +2,17 @@ import { Cards, Card as FdCard } from "@fumadocs/base-ui/components/card";
 import { Step, Steps } from "@fumadocs/base-ui/components/steps";
 import { Tabs as FdTabs, Tab } from "@fumadocs/base-ui/components/tabs";
 import defaultMdxComponents from "@fumadocs/base-ui/mdx";
-import { icons } from "lucide-react";
 import type { MDXComponents } from "mdx/types";
 import type { ComponentProps, ReactNode } from "react";
 import { Note } from "@/components/docs/note";
 import type { Locale } from "@/lib/i18n";
+import { lucideIcon } from "@/lib/icons";
 
 // The manual's components on the console's design (app/docs-prose.css).
 // The manual names a card's icon by its Lucide name (`icon="Rocket"`), as
 // its front matter does for the page tree.
 function Card({ className, icon, ...props }: ComponentProps<typeof FdCard>) {
-  const Icon = typeof icon === "string" ? icons[icon as keyof typeof icons] : undefined;
+  const Icon = typeof icon === "string" ? lucideIcon(icon) : undefined;
   return (
     <FdCard
       className={`docs-link-card ${className ?? ""}`}
