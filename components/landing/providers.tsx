@@ -27,8 +27,9 @@ export function Providers({ copy }: { copy: Copy["providers"] }) {
           </div>
           <div className="prov-art">
             <ul className="prov-plane" aria-label={copy.label}>
-              {WALL_MARKS.slice(0, SLOTS.length).map((m, i) => {
-                const [left, top] = SLOTS[i] ?? [0, 0];
+              {SLOTS.map(([left, top], i) => {
+                const m = WALL_MARKS[i];
+                if (!m) return null;
                 return (
                   <li key={m.id} className="pt" style={{ left, top }}>
                     {"src" in m ? (
