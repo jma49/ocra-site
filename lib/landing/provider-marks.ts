@@ -10,7 +10,7 @@ import type { PROVIDER_IDS } from "./engine-facts";
 
 type ProviderId = (typeof PROVIDER_IDS)[number];
 
-export type ProviderMark = { id: ProviderId } & (
+type ProviderMark = { id: ProviderId } & (
   | { d: readonly string[]; evenodd?: true }
   | { src: string }
 );
