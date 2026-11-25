@@ -47,7 +47,7 @@ export function social({
   return {
     openGraph: {
       type: "website",
-      siteName: "ocra",
+      siteName: "Ocra",
       url: localePath(locale, path),
       title,
       description,

@@ -14,6 +14,7 @@ import { Record } from "@/components/landing/record";
 import { Security } from "@/components/landing/security";
 import { SiteHeader } from "@/components/landing/site-header";
 import { getCopy } from "@/lib/copy";
+import { homeJsonLd, serializeJsonLd } from "@/lib/jsonld";
 import { localeParam } from "@/lib/locale-param";
 import { alternates } from "@/lib/seo";
 
@@ -28,6 +29,11 @@ export default async function HomePage({ params }: Props) {
   const copy = getCopy(lang);
   return (
     <>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: serialized server-side JSON-LD with "<" escaped
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(homeJsonLd(lang, copy)) }}
+      />
       <SiteHeader copy={copy.nav} locale={lang} />
       <main id="main" className="landing" tabIndex={-1}>
         <Hero copy={copy.hero} locale={lang} />

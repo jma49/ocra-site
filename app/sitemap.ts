@@ -8,12 +8,28 @@ import { source } from "@/lib/source";
 // rebuilds every page, the manual included (scripts/sync-manual.mjs).
 const lastModified = new Date();
 
-function entry(path: string, languages: readonly Locale[]): MetadataRoute.Sitemap {
+function entry(
+  path: string,
+  languages: readonly Locale[],
+  priority: number,
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
+): MetadataRoute.Sitemap {
   const url = (locale: Locale) => new URL(localePath(locale, path), siteUrl()).href;
   const alternates = {
-    languages: Object.fromEntries(languages.map((l) => [htmlLang[l], url(l)])),
+    languages: {
+      ...Object.fromEntries(languages.map((l) => [htmlLang[l], url(l)])),
+      ...(languages.includes(i18n.defaultLanguage) && {
+        "x-default": url(i18n.defaultLanguage),
+      }),
+    },
   };
-  return languages.map((locale) => ({ url: url(locale), lastModified, alternates }));
+  return languages.map((locale) => ({
+    url: url(locale),
+    lastModified,
+    changeFrequency,
+    priority,
+    alternates,
+  }));
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -25,7 +41,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
   }
   return [
-    ...entry("/", i18n.languages),
-    ...[...docs].flatMap(([path, languages]) => entry(path, languages)),
+    ...entry("/", i18n.languages, 1.0, "weekly"),
+    ...[...docs].flatMap(([path, languages]) =>
+      entry(path, languages, path === "/docs" ? 0.9 : 0.8, "weekly"),
+    ),
   ];
 }
