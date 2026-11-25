@@ -24,13 +24,13 @@ jobs:
         env:
           MANUAL_SOURCE: remote
 
-  # Conventional Commits and no AI attribution, with the engine's own checks
-  # (AGENTS.md, Working with agents). Pinned to an engine release, so a push
+  # Conventional Commits, with the engine's own rules (AGENTS.md, Git
+  # workflow). Pinned to an engine commit, so a push
   # to the engine's main does not change this repository's CI; Dependabot
   # proposes the next release.
   commits:
     if: github.event_name == 'pull_request'
-    uses: ocrahq/Open-CR-Agent/.github/workflows/commits.yml@38bf9e5453cf0d452fe39fd027cef34d2c0e4ea7 # main after v0.6.0 (job.workflow_sha)
+    uses: ocrahq/Open-CR-Agent/.github/workflows/commits.yml@5e21d4f2227e5d14f517e7bac7f5e5384c24d184 # allow co-author trailers
 
   # CI's time budgets (the engine's docs/ci.md): fails the run when a job
   # set up or ran longer than its ceiling in .github/ci-budgets.json.

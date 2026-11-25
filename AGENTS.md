@@ -95,7 +95,7 @@ Mirrored word for word in the AGENTS.md of ocra, ocra-cloud and ocra-site: chang
 - `main` is always deployable. Work on `<type>/<short-kebab-description>` branches, merge through pull requests with rebase, and delete the branch afterwards.
 - The author may merge after green CI and a self-review of the full diff.
 - [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <subject>`, imperative, at most 72 characters.
-- **No AI attribution:** no `Co-authored-by` or other co-author metadata in commits, no tool footer in pull request titles, descriptions or comments (the `/triage` disclaimer on an issue is disclosure, not attribution). CI's `commits` job checks commits and the description.
+- CI's `commits` job checks Conventional Commits. AI authors, `Co-authored-by` trailers and tool footers are allowed.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
