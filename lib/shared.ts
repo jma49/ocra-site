@@ -17,3 +17,6 @@ export function localePath(locale: Locale, path: string): string {
 
 // ocra Cloud's console; the landing page's sign-in and "start" links.
 export const cloudUrl = "https://app.ocracloud.com";
+
+// Public, zero-auth live review pipeline replay in ocra Cloud.
+export const demoUrl = `${cloudUrl}/demo`;

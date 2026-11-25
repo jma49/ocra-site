@@ -1,6 +1,6 @@
 import type { Copy } from "@/lib/copy";
 import type { Locale } from "@/lib/i18n";
-import { cloudUrl, localePath } from "@/lib/shared";
+import { cloudUrl, demoUrl, localePath } from "@/lib/shared";
 import { CopyCommand } from "./copy-command";
 import { HeroStage } from "./hero-stage";
 import { Arrow, Themed } from "./parts";
@@ -25,6 +25,10 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: Locale }) {
         <div className="hero-cta">
           <a className="btn btn-ink" href={cloudUrl}>
             {copy.start}
+          </a>
+          <a className="btn btn-quiet" href={demoUrl}>
+            {copy.demo}
+            <Arrow />
           </a>
           <a className="btn btn-quiet" href={localePath(locale, "/docs/quickstart")}>
             {copy.selfHost}

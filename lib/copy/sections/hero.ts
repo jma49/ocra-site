@@ -7,6 +7,7 @@ interface HeroCopy {
   lines: Lines;
   lede: string;
   start: string;
+  demo: string;
   selfHost: string;
   cli: { command: string; copy: string; copied: string };
   // The window around the screenshot: the pull request and file, and the
@@ -28,6 +29,7 @@ export const hero: Bilingual<HeroCopy> = {
     lines: ["Code review agents that check", "before they comment"],
     lede: "Open-source AI code review for GitHub and GitLab on your own model key. Findings reach you only when they quote the exact code and survive a second read—often paired with a one-click fix.",
     start: `Start with ${CLOUD}`,
+    demo: "Try live demo",
     selfHost: "Self-host with the CLI",
     cli: { command: "npx @open-cr-agent/cli review", copy: "Copy", copied: "Copied" },
     bar: (run) => `acme/api #${run.pr.number} · ${run.finding.path}`,
@@ -47,6 +49,7 @@ export const hero: Bilingual<HeroCopy> = {
     lines: ["先核实，再开口的", "代码审查 agent"],
     lede: "用你自己的模型 key 审查 GitHub 与 GitLab 上的 PR。每条意见必须引用确切代码、经得起第二遍核查才会呈现，并常附带可一键提交的修复。",
     start: `开始使用 ${CLOUD}`,
+    demo: "体验实时审查",
     selfHost: "用 CLI 自托管",
     cli: { command: "npx @open-cr-agent/cli review", copy: "复制", copied: "已复制" },
     bar: (run) => `acme/api #${run.pr.number} · ${run.finding.path}`,
