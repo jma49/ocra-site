@@ -23,20 +23,20 @@ export const limits: Bilingual<LimitsCopy> = {
     lines: ["Your model,", "your limits"],
     rows: [
       {
-        title: "Every call shows its bill",
-        body: "Tokens and dollars per task, helpers included. Set `maxCostUsd` and a run stops near it, keeps what it found, and says what it left unreviewed.",
+        title: "Every call shows its exact bill",
+        body: "Tokens and dollars itemized per task, helper calls included. Set `maxCostUsd` and a run stops cleanly near your cap—preserving confirmed findings and reporting what remains unreviewed.",
       },
       {
-        title: "Your team's rules, in the repository",
-        body: "Rules in `.ocra/rules.json`, learnings in `.ocra/learnings/`, read from the base branch.",
+        title: "Your team's rules, right in the repo",
+        body: "Keep review rules in `.ocra/rules.json` and institutional memory in `.ocra/learnings/`, always read from the base branch.",
       },
       {
-        title: "When a model falls over, the next takes the task",
-        body: "Each tier can name several models; one out of quota is dropped for the rest of the run.",
+        title: "When one model stalls, the next takes over",
+        body: "Configure ordered model chains per tier; an out-of-quota model is tripped off for the rest of the run.",
       },
       {
-        title: "Checked against what the change was for",
-        body: "Reviewers read the issues it closes. Pre-merge checks written as sentences pass or fail with a reason.",
+        title: "Reviewed against what the change was meant to do",
+        body: "Reviewers read linked issues for intent. Plain-language pre-merge checks return pass or fail with concrete evidence.",
       },
     ],
     bill: {
@@ -54,20 +54,20 @@ export const limits: Bilingual<LimitsCopy> = {
     lines: ["你的模型，", "你的上限"],
     rows: [
       {
-        title: "每次调用都有账单",
-        body: "每个任务的 token 和花费，连辅助调用也算在内。设置 `maxCostUsd` 后，运行会在接近上限时停下，保留已有的发现，并说明哪些没审完。",
+        title: "每次调用都列出精确账单",
+        body: "按任务逐项记录 token 与花费，辅助调用一并计入。设好 `maxCostUsd`，运行在接近上限时优雅停下，保留已确认发现并注明未审部分。",
       },
       {
-        title: "团队的规则放在仓库里",
-        body: "规则在 `.ocra/rules.json`，learnings 在 `.ocra/learnings/`，都从目标分支读取。",
+        title: "团队规则，直接留在仓库里",
+        body: "审查规则存于 `.ocra/rules.json`，团队沉淀存于 `.ocra/learnings/`，始终从目标分支读取。",
       },
       {
-        title: "一个模型倒下，下一个接手",
-        body: "每一档可以列出多个模型；额度用尽的那个在本次运行中不再使用。",
+        title: "一个模型受阻，下一个无缝接棒",
+        body: "每一档都可配置有序模型链；额度耗尽的模型自动熔断，本次运行不再重试。",
       },
       {
-        title: "对照改动的初衷来检查",
-        body: "审查员会读这次改动关闭的 issue。用一句话写成的合并前检查，通过或不通过都会给出理由。",
+        title: "对照改动的真实意图来审查",
+        body: "审查员会阅读关联 issue 把握上下文。自然语言写的合并前检查，逐条给出通过与否及明确依据。",
       },
     ],
     bill: {

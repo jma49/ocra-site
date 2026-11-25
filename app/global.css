@@ -5,12 +5,12 @@
    Sans Flex for display; CJK text uses the system faces after them. */
 @theme {
   --font-sans:
-    "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei",
-    ui-sans-serif, system-ui, sans-serif;
+    "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC Variable", "Noto Sans SC",
+    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-display:
-    var(--font-google-sans), "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
-    "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+    var(--font-google-sans), "Geist Variable", "PingFang SC", "Hiragino Sans GB",
+    "Noto Sans SC Variable", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {

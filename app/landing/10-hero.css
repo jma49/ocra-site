@@ -59,25 +59,59 @@
   gap: 12px;
   margin-top: 34px;
 }
+.hero-cli {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+.cmd-hero {
+  height: 38px;
+  padding: 0 5px 0 14px;
+  font-size: 12.5px;
+  background: color-mix(in srgb, var(--panel) 84%, transparent);
+  backdrop-filter: blur(8px);
+}
+.cmd-hero .cmd-copy {
+  height: 28px;
+  min-width: 58px;
+  font-size: 12px;
+}
 @media (prefers-reduced-motion: no-preference) {
   .hero-h .hli,
   .hero-lede,
-  .hero-cta {
+  .hero-cta,
+  .hero-cli,
+  .hero-note {
     animation: rise 900ms var(--e-enter) both;
   }
   .hero-h .hli + .hli {
-    animation-delay: 80ms;
+    animation-delay: 90ms;
   }
   .hero-lede {
-    animation-delay: 160ms;
+    animation-delay: 180ms;
   }
   .hero-cta {
-    animation-delay: 240ms;
+    animation-delay: 270ms;
+  }
+  .hero-cli {
+    animation-delay: 340ms;
+  }
+  .hero-note {
+    animation-delay: 420ms;
+  }
+  .hero-stage {
+    animation: stage-in 1050ms var(--e-enter) 180ms both;
   }
 }
 @keyframes rise {
   from {
-    translate: 0 14px;
+    translate: 0 16px;
+  }
+}
+@keyframes stage-in {
+  from {
+    translate: 0 22px;
+    scale: 0.985;
   }
 }
 
@@ -130,17 +164,24 @@
   box-shadow: var(--sh);
 }
 .deck-3 {
-  transform: translateX(-50%) translateY(-34px) scale(0.88);
+  transform: translateX(calc(-50% + var(--px, 0) * 14px))
+    translateY(calc(-34px + var(--py, 0) * 8px)) scale(0.88);
   opacity: 0.55;
+  transition: transform 700ms var(--e-enter);
 }
 .deck-2 {
-  transform: translateX(-50%) translateY(-17px) scale(0.94);
+  transform: translateX(calc(-50% + var(--px, 0) * 8px))
+    translateY(calc(-17px + var(--py, 0) * 4px)) scale(0.94);
   opacity: 0.85;
+  transition: transform 650ms var(--e-enter);
 }
 .shot-hero {
   z-index: 2;
-  transform: translateX(-50%) rotateX(calc(var(--py, 0) * -2deg)) rotateY(calc(var(--px, 0) * 3deg));
-  transition: transform 600ms var(--e-enter);
+  transform: translateX(-50%) rotateX(calc(var(--py, 0) * -2.6deg))
+    rotateY(calc(var(--px, 0) * 3.6deg));
+  transition:
+    transform 600ms var(--e-enter),
+    box-shadow 300ms var(--e-enter);
 }
 .shot-bar {
   display: flex;
@@ -197,6 +238,7 @@
 }
 .demo-body {
   position: relative;
+  overflow: hidden;
 }
 .scan,
 .cursor,
@@ -205,23 +247,24 @@
   opacity: 0;
   pointer-events: none;
 }
+/* A soft, hairline reading sweep across the finding rather than a hard scanner bar. */
 .scan {
   left: 0;
   right: 0;
   top: 0;
-  height: 24px;
+  height: 72px;
   background: linear-gradient(
     180deg,
-    transparent,
-    color-mix(in srgb, var(--blue) 14%, transparent),
-    transparent
+    transparent 0%,
+    color-mix(in srgb, var(--t1) 4.5%, transparent) 52%,
+    color-mix(in srgb, var(--t1) 12%, transparent) 53%,
+    transparent 100%
   );
-  border-bottom: 1.5px solid color-mix(in srgb, var(--blue) 50%, transparent);
 }
 .cursor {
   left: 90%;
   top: 70%;
-  filter: drop-shadow(0 2px 3px color-mix(in srgb, var(--black) 20%, transparent));
+  filter: drop-shadow(0 4px 8px color-mix(in srgb, var(--black) 22%, transparent));
 }
 .cursor path {
   fill: var(--t1);
@@ -229,14 +272,16 @@
   stroke-width: 1.5;
   stroke-linejoin: round;
 }
+/* A subtle circular tap ripple centred on the Commit fix action. */
 .click {
-  left: 90.8%;
-  top: 71%;
-  width: 120px;
-  height: 46px;
-  margin: -23px 0 0 -60px;
-  border-radius: 12px;
-  box-shadow: 0 0 0 2px var(--t1);
+  left: 90.4%;
+  top: 70.5%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--green) 16%, transparent);
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--green) 55%, transparent);
 }
 .toast {
   display: flex;
@@ -283,15 +328,21 @@
 .cf-1 {
   left: calc(50% - 640px);
   top: 150px;
+  transform: translate(calc(var(--px, 0) * -18px), calc(var(--py, 0) * -12px));
+  transition: transform 650ms var(--e-enter);
 }
 .cf-2 {
   left: calc(50% + 330px);
   top: 70px;
+  transform: translate(calc(var(--px, 0) * -24px), calc(var(--py, 0) * -14px));
+  transition: transform 600ms var(--e-enter);
 }
 .cf-3 {
   left: calc(50% + 360px);
   top: 300px;
   font-size: 12.5px;
+  transform: translate(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px));
+  transition: transform 700ms var(--e-enter);
 }
 .hero-note {
   position: relative;
@@ -305,28 +356,28 @@
 /* The loop, and the idle drift of the chips. */
 @media (prefers-reduced-motion: no-preference) {
   .demo-img {
-    animation: reveal 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: demo-focus 10s var(--e-std) infinite;
   }
   .scan {
-    animation: scan 12s linear infinite;
+    animation: scan 10s var(--e-enter) infinite;
   }
   .cursor {
-    animation: cursor 12s cubic-bezier(0.5, 0, 0.2, 1) infinite;
+    animation: cursor 10s var(--e-enter) infinite;
   }
   .click {
-    animation: click 12s ease-out infinite;
+    animation: click 10s var(--e-enter) infinite;
   }
   .hero-toast {
-    animation: toast 12s var(--e-enter) infinite;
+    animation: toast 10s var(--e-enter) infinite;
   }
   .sb-run {
-    animation: run-label 12s step-end infinite;
+    animation: run-label 10s var(--e-std) infinite;
   }
   .sb-run::before {
     animation: pulse 1.2s ease-in-out infinite;
   }
   .sb-done {
-    animation: done-label 12s step-end infinite;
+    animation: done-label 10s var(--e-std) infinite;
   }
   .chip-float {
     animation: float 7s ease-in-out infinite alternate;
@@ -335,125 +386,158 @@
     animation-duration: 8s;
   }
   .cf-2 {
-    animation-delay: -3s;
+    animation:
+      float 7s ease-in-out -3s infinite alternate,
+      chip-ack 10s var(--e-enter) infinite;
   }
   .cf-3 {
     animation-duration: 9s;
     animation-delay: -5s;
   }
 }
-@keyframes reveal {
+@keyframes demo-focus {
   0%,
-  20% {
-    clip-path: inset(0 0 76% 0);
+  26% {
+    filter: saturate(0.92);
   }
-  27%,
-  36% {
-    clip-path: inset(0 0 38% 0);
-  }
-  42%,
+  34%,
   100% {
-    clip-path: inset(0);
+    filter: saturate(1);
   }
 }
 @keyframes scan {
   0% {
-    transform: translateY(0);
+    transform: translateY(-48px);
     opacity: 0;
   }
-  3%,
-  20% {
+  6% {
     opacity: 1;
   }
-  20% {
-    transform: translateY(150px);
+  26% {
+    transform: translateY(220px);
+    opacity: 0.9;
   }
-  24%,
+  34%,
   100% {
-    transform: translateY(150px);
+    transform: translateY(260px);
     opacity: 0;
   }
 }
 @keyframes cursor {
   0%,
-  44% {
-    left: 100%;
-    top: 100%;
+  42% {
+    left: 98%;
+    top: 94%;
     opacity: 0;
+    transform: scale(0.96);
   }
   46% {
-    left: 100%;
-    top: 100%;
+    left: 98%;
+    top: 94%;
     opacity: 1;
+    transform: scale(1);
   }
-  56% {
+  55% {
     left: 90%;
     top: 70%;
-    transform: none;
+    transform: scale(1);
   }
-  58% {
-    transform: scale(0.85);
+  57.5% {
+    left: 90%;
+    top: 70%;
+    transform: scale(0.84);
   }
   60%,
-  88% {
+  84% {
     left: 90%;
     top: 70%;
-    transform: none;
+    transform: scale(1);
     opacity: 1;
   }
-  92%,
+  90%,
   100% {
-    left: 90%;
-    top: 70%;
+    left: 93%;
+    top: 78%;
+    transform: scale(0.96);
     opacity: 0;
   }
 }
 @keyframes click {
   0%,
-  57% {
+  56% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.45);
   }
   58% {
     opacity: 1;
     transform: scale(1);
   }
-  66%,
+  67%,
   100% {
     opacity: 0;
-    transform: scale(1.15);
+    transform: scale(1.75);
   }
 }
 @keyframes toast {
   0%,
-  60% {
+  59% {
     opacity: 0;
-    transform: translate(-50%, 14px);
+    transform: translate(-50%, 14px) scale(0.96);
   }
   64%,
-  92% {
+  88% {
     opacity: 1;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0) scale(1);
   }
-  97%,
+  94%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -4px) scale(0.98);
+  }
+}
+@keyframes run-label {
+  0%,
+  31% {
+    opacity: 1;
+  }
+  36%,
+  96% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes done-label {
+  0%,
+  31% {
+    opacity: 0;
+  }
+  36%,
+  96% {
+    opacity: 1;
+  }
   100% {
     opacity: 0;
   }
 }
-@keyframes run-label {
-  0% {
-    opacity: 1;
+@keyframes chip-ack {
+  0%,
+  32% {
+    box-shadow:
+      var(--sh-lg),
+      0 0 0 1px var(--hair);
   }
-  42% {
-    opacity: 0;
+  38% {
+    box-shadow:
+      var(--sh-lg),
+      0 0 0 1px color-mix(in srgb, var(--green) 42%, transparent);
   }
-}
-@keyframes done-label {
-  0% {
-    opacity: 0;
-  }
-  42% {
-    opacity: 1;
+  52%,
+  100% {
+    box-shadow:
+      var(--sh-lg),
+      0 0 0 1px var(--hair);
   }
 }
 @keyframes pulse {

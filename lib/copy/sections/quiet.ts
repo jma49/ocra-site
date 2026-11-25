@@ -12,7 +12,7 @@ interface QuietCopy {
 export const quiet: Bilingual<QuietCopy> = {
   en: {
     title: "Quiet by design",
-    body: "A reviewer that comments on everything gets ignored. Ocra speaks only when a finding quotes the code, says what it checked and holds up on a second read. A run with nothing worth saying leaves one summary and no inline comment.",
+    body: "A reviewer that nitpicks everything trains teams to ignore it. Ocra speaks only when a finding quotes exact code, explains what it verified, and survives a second read. Nothing worth saying? One clean summary and zero inline noise.",
     out: ["Style", "Speculation", "Unchanged code"],
     outNote: "Out of scope for every reviewer",
     tally: {
@@ -22,7 +22,7 @@ export const quiet: Bilingual<QuietCopy> = {
   },
   zh: {
     title: "生来安静",
-    body: "什么都评论的审查者，最后会被所有人忽略。Ocra 只在一条意见引用了代码、说明了它查过什么、并经得住第二遍核查时才开口。没有值得说的问题时，它只留一条总结，不发行内评论。",
+    body: "事无巨细都评论的审查工具，很快就会被团队静音。Ocra 只在能引用确切代码、说清核查依据并经得起第二遍复核时才开口。没有真问题时，只留一条简洁总结，零行内噪音。",
     out: ["代码风格", "臆测", "未改动的代码"],
     outNote: "不在任何审查员的范围内",
     tally: {

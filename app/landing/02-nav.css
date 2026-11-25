@@ -26,6 +26,40 @@
   box-shadow: 0 1px 0 transparent;
   transition: box-shadow 200ms var(--e-std);
 }
+.home .nav-shell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-over);
+  height: 1.5px;
+  background: color-mix(in srgb, var(--t1) 36%, transparent);
+  transform-origin: 0 50%;
+  scale: 0 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--e-std);
+}
+.home .nav-shell:has(.nav[data-scrolled])::after {
+  opacity: 1;
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .home .nav-shell::after {
+      animation: nav-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+@keyframes nav-progress {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
 .home .nav-shell:has(.nav[data-scrolled])::before {
   box-shadow: 0 1px 0 var(--hair);
 }
@@ -85,12 +119,20 @@ html:not(.dark) .home .theme-sun,
 .dark .home .theme-moon {
   display: none;
 }
+.home .nav-links a[data-active] {
+  background: color-mix(in srgb, var(--t1) 7%, transparent);
+  color: var(--t1);
+}
 @media (hover: hover) {
   .home .nav-links a:hover,
   .home .nav-a:hover,
   .home .ib:hover {
     background: color-mix(in srgb, var(--t1) 6%, transparent);
     color: var(--t1);
+  }
+  .home .ib:hover svg {
+    transform: rotate(-12deg) scale(1.06);
+    transition: transform 260ms var(--e-enter);
   }
 }
 .home .nav-menu {

@@ -2,6 +2,7 @@
    carries Fumadocs' preset, about 100 KB these pages never use. */
 @import "@fontsource-variable/geist/wght.css";
 @import "@fontsource-variable/jetbrains-mono/wght.css";
+@import "@fontsource-variable/noto-sans-sc/wght.css";
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./global.css";

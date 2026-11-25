@@ -88,20 +88,36 @@
 }
 .iso-card {
   position: absolute;
-  left: 70px;
+  left: 42px;
   display: flex;
   align-items: center;
   gap: 14px;
-  width: 420px;
+  width: 476px;
   height: 84px;
   padding: 0 22px;
   border-radius: 16px;
   background: var(--panel);
-  font-size: 15.5px;
+  font-size: 15px;
   white-space: nowrap;
   box-shadow:
     var(--solid),
     0 0 0 1px var(--hair);
+  transition:
+    transform 280ms var(--e-enter),
+    box-shadow 280ms var(--e-enter);
+}
+@media (hover: hover) {
+  .iso-card:hover {
+    transform: translate(4px, -4px);
+    box-shadow:
+      -10px 10px 0 var(--tile-edge),
+      0 0 0 1px var(--hair2);
+  }
+  .iso-card.kept:hover {
+    box-shadow:
+      -10px 10px 0 var(--red),
+      0 0 0 1px color-mix(in srgb, var(--red) 55%, transparent);
+  }
 }
 .iso-card:nth-child(1) {
   top: 0;
@@ -115,11 +131,13 @@
 .iso-card:nth-child(4) {
   top: 312px;
 }
-.iso-card .mono {
+.iso-card > span:nth-child(2) {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .iso-card .end {
+  flex: none;
   margin-left: auto;
 }
 .iso-card.off {
@@ -143,6 +161,22 @@
   box-shadow:
     var(--solid),
     0 0 0 1px var(--hair);
+  transition:
+    transform 280ms var(--e-enter),
+    box-shadow 280ms var(--e-enter);
+}
+@media (hover: hover) {
+  .iso-panel:hover {
+    transform: translate(4px, -4px);
+    box-shadow:
+      -10px 10px 0 var(--tile-edge),
+      0 0 0 1px var(--hair2);
+  }
+  .iso-panel.quote:hover {
+    box-shadow:
+      -10px 10px 0 var(--red),
+      0 0 0 1px color-mix(in srgb, var(--red) 55%, transparent);
+  }
 }
 .ip-h {
   display: flex;

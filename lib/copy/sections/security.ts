@@ -14,7 +14,7 @@ interface SecurityCopy {
 export const security: Bilingual<SecurityCopy> = {
   en: {
     lines: ["Built for code", "you do not trust"],
-    body: "A diff, a pull request title, an AGENTS.md: anything in the change can be written by an attacker. Ocra assumes it is, and publishes its threat model with the code.",
+    body: "A diff, a PR description, an AGENTS.md: any byte in an incoming change could be crafted by an attacker. Ocra designs for hostile pull requests by default and publishes its threat model alongside the code.",
     link: "Read the threat model",
     gate: "One gate, in core, for every agent and adapter",
     props: [
@@ -38,7 +38,7 @@ export const security: Bilingual<SecurityCopy> = {
   },
   zh: {
     lines: ["为不可信的代码", "而设计"],
-    body: "diff、PR 标题、AGENTS.md：改动里的任何内容都可能出自攻击者之手。Ocra 默认它就是，并把威胁模型和代码一起公开。",
+    body: "diff、PR 描述、AGENTS.md：外部改动里的任意字节都可能出自攻击者之手。Ocra 默认面向敌意 PR 设计，并将完整威胁模型随源码一并公开。",
     link: "阅读威胁模型",
     gate: "一道关口，在核心里，管住每个 agent 和适配器",
     props: [
