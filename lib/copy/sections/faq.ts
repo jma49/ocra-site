@@ -15,7 +15,7 @@ export const faq: Bilingual<FaqCopy> = {
     items: [
       {
         q: "Is Ocra free?",
-        a: `The engine, the CLI and the GitHub Action are Apache-2.0 and need no account. You pay your model provider for the tokens a review uses, and every run prints its cost. ${CLOUD} is free during early access.`,
+        a: `The engine, CLI and GitHub Action are Apache-2.0 and need no Ocra account. Each run reports its cost: pay your model provider for tokens, or review locally on your ChatGPT plan through Codex. ${CLOUD} is free during early access; you bring a model key.`,
       },
       {
         q: "Who sees my code?",
@@ -23,7 +23,7 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "Which models does it work with?",
-        a: `Any of ${PROVIDERS} providers through ${CLOUD}, any model OpenCode supports, or your own endpoint in OpenAI's or Anthropic's protocol, with a price per model. Each tier can list several models; when one falls over, the next takes the task.`,
+        a: `Use OpenCode's supported models, your own OpenAI- or Anthropic-compatible endpoint, or one of ${PROVIDERS} providers through ${CLOUD}. For local reviews, you can also use your signed-in Codex CLI without an API key. Each tier can list several models for failover.`,
       },
       {
         q: "Does it work with GitLab?",
@@ -31,11 +31,11 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "Will it bury my pull requests in comments?",
-        a: "It is built not to. Findings are verified against the code and merged by root cause, and the verdict only blocks on a critical the verifier confirmed. A run with nothing worth saying posts no inline comment, only its one summary, updated in place.",
+        a: "Ocra merges duplicates, marks whether findings were verified, and can limit inline comments. Pre-existing findings can be reported but do not count toward the verdict. A confirmed critical finding can trigger blocking only if you opt in; the GitHub review check itself never fails.",
       },
       {
         q: "Can I ask it about the change?",
-        a: "Yes. Mention @ocra in a comment and it answers in that thread; /ocra review reviews the whole pull request again. Its summary opens with a walkthrough: the files in reading order and, when the change crosses three or more components, a sequence diagram.",
+        a: "Yes. With the GitHub comment workflow enabled, mention @ocra for a reply in the same thread, or run @ocra review to review the whole pull request again (/ocra review still works). The summary can include a walkthrough with the files in reading order and a sequence diagram.",
       },
       {
         q: "What else can it do on a pull request?",
@@ -53,7 +53,7 @@ export const faq: Bilingual<FaqCopy> = {
     items: [
       {
         q: "Ocra 免费吗？",
-        a: `引擎、CLI 和 GitHub Action 都是 Apache-2.0，不需要账号。你只需向模型服务商支付审查用掉的 token，每次运行都会打印花费。${CLOUD} 在早期体验期间免费。`,
+        a: `引擎、CLI 和 GitHub Action 都采用 Apache-2.0 许可，不需要 Ocra 账号。每次运行都会报告花费：你可以按 token 向模型服务商付费，也可以用 Codex 在本地使用 ChatGPT 套餐审查。${CLOUD} 早期体验期间免费，模型 key 自带。`,
       },
       {
         q: "谁能看到我的代码？",
@@ -61,7 +61,7 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "支持哪些模型？",
-        a: `通过 ${CLOUD} 可用 ${PROVIDERS} 家服务商中的任意一家，也可以用 OpenCode 支持的任何模型，或你自己按模型定价的端点（OpenAI 或 Anthropic 协议）。每一档可以列出多个模型，一个倒下，下一个接手。`,
+        a: `可以使用 OpenCode 支持的模型、你自己的 OpenAI 或 Anthropic 兼容端点，或通过 ${CLOUD} 使用 ${PROVIDERS} 家服务商。本地审查还可以用已登录的 Codex CLI，无需 API key。每一档都可以配置多个模型以便故障切换。`,
       },
       {
         q: "支持 GitLab 吗？",
@@ -69,11 +69,11 @@ export const faq: Bilingual<FaqCopy> = {
       },
       {
         q: "会不会把我的 PR 淹没在评论里？",
-        a: "它就是为避免这一点而设计的。每条意见都会对照代码核实、按根因合并，只有经核查确认的 critical 才会拦下改动。没有值得说的问题时，它不发行内评论，只更新那一条总结评论。",
+        a: "Ocra 会合并重复意见，标明核查状态，并可限制行内评论数量。已有问题可以报告，但不计入结论。只有主动开启拦截时，经确认的严重问题才可能阻止合并；GitHub 上的审查检查本身不会失败。",
       },
       {
         q: "可以就这次改动向它提问吗？",
-        a: "可以。在评论里提到 @ocra，它会在同一个讨论里回答；/ocra review 会把整个 PR 重新审查一遍。它的总结以改动导读开头：按阅读顺序排列的文件，以及改动跨越三个或更多组件时的一张时序图。",
+        a: "可以。启用 GitHub 评论 workflow 后，在评论中提到 @ocra，它会在原讨论中回复；输入 @ocra review 可重审整个 PR（/ocra review 仍可用）。总结可以附上改动导读，包括按阅读顺序排列的文件和时序图。",
       },
       {
         q: "在 PR 上它还能做什么？",

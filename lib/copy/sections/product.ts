@@ -14,7 +14,7 @@ interface ProductCopy {
 export const product: Bilingual<ProductCopy> = {
   en: {
     lines: ["From finding to merge,", "on one page"],
-    body: "One cross-repo inbox for every pull request waiting on you, with Ocra's verdict beside each. Open a PR to read the review inline, commit verified fixes, clear merge blockers, and ship.",
+    body: "One cross-repo inbox for pull requests waiting on you, with Ocra's verdict beside each. Open a PR to read the review inline, check suggested fixes, and see what's left before merging.",
     alt: "Ocra Cloud's inbox: pull requests grouped into Needs my review, My open PRs and Waiting on others, with Ocra's verdict, size, author and keyboard shortcuts",
     note: `${CLOUD}'s inbox, with sample data`,
     features: [
@@ -24,7 +24,7 @@ export const product: Bilingual<ProductCopy> = {
       },
       {
         title: "Fixes you can commit",
-        body: "A checked fix under the line it changes, committed as you while the branch is unchanged",
+        body: "Inspect the proposed fix inline before committing it as yourself, while the branch is unchanged",
       },
       {
         title: "Ready to merge",
@@ -38,14 +38,14 @@ export const product: Bilingual<ProductCopy> = {
   },
   zh: {
     lines: ["从发现问题到合并，", "都在一页里"],
-    body: "跨仓库汇总所有待你处理的 PR，每条旁都附有 Ocra 结论。点开即可在 diff 上查看审查、一键提交修复、扫清合并阻碍，直接合入。",
+    body: "跨仓库汇总待你处理的 PR，每条旁都附有 Ocra 结论。点开即可在 diff 上查看审查、检查修复建议，并了解合并前还有哪些事项。",
     alt: "Ocra Cloud 的收件箱：PR 按“需要我审查”“我的 PR”“等待他人”分组，附 Ocra 的结论、改动大小、作者和快捷键",
     note: `${CLOUD} 的收件箱，示例数据`,
     features: [
       { title: "先看导读", body: "按阅读顺序排列的文件和一张时序图，然后再打开 diff" },
       {
         title: "可以直接提交的修复",
-        body: "核查过的修复就在它要改的那一行下面，分支没变时以你的身份提交",
+        body: "先在行内检查修复建议，分支未变时再以你的身份提交",
       },
       {
         title: "可以合并了吗",

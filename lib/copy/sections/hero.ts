@@ -27,7 +27,7 @@ const dollars = (run: Parameters<FromRun>[0]) => `$${run.usage.dollars}`;
 export const hero: Bilingual<HeroCopy> = {
   en: {
     lines: ["Code review agents that check", "before they comment"],
-    lede: "Open-source AI code review for GitHub and GitLab on your own model key. Every finding quotes the exact code and survives a second read.",
+    lede: "Open-source AI code review for GitHub, GitLab, and local changes. Read-only agents quote the code; a second pass checks their findings.",
     start: `Start with ${CLOUD}`,
     demo: "Try live demo",
     selfHost: "Self-host guide",
@@ -47,7 +47,7 @@ export const hero: Bilingual<HeroCopy> = {
   },
   zh: {
     lines: ["先核实，再开口的", "代码审查 agent"],
-    lede: "用你自己的模型 key 审查 GitHub 与 GitLab 上的 PR。每条意见必须引用确切代码，经第二遍核查才呈现。",
+    lede: "面向 GitHub、GitLab 和本地改动的开源 AI 代码审查。只读 agent 引用确切代码，核查员再检查它们发现的问题。",
     start: `开始使用 ${CLOUD}`,
     demo: "体验实时审查",
     selfHost: "自托管文档",

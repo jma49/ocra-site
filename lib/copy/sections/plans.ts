@@ -34,7 +34,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "Apache-2.0",
         points: [
           "CLI, GitHub Action, GitLab, container image",
-          "Your runner and your model key",
+          "Your runner and model key, or your local Codex sign-in",
           "Only your model provider sees the code",
           "Your own rules, reviewers and plugins",
         ],
@@ -81,7 +81,7 @@ export const plans: Bilingual<PlansCopy> = {
         unit: "Apache-2.0",
         points: [
           "CLI、GitHub Action、GitLab、容器镜像",
-          "你的运行环境，你的模型 key",
+          "用自己的环境和模型 key，或在本地用已登录的 Codex",
           "只有你的模型服务商能看到代码",
           "自定义规则、审查员和插件",
         ],

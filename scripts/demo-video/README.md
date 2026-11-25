@@ -1,15 +1,15 @@
 # Demo video
 
-The landing page quotes one `ocra review --from main` run (the hero window's
-pull request and terminal, the step pictures, the finding). The page no longer
-shows the video; rendering it is optional. `public/demo/review-{en,zh}.mp4`
+The landing page illustrates one `ocra review --from main` run in the hero's
+Ocra Cloud finding screenshot, the how-it-works cards and the example bill.
+It does not show the terminal or the video; rendering the video is optional.
+`public/demo/review-{en,zh}.mp4`
 (not committed) would show that run on a
 small demo repository, sped up, next to the pipeline stages it passes
 through. The terminal lines are a real transcript: the ocra CLI runs its
 whole pipeline, and only the model is replaced by `scripted-runtime.mjs`, a
 plugin that answers review tasks, file grouping, verification and the judge
-with fixed findings and realistic pacing. The site's example (hero terminal,
-stage pictures, finding) uses the same run.
+with fixed findings and realistic pacing.
 
 Re-record it when ocra's output changes:
 

@@ -182,9 +182,9 @@ The landing page is calm and product-first: a warm neutral ground, the Ocra Clou
 - **Mark** (`components/brand/eyes-mark.tsx`): a jumping spider's front eye row, one even-odd path in `currentColor`, beside the lowercase wordmark (`components/logo.tsx`). In prose the product is "Ocra" and "Ocra Cloud" (`lib/copy/brand.ts`).
 - **Screenshots** of the console are rendered from the console's build with its API mocked by sample data (never an account's), cropped and saved as WebP in both themes. Captions say "sample data" or "recorded example run".
 - **Stippled shapes**: extruded columns of the eye mark drawn as SVG with a noise filter; the hero's two rows bob slowly and the ink columns' glints look around and blink (inside the SVG, stopped under Reduce motion).
-- **Isometric cards** (`how.tsx`, `providers.tsx`): a plane turned `rotateX(55deg) rotateZ(-38..-40deg)` over a 48–75 px grid; every card on it is the recorded run's data.
+- **Isometric cards** (`how.tsx`, `providers.tsx`): a plane turned `rotateX(55deg) rotateZ(-38..-40deg)` over a 48–75 px grid. The how-it-works cards show the recorded run; the provider cards show a selection from Ocra Cloud's provider list.
 - **Islands** (the only client code): `header-controls.tsx` (menu, theme, the bar's hairline), `hero-stage.tsx` (pointer parallax) and `copy-command.tsx`. Disclosures are native `<details name>`.
-- **Copy** lives in `lib/copy/sections/`, one module per section with English and Chinese side by side; numbers, paths, lines and titles come from `lib/landing/example-run.ts`, checked against the recording by `lib/landing/recorded.ts` at build time.
+- **Copy** lives in `lib/copy/sections/`, one module per section with English and Chinese side by side. Recorded example values come from `lib/landing/example-run.ts`, checked against the recording by `lib/landing/recorded.ts` at build time. Engine facts, such as the provider count, come from `lib/landing/engine-facts.ts`.
 
 ## Motion
 
@@ -226,7 +226,7 @@ The manual (`/docs`) is the product's reference, read next to the ocra Cloud con
 
 ## Verification
 
-- `npm run verify`: Biome, the colour check, the AGENTS check, knip, the build (which runs `recorded.ts`'s assertions against the recording), the type check and the schemas.
+- `npm run verify`: Biome, the colour and AGENTS checks, knip, `npm test`, the build (which runs `recorded.ts`'s assertions against the recording), the type check and the schemas.
 - Lint this file: `npx @google/design.md lint DESIGN.md`.
 - **Screenshots and behaviour** (`tests/visual/`, Playwright): `/` and `/zh`, the manual's index, quickstart and installation, and the 404 page in each language, at 390, 768 and 1280 px, light and dark, failing on console errors; axe on both landing languages and both 404s; the first-frame hero paint and the one font preload; the theme toggle, the logo's prefetch and the manual's sidebar; headers, routing and caching.
 - Locally: `npm run build && npm run visual:baseline` before the change, then `npm run build && npm run visual` after it. Screenshots stay in the git-ignored `.visual/`.
