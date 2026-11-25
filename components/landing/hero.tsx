@@ -26,13 +26,8 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: Locale }) {
           <a className="btn btn-ink" href={cloudUrl}>
             {copy.start}
           </a>
-          <a className="btn btn-quiet" href={demoUrl}>
+          <a className="btn btn-line" href={demoUrl}>
             {copy.demo}
-            <Arrow />
-          </a>
-          <a className="btn btn-quiet" href={localePath(locale, "/docs/quickstart")}>
-            {copy.selfHost}
-            <Arrow />
           </a>
         </div>
         <div className="hero-cli">
@@ -43,6 +38,10 @@ export function Hero({ copy, locale }: { copy: Copy["hero"]; locale: Locale }) {
             <code>{copy.cli.command}</code>
             <CopyCommand text={copy.cli.command} label={copy.cli.copy} done={copy.cli.copied} />
           </span>
+          <a className="hero-selfhost" href={localePath(locale, "/docs/quickstart")}>
+            {copy.selfHost}
+            <Arrow />
+          </a>
         </div>
       </div>
       <HeroStage>
