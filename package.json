@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=22.19"
   },
-  "packageManager": "npm@11.19.1",
+  "packageManager": "npm@11.21.3",
   "scripts": {
     "sync-manual": "node scripts/sync-manual.mjs",
     "predev": "npm run sync-manual",
