@@ -145,6 +145,7 @@
   text-align: center;
   white-space: nowrap;
   transform: translateY(14%);
+  pointer-events: none;
   user-select: none;
 }
 .word::before {

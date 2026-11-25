@@ -43,6 +43,25 @@ test("the theme toggle says whether the dark theme is on", async ({ page }) => {
   await expect(page.locator("html")).toHaveClass(/\bdark\b/);
 });
 
+for (const width of [1440, 1920]) {
+  test.describe(`at ${width}px wide`, () => {
+    test.use({ viewport: { width, height: 900 } });
+
+    for (const [path, label, destination] of [
+      ["/", "中文", "/zh"],
+      ["/zh", "English", "/"],
+    ] as const) {
+      test(`the footer language link on ${path} goes to ${destination}`, async ({ page }) => {
+        await page.goto(path);
+        const link = page.locator("footer").getByRole("link", { name: label, exact: true });
+        // Bypass Playwright's hit-target check so the URL assertion catches an intercepted click.
+        await link.click({ force: true });
+        await expect(page).toHaveURL(destination);
+      });
+    }
+  });
+}
+
 for (const [path, prefix, previous, next] of [
   ["/docs/installation", "/docs/", "Previous", "Next"],
   ["/zh/docs/installation", "/zh/docs/", "上一页", "下一页"],
