@@ -9,7 +9,7 @@ project="${VERCEL_PROJECT:-ocra}"
 scope="${VERCEL_SCOPE:?set VERCEL_SCOPE to the Vercel team slug}"
 
 # The Vercel CLI that deploys production, pinned like any other dependency.
-vercel="vercel@62.1.0"
+vercel="vercel@66.2.0"
 
 if [ -n "$(git status --porcelain)" ]; then
   echo "Commit or stash your changes first: only committed code is deployed." >&2
