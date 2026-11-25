@@ -12,6 +12,23 @@
   border-radius: 28px;
   background: var(--panel);
   box-shadow: 0 0 0 1px var(--hair);
+  transition:
+    transform 280ms var(--e-enter),
+    box-shadow 280ms var(--e-enter);
+}
+@media (hover: hover) {
+  .plan:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      var(--sh-lg),
+      0 0 0 1px var(--hair2);
+  }
+  .plan-cloud:hover {
+    box-shadow: var(--sh-lg);
+  }
+  .plan-team:hover {
+    box-shadow: inset 0 0 0 1px var(--t3);
+  }
 }
 .plan-state {
   color: var(--t3);
@@ -118,8 +135,16 @@
   border-bottom: 1px solid var(--hair2);
 }
 .q {
-  padding: 20px 0;
+  padding: 20px 10px;
+  margin-inline: -10px;
+  border-radius: 12px;
   border-top: 1px solid var(--hair);
+  transition: background-color 200ms var(--e-std);
+}
+@media (hover: hover) {
+  .q:hover {
+    background: color-mix(in srgb, var(--t1) 3%, transparent);
+  }
 }
 .q:last-child {
   border-bottom: 1px solid var(--hair);

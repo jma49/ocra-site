@@ -1,6 +1,11 @@
 /* The landing page's ground, type, buttons and the pieces every section
    shares (DESIGN.md, Landing). Colours are the .home tokens (tokens.css). */
 
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.home) {
+    scroll-behavior: smooth;
+  }
+}
 .home {
   min-height: 100vh;
   background: var(--ground);
@@ -174,6 +179,8 @@ html.dark .home .only-light {
 
 /* Buttons: a round ink pill, a quiet text link, an outlined pill. */
 .btn-ink {
+  position: relative;
+  overflow: hidden;
   border-radius: 999px;
   height: 44px;
   padding: 0 20px;
@@ -182,6 +189,24 @@ html.dark .home .only-light {
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--on-ink) 12%, transparent),
     0 6px 16px -8px color-mix(in srgb, var(--t1) 60%, transparent);
+  transition:
+    background-color 180ms var(--e-std),
+    box-shadow 240ms var(--e-enter),
+    transform 220ms var(--e-enter);
+}
+.btn-ink::after {
+  content: "";
+  position: absolute;
+  inset: -40% -20%;
+  background: linear-gradient(
+    112deg,
+    transparent 35%,
+    color-mix(in srgb, var(--on-ink) 18%, transparent) 50%,
+    transparent 65%
+  );
+  translate: -120% 0;
+  opacity: 0;
+  pointer-events: none;
 }
 .btn-ink.btn-sm {
   height: 36px;
@@ -192,6 +217,9 @@ html.dark .home .only-light {
   padding: 0 8px;
   box-shadow: none;
   color: var(--t1);
+  transition:
+    color 180ms var(--e-std),
+    transform 200ms var(--e-enter);
 }
 .btn-line {
   border-radius: 999px;
@@ -199,6 +227,10 @@ html.dark .home .only-light {
   background: var(--panel);
   color: var(--t1);
   box-shadow: inset 0 0 0 1px var(--hair2);
+  transition:
+    box-shadow 220ms var(--e-enter),
+    background-color 180ms var(--e-std),
+    transform 220ms var(--e-enter);
 }
 .arrow {
   fill: none;
@@ -211,17 +243,37 @@ html.dark .home .only-light {
 }
 @media (hover: hover) {
   .btn-ink:hover {
-    background: color-mix(in srgb, var(--t1) 86%, var(--ground));
+    background: color-mix(in srgb, var(--t1) 88%, var(--ground));
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--on-ink) 18%, transparent),
+      0 12px 24px -10px color-mix(in srgb, var(--t1) 62%, transparent);
+  }
+  .btn-ink:hover::after {
+    translate: 120% 0;
+    opacity: 1;
+    transition:
+      translate 620ms var(--e-enter),
+      opacity 180ms var(--e-std);
+  }
+  .btn-ink:active {
+    transform: translateY(0) scale(0.98);
   }
   .home .btn-quiet:hover {
     background: none;
     box-shadow: none;
   }
   .btn-line:hover {
-    box-shadow: inset 0 0 0 1px var(--t3);
+    transform: translateY(-1px);
+    box-shadow:
+      inset 0 0 0 1px var(--t3),
+      var(--sh);
+  }
+  .btn-line:active {
+    transform: translateY(0) scale(0.98);
   }
   a:hover > .arrow {
-    transform: translateX(3px);
+    transform: translateX(4px);
   }
 }
 
@@ -266,13 +318,43 @@ html.dark .home .only-light {
   border-radius: 18px;
   background: var(--panel);
   box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--on-ink) 45%, transparent),
     var(--sh-lg),
     0 0 0 1px var(--hair);
+  transition:
+    box-shadow 320ms var(--e-enter),
+    transform 360ms var(--e-enter);
+}
+@media (hover: hover) {
+  .shot:not(.shot-hero):hover {
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--on-ink) 60%, transparent),
+      var(--sh-lg),
+      0 0 0 1px var(--hair2);
+  }
 }
 .shot img {
   display: block;
   width: 100%;
   height: auto;
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .split-head,
+    .center-head {
+      animation: head-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+  }
+}
+@keyframes head-enter {
+  from {
+    translate: 0 18px;
+  }
+  to {
+    translate: 0 0;
+  }
 }
 
 /* Native disclosures (the record's accordion, the questions). */
@@ -314,6 +396,21 @@ html.dark .home .only-light {
 }
 details[open] .acc-sign::after {
   transform: rotate(0deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .landing details[open] > :not(summary) {
+    animation: details-in 320ms var(--e-enter) both;
+  }
+}
+@keyframes details-in {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
 
 .skip {

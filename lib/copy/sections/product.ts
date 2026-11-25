@@ -14,7 +14,7 @@ interface ProductCopy {
 export const product: Bilingual<ProductCopy> = {
   en: {
     lines: ["From finding to merge,", "on one page"],
-    body: "The inbox gathers every pull request waiting on you, across repositories, with Ocra's verdict beside each. Open one to read the review on the diff, commit the fix, see what still blocks the merge, and merge.",
+    body: "One cross-repo inbox for every pull request waiting on you, with Ocra's verdict beside each. Open a PR to read the review inline, commit verified fixes, clear merge blockers, and ship.",
     alt: "Ocra Cloud's inbox: pull requests grouped into Needs my review, My open PRs and Waiting on others, with Ocra's verdict, size, author and keyboard shortcuts",
     note: `${CLOUD}'s inbox, with sample data`,
     features: [
@@ -38,7 +38,7 @@ export const product: Bilingual<ProductCopy> = {
   },
   zh: {
     lines: ["从发现问题到合并，", "都在一页里"],
-    body: "收件箱汇集所有等你处理的 PR，跨仓库，每个旁边都有 Ocra 的结论。打开一个，就能在 diff 上读审查、提交修复、看清还有什么阻碍合并，然后合并。",
+    body: "跨仓库汇总所有待你处理的 PR，每条旁都附有 Ocra 结论。点开即可在 diff 上查看审查、一键提交修复、扫清合并阻碍，直接合入。",
     alt: "Ocra Cloud 的收件箱：PR 按“需要我审查”“我的 PR”“等待他人”分组，附 Ocra 的结论、改动大小、作者和快捷键",
     note: `${CLOUD} 的收件箱，示例数据`,
     features: [

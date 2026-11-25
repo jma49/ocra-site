@@ -51,11 +51,47 @@ function useScrolled() {
   return scrolled;
 }
 
+function useActiveSection(navRef: RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"]')];
+    const ids = links.map((a) => a.getAttribute("href")?.slice(1) ?? "").filter(Boolean);
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    if (!sections.length) return;
+    const visible = new Set<string>();
+    const sync = () => {
+      const active = ids.find((id) => visible.has(id));
+      for (const a of links) {
+        const id = a.getAttribute("href")?.slice(1);
+        if (id && id === active) a.dataset.active = "true";
+        else delete a.dataset.active;
+      }
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        }
+        sync();
+      },
+      { rootMargin: "-20% 0px -55% 0px" },
+    );
+    for (const s of sections) io.observe(s);
+    return () => io.disconnect();
+  }, [navRef]);
+}
+
 export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode }) {
   const [open, setOpen] = useState(false);
   const shell = useRef<HTMLElement>(null);
+  const nav = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
   const scrolled = useScrolled();
+  useActiveSection(nav);
 
   useEffect(() => {
     if (!open) return;
@@ -105,7 +141,7 @@ export function NavShell({ bar, drawer }: { bar: ReactNode; drawer: ReactNode })
           if ((e.target as Element).closest("#site-menu a")) setOpen(false);
         }}
       >
-        <div className="nav" data-scrolled={scrolled || undefined}>
+        <div className="nav" ref={nav} data-scrolled={scrolled || undefined}>
           {bar}
         </div>
         <div className="drawer" id="site-menu">

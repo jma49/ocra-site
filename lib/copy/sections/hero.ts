@@ -8,6 +8,7 @@ interface HeroCopy {
   lede: string;
   start: string;
   selfHost: string;
+  cli: { command: string; copy: string; copied: string };
   // The window around the screenshot: the pull request and file, and the
   // review's state as the loop plays.
   bar: FromRun;
@@ -25,9 +26,10 @@ const dollars = (run: Parameters<FromRun>[0]) => `$${run.usage.dollars}`;
 export const hero: Bilingual<HeroCopy> = {
   en: {
     lines: ["Code review agents that check", "before they comment"],
-    lede: "Ocra reviews your GitHub and GitLab pull requests on your own model key. A finding reaches you only when it quotes the code and holds up on a second read, often with a fix you commit in one click.",
+    lede: "Open-source AI code review for GitHub and GitLab on your own model key. Findings reach you only when they quote the exact code and survive a second read—often paired with a one-click fix.",
     start: `Start with ${CLOUD}`,
     selfHost: "Self-host with the CLI",
+    cli: { command: "npx @open-cr-agent/cli review", copy: "Copy", copied: "Copied" },
     bar: (run) => `acme/api #${run.pr.number} · ${run.finding.path}`,
     reviewing: "Reviewing",
     reviewed: "Reviewed",
@@ -43,9 +45,10 @@ export const hero: Bilingual<HeroCopy> = {
   },
   zh: {
     lines: ["先核实，再开口的", "代码审查 agent"],
-    lede: "Ocra 用你自己的模型 key 审查 GitHub 和 GitLab 上的 PR。一条意见要引用到具体代码、经得住第二遍核查，才会出现在你面前，往往还附带一个一键提交的修复。",
+    lede: "用你自己的模型 key 审查 GitHub 与 GitLab 上的 PR。每条意见必须引用确切代码、经得起第二遍核查才会呈现，并常附带可一键提交的修复。",
     start: `开始使用 ${CLOUD}`,
     selfHost: "用 CLI 自托管",
+    cli: { command: "npx @open-cr-agent/cli review", copy: "复制", copied: "已复制" },
     bar: (run) => `acme/api #${run.pr.number} · ${run.finding.path}`,
     reviewing: "审查中",
     reviewed: "已审查",

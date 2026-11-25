@@ -12,6 +12,12 @@
   flex-direction: column;
   gap: 4px;
   padding: 26px 24px 26px 0;
+  transition: background-color 220ms var(--e-std);
+}
+@media (hover: hover) {
+  .proof-in > li:hover {
+    background: color-mix(in srgb, var(--t1) 2.5%, transparent);
+  }
 }
 .proof-in > li + li {
   padding-left: 24px;
@@ -59,7 +65,10 @@
   padding: 56px 0 0 64px;
   border-radius: 32px;
   background: var(--panel);
-  box-shadow: var(--sh);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--on-ink) 60%, transparent),
+    0 0 0 1px var(--hair),
+    var(--sh);
 }
 .meet-text {
   align-self: center;
@@ -83,6 +92,15 @@
   background: var(--raised);
   font-size: 13.5px;
   color: var(--t2);
+  transition:
+    transform 240ms var(--e-enter),
+    box-shadow 240ms var(--e-enter);
+}
+@media (hover: hover) {
+  .strike-row li:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sh);
+  }
 }
 .strike-row s {
   text-decoration-color: var(--red);
@@ -115,6 +133,44 @@
   font-size: 14px;
   color: var(--t3);
   white-space: nowrap;
+  transition:
+    transform 300ms var(--e-enter),
+    box-shadow 300ms var(--e-enter);
+}
+@media (hover: hover) {
+  .tally:hover {
+    transform: translateY(-3px);
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .meet-art img {
+      animation: meet-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+    .tally {
+      animation: tally-float linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+  }
+}
+@keyframes meet-drift {
+  from {
+    translate: 0 28px;
+  }
+  to {
+    translate: 0 -18px;
+  }
+}
+@keyframes tally-float {
+  from {
+    translate: 0 18px;
+  }
+  to {
+    translate: 0 -14px;
+  }
 }
 .tally b {
   font-size: 22px;

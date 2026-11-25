@@ -25,27 +25,27 @@ interface HowCopy {
 export const how: Bilingual<HowCopy> = {
   en: {
     lines: ["A model answers,", "code checks the answer"],
-    body: "Selection, bundling, anchoring and the verdict are tested code. Models only review, verify and judge, and every answer is checked against a schema before it moves on.",
+    body: "File selection, bundling, line anchoring, and the final verdict are deterministic, tested code. Models handle judgment—reviewing, verifying, and judging—and every response passes schema validation before moving on.",
     steps: {
       select: {
         label: "01 · select",
         lines: ["Only the files", "worth reading"],
-        body: "Binaries, lock files, generated code and likely secrets are set aside before any model is paid, each with a recorded reason.",
+        body: "Binaries, lock files, generated output, and suspected secrets are filtered out before spending a cent on models—each with a logged reason.",
       },
       bundle: {
         label: "02 · bundle",
         lines: ["One task per group", "and reviewer"],
-        body: "Related files are grouped, and a tested planner decides which reviewer reads which group. Correctness always runs; security and performance skip docs.",
+        body: "Related files are clustered into coherent bundles, and a tested planner assigns the right reviewers. Correctness always runs; security and performance skip docs.",
       },
       review: {
         label: "03 · review",
         lines: ["Findings quote", "the code they mean"],
-        body: `Each task is an isolated agent with read-only tools and no shell, on the exact revision, ${MAX_AGENT_STEPS} steps at most. A finding is anchored by the code it quotes.`,
+        body: `Each task runs an isolated, read-only agent with no shell on the exact revision, capped at ${MAX_AGENT_STEPS} steps. Every finding anchors to verbatim code—never a guessed line number.`,
       },
       verify: {
         label: "04 · verify",
         lines: ["A second read", "before any comment"],
-        body: "A verifier drops what the code disproves, a judge merges duplicates and sets severity, and code, not a model, computes the verdict.",
+        body: "A dedicated verifier discards anything the source disproves, a judge merges duplicate root causes and calibrates severity, and deterministic code computes the verdict.",
       },
     },
     generated: "generated",
@@ -63,27 +63,27 @@ export const how: Bilingual<HowCopy> = {
   },
   zh: {
     lines: ["模型给出回答，", "代码检查回答"],
-    body: "选文件、分组、定位和最终结论都是经过测试的代码。模型只负责审查、核查和裁决，每个回答进入下一步之前都要通过 schema 校验。",
+    body: "选文件、分组、行号锚定与最终结论，全是有测试保障的确定性代码。模型只做需要判断的事——审查、核查与裁决——每次输出都先通过 schema 校验才进入下一步。",
     steps: {
       select: {
         label: "01 · 选择",
         lines: ["只读", "值得读的文件"],
-        body: "二进制、锁文件、生成的代码和疑似密钥，在付费调用模型之前就被剔除，每一项都记录原因。",
+        body: "二进制、锁文件、生成代码与疑似密钥在花一分钱调用模型前就被自动过滤，每一项都记明原因。",
       },
       bundle: {
         label: "02 · 分组",
         lines: ["每个分组、每位审查员", "一个任务"],
-        body: "相关的文件分到一组，由经过测试的规划器决定哪位审查员读哪一组。correctness 总会运行；security 和 performance 跳过文档。",
+        body: "相关文件自动聚成上下文完整的分组，由经过测试的规划器精准指派审查员。correctness 始终运行；security 与 performance 自动跳过文档。",
       },
       review: {
         label: "03 · 审查",
         lines: ["每条意见", "都引用它所指的代码"],
-        body: `每个任务是一个隔离的 agent：只读工具、没有 shell、在确切的版本上运行，最多 ${MAX_AGENT_STEPS} 步。一条意见靠它引用的代码定位。`,
+        body: `每个任务都是隔离的只读 agent：无 shell、锁定准确版本、最多执行 ${MAX_AGENT_STEPS} 步。每条意见按原样代码精确定位，从不由模型凭空编造行号。`,
       },
       verify: {
         label: "04 · 核查",
         lines: ["评论之前，", "再读一遍"],
-        body: "核查员丢掉代码能证伪的意见，裁判合并重复项并定级，最终结论由代码而不是模型算出。",
+        body: "独立核查员剔除被源码证伪的意见，裁决员合并同一根因并校准级别，最终结论由确定性代码算出。",
       },
     },
     generated: "生成文件",

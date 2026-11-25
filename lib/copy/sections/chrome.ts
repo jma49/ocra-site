@@ -12,14 +12,14 @@ interface MetaCopy {
 
 export const meta: Bilingual<MetaCopy> = {
   en: {
-    title: "Ocra — code review agents that check before they comment",
+    title: "Ocra — code review agents that verify before they comment",
     description:
-      "Ocra is open-source AI code review for GitHub and GitLab, on your own model key. Its findings quote the code they mean and face a second read before they reach your pull request.",
+      "Open-source AI code review for GitHub and GitLab on your own model key. Read-only agents quote exact lines, survive a second read, and stay quiet when there is nothing worth saying.",
   },
   zh: {
-    title: "Ocra — 先核实，再开口的代码审查 agent",
+    title: "Ocra — 先核实，再开口的开源代码审查 agent",
     description:
-      "Ocra 是开源的 AI 代码审查，支持 GitHub 和 GitLab，使用你自己的模型 key：每条意见都引用它所指的代码，并经过第二遍核查，才会出现在你的 PR 里。",
+      "面向 GitHub 和 GitLab 的开源 AI 代码审查，自带模型 key。只读 agent 逐行核对，每条意见都引用确切代码并经二次复核；没有真问题，就保持安静。",
   },
 };
 

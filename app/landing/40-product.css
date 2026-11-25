@@ -18,6 +18,39 @@
 }
 .stage-panel .shot-app {
   margin-bottom: 44px;
+  transition: transform 360ms var(--e-enter);
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stage-panel .shot-app {
+      animation: app-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 42%;
+    }
+    .where-art .shot-side {
+      animation: side-glide linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 48%;
+    }
+  }
+}
+@keyframes app-rise {
+  from {
+    translate: 0 44px;
+    scale: 0.975;
+  }
+  to {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+@keyframes side-glide {
+  from {
+    translate: 40px 0;
+  }
+  to {
+    translate: 0 0;
+  }
 }
 .four {
   display: grid;
@@ -25,11 +58,25 @@
   gap: 32px;
   margin-top: 40px;
 }
+.four > li {
+  padding-top: 16px;
+  border-top: 1px solid var(--hair);
+  transition: border-color 220ms var(--e-std);
+}
 .four h3,
 .block-four h3 {
   font-size: 17px;
   line-height: 1.25;
   letter-spacing: -0.02em;
+  transition: transform 240ms var(--e-enter);
+}
+@media (hover: hover) {
+  .four > li:hover {
+    border-top-color: var(--t2);
+  }
+  .four > li:hover h3 {
+    transform: translateX(3px);
+  }
 }
 .four p {
   margin-top: 6px;
@@ -73,7 +120,17 @@
   border-radius: 20px;
   background: var(--panel);
   box-shadow: 0 0 0 1px var(--hair);
-  transition: box-shadow 200ms var(--e-std);
+  transition:
+    box-shadow 220ms var(--e-enter),
+    transform 220ms var(--e-enter);
+}
+@media (hover: hover) {
+  .acc-item:not([open]):hover {
+    transform: translateY(-2px);
+    box-shadow:
+      var(--sh),
+      0 0 0 1px var(--hair2);
+  }
 }
 .acc-item[open] {
   box-shadow:
@@ -87,25 +144,218 @@
 }
 .where-art {
   position: relative;
-  display: flex;
-  align-items: center;
+  display: grid;
   min-height: 460px;
   overflow: hidden;
-  padding: 36px 0 36px 36px;
   border-radius: 28px;
   background: var(--tint-blue);
+  box-shadow: inset 0 0 0 1px var(--hair);
+  transition: background-color 420ms var(--e-enter);
+}
+.where-stage {
+  display: grid;
+  width: 100%;
+  height: 100%;
+}
+.where-view {
+  grid-area: 1 / 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36px;
+  opacity: 0;
+  translate: 0 12px;
+  pointer-events: none;
+  transition:
+    opacity 320ms var(--e-std),
+    translate 420ms var(--e-enter);
+}
+.where-v1 {
+  justify-content: flex-start;
+  padding: 36px 0 36px 36px;
 }
 .shot-side {
   flex: none;
   width: 780px;
   border-radius: 14px;
 }
+.where-float {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 310px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow:
+    var(--sh-lg),
+    0 0 0 1px var(--hair);
+}
+.where-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--t2);
+}
+.where-path {
+  font-size: 12.5px;
+  color: var(--t1);
+}
+.where-desc {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--t2);
+}
+.where-meta {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--green);
+}
+.where-card {
+  width: 100%;
+  max-width: 520px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow:
+    var(--sh-lg),
+    0 0 0 1px var(--hair);
+}
+.wc-bar {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--hair);
+  background: color-mix(in srgb, var(--raised) 40%, var(--panel));
+  font-size: 12px;
+  color: var(--t3);
+}
+.wc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+.wc-msg {
+  padding: 13px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.wc-user {
+  align-self: flex-end;
+  max-width: 85%;
+  background: var(--raised);
+  color: var(--t1);
+}
+.wc-ocra {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid var(--hair);
+  background: var(--panel);
+  color: var(--t1);
+}
+.wc-ocra .dot {
+  margin-top: 7px;
+}
+.wc-foot {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--t3);
+}
+.wc-thread {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--raised);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--t1);
+}
+.wc-reply {
+  border: 1px solid var(--hair);
+  background: var(--panel);
+}
+.wc-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.wc-head b {
+  font-weight: 500;
+}
+.wc-head .tag {
+  background: var(--raised);
+  color: var(--t2);
+  height: 20px;
+  font-size: 11px;
+}
+.wc-alert,
+.wc-digest {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 15px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--hair);
+  background: var(--panel);
+  font-size: 14px;
+}
+.wc-digest {
+  background: var(--raised);
+  border-color: transparent;
+}
+.wc-alert b,
+.wc-digest b {
+  font-weight: 500;
+  color: var(--t1);
+}
+.where:has(.acc-item:nth-child(1)[open]) .where-art {
+  background: var(--tint-blue);
+}
+.where:has(.acc-item:nth-child(2)[open]) .where-art {
+  background: var(--tint-stone);
+}
+.where:has(.acc-item:nth-child(3)[open]) .where-art {
+  background: var(--tint-sand);
+}
+.where:has(.acc-item:nth-child(4)[open]) .where-art {
+  background: var(--tint-red);
+}
+.where:has(.acc-item:nth-child(1)[open]) .where-v1,
+.where:has(.acc-item:nth-child(2)[open]) .where-v2,
+.where:has(.acc-item:nth-child(3)[open]) .where-v3,
+.where:has(.acc-item:nth-child(4)[open]) .where-v4 {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+/* Fallback when all accordion items are closed: keep view 1 visible. */
+.where:not(:has(.acc-item[open])) .where-v1 {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
 @media (max-width: 1023px) {
   .where {
     grid-template-columns: 1fr;
   }
   .where-art {
-    min-height: 0;
+    min-height: 400px;
+  }
+  .where-view {
+    padding: 28px;
+  }
+  .where-v1 {
     padding: 28px 0 28px 28px;
   }
   .shot-side {
@@ -117,8 +367,19 @@
     padding: 18px 20px;
   }
   .where-art {
-    padding: 20px 0 20px 20px;
     border-radius: 24px;
+  }
+  .where-view {
+    padding: 20px;
+  }
+  .where-v1 {
+    padding: 20px 0 20px 20px;
+  }
+  .where-float {
+    right: 14px;
+    bottom: 14px;
+    max-width: 240px;
+    padding: 12px 14px;
   }
   .shot-side {
     width: 520px;
