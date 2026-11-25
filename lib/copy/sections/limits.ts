@@ -28,7 +28,7 @@ export const limits: Bilingual<LimitsCopy> = {
       },
       {
         title: "Your team's rules, right in the repo",
-        body: "Keep review rules in `.ocra/rules.json` and institutional memory in `.ocra/learnings/`, always read from the base branch.",
+        body: "Keep review rules in `.ocra/rules.json` and learnings in `.ocra/learnings/`. Pull request reviews read them from the base commit.",
       },
       {
         title: "When one model stalls, the next takes over",
@@ -36,7 +36,7 @@ export const limits: Bilingual<LimitsCopy> = {
       },
       {
         title: "Reviewed against what the change was meant to do",
-        body: "Reviewers read linked issues for intent. Plain-language pre-merge checks return pass or fail with concrete evidence.",
+        body: "Reviewers read linked issues for intent. Pre-merge checks report pass, fail, or inconclusive, with a reason.",
       },
     ],
     bill: {
@@ -59,7 +59,7 @@ export const limits: Bilingual<LimitsCopy> = {
       },
       {
         title: "团队规则，直接留在仓库里",
-        body: "审查规则存于 `.ocra/rules.json`，团队沉淀存于 `.ocra/learnings/`，始终从目标分支读取。",
+        body: "审查规则存于 `.ocra/rules.json`，团队沉淀存于 `.ocra/learnings/`。审查 PR 时从基准提交读取。",
       },
       {
         title: "一个模型受阻，下一个无缝接棒",
@@ -67,7 +67,7 @@ export const limits: Bilingual<LimitsCopy> = {
       },
       {
         title: "对照改动的真实意图来审查",
-        body: "审查员会阅读关联 issue 把握上下文。自然语言写的合并前检查，逐条给出通过与否及明确依据。",
+        body: "审查员会阅读关联 issue，了解改动意图。合并前检查会给出通过、未通过或无法判定的结果，并说明原因。",
       },
     ],
     bill: {

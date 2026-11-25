@@ -12,8 +12,8 @@ interface QuietCopy {
 export const quiet: Bilingual<QuietCopy> = {
   en: {
     title: "Quiet by design",
-    body: "A reviewer that nitpicks everything trains teams to ignore it. Ocra speaks only when a finding quotes exact code, explains what it verified, and survives a second read. Nothing worth saying? One clean summary and zero inline noise.",
-    out: ["Style", "Speculation", "Unchanged code"],
+    body: "A reviewer that nitpicks everything trains teams to ignore it. Ocra anchors findings to quoted code, drops what verification disproves, and marks what it could not confirm. No inline findings? One summary, updated in place.",
+    out: ["Style", "Speculation", "Guessing line numbers"],
     outNote: "Out of scope for every reviewer",
     tally: {
       candidates: (run) => `${run.claims.length} candidates`,
@@ -22,8 +22,8 @@ export const quiet: Bilingual<QuietCopy> = {
   },
   zh: {
     title: "生来安静",
-    body: "事无巨细都评论的审查工具，很快就会被团队静音。Ocra 只在能引用确切代码、说清核查依据并经得起第二遍复核时才开口。没有真问题时，只留一条简洁总结，零行内噪音。",
-    out: ["代码风格", "臆测", "未改动的代码"],
+    body: "事无巨细都评论的审查工具，很快就会被团队静音。Ocra 用引用的代码定位问题，剔除已证伪的意见，并标注未能确认的问题。没有行内意见时，只保留一条原地更新的总结。",
+    out: ["代码风格", "臆测", "猜测行号"],
     outNote: "不在任何审查员的范围内",
     tally: {
       candidates: (run) => `${run.claims.length} 条候选`,

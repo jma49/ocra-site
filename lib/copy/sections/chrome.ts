@@ -14,12 +14,12 @@ export const meta: Bilingual<MetaCopy> = {
   en: {
     title: "Ocra — code review agents that verify before they comment",
     description:
-      "Open-source AI code review for GitHub and GitLab on your own model key. Read-only agents quote exact lines, survive a second read, and stay quiet when there is nothing worth saying.",
+      "Open-source AI code review for GitHub, GitLab and local changes. Bring a model key or use your local Codex sign-in. Read-only agents quote code for a second read.",
   },
   zh: {
     title: "Ocra — 先核实，再开口的开源代码审查 agent",
     description:
-      "面向 GitHub 和 GitLab 的开源 AI 代码审查，自带模型 key。只读 agent 逐行核对，每条意见都引用确切代码并经二次复核；没有真问题，就保持安静。",
+      "面向 GitHub、GitLab 和本地改动的开源 AI 代码审查。自带模型 key，或在本地使用已登录的 Codex。只读 agent 引用确切代码，供二次核查。",
   },
 };
 
