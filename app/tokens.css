@@ -8,7 +8,6 @@
 :root {
   --paper: #f7f7f7;
   --paper-2: #f1ecec;
-  --stone: #c3bbbb;
   --sheet: #ffffff;
   --ink: #141414;
   --ink-2: #4a4a4a;
@@ -73,7 +72,6 @@
 .dark {
   --paper: #151111;
   --paper-2: #1b1717;
-  --stone: #211d1d;
   --sheet: #232323;
   --ink: #ededed;
   --ink-2: #b4b4b4;
