@@ -154,7 +154,7 @@ The landing page is calm and product-first: a warm neutral ground, the Ocra Clou
 ## Colors
 
 - **Ground and panels**: `ground` is the page, `panel` the white objects on it (the quiet panel, cards, plans, the bill, the footer), `raised` insets and code, `well` the deeper panels (providers, limits). Text is `t1`, `t2` for ledes and bodies, `t3` for captions and meta. Hairlines are `t1` at 8 % (`hair`) and 13 % (`hair2`).
-- **Tints**: each tinted panel carries one hue at a trace of chroma: `tint-stone`, `tint-blue`, `tint-sand`, `tint-red` (the four how-it-works panels, the console stage, the record's picture).
+- **Tints**: each tinted panel carries one hue at a trace of chroma: `tint-stone`, `tint-blue`, `tint-sand`, `tint-red` (the four how-it-works panels, the console stage, the record's picture). Use `tint-stone` for the stone-colored panel fill.
 - **Status tones** are the console's and mean what they mean there: `red` critical (and the strike through what was set aside), `amber` warning, `green` confirmed or committed, `blue` running. No other accent, no gradients on text, no glows.
 - **The block**: `block` is the page's one dark band (security) and the hosted plan's card; text `on-block` at 100, 64 and 60 %. It stays dark in both themes.
 - **Stipple colours** live in the SVG art itself (`public/landing/*.svg`, one file per theme): ink, cinnabar, mist blue and stone.
