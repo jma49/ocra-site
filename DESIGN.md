@@ -149,7 +149,7 @@ components:
 
 # Open-CR-Agent site
 
-The landing page is calm and product-first: a warm neutral ground, the Ocra Cloud console's real screens as the pictures, and a small set of crafted devices around them. It is grounded in the console's own design (ocra-cloud `web/DESIGN.md`: Geist, JetBrains Mono, neutral ground, ink actions, status tones), so a screenshot of the console sits on the page as on its own ground. The 404 page shares the buttons and the neutral `:root` tokens.
+The landing page is calm and product-first: a warm neutral ground, the Ocra Cloud console's real screens as the pictures, and a small set of crafted devices around them. It is grounded in the console's own design (ocra-cloud `web/DESIGN.md`: Geist, JetBrains Mono, neutral ground, ink actions, status tones), so a screenshot of the console sits on the page as on its own ground. The 404 page uses the shared button base with primary and quiet variants on the neutral `:root` palette.
 
 ## Colors
 

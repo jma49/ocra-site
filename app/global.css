@@ -78,14 +78,6 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
   padding: 0 14px;
   font-size: 14px;
 }
-[data-ground="night"] .btn-primary {
-  background: var(--on-night);
-  color: var(--night);
-}
-[data-ground="night"] .btn-quiet {
-  color: var(--on-night);
-  box-shadow: inset 0 0 0 1px var(--line-night-2);
-}
 /* Under a pointer the button gives a little as it is reached, and a
    little more as it is pressed. */
 .btn:active {
@@ -104,13 +96,6 @@ html[data-locale="zh"] .not-found [data-locale="en"] {
   .btn-quiet:hover {
     background: var(--tint);
     box-shadow: inset 0 0 0 1px var(--ink-3);
-  }
-  [data-ground="night"] .btn-primary:hover {
-    background: color-mix(in srgb, var(--on-night) 86%, var(--night));
-  }
-  [data-ground="night"] .btn-quiet:hover {
-    background: color-mix(in srgb, var(--on-night) 6%, transparent);
-    box-shadow: inset 0 0 0 1px var(--on-night-3);
   }
 }
 @media (max-width: 599px) {

@@ -212,15 +212,6 @@ html.dark .home .only-light {
   height: 36px;
   padding: 0 16px;
 }
-.home .btn-quiet {
-  height: 44px;
-  padding: 0 8px;
-  box-shadow: none;
-  color: var(--t1);
-  transition:
-    color 180ms var(--e-std),
-    transform 200ms var(--e-enter);
-}
 .btn-line {
   border-radius: 999px;
   height: 44px;
@@ -258,10 +249,6 @@ html.dark .home .only-light {
   }
   .btn-ink:active {
     transform: translateY(0) scale(0.98);
-  }
-  .home .btn-quiet:hover {
-    background: none;
-    box-shadow: none;
   }
   .btn-line:hover {
     transform: translateY(-1px);
