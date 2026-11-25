@@ -10,14 +10,11 @@
   --paper-2: #f1ecec;
   --stone: #c3bbbb;
   --sheet: #ffffff;
-  --night: #261415;
   --ink: #141414;
   --ink-2: #4a4a4a;
   --ink-3: #666666;
   --line: #e0e0e0;
   --line-2: #c4c4c4;
-  --on-night: #f2f2f2;
-  --on-night-3: #969696;
   /* Critical severity, and the one signal. Never UI chrome. */
   --pen: #bd2718;
   /* Warning severity only. */
@@ -27,8 +24,6 @@
   --white: #ffffff;
   --black: #000000;
 
-  --line-night: color-mix(in srgb, var(--on-night) 12%, transparent);
-  --line-night-2: color-mix(in srgb, var(--on-night) 22%, transparent);
   --tint: color-mix(in srgb, var(--ink) 6%, transparent);
   --focus: var(--ink);
   --select: color-mix(in srgb, var(--ink) 16%, transparent);
@@ -80,13 +75,11 @@
   --paper-2: #1b1717;
   --stone: #211d1d;
   --sheet: #232323;
-  --night: #352122;
   --ink: #ededed;
   --ink-2: #b4b4b4;
   --ink-3: #969696;
   --line: #2e2e2e;
   --line-2: #404040;
-  --on-night-3: #a3a3a3;
   --pen: #fd545f;
   --amber: #efad48;
   --float:
