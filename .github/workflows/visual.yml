@@ -3,8 +3,8 @@ name: Visual
 # Screenshots the base branch and the pull request in the same job, on the
 # same machine, and compares them. Nothing is committed: baselines taken on
 # another machine would differ in font rendering. A pull request that changes
-# the look on purpose gets the `visual-change` label; the job then passes and
-# the report shows what changed.
+# the look on purpose gets the `visual-change` label. Only pixel differences
+# are advisory; the head build must always pass the full behaviour suite.
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
@@ -78,10 +78,10 @@ jobs:
 
       - name: Compare
         working-directory: head
-        continue-on-error: ${{ contains(github.event.pull_request.labels.*.name, 'visual-change') }}
         env:
           VISUAL_BASE_URL: http://127.0.0.1:3102
-        run: npx playwright test
+          VISUAL_CHANGE: ${{ contains(github.event.pull_request.labels.*.name, 'visual-change') }}
+        run: npx playwright test --update-snapshots=none
 
       - name: Upload the report
         if: always()
@@ -91,5 +91,6 @@ jobs:
           path: |
             head/.visual/report
             head/.visual/results
+          include-hidden-files: true
           retention-days: 14
           if-no-files-found: ignore

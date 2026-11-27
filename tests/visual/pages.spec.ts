@@ -1,4 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
+import { compareScreenshot } from "./screenshot";
 
 const pages = [
   { name: "home", path: "/" },
@@ -33,9 +34,7 @@ for (const locale of locales) {
       await page.goto(url, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
 
-      await expect(page).toHaveScreenshot(`${locale.code}-${target.name}.png`, {
-        fullPage: true,
-      });
+      await compareScreenshot(page, `${locale.code}-${target.name}`);
 
       const expected = target.missing ? /status of 404/ : null;
       const unexpected = errors.filter((e) => !expected?.test(e));
