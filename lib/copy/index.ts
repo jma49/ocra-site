@@ -1,3 +1,4 @@
+import "server-only";
 import type { Locale } from "@/lib/i18n";
 import { exampleRun } from "@/lib/landing/example-run";
 import { type Bilingual, type Resolved, tieWords } from "./define";
