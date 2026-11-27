@@ -36,3 +36,11 @@ jobs:
         env:
           OCRA_DIR: ${{ github.workspace }}/engine
           MANUAL_DIR: ${{ github.workspace }}/engine/docs/manual
+
+  budget:
+    needs: verify
+    if: ${{ !cancelled() }}
+    permissions:
+      actions: read
+      contents: read
+    uses: ocrahq/Open-CR-Agent/.github/workflows/budget.yml@c07fd436960f9dfa1f2ccc2713525245ec70c4d1 # main after v0.9.0 (job.workflow_sha)
