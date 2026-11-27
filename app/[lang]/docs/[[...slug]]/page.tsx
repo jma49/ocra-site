@@ -11,12 +11,12 @@ import { notFound } from "next/navigation";
 import { PageFoot } from "@/components/docs/page-foot";
 import { getMDXComponents } from "@/components/mdx";
 import { getCopy } from "@/lib/copy";
-import { i18n } from "@/lib/i18n";
+import { docsPath } from "@/lib/doc-paths";
 import { docJsonLd, serializeJsonLd } from "@/lib/jsonld";
 import { localeParam } from "@/lib/locale-param";
 import { alternates, social } from "@/lib/seo";
 import { gitConfig, repoUrl } from "@/lib/shared";
-import { source } from "@/lib/source";
+import { docLanguages, source } from "@/lib/source";
 
 type Props = { params: Promise<{ lang: string; slug?: string[] }> };
 
@@ -26,7 +26,7 @@ export default async function Page({ params }: Props) {
   const page = source.getPage(slug, lang);
   if (!page) notFound();
   const MDX = page.data.body;
-  const path = slug ? `/docs/${slug.join("/")}` : "/docs";
+  const path = docsPath(page.slugs);
   const ld = docJsonLd({
     locale: lang,
     path,
@@ -69,13 +69,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await localeParam(params);
   const page = source.getPage(slug, locale);
   if (!page) notFound();
-  const path = slug ? `/docs/${slug.join("/")}` : "/docs";
-  // A page missing in one language has no alternate there.
-  const languages = i18n.languages.filter((l) => source.getPage(slug, l));
+  const path = docsPath(page.slugs);
   return {
     title: page.data.title,
     description: page.data.description,
-    alternates: alternates(locale, path, languages),
+    alternates: alternates(locale, path, docLanguages.get(path) ?? []),
     ...social({
       locale,
       path,
