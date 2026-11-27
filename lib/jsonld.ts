@@ -1,4 +1,5 @@
 import type { Copy } from "./copy";
+import { docsPath } from "./doc-paths";
 import { htmlLang, type Locale } from "./i18n";
 import { siteUrl } from "./seo";
 import { localePath, repoUrl } from "./shared";
@@ -89,9 +90,9 @@ export function docJsonLd({
 }) {
   const base = siteUrl();
   const homeUrl = new URL(localePath(locale, "/"), base).href;
-  const docsUrl = new URL(localePath(locale, "/docs"), base).href;
+  const docsUrl = new URL(localePath(locale, docsPath()), base).href;
   const pageUrl = new URL(localePath(locale, path), base).href;
-  const isIndex = path === "/docs";
+  const isIndex = path === docsPath();
 
   const breadcrumbs = [
     { "@type": "ListItem", position: 1, name: "Ocra", item: homeUrl },

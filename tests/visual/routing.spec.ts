@@ -16,6 +16,45 @@ test.beforeEach(({}, testInfo) => {
 // no header a page rendered on every request.
 const fromBuild = (headers: Record<string, string>) => headers["x-nextjs-cache"] === "HIT";
 
+test("the sitemap and rendered HTML agree on the canonical and alternate URLs", async ({
+  request,
+  page,
+}) => {
+  const xml = await (await request.get("/sitemap.xml")).text();
+  const entries = await page.evaluate((xml) => {
+    const doc = new DOMParser().parseFromString(xml, "application/xml");
+    return Array.from(doc.getElementsByTagName("url"), (entry) => ({
+      canonical: entry.getElementsByTagName("loc")[0]?.textContent ?? "",
+      languages: Object.fromEntries(
+        Array.from(entry.getElementsByTagNameNS("*", "link"), (link) => [
+          link.getAttribute("hreflang"),
+          link.getAttribute("href"),
+        ]),
+      ),
+    }));
+  }, xml);
+  for (const path of ["/", "/zh", "/docs", "/zh/docs", "/docs/quickstart", "/zh/docs/quickstart"]) {
+    const entry = entries.find(({ canonical }) => new URL(canonical).pathname === path);
+    expect(entry, path).toBeDefined();
+    const html = await (await request.get(path)).text();
+    const metadata = await page.evaluate((html) => {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const canonical = doc.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+      return {
+        canonical: canonical?.href,
+        languages: Object.fromEntries(
+          Array.from(
+            doc.querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]'),
+            (l) => [l.hreflang, l.href],
+          ),
+        ),
+      };
+    }, html);
+    expect(metadata, path).toEqual(entry);
+    expect(Object.keys(metadata.languages).sort()).toEqual(["en", "x-default", "zh-CN"]);
+  }
+});
+
 for (const path of ["/", "/zh", "/docs", "/docs/quickstart", "/zh/docs/quickstart"]) {
   test(`${path} is served from the build`, async ({ request }) => {
     const response = await request.get(path, { maxRedirects: 0 });

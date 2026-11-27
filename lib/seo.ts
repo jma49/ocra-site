@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { htmlLang, i18n, type Locale } from "./i18n";
+import { htmlLang, i18n, type Locale, languageAlternates } from "./i18n";
 import { localePath } from "./shared";
 
 // Every Vercel build, previews included, points canonical links at the
@@ -21,12 +21,7 @@ export function alternates(
 ): Metadata["alternates"] {
   return {
     canonical: localePath(locale, path),
-    languages: {
-      ...Object.fromEntries(languages.map((l) => [htmlLang[l], localePath(l, path)])),
-      ...(languages.includes(i18n.defaultLanguage) && {
-        "x-default": localePath(i18n.defaultLanguage, path),
-      }),
-    },
+    languages: languageAlternates(languages, (l) => localePath(l, path)),
   };
 }
 

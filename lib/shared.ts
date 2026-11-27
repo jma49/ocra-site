@@ -1,7 +1,5 @@
 import { i18n, type Locale } from "./i18n";
 
-export const docsRoute = "/docs";
-
 export const gitConfig = {
   user: "ocrahq",
   repo: "Open-CR-Agent",
