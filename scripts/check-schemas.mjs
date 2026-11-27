@@ -1,9 +1,11 @@
 // After a build: serves the site and checks that every synced JSON Schema
 // answers at the path of its $id, byte for byte, as JSON.
 import { spawn } from "node:child_process";
+import { once } from "node:events";
 import { readdirSync, readFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const dir = "public/schema";
 const files = readdirSync(dir).filter((name) => name.endsWith(".json"));
@@ -15,9 +17,14 @@ const port = await new Promise((done) => {
     probe.close(() => done(port));
   });
 });
-const server = spawn("npx", ["next", "start", "--hostname", "127.0.0.1", "--port", String(port)], {
-  stdio: ["ignore", "ignore", "inherit"],
-});
+const next = fileURLToPath(import.meta.resolve("next/dist/bin/next"));
+const server = spawn(
+  process.execPath,
+  [next, "start", "--hostname", "127.0.0.1", "--port", String(port)],
+  {
+    stdio: ["ignore", "ignore", "inherit"],
+  },
+);
 const base = `http://127.0.0.1:${port}`;
 
 async function ready() {
@@ -47,7 +54,7 @@ try {
     else console.log(`${path}: 200 ${type}`);
   }
 } finally {
-  server.kill();
+  if (server.kill()) await once(server, "exit");
 }
 
 if (failures.length > 0) {
